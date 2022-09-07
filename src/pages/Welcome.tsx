@@ -1,9 +1,6 @@
 import React, { useCallback, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import TransitionsModal from "../components/TransitionModal";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
-import Stack from "@mui/material/Stack";
 import { Backdrop, Box, Fade, Modal } from "@mui/material";
 import DataTable from "../components/DataTable";
 import { LoginArgument } from "../models/auth";
@@ -19,12 +16,12 @@ const accountLogin: LoginArgument = {
 const Welcome = () => {
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
-  // const { token, isLoginLoading } = useSelector((state) => state.auth);
+  const { token, isLoginLoading } = useSelector((state) => state.auth);
 
-  // const handleOpen = useCallback(async () => {
-  //   await dispatch(getToken(accountLogin));
-  // }, [token]);
-  // const handleClose = () => setOpen(false);
+  const handleOpen = useCallback(async () => {
+    await dispatch(getToken(accountLogin));
+  }, [ dispatch]);
+  const handleClose = () => setOpen(false);
   // console.log(open)
 
   const style = {
@@ -41,12 +38,12 @@ const Welcome = () => {
 
   console.count();
 
-  // useEffect(() => {
-  //   if (token) {
-  //     dispatch(setUserInfo({ token }));
-  //     setOpen(true);
-  //   }
-  // }, [token]);
+  useEffect(() => {
+    if (token) {
+      dispatch(setUserInfo({ token }));
+      setOpen(true);
+    }
+  }, [token, dispatch]);
 
   return (
     <div className="w-screen h-screen flex bg-blue-300">
@@ -55,8 +52,8 @@ const Welcome = () => {
         loadingPosition="start"
         startIcon={<SaveIcon />}
         variant="outlined"
-        // onClick={handleOpen}
-        // style={{background: '#000'}}
+        onClick={handleOpen}
+        style={{background: '#000'}}
         className="h-fit bg-black text-white font-semibold"
       >
         Save
@@ -65,7 +62,7 @@ const Welcome = () => {
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={open}
-        // onClose={handleClose}
+        onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -78,13 +75,13 @@ const Welcome = () => {
           </Box>
         </Fade>
       </Modal>
-      {/* <Backdrop
+      <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        // open={isLoginLoading}
-        // onClick={handleClose}
+        open={isLoginLoading}
+        onClick={handleClose}
       >
         <CircularProgress color="inherit" />
-      </Backdrop> */}
+      </Backdrop>
     </div>
   );
 };

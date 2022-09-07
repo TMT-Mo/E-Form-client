@@ -1,6 +1,6 @@
-import { httpClient } from "../utils/http-client";
+
 import { QuestionResponse } from "../models/questions";
-import { apiPaths } from "../utils/api-paths";
+import { apiPaths, httpClient } from "../utils";
 
 const getQuestionList = async (): Promise<QuestionResponse[]> => {
     const response = await httpClient.get({url:apiPaths.student.questionList})

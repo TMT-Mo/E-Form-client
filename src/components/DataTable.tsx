@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   DataGrid,
   GridColDef,
@@ -69,7 +69,7 @@ const DataTable: React.FC = () => {
 
   const request = useCallback(async (): Promise<void> => {
     await dispatch(getQuestionList());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     request();

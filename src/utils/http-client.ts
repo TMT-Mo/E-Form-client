@@ -1,9 +1,5 @@
-import { useSelector } from "../hooks/use-selector";
-import { apiPaths } from "./api-paths";
-import React from "react";
+import store from "../store";
 import axios, { Method, AxiosResponse, ResponseType } from "axios";
-import store, { RootState } from "../store";
-import useAuth from "../hooks/use-auth";
 
 interface Options {
   url: string;
@@ -18,28 +14,25 @@ interface Options {
 interface FullOptions extends Options {
   method: Method;
 }
-
 const request = (args: FullOptions): Promise<AxiosResponse> => {
   const {
     url,
     method,
     contentType = "application/json",
-    params,
+    // params,
     responseType = "json",
     data,
     signal,
   } = args;
-
+  
   const source = axios.CancelToken.source();
   if (signal) {
     signal.addEventListener("abort", () => {
       source.cancel();
     });
   }
-
-  //
-  // const { token } = mapStatetoProp(store.getState());
-  // const { token } = store.getState().auth;
+  
+  const token = store.getState().auth ;
 
   return axios.request({
     url,
@@ -54,7 +47,7 @@ const request = (args: FullOptions): Promise<AxiosResponse> => {
   });
 };
 
-export const httpClient = {
+const httpClient = {
   get: (args: Options): Promise<AxiosResponse> => {
     return request({ ...args, method: "GET" });
   },
@@ -71,3 +64,5 @@ export const httpClient = {
     return request({ ...args, method: "DELETE" });
   },
 };
+
+export default httpClient;

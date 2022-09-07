@@ -1,5 +1,5 @@
 import { authServices } from "./../services/auth";
-import { UserInfo, LoginArgument, LoginResponse } from "./../models/auth";
+import { UserInfo, LoginArgument} from "./../models/auth";
 import {
   CaseReducer,
   createAsyncThunk,
@@ -27,7 +27,7 @@ const getToken = createAsyncThunk(`getToken`, async (args: LoginArgument) => {
   return result;
 });
 
-const setUserInfoCR: CR<{ token: string | undefined }> = (
+const setUserInfoCR: CR<{ token: string | null }> = (
   state,
   { payload }
 ) => ({

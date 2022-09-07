@@ -1,18 +1,12 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-
-import appReducers from "../slices/index";
-const middleware = getDefaultMiddleware({
-  thunk: true,
-  serializableCheck: false,
-  immutableCheck: false,
-});
+import { configureStore } from "@reduxjs/toolkit";
+import appReducers from "../slices";
 
 const store = configureStore({
   reducer: {
     ...appReducers,
   },
-  middleware,
 });
+
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 

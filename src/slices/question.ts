@@ -2,8 +2,8 @@ import { QuestionResponse } from "./../models/questions";
 import {
   createSlice,
   createAsyncThunk,
-  PayloadAction,
-  CaseReducer,
+  // PayloadAction,
+  // CaseReducer,
 } from "@reduxjs/toolkit";
 import {questionServices} from "../services/question";
 

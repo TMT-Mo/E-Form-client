@@ -3,11 +3,8 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import LoadingButton from '@mui/lab/LoadingButton';
-import SaveIcon from '@mui/icons-material/Save';
 
 const style = {
   position: "absolute" as "absolute",
@@ -30,7 +27,7 @@ interface Props {
 }
 
 const TransitionsModal: React.FC<Props> = (props) => {
-  const { children, handleOpen, handleClose, open } = props;
+  const { children,  handleClose, open } = props;
   const [firstText, setFirstText] = React.useState('')
   const [secondText, setSecondText] = React.useState('')
 
