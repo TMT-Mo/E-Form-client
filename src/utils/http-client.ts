@@ -38,7 +38,7 @@ const request = (args: FullOptions): Promise<AxiosResponse> => {
   }
 
   // const { token } = mapStatetoProp(store.getState());
-  const { token } = store.getState().auth;
+  // const { token } = store.getState().auth;
 
   return axios.request({
     url,
