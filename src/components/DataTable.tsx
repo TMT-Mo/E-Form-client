@@ -7,6 +7,8 @@ import {
 } from "@mui/x-data-grid";
 import { getQuestionList } from "../slices/question";
 import { useDispatch, useSelector } from "../hooks";
+import { handleSuccess, handleError } from "../slices/notification";
+import { ResponseStatus } from "../utils/constants";
 
 interface GetRowIdParams {
   // The data item provided to the grid for the row in question
@@ -67,17 +69,19 @@ const DataTable: React.FC = () => {
     (state) => state.question
   );
 
-  console.log("run");
-
   const request = useCallback(async (): Promise<void> => {
-    await dispatch(getQuestionList());
+    await dispatch(getQuestionList()).then((response) => {
+      if (response.meta.requestStatus === ResponseStatus.FULFILLED) {
+        dispatch(handleSuccess({ message: "successful" }));
+      } else {
+        dispatch(handleError({ message: "failed" }));
+      }
+    });
   }, [dispatch]);
 
   useEffect(() => {
     request();
   }, [request]);
-
-  console.log("first");
 
   const getRowId = (params: GetRowIdParams) => {
     return params.id_question;

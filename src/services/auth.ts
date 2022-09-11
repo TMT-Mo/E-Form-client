@@ -1,6 +1,5 @@
-import { setToken } from './../utils/token';
 import { LoginArgument, LoginResponse } from "./../models/auth";
-import { apiPaths, httpClient } from "../utils";
+import { apiPaths, helpers, httpClient } from "../utils";
 
 const login = async (data: LoginArgument): Promise<LoginResponse> => {
   const response = await httpClient.post({
@@ -8,7 +7,7 @@ const login = async (data: LoginArgument): Promise<LoginResponse> => {
     data,
   });
   const responseData: LoginResponse = response.data;
-  setToken(responseData.token);
+  helpers.setToken(responseData.token);
   return responseData;
 };
 

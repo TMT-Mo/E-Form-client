@@ -1,5 +1,5 @@
-import { getToken } from "./token";
 import axios, { Method, AxiosResponse, ResponseType } from "axios";
+import {helpers} from "../utils";
 
 interface Options {
   url: string;
@@ -31,7 +31,7 @@ const request = (args: FullOptions): Promise<AxiosResponse> => {
       source.cancel();
     });
   }
-  const token = getToken();
+  const token = helpers.getToken();
 
   return axios.request({
     url,
