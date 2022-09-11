@@ -5,8 +5,9 @@ import { Backdrop, Box, Fade, Modal } from "@mui/material";
 import DataTable from "../components/DataTable";
 import { LoginArgument } from "../models/auth";
 import { useDispatch, useSelector } from "../hooks";
-import { getToken, setUserInfo } from "../slices/auth";
+import { login, setUserInfo } from "../slices/auth";
 import CircularProgress from "@mui/material/CircularProgress";
+import { getToken } from "../utils/token";
 
 const accountLogin: LoginArgument = {
   username: "197sv00001",
@@ -16,11 +17,12 @@ const accountLogin: LoginArgument = {
 const Welcome = () => {
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
-  const { token, isLoginLoading } = useSelector((state) => state.auth);
+  const { isLoginLoading } = useSelector((state) => state.auth);
+  const token = getToken();
 
   const handleOpen = useCallback(async () => {
-    await dispatch(getToken(accountLogin));
-  }, [ dispatch]);
+    await dispatch(login(accountLogin));
+  }, [dispatch]);
   const handleClose = () => setOpen(false);
   // console.log(open)
 
@@ -39,11 +41,12 @@ const Welcome = () => {
   console.count();
 
   useEffect(() => {
+    
     if (token) {
       dispatch(setUserInfo({ token }));
       setOpen(true);
     }
-  }, [token, dispatch]);
+  }, [dispatch, token]);
 
   return (
     <div className="w-screen h-screen flex bg-blue-300">
@@ -53,7 +56,7 @@ const Welcome = () => {
         startIcon={<SaveIcon />}
         variant="outlined"
         onClick={handleOpen}
-        style={{background: '#000'}}
+        style={{ background: "#000" }}
         className="h-fit bg-black text-white font-semibold"
       >
         Save

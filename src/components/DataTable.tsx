@@ -67,6 +67,8 @@ const DataTable: React.FC = () => {
     (state) => state.question
   );
 
+  console.log("run");
+
   const request = useCallback(async (): Promise<void> => {
     await dispatch(getQuestionList());
   }, [dispatch]);
@@ -75,7 +77,7 @@ const DataTable: React.FC = () => {
     request();
   }, [request]);
 
-  console.log('first')
+  console.log("first");
 
   const getRowId = (params: GetRowIdParams) => {
     return params.id_question;

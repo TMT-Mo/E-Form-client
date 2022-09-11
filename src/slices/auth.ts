@@ -9,7 +9,7 @@ import {
 import jwtDecode from "jwt-decode";
 
 interface State {
-  token: string | null;
+  // token: string | null;
   userInfo?: UserInfo;
   isLoginLoading: boolean;
 }
@@ -17,13 +17,13 @@ interface State {
 type CR<T> = CaseReducer<State, PayloadAction<T>>;
 
 const initialState: State = {
-  token: null,
+  // token: null,
   userInfo: undefined,
   isLoginLoading: false,
 };
 
-const getToken = createAsyncThunk(`getToken`, async (args: LoginArgument) => {
-  const result = await authServices.getToken(args);
+const login = createAsyncThunk(`login`, async (args: LoginArgument) => {
+  const result = await authServices.login(args);
   return result;
 });
 
@@ -42,23 +42,24 @@ const auth = createSlice({
     setUserInfo: setUserInfoCR,
   },
   extraReducers: (builder) => {
-    builder.addCase(getToken.pending, (state) => ({
+    builder.addCase(login.pending, (state) => ({
       ...state,
       isLoginLoading: true,
     }));
-    builder.addCase(getToken.fulfilled, (state, { payload }) => ({
+    builder.addCase(login.fulfilled, (state, { payload }) => ({
       ...state,
       isLoginLoading: false,
-      token: payload.token,
+      // token: payload.token,
+      userInfo: jwtDecode(payload.token!)
     }));
-    builder.addCase(getToken.rejected, (state) => ({
+    builder.addCase(login.rejected, (state) => ({
       ...state,
       isLoginLoading: false,
     }));
   },
 });
 
-export { getToken };
+export { login };
 
 export const { setUserInfo } = auth.actions;
 

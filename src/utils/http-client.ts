@@ -1,4 +1,4 @@
-import store from "../store";
+import { getToken } from "./token";
 import axios, { Method, AxiosResponse, ResponseType } from "axios";
 
 interface Options {
@@ -8,7 +8,7 @@ interface Options {
   responseType?: ResponseType;
   data?: object | string;
   signal?: AbortSignal;
-  token?: string | null;
+  token?: string;
 }
 
 interface FullOptions extends Options {
@@ -24,22 +24,21 @@ const request = (args: FullOptions): Promise<AxiosResponse> => {
     data,
     signal,
   } = args;
-  
+
   const source = axios.CancelToken.source();
   if (signal) {
     signal.addEventListener("abort", () => {
       source.cancel();
     });
   }
-  
-  const token = store.getState().auth ;
+  const token = getToken();
 
   return axios.request({
     url,
     method,
     headers: {
       contentType: contentType,
-      // Authorization: `Bearer ${getReduxState}`,
+      Authorization: `Bearer ${token ?? token}`,
     },
     data,
     responseType,
