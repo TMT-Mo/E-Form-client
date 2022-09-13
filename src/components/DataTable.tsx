@@ -9,6 +9,7 @@ import { getQuestionList } from "../slices/question";
 import { useDispatch, useSelector } from "../hooks";
 import { handleSuccess, handleError } from "../slices/notification";
 import { ResponseStatus } from "../utils/constants";
+import { LinearProgress } from "@mui/material";
 
 interface GetRowIdParams {
   // The data item provided to the grid for the row in question
@@ -24,7 +25,7 @@ const columns: GridColDef[] = [
     sortable: false,
     renderHeader: (params: GridColumnHeaderParams) => (
       <strong>
-        {"Birthday "}
+        {"Birthday ZXXZXz"}
         <span role="img" aria-label="enjoy">
           🎂
         </span>
@@ -51,18 +52,6 @@ const columns: GridColDef[] = [
   },
 ];
 
-// const rows = [
-//   { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-//   { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-//   { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-//   { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-//   { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-//   { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-//   { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-//   { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-//   { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-// ];
-
 const DataTable: React.FC = () => {
   const dispatch = useDispatch();
   const { getQuestionLoading, questionList } = useSelector(
@@ -87,6 +76,7 @@ const DataTable: React.FC = () => {
     return params.id_question;
   };
 
+
   return (
     <div style={{ height: 400, width: "100%" }}>
       <DataGrid
@@ -96,8 +86,8 @@ const DataTable: React.FC = () => {
         rowsPerPageOptions={[5]}
         loading={getQuestionLoading}
         getRowId={getRowId}
-        // checkboxSelection
-      />
+        // components={{ LoadingOverlay: () => <LinearProgress /> }}
+      ></DataGrid>
     </div>
   );
 };
