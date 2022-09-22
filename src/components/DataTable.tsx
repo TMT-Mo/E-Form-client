@@ -8,7 +8,7 @@ import {
 import { getQuestionList } from "../slices/question";
 import { useDispatch, useSelector } from "../hooks";
 import { handleSuccess, handleError } from "../slices/notification";
-import { ResponseStatus } from "../utils/constants";
+import { HeaderTable, HeaderTableId, ResponseStatus } from "../utils/constants";
 import { LinearProgress } from "@mui/material";
 
 interface GetRowIdParams {
@@ -16,23 +16,26 @@ interface GetRowIdParams {
   id_question: number;
 }
 
+const {ID_QUESTION, QUESTION, STATUS_QUESTION} = HeaderTableId
+const {ID: id, QUESTION: question, STATUS_QUESTION: statusQuestion } = HeaderTable
+
 const columns: GridColDef[] = [
-  { field: "id_question", headerName: "ID", flex: 0.5, hide: true },
+  { field: ID_QUESTION, headerName: id, flex: 0.5, hide: true },
   {
-    field: "question",
+    field: QUESTION,
     flex: 1,
     disableColumnMenu: true,
     sortable: false,
     renderHeader: (params: GridColumnHeaderParams) => (
       <strong>
-        {"Birthday ZXXZXz"}
+        {question}
         <span role="img" aria-label="enjoy">
           🎂
         </span>
       </strong>
     ),
   },
-  { field: "status_question", headerName: "Last name", flex: 1 },
+  { field: STATUS_QUESTION, headerName: statusQuestion, flex: 1 },
   {
     field: "age",
     headerName: "Age",
@@ -58,14 +61,13 @@ const DataTable: React.FC = () => {
     (state) => state.question
   );
 
-  const request = useCallback(async (): Promise<void> => {
-    await dispatch(getQuestionList()).then((response) => {
-      if (response.meta.requestStatus === ResponseStatus.FULFILLED) {
-        dispatch(handleSuccess({ message: "successful" }));
-      } else {
-        dispatch(handleError({ message: "failed" }));
-      }
-    });
+  const request = useCallback(async () => {
+    try {
+      await dispatch(getQuestionList()).unwrap(); //* Unwrap to catch error when failed
+      dispatch(handleSuccess({ message: "successful" }));
+    } catch {
+      dispatch(handleError({ message: "failed" }));
+    }
   }, [dispatch]);
 
   useEffect(() => {
@@ -75,7 +77,6 @@ const DataTable: React.FC = () => {
   const getRowId = (params: GetRowIdParams) => {
     return params.id_question;
   };
-
 
   return (
     <div style={{ height: 400, width: "100%" }}>
