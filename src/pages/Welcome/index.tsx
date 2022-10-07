@@ -8,11 +8,12 @@ import { useDispatch, useSelector } from "../../hooks";
 import { login, setUserInfo } from "../../slices/auth";
 import CircularProgress from "@mui/material/CircularProgress";
 import { getToken } from "../../utils/token";
-import "./Welcome.scss";
+import classes from "./Welcome.module.scss";
 import { handleError, handleSuccess } from "../../slices/notification";
 import { ResponseStatus } from "../../utils/constants";
 import Notification from "../../components/Notification";
 import { Link, Navigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const accountLogin: LoginArgument = {
   username: "197sv00001",
@@ -23,11 +24,15 @@ export interface State extends SnackbarOrigin {
   open: boolean;
 }
 
+const { box, item } = classes;
+
 const Welcome: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const dispatch = useDispatch();
   const { isLoginLoading } = useSelector((state) => state.auth);
   const token = getToken();
+  const { t, i18n } = useTranslation();
+
   console.count();
 
   const handleOpen = useCallback(async () => {
@@ -38,7 +43,8 @@ const Welcome: React.FC = () => {
         dispatch(handleError({ message: "failed" }));
       }
     });
-  }, [dispatch]);
+    i18n.changeLanguage("en");
+  }, [dispatch, i18n]);
 
   const handleClose = () => {
     setOpen(false);
@@ -101,8 +107,12 @@ const Welcome: React.FC = () => {
         <CircularProgress color="inherit" />
       </Backdrop>
       <Notification />
-      <div className="box btn-primary">aaaa</div>
-        <Link to="/login" replace>jjjjj</Link>
+      <div className={`${box} btn-primary`}>
+        aaaa
+        <Link to="/login" replace>
+          {t('Hello').toString()}
+        </Link>
+      </div>
     </div>
   );
 };
