@@ -10,6 +10,7 @@
     "@mui/lab": "^5.0.0-alpha.95",
     "@mui/material": "^5.10.1",
     "@mui/x-data-grid": "^5.16.0",
+    "@pdftron/webviewer": "^8.9.0",
     "@reduxjs/toolkit": "^1.8.5",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
@@ -34,7 +35,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "move-static": "cp -a ./node_modules/@pdftron/webviewer/public/. ./dist/public/webviewer",
+    "build": "mybuildscript && npm run move-static",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

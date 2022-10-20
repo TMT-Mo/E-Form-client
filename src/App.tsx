@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import Document from "./components/Document";
 import RequireAuth from "./components/RequireAuth";
 import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
@@ -13,6 +14,8 @@ function App() {
       <Route path="/" element={<Welcome />} />
 
       <Route path="unauthorized" element={<Unauthorized />} />
+
+      <Route path="/document" element={<Document/>}/>
 
       <Route element={<RequireAuth allowedRoles={Roles.STUDENT} />}>
         <Route path="login" element={<Login />} />
