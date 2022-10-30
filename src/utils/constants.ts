@@ -17,11 +17,13 @@ export enum HeaderTableId {
 }
 
 export enum HeaderTable {
-    ID = 'Id',
-    QUESTION = 'Question',
-    STATUS_QUESTION = 'Status Question'
+  ID = "Id",
+  QUESTION = "Question",
+  STATUS_QUESTION = "Status Question",
 }
 
-export enum Roles{
-  STUDENT = 'Sinh Viên'
+export enum Roles {
+  STUDENT = "Sinh Viên",
 }
+
+
