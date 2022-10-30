@@ -1,3 +1,19 @@
 {
-  "Hello": "Xin chào"
+  "More Information": "Thông tin khác",
+  "© 2022 E-Form. All Rights Reserved. Terms & Conditions. Privacy Policy.": "© 2022 E-Form. Đã đăng ký bản quyền. Bản quyền thuộc về Team 08 - CapK25",
+  "User guide": "Hướng dẫn sử dụng",
+  "Install guide": "Hướng dẫn cài đặt",
+  "What we bring to the table": "Những gì chúng tôi có thể mang lại",
+  "Process internal application way faster": "Vận hành đơn từ nội bộ nhanh chóng",
+  "We’re here to help companies handle employee’s application much faster when and where ever they need.": "Chúng tôi có mặt ở đây giúp các công ty xử lý đơn từ của nhân viên nhanh gấp nhiều lần bất cứ ở đâu và khi nào họ cần.",
+  "Sign in": "Đăng nhập",
+  "We will help you manage your employee’s application": "Chúng tôi giúp bạn quản lý đơn từ của nhân viên",
+  "Adding Signature": "Ký tên trực tuyến",
+  "User can add signature as a base64 image": "Người ký sẽ thêm chữ ký vào văn bản dưới dạng hình ảnh base64",
+  "Document Viewer": "Xem văn bản trực tuyến",
+  "Customize document easily like word with drag, drop, input text, etc.": "Thêm, kéo, thả các text box, ... vào văn bản dễ dàng",
+  "Save Time": "Tiết kiệm thời gian",
+  "Save lots of time with solving employee’s applications online":"Tiết kiệm nhiều thời gian giải quyết đơn từ của nhân viên",
+  "Welcome to E-Form": "Chào mừng đến với E-Form",
+  "Input your Email and password to join us and get fully accessible": "Hãy nhập Email và mật khẩu để sử dụng hệ thống của chúng tôi."
 }
