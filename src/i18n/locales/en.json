@@ -1,3 +1,20 @@
 {
-  "Hello": "Hello"
+  "Hello": "Hello",
+  "More Information": "More Information",
+  "© 2022 E-Form. All Rights Reserved. Terms & Conditions. Privacy Policy.": "© 2022 E-Form. All Rights Reserved. Terms & Conditions. Privacy Policy.",
+  "User guide": "User guide",
+  "Install guide": "Install guide",
+  "What we bring to the table": "What we bring to the table",
+  "Process internal application way faster": "Process internal application way faster",
+  "We’re here to help companies handle employee’s application much faster when and where ever they need.": "We’re here to help companies handle employee’s application much faster when and where ever they need.",
+  "Sign in": "Sign in",
+  "We will help you manage your employee’s application": "We will help you manage your employee’s application",
+  "Adding Signature": "Adding Signature",
+  "User can add signature as a base64 image": "User can add signature as a base64 image",
+  "Document Viewer": "Document Viewer",
+  "Customize document easily like word with drag, drop, input text, etc.": "Customize document easily like word with drag, drop, input text, etc.",
+  "Save Time": "Save Time",
+  "Save lots of time with solving employee’s applications online":"Save lots of time with solving employee’s applications online",
+  "Welcome to E-Form": "Welcome to E-Form",
+  "Input your Email and password to join us and get fully accessible": "Input your Email and password to join us and get fully accessible."
 }
