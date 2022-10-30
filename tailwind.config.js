@@ -6,7 +6,14 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
-      colors: {},
+      colors: {
+        'blue-light-config': '#EBF1F9',
+        'blue-config': '#407AFF',
+        'white-config': '#FAFAFA',
+        'gray-config': '#6F7276',
+        'less-gray-config': '#F2F2F2',
+        'dark-config': '#1D242B',
+      },
       animation: {
         "spin-slow": "spin 3s linear infinite",
       },
@@ -25,7 +32,7 @@ module.exports = {
       lg: "1024px",
       // => @media (min-width: 1024px) { ... }
 
-      xl: "1440px",
+      xl: "1280px",
       // => @media (min-width: 1280px) { ... }
     },
   },
