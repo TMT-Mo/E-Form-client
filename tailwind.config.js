@@ -13,6 +13,7 @@ module.exports = {
         'gray-config': '#6F7276',
         'less-gray-config': '#F2F2F2',
         'dark-config': '#1D242B',
+        'less-dark-config': '#404952'
       },
       animation: {
         "spin-slow": "spin 3s linear infinite",

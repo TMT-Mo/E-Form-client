@@ -3,7 +3,9 @@ import Popover from "@mui/material/Popover";
 import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
 import { useTranslation } from "react-i18next";
 
-export default function LanguageSelect() {
+
+
+const LanguageSelect: React.FC = () => {
   const {  i18n } = useTranslation();
   const secondLanguage = i18n.language.includes("en") ? "vn" : "en";
   const currentLanguage = i18n.language;
@@ -17,7 +19,7 @@ export default function LanguageSelect() {
     <PopupState variant="popover" popupId="demo-popup-popover">
       {(popupState: any) => (
         <div>
-          <Button {...bindTrigger(popupState)} className="bg-white text-black" >
+          <Button {...bindTrigger(popupState)} className="bg-white font-semibold" >
             {currentLanguage}
           </Button>
           <Popover
@@ -44,4 +46,5 @@ export default function LanguageSelect() {
   );
 }
 
+export default LanguageSelect
 //

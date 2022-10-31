@@ -1,16 +1,22 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom';
-import DesktopOnly from '../DesktopOnly';
-import TopBar from './TopBar';
+import React from "react";
+import { Outlet } from "react-router-dom";
+import BreadcrumbsManagement from "../../Breadcrumbs";
+// import DesktopOnly from "../DesktopOnly";
+import SideBar from "./SideBar";
+import TopBar from "./TopBar";
 
 const Layout: React.FC = () => {
-    const { innerWidth } = window;
-    return (
-      <>
+  // const { innerWidth } = window;
+  return (
+    <div className="flex bg-blue-light-config">
+      <SideBar />
+      <div className="w-full">
         <TopBar />
-        {innerWidth < 1280 ?  <DesktopOnly/>  : <Outlet/> }
-      </>
-    );
-  };
-  
-  export default Layout;
+        <BreadcrumbsManagement/>
+        <Outlet />
+      </div>
+    </div>
+  );
+};
+
+export default Layout;
