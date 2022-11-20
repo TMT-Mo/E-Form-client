@@ -22,7 +22,7 @@ const TopBar: React.FC = () => {
   const navigate = useNavigate();
 
   const signOutHandler = () =>{
-    navigate('/login')
+    // clearToke
   }
   
   return (

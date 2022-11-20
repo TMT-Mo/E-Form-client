@@ -1,6 +1,13 @@
-import { NotificationStatusArg } from "../utils/constants";
+import { NotificationStatus } from "../utils/constants";
 
-export interface NotificationStatus{
-    success?: NotificationStatusArg.SUCCESS,
-    error?: NotificationStatusArg.ERROR,
+export interface Notification {
+  status?: NotificationStatus.SUCCESS | NotificationStatus.ERROR;
+  message?: string;
+  errorMessage?: string;
+  duration?: number;
+  isOpen: boolean;
+}
+
+export interface ValidationErrors {
+  errorMessage: string;
 }

@@ -1,6 +1,6 @@
 export const TOKEN_NAME = "token";
 
-export enum NotificationStatusArg {
+export enum NotificationStatus {
   SUCCESS = "success",
   ERROR = "error",
 }

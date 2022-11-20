@@ -1,15 +1,16 @@
 export interface LoginResponse {
-  token: string;
+  token: string | undefined;
 }
 
 export interface LoginArgument {
-  username: string;
-  password: string;
+  username: string | undefined;
+  password: string | undefined;
 }
 
 export interface UserInfo {
-  username: string;
+  userId: string;
   role_name: string;
+  nbf: string;
   iat: number;
   exp: number;
 }
