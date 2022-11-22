@@ -10,8 +10,11 @@
 
 html {
   scroll-behavior: smooth;
-  font-family: 'Inter', sans-serif;
-
+  font-family: "Inter", sans-serif;
+}
+* {
+  padding: 0;
+  margin: 0;
 }
 
 body {
@@ -26,14 +29,14 @@ body {
   align-items: center;
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   width: 10px;
 }
-::-webkit-scrollbar-track{
+::-webkit-scrollbar-track {
   background: #fff;
   opacity: 0.5;
 }
-::-webkit-scrollbar-thumb{
+::-webkit-scrollbar-thumb {
   border-radius: 25px;
   background: #dfe6e9;
 }

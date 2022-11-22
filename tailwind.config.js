@@ -4,6 +4,9 @@ module.exports = {
   content: ["./src/**/*.{ts,tsx}"],
   important: "#root",
   darkMode: 'class',
+  corePlugins: {
+        preflight: false,
+      },
   theme: {
     extend: {
       colors: {
