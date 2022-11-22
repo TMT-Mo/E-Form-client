@@ -66,7 +66,7 @@ const DataTable: React.FC = () => {
       await dispatch(getQuestionList()).unwrap(); //* Unwrap to catch error when failed
       dispatch(handleSuccess({ message: "successful" }));
     } catch {
-      dispatch(handleError({ message: "failed" }));
+      dispatch(handleError({ errorMessage: undefined }));
     }
   }, [dispatch]);
 

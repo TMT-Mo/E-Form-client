@@ -1,12 +1,15 @@
 
-const apiHead = 'https://e-box-vlu.herokuapp.com/api/'
+const apiHead = 'https://documentcapstone.azurewebsites.net/'
 
 const apiPaths = {
-    student:{
-        questionList: `${apiHead}user/mailbox/list_questions_user`
-    },
     auth:{
-        login: `${apiHead}user/user/login`
+        login: `${apiHead}api/Users/login`,
+        extractToken: `${apiHead}`
+    },
+    employee:{
+        test: ``
+    },
+    headOffice:{
     }
 }
 

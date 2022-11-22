@@ -1,39 +1,40 @@
-import { NotificationStatusArg } from "./../utils/constants";
+import { NotificationStatus } from "./../utils/constants";
 import { CaseReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Notification } from "../models/notification";
 
-interface State {
-  status?: NotificationStatusArg.SUCCESS | NotificationStatusArg.ERROR;
-  message?: string;
-  error?: string;
-  duration?: number;
-  isOpen: boolean;
-}
+// interface State {
+//   status?: NotificationStatus.SUCCESS | NotificationStatus.ERROR;
+//   message?: string;
+//   error?: string;
+//   duration?: number;
+//   isOpen: boolean;
+// }
 
-const initialState: State = {
+const initialState: Notification = {
   status: undefined,
   message: undefined,
-  error: undefined,
+  errorMessage: undefined,
   duration: undefined,
   isOpen: false,
 };
 
-type CR<T> = CaseReducer<State, PayloadAction<T>>;
+type CR<T> = CaseReducer<Notification, PayloadAction<T>>;
 
-const handleSuccessCR: CR<{ message: string }> = (state, { payload }) => ({
+const handleSuccessCR: CR<{ message: string | undefined }> = (state, { payload }) => ({
   ...state,
-  status: NotificationStatusArg.SUCCESS,
+  status: NotificationStatus.SUCCESS,
   message: payload.message,
   isOpen: true,
 });
 
-const handleErrorCR: CR<{ message: string }> = (state, { payload }) => ({
+const handleErrorCR: CR<{ errorMessage: string | undefined }> = (state, { payload }) => ({
   ...state,
-  status: NotificationStatusArg.ERROR,
-  message: payload.message,
+  status: NotificationStatus.ERROR,
+  errorMessage: payload.errorMessage,
   isOpen: true,
 });
 
-const handleCloseCR = (state: State) => ({
+const handleCloseCR = (state: Notification) => ({
   ...state,
   isOpen: false,
 });
