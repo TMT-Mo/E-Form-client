@@ -9,12 +9,12 @@ import {
 import jwtDecode from "jwt-decode";
 import { AxiosError } from "axios";
 import { handleError } from "./notification";
+import { helpers } from "../utils";
 
 interface State {
   // token: string | null;
   userInfo?: UserInfo | undefined;
   isLoginLoading: boolean;
-  error: string | null | undefined;
 }
 
 type CR<T> = CaseReducer<State, PayloadAction<T>>;
@@ -23,14 +23,11 @@ const initialState: State = {
   // token: null,
   userInfo: undefined,
   isLoginLoading: false,
-  error: undefined,
 };
 
 const login = createAsyncThunk(
   `login`,
-  async (args: LoginArgument, { rejectWithValue, dispatch }) => {
-    // const result = await authServices.login(args as LoginArgument)
-    // return result;
+  async (args: LoginArgument, { dispatch }) => {
     try {
       const result = await authServices.login(args as LoginArgument);
       return result;
@@ -52,13 +49,12 @@ const setUserInfoCR: CR<{ token: string}> = (
   userInfo: jwtDecode(payload.token!),
 });
 
-
-
 const auth = createSlice({
   name: "auth",
   initialState,
   reducers: {
     setUserInfo: setUserInfoCR,
+    // logout: state => {}
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => ({
@@ -67,6 +63,7 @@ const auth = createSlice({
     }));
     builder.addCase(login.fulfilled, (state, { payload }) => {
       if(payload?.token){
+        console.log(payload.token)
         return{
           ...state,
           isLoginLoading: false,
@@ -79,7 +76,7 @@ const auth = createSlice({
         userInfo: undefined
       }
     });
-    builder.addCase(login.rejected, (state, action) => ({
+    builder.addCase(login.rejected, (state) => ({
       ...state,
       isLoginLoading: false,
     }));
@@ -88,6 +85,6 @@ const auth = createSlice({
 
 export { login };
 
-export const { setUserInfo } = auth.actions;
+export const { setUserInfo} = auth.actions;
 
 export default auth.reducer;

@@ -10,7 +10,7 @@ const clearToken = ()=>{
 }
 
 const getToken = (): string => {
-  const token = JSON.parse(localStorage.getItem(TOKEN_NAME) as string);
+  const token = localStorage.getItem(TOKEN_NAME) as string;
   return token;
 };
 

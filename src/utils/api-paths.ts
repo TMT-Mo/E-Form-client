@@ -3,8 +3,8 @@ const apiHead = 'https://documentcapstone.azurewebsites.net/'
 
 const apiPaths = {
     auth:{
-
-        login: `${apiHead}api/Users/login`
+        login: `${apiHead}api/Users/login`,
+        extractToken: `${apiHead}`
     },
     employee:{
         test: ``

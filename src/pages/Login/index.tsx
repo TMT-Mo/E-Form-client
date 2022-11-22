@@ -24,7 +24,7 @@ const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isLoginLoading, error } = useSelector((state) => state.auth);
+  const { isLoginLoading } = useSelector((state) => state.auth);
   const [username, setUsername] = useState<string>();
   const [password, setPassword] = useState<string>();
 
@@ -32,32 +32,10 @@ const Login = () => {
     try {
       e.preventDefault();
       await dispatch(login({ username, password })).unwrap();
-      // dispatch(handleSuccess({ message: "successful" }));
        navigate("/home");
     } catch (err) {
       console.log(err)
-      // dispatch(handleError({ errorMessage: "Username or password are incorrect!" }));
     }
-    // dispatch(login({ username, password })).unwrap().then(()=> navigate("/home"))
-    // try {
-    //   const res = await fetch(
-    //     "https://documentcapstone.azurewebsites.net/api/Users/login",
-    //     {
-    //       method: "POST",
-    //       body: JSON.stringify({ username: "123", password: "123" }),
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         // 'Content-Type': 'application/x-www-form-urlencoded',
-    //       },
-    //     }
-    //   );
-    //   if(!res.ok){
-    //     throw new Error('asd')
-    //   }
-    //   console.log(res.json())
-    // } catch (error) {
-    //   console.log(error)
-    // }
     
   };
 
@@ -101,17 +79,22 @@ const Login = () => {
               />
             </div>
             <LoadingButton
-              size="medium"
+              size="small"
               loading={isLoginLoading}
-              loadingIndicator={<CircularProgress color="inherit" />}
+              loadingIndicator={<CircularProgress color="inherit" size={16}/>}
               variant="outlined"
               onClick={onLoginHandler}
+              disabled={!(password && username)}
               sx={{
                 bgcolor: "#407AFF",
                 borderRadius: "5px",
                 color: "#fff",
+                paddingTop: '10px',
+                paddingBottom: '10px',
                 ":hover": { bgcolor: "#fff", color: "#407AFF" },
+                
               }}
+              
             >
               {t("Sign in")}
             </LoadingButton>

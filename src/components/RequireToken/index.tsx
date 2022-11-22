@@ -4,7 +4,7 @@ import { useSelector } from "../../hooks";
 import { LoginResponse } from "../../models/auth";
 import { helpers } from "../../utils";
 
-const RequireToken: React.FC<LoginResponse> = ({token}) => {
+const RequireToken: React.FC = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const location = useLocation();
   // const navigate = useNavigate()
@@ -14,8 +14,8 @@ const RequireToken: React.FC<LoginResponse> = ({token}) => {
   //   console.log(token)
   //   setToken(token)
   // }, [navigate]);
-  console.log(token)
-  return token ? (
+  // console.log(token)
+  return userInfo ? (
     <Navigate to="/home" state={{ from: location }} replace />
   ) : (
     <Navigate to="/login" state={{ from: location }} replace />
