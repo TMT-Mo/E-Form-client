@@ -1,3 +1,4 @@
+import { ValidationErrors } from './../models/notification';
 import { authServices } from "./../services/auth";
 import { UserInfo, LoginArgument, LoginResponse } from "./../models/auth";
 import {
@@ -34,7 +35,7 @@ const login = createAsyncThunk(
     } catch (error) {
       const err = error as AxiosError
       if(err.response){
-        dispatch(handleError({ errorMessage: err.response?.data.errorMessage }));
+        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
         throw err
       }
     }

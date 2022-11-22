@@ -8,6 +8,7 @@ import { login } from "../../slices/auth";
 import { handleError, handleSuccess } from "../../slices/notification";
 import { ThemeProvider, createTheme } from "@mui/system";
 import { CircularProgress } from "@mui/material";
+import TextField from '@mui/material/TextField';
 
 const theme = createTheme({
   palette: {
@@ -54,29 +55,19 @@ const Login = () => {
           </p>
         </div>
         <form onSubmit={onLoginHandler}>
-          <div className="flex flex-col p-20 space-y-8">
+          <div className="flex flex-col p-20 space-y-8 w-96">
             <h1 className="text-4xl font-bold ">{t("Sign in")}</h1>
             <div className="flex flex-col space-y-2">
-              <h2>
+              <div className="">
                 Email address <span className="text-red-500">*</span>
-              </h2>
-              <input
-                type="text"
-                className="px-6 py-3 border rounded-xl w-72 outline-none"
-                placeholder="Example@gmail.com"
-                onChange={(e) => setUsername(e.target.value)}
-              />
+              </div>
+              <TextField id="outlined-basic" className="bg-white " label="example@" variant="outlined" onChange={(e) => setUsername(e.target.value)}/>
             </div>
             <div className="flex flex-col space-y-2">
-              <h2>
+              <div>
                 Password <span className="text-red-500">*</span>
-              </h2>
-              <input
-                type="password"
-                className="px-6 py-3 border rounded-xl w-72 outline-none"
-                placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              </div>
+              <TextField id="outlined-basic" type='password' className="bg-white " label="Password" variant="outlined" onChange={(e) => setPassword(e.target.value)}/>
             </div>
             <LoadingButton
               size="small"
