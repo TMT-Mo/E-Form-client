@@ -24,15 +24,16 @@ const request = (args: FullOptions): Promise<AxiosResponse> => {
     data,
     signal,
   } = args;
+  
 
-  const source = axios.CancelToken.source();
-  if (signal) {
-    signal.addEventListener("abort", () => {
-      source.cancel();
-    });
-  }
+  // const source = axios.CancelToken.source();
+  // if (signal) {
+  //   signal.addEventListener("abort", () => {
+  //     source.cancel();
+  //   });
+  // }
   const token = helpers.getToken();
-
+  
   return axios.request({
     url,
     method,
@@ -42,7 +43,7 @@ const request = (args: FullOptions): Promise<AxiosResponse> => {
     },
     data,
     responseType,
-    cancelToken: source.token,
+    // cancelToken: source.token,
   });
 };
 
@@ -54,7 +55,7 @@ const httpClient = {
     return request({ ...args, method: "PUT" });
   },
   post: (args: Options): Promise<AxiosResponse> => {
-    return request({ ...args, method: "post" });
+    return request({ ...args, method: "POST" });
   },
   patch: (args: Options): Promise<AxiosResponse> => {
     return request({ ...args, method: "PATCH" });

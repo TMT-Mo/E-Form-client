@@ -1,5 +1,5 @@
 import { authServices } from "./../services/auth";
-import { UserInfo, LoginArgument} from "./../models/auth";
+import { UserInfo, LoginArgument, LoginResponse } from "./../models/auth";
 import {
   CaseReducer,
   createAsyncThunk,
@@ -7,10 +7,13 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import jwtDecode from "jwt-decode";
+import { AxiosError } from "axios";
+import { handleError } from "./notification";
+import { helpers } from "../utils";
 
 interface State {
   // token: string | null;
-  userInfo?: UserInfo;
+  userInfo?: UserInfo | undefined;
   isLoginLoading: boolean;
 }
 
@@ -22,12 +25,23 @@ const initialState: State = {
   isLoginLoading: false,
 };
 
-const login = createAsyncThunk(`login`, async (args: LoginArgument) => {
-  const result = await authServices.login(args);
-  return result;
-});
+const login = createAsyncThunk(
+  `login`,
+  async (args: LoginArgument, { dispatch }) => {
+    try {
+      const result = await authServices.login(args as LoginArgument);
+      return result;
+    } catch (error) {
+      const err = error as AxiosError
+      if(err.response){
+        dispatch(handleError({ errorMessage: err.response?.data.errorMessage }));
+        throw err
+      }
+    }
+  }
+);
 
-const setUserInfoCR: CR<{ token: string | null }> = (
+const setUserInfoCR: CR<{ token: string}> = (
   state,
   { payload }
 ) => ({
@@ -40,18 +54,28 @@ const auth = createSlice({
   initialState,
   reducers: {
     setUserInfo: setUserInfoCR,
+    // logout: state => {}
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => ({
       ...state,
       isLoginLoading: true,
     }));
-    builder.addCase(login.fulfilled, (state, { payload }) => ({
-      ...state,
-      isLoginLoading: false,
-      // token: payload.token,
-      userInfo: jwtDecode(payload.token!)
-    }));
+    builder.addCase(login.fulfilled, (state, { payload }) => {
+      if(payload?.token){
+        console.log(payload.token)
+        return{
+          ...state,
+          isLoginLoading: false,
+          userInfo: jwtDecode(payload.token)
+        }
+      }
+      return{
+        ...state,
+        isLoginLoading: false,
+        userInfo: undefined
+      }
+    });
     builder.addCase(login.rejected, (state) => ({
       ...state,
       isLoginLoading: false,
@@ -61,6 +85,6 @@ const auth = createSlice({
 
 export { login };
 
-export const { setUserInfo } = auth.actions;
+export const { setUserInfo} = auth.actions;
 
 export default auth.reducer;

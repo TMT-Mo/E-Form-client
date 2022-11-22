@@ -17,13 +17,15 @@ import {
   Popover,
 } from "@mui/material";
 import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
+import { useAuth } from "../../../../hooks";
 
 const TopBar: React.FC = () => {
-  const navigate = useNavigate();
+  const {logout} = useAuth()
 
   const signOutHandler = () =>{
-    navigate('/login')
+    logout()
   }
+  
   
   return (
     <div className="flex py-6 px-20 space-x-20 justify-between items-center bg-white">

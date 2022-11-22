@@ -1,8 +1,27 @@
+import {
+  Box,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+  styled,
+} from "@mui/material";
 import React from "react";
 import logo from "../../../../assets/logo-dark.svg";
 import EFormTreeView from "../../../TreeView";
 
+
+
 const SideBar: React.FC = () => {
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
+
+  const handleListItemClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    index: number
+  ) => {
+    setSelectedIndex(index);
+  };
   return (
     <div className="flex flex-col bg-dark-config min-h-screen items-center px-10 py-6 space-y-8 w-fit">
       <img src={logo} alt="" />
@@ -26,7 +45,32 @@ const SideBar: React.FC = () => {
         <h3 className="text-gray-config">abc@gmail.com</h3>
       </div>
       <div className="border border-gray-config w-full"></div>
-      <EFormTreeView/>
+      <Box sx={{ width: "100%", maxWidth: 360, color: "#fff" }}>
+        <List component="nav" aria-label="main mailbox folders">
+          <ListItemButton
+            selected={selectedIndex === 0}
+            onClick={(event) => handleListItemClick(event, 0)}
+          >
+            <ListItemIcon>{/* <InboxIcon /> */}</ListItemIcon>
+            <ListItemText primary="Inbox" />
+          </ListItemButton>
+          <ListItemButton
+            selected={selectedIndex === 1}
+            onClick={(event) => handleListItemClick(event, 1)}
+          >
+            <ListItemIcon>{/* <DraftsIcon /> */}</ListItemIcon>
+            <ListItemText primary="Drafts" />
+          </ListItemButton>
+          <ListItemButton
+            selected={selectedIndex === 2}
+            onClick={(event) => handleListItemClick(event, 2)}
+          >
+            <ListItemIcon>{/* <DraftsIcon /> */}</ListItemIcon>
+            <ListItemText primary="Drafts" />
+          </ListItemButton>
+        </List>
+        <Divider />
+      </Box>
     </div>
   );
 };

@@ -54,7 +54,7 @@ const Document = () => {
           
           path: "/webviewer/lib",
           initialDoc:
-            "https://cdn1.sportngin.com/attachments/document/24ef-2284916/Are_you_hosting_an_event_at_LNHS___Contact_Information_for_Set_Up.docx.pdf",
+            "https://cdn1.sportngin.com/attachments/document/24ef-2284916/Are_you_hosting_an_event_at_LNHS___Contact_Information_for_Set_Up.docx",
           disabledElements: [
             // 'viewControlsButton',
             // 'leftPanel'

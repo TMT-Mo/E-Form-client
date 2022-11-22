@@ -13,8 +13,6 @@ const LanguageSelect: React.FC = () => {
   const handleChange = (event: React.MouseEvent<HTMLButtonElement>) => {
     i18n.changeLanguage(event.currentTarget.value );
   };
-
-  console.log(currentLanguage);
   return (
     <PopupState variant="popover" popupId="demo-popup-popover">
       {(popupState: any) => (

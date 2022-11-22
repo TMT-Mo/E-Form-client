@@ -1,5 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
+import Notification from "../../Notification";
 import DesktopOnly from "../DesktopOnly";
 import TopBar from "./TopBar";
 
@@ -9,6 +10,7 @@ const Layout: React.FC = () => {
     <>
       <TopBar />
       {innerWidth < 1280 ?  <DesktopOnly/>  : <Outlet/> }
+      <Notification anchorOrigin={{vertical: "top", horizontal:"right"}} autoHideDuration={3000}/>
     </>
   );
 };
