@@ -6,18 +6,28 @@ import intropic from "../../assets/intropic.svg";
 import { useDispatch, useSelector } from "../../hooks";
 import { login } from "../../slices/auth";
 import { handleError, handleSuccess } from "../../slices/notification";
-import { ThemeProvider, createTheme } from "@mui/system";
+// import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
 import { CircularProgress } from "@mui/material";
-import TextField from '@mui/material/TextField';
+import TextField from "@mui/material/TextField";
+import { styled } from "@mui/system";
 
-const theme = createTheme({
-  palette: {
-    background: {
-      blue: "#407AFF",
-    },
-    text: {
-      white: "#fff",
-    },
+const LoadingBtn = styled(
+  LoadingButton,
+  {}
+)({
+  backgroundColor: "#407AFF",
+  borderRadius: "5px",
+  color: "#fff",
+  paddingTop: "10px",
+  paddingBottom: "10px",
+  ":hover": { backgroundColor: "#fff", color: "#407AFF" },
+  "&.Mui-disabled":{
+    color:'#F2F2F2',
+    backgroundColor: '#6F7276'
+  },
+  "&.MuiLoadingButton-loading": {
+    backgroundColor: "#fff",
+    borderColor:'#407AFF'
   },
 });
 
@@ -33,11 +43,10 @@ const Login = () => {
     try {
       e.preventDefault();
       await dispatch(login({ username, password })).unwrap();
-       navigate("/home");
+      navigate("/home");
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-    
   };
 
   return (
@@ -61,34 +70,37 @@ const Login = () => {
               <div className="">
                 Email address <span className="text-red-500">*</span>
               </div>
-              <TextField id="outlined-basic" className="bg-white " label="example@" variant="outlined" onChange={(e) => setUsername(e.target.value)}/>
+              <TextField
+                id="outlined-basic"
+                className="bg-white "
+                label="example@"
+                variant="outlined"
+                onChange={(e) => setUsername(e.target.value)}
+              />
             </div>
             <div className="flex flex-col space-y-2">
               <div>
                 Password <span className="text-red-500">*</span>
               </div>
-              <TextField id="outlined-basic" type='password' className="bg-white " label="Password" variant="outlined" onChange={(e) => setPassword(e.target.value)}/>
+              <TextField
+                id="outlined-basic"
+                type="password"
+                className="bg-white "
+                label="Password"
+                variant="outlined"
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
-            <LoadingButton
+            <LoadingBtn
               size="small"
               loading={isLoginLoading}
-              loadingIndicator={<CircularProgress color="inherit" size={16}/>}
+              loadingIndicator={<CircularProgress color="inherit" size={16} />}
               variant="outlined"
               onClick={onLoginHandler}
               disabled={!(password && username)}
-              sx={{
-                bgcolor: "#407AFF",
-                borderRadius: "5px",
-                color: "#fff",
-                paddingTop: '10px',
-                paddingBottom: '10px',
-                ":hover": { bgcolor: "#fff", color: "#407AFF" },
-                
-              }}
-              
             >
               {t("Sign in")}
-            </LoadingButton>
+            </LoadingBtn>
           </div>
         </form>
       </div>

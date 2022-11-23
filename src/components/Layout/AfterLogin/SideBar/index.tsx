@@ -23,9 +23,9 @@ const SideBar: React.FC = () => {
     setSelectedIndex(index);
   };
   return (
-    <div className="flex flex-col bg-dark-config min-h-screen items-center px-10 py-6 space-y-8 w-fit">
+    <div className="flex flex-col bg-dark-config min-h-screen items-center px-10 py-6 space-y-8 w-80">
       <img src={logo} alt="" />
-      <div className="flex flex-col space-y-1 items-center">
+      <div className="flex flex-col space-y-3 items-center">
         <svg
           width="28"
           height="28"
