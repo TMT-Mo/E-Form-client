@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Outlet } from "react-router-dom";
-import { useAuth, useSelector } from "../../../hooks";
 import BreadcrumbsManagement from "../../Breadcrumbs";
 // import DesktopOnly from "../DesktopOnly";
 import SideBar from "./SideBar";

@@ -1,6 +1,6 @@
 import { ValidationErrors } from './../models/notification';
 import { authServices } from "./../services/auth";
-import { UserInfo, LoginArgument, LoginResponse } from "./../models/auth";
+import { UserInfo, LoginArgument} from "./../models/auth";
 import {
   CaseReducer,
   createAsyncThunk,
@@ -10,7 +10,6 @@ import {
 import jwtDecode from "jwt-decode";
 import { AxiosError } from "axios";
 import { handleError } from "./notification";
-import { helpers } from "../utils";
 
 interface State {
   // token: string | null;

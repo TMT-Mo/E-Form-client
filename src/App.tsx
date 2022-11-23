@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
 import Document from "./components/Document";
-import RequireAuth from "./components/RequireAuth";
 import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
 import Introduction from "./pages/Introduction";
@@ -10,7 +9,6 @@ import BeforeLogin from "./components/Layout/BeforeLogin";
 import NotFound from "./pages/NotFound";
 import AfterLogin from "./components/Layout/AfterLogin";
 import TemplateManagement from "./pages/TemplateManagement";
-import RequireToken from "./components/RequireToken";
 import { useAuth, useSelector } from "./hooks";
 
 function App() {
