@@ -16,12 +16,13 @@ interface State {
   // token: string | null;
   userInfo?: UserInfo | undefined;
   isLoginLoading: boolean;
+  checkAuthenticated?: boolean | undefined;
 }
 
 type CR<T> = CaseReducer<State, PayloadAction<T>>;
 
 const initialState: State = {
-  // token: null,
+  checkAuthenticated: undefined,
   userInfo: undefined,
   isLoginLoading: false,
 };
@@ -50,11 +51,20 @@ const setUserInfoCR: CR<{ token: string}> = (
   userInfo: jwtDecode(payload.token!),
 });
 
+const storeTokenCR: CR<{value: boolean}> = (
+  state,
+  { payload }
+) => ({
+  ...state,
+  checkAuthenticated: payload.value!
+});
+
 const auth = createSlice({
   name: "auth",
   initialState,
   reducers: {
     setUserInfo: setUserInfoCR,
+    storeToken: storeTokenCR
     // logout: state => {}
   },
   extraReducers: (builder) => {
@@ -86,6 +96,6 @@ const auth = createSlice({
 
 export { login };
 
-export const { setUserInfo} = auth.actions;
+export const { setUserInfo, storeToken} = auth.actions;
 
 export default auth.reducer;

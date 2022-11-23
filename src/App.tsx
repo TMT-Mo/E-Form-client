@@ -11,14 +11,14 @@ import NotFound from "./pages/NotFound";
 import AfterLogin from "./components/Layout/AfterLogin";
 import TemplateManagement from "./pages/TemplateManagement";
 import RequireToken from "./components/RequireToken";
-import { useAuth } from "./hooks";
+import { useAuth, useSelector } from "./hooks";
 
 function App() {
-  const {authenticate} = useAuth()
+  const { checkAuthenticated } = useSelector((state) => state.auth);
+  const { authenticate } = useAuth();
   useEffect(() => {
-    authenticate()
-  }, [authenticate]);
-
+    !checkAuthenticated && authenticate();
+  }, [authenticate, checkAuthenticated]);
   return (
     <Routes>
       {/* Public Routes */}
@@ -34,8 +34,8 @@ function App() {
       {/* <Route
         element={<RequireToken />}
       > */}
-      <Route path="/home" element={<AfterLogin />}>
-        <Route path="" element={<TemplateManagement />} />
+      <Route path="/user" element={<AfterLogin />}>
+        <Route path="/user/template" element={<TemplateManagement />} />
       </Route>
       {/* </Route> */}
       <Route path="*" element={<NotFound />} />

@@ -43,7 +43,7 @@ const Login = () => {
     try {
       e.preventDefault();
       await dispatch(login({ username, password })).unwrap();
-      navigate("/home");
+      navigate("/user");
     } catch (err) {
       console.log(err);
     }

@@ -4,7 +4,7 @@ import { useDispatch } from "./use-dispatch";
 import { useNavigate } from "react-router-dom";
 import React, { useCallback } from "react";
 import { TOKEN_NAME } from "../utils/constants";
-import { setUserInfo } from "../slices/auth";
+import { setUserInfo, storeToken } from "../slices/auth";
 import jwtDecode from "jwt-decode";
 
 interface UseAuth {
@@ -29,12 +29,14 @@ export const useAuth = (): UseAuth => {
 
   const authenticate = useCallback(() => {
     try {
+      dispatch(storeToken({value: true}))
       const token = localStorage.getItem(TOKEN_NAME) as string;
+      console.log('first')
       if (token) {
         dispatch(setUserInfo({token}));
-        navigate("/home");
+        navigate('/user');
       } else {
-        navigate("/login");
+        navigate('/login');
       }
     } catch (error) {
       localStorage.clear()

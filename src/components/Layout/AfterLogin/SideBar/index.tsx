@@ -8,6 +8,7 @@ import {
   styled,
 } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "../../../../assets/logo-dark.svg";
 import EFormTreeView from "../../../TreeView";
 
@@ -15,12 +16,25 @@ import EFormTreeView from "../../../TreeView";
 
 const SideBar: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const navigate = useNavigate()
 
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     index: number
   ) => {
+    let navigatePath: string
+    switch(index){
+      case 0: navigatePath = '/user/template' 
+      break;
+      case 2: navigatePath = '/document'
+      break;
+      case 3: navigatePath = '/account'
+      break;
+      default: navigatePath = ''
+    }
     setSelectedIndex(index);
+    navigate(navigatePath)
+
   };
   return (
     <div className="flex flex-col bg-dark-config min-h-screen items-center px-10 py-6 space-y-8 w-80">
