@@ -33,7 +33,7 @@ function App() {
         element={<RequireToken />}
       > */}
       <Route path="/user" element={<AfterLogin />}>
-        <Route path="/user/template" element={<TemplateManagement />} />
+        {/* <Route path="/user/template" element={<TemplateManagement />} /> */}
       </Route>
       {/* </Route> */}
       <Route path="*" element={<NotFound />} />
