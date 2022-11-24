@@ -6,6 +6,7 @@ import TopBar from "./TopBar";
 
 const Layout: React.FC = () => {
   const { innerWidth } = window;
+  
   return (
     <>
       <TopBar />

@@ -5,27 +5,57 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
-  styled,
 } from "@mui/material";
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../../assets/logo-dark.svg";
-import EFormTreeView from "../../../TreeView";
+import WorkspacesIcon from "@mui/icons-material/Workspaces";
+import HelpIcon from "@mui/icons-material/Help";
+import RecentActorsIcon from '@mui/icons-material/RecentActors';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import FolderSharedIcon from '@mui/icons-material/FolderShared';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import { styled } from "@mui/system";
 
-
+const StyledListBtn = styled(ListItemButton)({
+  borderRadius: "5px",
+  "&.Mui-selected": {
+    backgroundColor: "#22394f",
+  },
+});
 
 const SideBar: React.FC = () => {
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const navigate = useNavigate();
 
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     index: number
   ) => {
+    // let navigatePath: string;
+    // switch (index) {
+    //   case 0:
+    //     navigatePath = "/user/template";
+    //     break;
+    //   case 2:
+    //     navigatePath = "/document";
+    //     break;
+    //   case 3:
+    //     navigatePath = "/account";
+    //     break;
+    //   default:
+    //     navigatePath = "";
+    // }
     setSelectedIndex(index);
+    // navigate(navigatePath);
   };
   return (
-    <div className="flex flex-col bg-dark-config min-h-screen items-center px-10 py-6 space-y-8 w-80">
+    <div className="flex flex-col bg-dark-config min-h-screen items-center px-10 pt-8 space-y-8 w-80">
       <img src={logo} alt="" />
-      <div className="flex flex-col space-y-3 items-center">
+      <div className="flex flex-col space-y-3 items-center w-full">
         <svg
           width="28"
           height="28"
@@ -42,35 +72,139 @@ const SideBar: React.FC = () => {
           />
         </svg>
         <h3 className="font-semibold text-white">Username</h3>
-        <h3 className="text-gray-config">abc@gmail.com</h3>
+        <span className="text-gray-config">abc@gmail.com</span>
       </div>
-      <div className="border border-gray-config w-full"></div>
+        <Divider className="bg-gray-config" flexItem/>
       <Box sx={{ width: "100%", maxWidth: 360, color: "#fff" }}>
         <List component="nav" aria-label="main mailbox folders">
-          <ListItemButton
-            selected={selectedIndex === 0}
-            onClick={(event) => handleListItemClick(event, 0)}
+          <h3 className="pb-3 text-blue-config">Account</h3>
+          <Link
+            state={"template"}
+            to="/user"
+            className="text-white no-underline"
           >
-            <ListItemIcon>{/* <InboxIcon /> */}</ListItemIcon>
-            <ListItemText primary="Inbox" />
-          </ListItemButton>
-          <ListItemButton
-            selected={selectedIndex === 1}
-            onClick={(event) => handleListItemClick(event, 1)}
+            <StyledListBtn
+              selected={selectedIndex === 0}
+              onClick={(event) => handleListItemClick(event, 0)}
+            >
+              <ListItemIcon>
+                <WorkspacesIcon className="fill-white" />
+              </ListItemIcon>
+              <ListItemText primary="Department" />
+            </StyledListBtn>
+          </Link>
+          <Link
+            state={"document"}
+            to="/user"
+            className="text-white no-underline"
           >
-            <ListItemIcon>{/* <DraftsIcon /> */}</ListItemIcon>
-            <ListItemText primary="Drafts" />
-          </ListItemButton>
-          <ListItemButton
-            selected={selectedIndex === 2}
-            onClick={(event) => handleListItemClick(event, 2)}
+            <StyledListBtn
+              selected={selectedIndex === 1}
+              onClick={(event) => handleListItemClick(event, 1)}
+            >
+              <ListItemIcon><RecentActorsIcon className="fill-white" /></ListItemIcon>
+              <ListItemText primary="Staff Position" />
+            </StyledListBtn>
+          </Link>
+          <Link
+            state={"document"}
+            to="/user"
+            className="text-white no-underline"
           >
-            <ListItemIcon>{/* <DraftsIcon /> */}</ListItemIcon>
-            <ListItemText primary="Drafts" />
-          </ListItemButton>
+            <StyledListBtn
+              selected={selectedIndex === 2}
+              onClick={(event) => handleListItemClick(event, 2)}
+            >
+              <ListItemIcon><ManageAccountsIcon className="fill-white" /></ListItemIcon>
+              <ListItemText primary="Account List" />
+            </StyledListBtn>
+          </Link>
+        </List>
+        <Divider />
+        <List component="nav" aria-label="main mailbox folders">
+          <h3 className="pb-3 text-blue-config">Template</h3>
+          <Link
+            state={"template"}
+            to="/user"
+            className="text-white no-underline"
+          >
+            <StyledListBtn
+              selected={selectedIndex === 3}
+              onClick={(event) => handleListItemClick(event, 3)}
+            >
+              <ListItemIcon>
+                <UploadFileIcon className="fill-white" />
+              </ListItemIcon>
+              <ListItemText primary="Template" />
+            </StyledListBtn>
+          </Link>
+        </List>
+        <Divider />
+        <List component="nav" aria-label="main mailbox folders">
+          <h3 className="pb-3 text-blue-config">Document</h3>
+          <Link
+            state={"template"}
+            to="/user"
+            className="text-white no-underline"
+          >
+            <StyledListBtn
+              selected={selectedIndex === 4}
+              onClick={(event) => handleListItemClick(event, 4)}
+            >
+              <ListItemIcon>
+                <AssignmentIcon className="fill-white" />
+              </ListItemIcon>
+              <ListItemText primary="Await Signing" />
+            </StyledListBtn>
+          </Link>
+          <Link
+            state={"document"}
+            to="/user"
+            className="text-white no-underline"
+          >
+            <StyledListBtn
+              selected={selectedIndex === 5}
+              onClick={(event) => handleListItemClick(event, 5)}
+            >
+              <ListItemIcon><ListAltIcon className="fill-white"/></ListItemIcon>
+              <ListItemText primary="Personal Doc" />
+            </StyledListBtn>
+          </Link>
+          <Link
+            state={"document"}
+            to="/user"
+            className="text-white no-underline"
+          >
+            <StyledListBtn
+              selected={selectedIndex === 6}
+              onClick={(event) => handleListItemClick(event, 6)}
+            >
+              <ListItemIcon><FolderSharedIcon className="fill-white"/></ListItemIcon>
+              <ListItemText primary="Shared Doc" />
+            </StyledListBtn>
+          </Link>
+          <Link
+            state={"document"}
+            to="/user"
+            className="text-white no-underline"
+          >
+            <StyledListBtn
+              selected={selectedIndex === 7}
+              onClick={(event) => handleListItemClick(event, 7)}
+            >
+              <ListItemIcon><HistoryEduIcon className="fill-white" /></ListItemIcon>
+              <ListItemText primary="History" />
+            </StyledListBtn>
+          </Link>
         </List>
         <Divider />
       </Box>
+      <div className="flex flex-col justify-self-end items-center space-y-6 text-white w-full">
+        <Divider flexItem className="bg-white " />
+        <div className="flex items-center space-x-2">
+          <span>Need help</span> <HelpIcon />
+        </div>
+      </div>
     </div>
   );
 };
