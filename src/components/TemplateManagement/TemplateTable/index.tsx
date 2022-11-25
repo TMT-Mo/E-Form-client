@@ -5,62 +5,64 @@ import {
   GridColumnHeaderParams,
   GridValueGetterParams,
 } from "@mui/x-data-grid";
-import { getQuestionList } from "../slices/question";
-import { useDispatch, useSelector } from "../hooks";
-import { handleSuccess, handleError } from "../slices/notification";
-import { HeaderTable, HeaderTableId, ResponseStatus } from "../utils/constants";
 import { LinearProgress } from "@mui/material";
+import { handleSuccess, handleError } from "../../../slices/notification";
+import { getQuestionList } from "../../../slices/question";
+import { TemplateHeaderTable, HeaderTable } from "../../../utils/constants";
+import { useDispatch, useSelector } from "../../../hooks";
 
 interface GetRowIdParams {
   // The data item provided to the grid for the row in question
   id_question: number;
 }
 
-const {ID_QUESTION, QUESTION, STATUS_QUESTION} = HeaderTableId
+const {FILE, ACTION, DEPARTMENT, DESCRIPTION, NAME, STATUS, TYPE} = TemplateHeaderTable
 const {ID: id, QUESTION: question, STATUS_QUESTION: statusQuestion } = HeaderTable
 
 const columns: GridColDef[] = [
-  { field: ID_QUESTION, headerName: id, flex: 0.5, hide: true },
+  { field: FILE, headerName: FILE, flex: 0.5 },
   {
-    field: QUESTION,
+    field: NAME,
     flex: 1,
     disableColumnMenu: true,
     sortable: false,
-    renderHeader: (params: GridColumnHeaderParams) => (
-      <strong>
-        {question}
-        <span role="img" aria-label="enjoy">
-          🎂
-        </span>
-      </strong>
-    ),
   },
-  { field: STATUS_QUESTION, headerName: statusQuestion, flex: 1 },
+  { field: DESCRIPTION, headerName: DESCRIPTION, flex: 1 },
   {
-    field: "age",
+    field: TYPE,
     headerName: "Age",
     type: "number",
     flex: 1,
   },
   {
-    field: "fullName",
-    headerName: "Full name",
-    description: "This column has a value getter and is not sortable.",
+    field: DEPARTMENT,
+    headerName: DEPARTMENT,
     sortable: false,
     hideable: false,
     flex: 1,
     filterable: false,
-    valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+  },
+  {
+    field: STATUS,
+    headerName: STATUS,
+    sortable: false,
+    hideable: false,
+    flex: 1,
+    filterable: false,
+  },
+  {
+    field: ACTION,
+    headerName: ACTION,
+    sortable: false,
+    hideable: false,
+    flex: 1,
+    filterable: false,
   },
 ];
 
 const DataTable: React.FC = () => {
   const dispatch = useDispatch();
-  const { getQuestionLoading, questionList } = useSelector(
-    (state) => state.question
-  );
-
+  const {getQuestionLoading,questionList} = useSelector(state => state.question)
   const request = useCallback(async () => {
     try {
       await dispatch(getQuestionList()).unwrap(); //* Unwrap to catch error when failed

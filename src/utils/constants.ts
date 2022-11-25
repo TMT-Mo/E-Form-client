@@ -10,10 +10,14 @@ export enum ResponseStatus {
   REJECTED = "rejected",
 }
 
-export enum HeaderTableId {
-  ID_QUESTION = "id_question",
-  QUESTION = "question",
-  STATUS_QUESTION = "status_question",
+export enum TemplateHeaderTable {
+  FILE = 'File',
+  NAME = 'Name',
+  DESCRIPTION = 'Description',
+  TYPE = 'Type',
+  DEPARTMENT = 'Department',
+  STATUS = 'Status', 
+  ACTION = 'Action'
 }
 
 export enum HeaderTable {

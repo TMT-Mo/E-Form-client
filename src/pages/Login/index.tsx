@@ -1,5 +1,5 @@
 import { LoadingButton } from "@mui/lab";
-import  { useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import intropic from "../../assets/intropic.svg";
@@ -7,9 +7,22 @@ import { useDispatch, useSelector } from "../../hooks";
 import { login } from "../../slices/auth";
 // import { handleError, handleSuccess } from "../../slices/notification";
 // import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
-import { CircularProgress } from "@mui/material";
+import {
+  CircularProgress,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/system";
+import { VisibilityOff, Visibility } from "@mui/icons-material";
+
+interface State {
+  password: string;
+  showPassword: boolean;
+}
 
 const LoadingBtn = styled(
   LoadingButton,
@@ -21,13 +34,13 @@ const LoadingBtn = styled(
   paddingTop: "10px",
   paddingBottom: "10px",
   ":hover": { backgroundColor: "#fff", color: "#407AFF" },
-  "&.Mui-disabled":{
-    color:'#F2F2F2',
-    backgroundColor: '#6F7276'
+  "&.Mui-disabled": {
+    color: "#F2F2F2",
+    backgroundColor: "#6F7276",
   },
   "&.MuiLoadingButton-loading": {
     backgroundColor: "#fff",
-    borderColor:'#407AFF'
+    borderColor: "#407AFF",
   },
 });
 
@@ -37,16 +50,26 @@ const Login = () => {
   const dispatch = useDispatch();
   const { isLoginLoading } = useSelector((state) => state.auth);
   const [username, setUsername] = useState<string>();
-  const [password, setPassword] = useState<string>();
+  const [values, setValues] = useState<State>({
+    password: "",
+    showPassword: false,
+  });
 
   const onLoginHandler = async (e: { preventDefault: () => void }) => {
     try {
       e.preventDefault();
-      await dispatch(login({ username, password })).unwrap();
+      await dispatch(login({ username, password: values.password })).unwrap();
       navigate("/user");
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
   };
 
   return (
@@ -82,14 +105,48 @@ const Login = () => {
               <div>
                 Password <span className="text-red-500">*</span>
               </div>
-              <TextField
+              {/* <TextField
                 id="outlined-basic"
                 type="password"
                 className="bg-white "
                 label="Password"
                 variant="outlined"
                 onChange={(e) => setPassword(e.target.value)}
-              />
+              /> */}
+              <FormControl  variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-password">
+                  Password
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-password"
+                  type={values.showPassword ? "text" : "password"}
+                  value={values.password}
+                  onChange={(e) =>
+                    setValues({
+                      password: e.target.value,
+                      showPassword: values.showPassword,
+                    })
+                  }
+                  className="w-full bg-white"
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        // onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {values.showPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                />
+              </FormControl>
             </div>
             <LoadingBtn
               size="small"
@@ -97,7 +154,7 @@ const Login = () => {
               loadingIndicator={<CircularProgress color="inherit" size={16} />}
               variant="outlined"
               onClick={onLoginHandler}
-              disabled={!(password && username)}
+              disabled={!(values.password && username)}
             >
               {t("Sign in")}
             </LoadingBtn>

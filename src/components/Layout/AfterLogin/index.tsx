@@ -1,15 +1,10 @@
-import React, { ReactChild, ReactChildren, ReactNode, useEffect } from "react";
+import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import DocumentManagement from "../../../pages/DocumentManagement";
 import TemplateManagement from "../../../pages/TemplateManagement";
-import BreadcrumbsManagement from "../../Breadcrumbs";
 // import DesktopOnly from "../DesktopOnly";
 import SideBar from "./SideBar";
 import TopBar from "./TopBar";
-
-interface IWrapperProps{
-  children?: React.ReactNode;
-}
 
 const Layout: React.FC = () => {
   let { state } = useLocation();
@@ -31,7 +26,6 @@ const Layout: React.FC = () => {
       <SideBar />
       <div className="w-full">
         <TopBar />
-        <BreadcrumbsManagement />
         {/* <Outlet /> */}
         {switchTab()}
         {/* <TemplateManagement/> */}

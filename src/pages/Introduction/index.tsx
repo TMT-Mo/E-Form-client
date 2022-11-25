@@ -24,7 +24,7 @@ const Introduction = () => {
             <p className="text-sm text-gray-config w-3/6">
               {t(`We’re here to help companies handle employee’s application much faster when and where ever they need.`)}
             </p>
-            <Link to={links.login} className="px-16 py-3 font-semibold bg-blue-config text-white w-fit rounded-md" >
+            <Link to={links.login} className="px-16 py-3 font-semibold bg-blue-config text-white w-fit rounded-md no-underline" >
               {t('Sign in')}
             </Link>
           </div>

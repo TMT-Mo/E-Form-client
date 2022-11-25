@@ -28,7 +28,7 @@ const StyledListBtn = styled(ListItemButton)({
 });
 
 const SideBar: React.FC = () => {
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState(3);
   const navigate = useNavigate();
 
   const handleListItemClick = (
@@ -71,13 +71,13 @@ const SideBar: React.FC = () => {
             fill="#fff"
           />
         </svg>
-        <h3 className="font-semibold text-white">Username</h3>
+        <h5 className="font-semibold text-white">Username</h5>
         <span className="text-gray-config">abc@gmail.com</span>
       </div>
         <Divider className="bg-gray-config" flexItem/>
       <Box sx={{ width: "100%", maxWidth: 360, color: "#fff" }}>
         <List component="nav" aria-label="main mailbox folders">
-          <h3 className="pb-3 text-blue-config">Account</h3>
+          <h5 className="pb-3 text-blue-config">Account</h5>
           <Link
             state={"template"}
             to="/user"
@@ -120,9 +120,8 @@ const SideBar: React.FC = () => {
             </StyledListBtn>
           </Link>
         </List>
-        <Divider />
         <List component="nav" aria-label="main mailbox folders">
-          <h3 className="pb-3 text-blue-config">Template</h3>
+          <h5 className="pb-3 text-blue-config">Template</h5>
           <Link
             state={"template"}
             to="/user"
@@ -139,9 +138,8 @@ const SideBar: React.FC = () => {
             </StyledListBtn>
           </Link>
         </List>
-        <Divider />
         <List component="nav" aria-label="main mailbox folders">
-          <h3 className="pb-3 text-blue-config">Document</h3>
+          <h5 className="pb-3 text-blue-config">Document</h5>
           <Link
             state={"template"}
             to="/user"
@@ -197,7 +195,6 @@ const SideBar: React.FC = () => {
             </StyledListBtn>
           </Link>
         </List>
-        <Divider />
       </Box>
       <div className="flex flex-col justify-self-end items-center space-y-6 text-white w-full">
         <Divider flexItem className="bg-white " />
