@@ -10,24 +10,20 @@ export enum ResponseStatus {
   REJECTED = "rejected",
 }
 
-export enum TemplateHeaderTable {
-  FILE = 'File',
-  NAME = 'Name',
-  DESCRIPTION = 'Description',
-  TYPE = 'Type',
-  DEPARTMENT = 'Department',
-  STATUS = 'Status', 
-  ACTION = 'Action'
-}
-
-export enum HeaderTable {
-  ID = "Id",
-  QUESTION = "Question",
-  STATUS_QUESTION = "Status Question",
-}
 
 export enum Roles {
-  STUDENT = "Sinh Viên",
+  // STUDENT = "Sinh Viên"
+}
+
+export enum LocationIndex{
+  DEPARTMENT = 0,
+  POSITION = 1,
+  ACCOUNT = 2,
+  TEMPLATE = 3,
+  AWAITSIGNING = 4,
+  PERSONAL = 5,
+  SHARED = 6,
+  HISTORY = 7, 
 }
 
 

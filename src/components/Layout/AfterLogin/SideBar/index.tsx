@@ -11,14 +11,17 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../../assets/logo-dark.svg";
 import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import HelpIcon from "@mui/icons-material/Help";
-import RecentActorsIcon from '@mui/icons-material/RecentActors';
-import ListAltIcon from '@mui/icons-material/ListAlt';
-import FolderSharedIcon from '@mui/icons-material/FolderShared';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import RecentActorsIcon from "@mui/icons-material/RecentActors";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import FolderSharedIcon from "@mui/icons-material/FolderShared";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { styled } from "@mui/system";
+import { useDispatch, useSelector } from "../../../../hooks";
+import { setLocation } from "../../../../slices/location";
+import { LocationIndex } from "../../../../utils/constants";
 
 const StyledListBtn = styled(ListItemButton)({
   borderRadius: "5px",
@@ -27,30 +30,31 @@ const StyledListBtn = styled(ListItemButton)({
   },
 });
 
+const {
+  TEMPLATE,
+  ACCOUNT,
+  AWAITSIGNING,
+  DEPARTMENT,
+  HISTORY,
+  PERSONAL,
+  POSITION,
+  SHARED,
+} = LocationIndex;
+
 const SideBar: React.FC = () => {
-  const [selectedIndex, setSelectedIndex] = React.useState(3);
+  const { locationIndex } = useSelector((state) => state.location);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     index: number
   ) => {
-    // let navigatePath: string;
-    // switch (index) {
-    //   case 0:
-    //     navigatePath = "/user/template";
-    //     break;
-    //   case 2:
-    //     navigatePath = "/document";
-    //     break;
-    //   case 3:
-    //     navigatePath = "/account";
-    //     break;
-    //   default:
-    //     navigatePath = "";
-    // }
-    setSelectedIndex(index);
-    // navigate(navigatePath);
+    dispatch(
+      setLocation({
+        locationIndex: index,
+      })
+    );
   };
   return (
     <div className="flex flex-col bg-dark-config min-h-screen items-center px-10 pt-8 space-y-8 w-80">
@@ -74,126 +78,88 @@ const SideBar: React.FC = () => {
         <h5 className="font-semibold text-white">Username</h5>
         <span className="text-gray-config">abc@gmail.com</span>
       </div>
-        <Divider className="bg-gray-config" flexItem/>
+      <Divider className="bg-gray-config" flexItem />
       <Box sx={{ width: "100%", maxWidth: 360, color: "#fff" }}>
         <List component="nav" aria-label="main mailbox folders">
           <h5 className="pb-3 text-blue-config">Account</h5>
-          <Link
-            state={"template"}
-            to="/user"
-            className="text-white no-underline"
+          <StyledListBtn
+            selected={locationIndex === DEPARTMENT}
+            onClick={(event) => handleListItemClick(event, 0)}
           >
-            <StyledListBtn
-              selected={selectedIndex === 0}
-              onClick={(event) => handleListItemClick(event, 0)}
-            >
-              <ListItemIcon>
-                <WorkspacesIcon className="fill-white" />
-              </ListItemIcon>
-              <ListItemText primary="Department" />
-            </StyledListBtn>
-          </Link>
-          <Link
-            state={"document"}
-            to="/user"
-            className="text-white no-underline"
+            <ListItemIcon>
+              <WorkspacesIcon className="fill-white" />
+            </ListItemIcon>
+            <ListItemText primary="Department" />
+          </StyledListBtn>
+          <StyledListBtn
+            selected={locationIndex === POSITION}
+            onClick={(event) => handleListItemClick(event, 1)}
           >
-            <StyledListBtn
-              selected={selectedIndex === 1}
-              onClick={(event) => handleListItemClick(event, 1)}
-            >
-              <ListItemIcon><RecentActorsIcon className="fill-white" /></ListItemIcon>
-              <ListItemText primary="Staff Position" />
-            </StyledListBtn>
-          </Link>
-          <Link
-            state={"document"}
-            to="/user"
-            className="text-white no-underline"
+            <ListItemIcon>
+              <RecentActorsIcon className="fill-white" />
+            </ListItemIcon>
+            <ListItemText primary="Staff Position" />
+          </StyledListBtn>
+          <StyledListBtn
+            selected={locationIndex === ACCOUNT}
+            onClick={(event) => handleListItemClick(event, 2)}
           >
-            <StyledListBtn
-              selected={selectedIndex === 2}
-              onClick={(event) => handleListItemClick(event, 2)}
-            >
-              <ListItemIcon><ManageAccountsIcon className="fill-white" /></ListItemIcon>
-              <ListItemText primary="Account List" />
-            </StyledListBtn>
-          </Link>
+            <ListItemIcon>
+              <ManageAccountsIcon className="fill-white" />
+            </ListItemIcon>
+            <ListItemText primary="Account List" />
+          </StyledListBtn>
         </List>
         <List component="nav" aria-label="main mailbox folders">
           <h5 className="pb-3 text-blue-config">Template</h5>
-          <Link
-            state={"template"}
-            to="/user"
-            className="text-white no-underline"
+          <StyledListBtn
+            selected={locationIndex === TEMPLATE}
+            onClick={(event) => handleListItemClick(event, 3)}
           >
-            <StyledListBtn
-              selected={selectedIndex === 3}
-              onClick={(event) => handleListItemClick(event, 3)}
-            >
-              <ListItemIcon>
-                <UploadFileIcon className="fill-white" />
-              </ListItemIcon>
-              <ListItemText primary="Template" />
-            </StyledListBtn>
-          </Link>
+            <ListItemIcon>
+              <UploadFileIcon className="fill-white" />
+            </ListItemIcon>
+            <ListItemText primary="Template" />
+          </StyledListBtn>
         </List>
         <List component="nav" aria-label="main mailbox folders">
           <h5 className="pb-3 text-blue-config">Document</h5>
-          <Link
-            state={"template"}
-            to="/user"
-            className="text-white no-underline"
+          <StyledListBtn
+            selected={locationIndex === AWAITSIGNING}
+            onClick={(event) => handleListItemClick(event, 4)}
           >
-            <StyledListBtn
-              selected={selectedIndex === 4}
-              onClick={(event) => handleListItemClick(event, 4)}
-            >
-              <ListItemIcon>
-                <AssignmentIcon className="fill-white" />
-              </ListItemIcon>
-              <ListItemText primary="Await Signing" />
-            </StyledListBtn>
-          </Link>
-          <Link
-            state={"document"}
-            to="/user"
-            className="text-white no-underline"
+            <ListItemIcon>
+              <AssignmentIcon className="fill-white" />
+            </ListItemIcon>
+            <ListItemText primary="Await Signing" />
+          </StyledListBtn>
+          <StyledListBtn
+            selected={locationIndex === PERSONAL}
+            onClick={(event) => handleListItemClick(event, 5)}
           >
-            <StyledListBtn
-              selected={selectedIndex === 5}
-              onClick={(event) => handleListItemClick(event, 5)}
-            >
-              <ListItemIcon><ListAltIcon className="fill-white"/></ListItemIcon>
-              <ListItemText primary="Personal Doc" />
-            </StyledListBtn>
-          </Link>
-          <Link
-            state={"document"}
-            to="/user"
-            className="text-white no-underline"
+            <ListItemIcon>
+              <ListAltIcon className="fill-white" />
+            </ListItemIcon>
+            <ListItemText primary="Personal Doc" />
+          </StyledListBtn>
+          <StyledListBtn
+            selected={locationIndex === SHARED}
+            onClick={(event) => handleListItemClick(event, 6)}
           >
-            <StyledListBtn
-              selected={selectedIndex === 6}
-              onClick={(event) => handleListItemClick(event, 6)}
-            >
-              <ListItemIcon><FolderSharedIcon className="fill-white"/></ListItemIcon>
-              <ListItemText primary="Shared Doc" />
-            </StyledListBtn>
-          </Link>
-          <Link
-            state={"document"}
-            to="/user"
-            className="text-white no-underline"
+            <ListItemIcon>
+              <FolderSharedIcon className="fill-white" />
+            </ListItemIcon>
+            <ListItemText primary="Shared Doc" />
+          </StyledListBtn>
+          <StyledListBtn
+            selected={locationIndex === HISTORY}
+            onClick={(event) => handleListItemClick(event, 7)}
           >
-            <StyledListBtn
-              selected={selectedIndex === 7}
-              onClick={(event) => handleListItemClick(event, 7)}
-            >
-              <ListItemIcon><HistoryEduIcon className="fill-white" /></ListItemIcon>
-              <ListItemText primary="History" />
-            </StyledListBtn>
-          </Link>
+            <ListItemIcon>
+              <HistoryEduIcon className="fill-white" />
+            </ListItemIcon>
+            <ListItemText primary="History" />
+          </StyledListBtn>
         </List>
       </Box>
       <div className="flex flex-col justify-self-end items-center space-y-6 text-white w-full">
