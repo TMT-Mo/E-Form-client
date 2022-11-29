@@ -8,19 +8,20 @@ import { useDispatch, useSelector } from "../../hooks";
 import { getQuestionList } from "../../slices/question";
 import { LocationIndex } from "../../utils/constants";
 import { awaitSigningColumns, historyColumns, personalDocColumns, sharedDocColumns, templateColumns } from "../../utils/mui-data";
-import { TemplateResponse } from "../../models/templates";
+import { Template, TemplateListResponse } from "../../models/templates";
 import { AwaitSigningResponse, HistoryResponse, PersonalDocResponse } from "../../models/documents";
 import { QuestionResponse } from "../../models/questions";
+import { getTemplates } from "../../slices/template";
 
 interface GetRowIdParams {
   // The data item provided to the grid for the row in question
-  id_question: number;
+  id: number
 }
 
 interface Data{
   columns?: GridColDef[],
   loading?: boolean,
-  table: TemplateResponse | PersonalDocResponse | AwaitSigningResponse | HistoryResponse | QuestionResponse
+  table: Template[] | PersonalDocResponse | AwaitSigningResponse | HistoryResponse | QuestionResponse
 }
 
 const {
@@ -40,6 +41,7 @@ const DataTable: React.FC = () => {
     (state) => state.question
   );
   const { locationIndex } = useSelector((state) => state.location);
+  const {isGetTemplatesLoading, templateList } = useSelector(state => state.template)
 
   const data = ():Data => {
     switch (locationIndex) {
@@ -50,7 +52,7 @@ const DataTable: React.FC = () => {
       case ACCOUNT:
         return {columns: templateColumns, loading: false, table: questionList};
       case TEMPLATE:
-        return {columns: templateColumns, loading: false, table: questionList};
+        return {columns: templateColumns, loading: isGetTemplatesLoading, table: templateList };
       case AWAITSIGNING:
         return {columns: awaitSigningColumns, loading: false, table: questionList};
       case PERSONAL:
@@ -63,7 +65,7 @@ const DataTable: React.FC = () => {
   };
   const request = useCallback(async () => {
     try {
-      await dispatch(getQuestionList()).unwrap(); //* Unwrap to catch error when failed
+      await dispatch(getTemplates()).unwrap(); //* Unwrap to catch error when failed
       dispatch(handleSuccess({ message: "successful" }));
     } catch {
       dispatch(handleError({ errorMessage: undefined }));
@@ -75,13 +77,13 @@ const DataTable: React.FC = () => {
   }, [request]);
 
   const getRowId = (params: GetRowIdParams) => {
-    return params.id_question;
+    return params.id;
   };
 
   return (
     <div style={{ height: 400, width: "100%" }}>
       <DataGrid
-        rows={questionList}
+        rows={templateList}
         columns={data().columns!}
         pageSize={5}
         rowsPerPageOptions={[5]}

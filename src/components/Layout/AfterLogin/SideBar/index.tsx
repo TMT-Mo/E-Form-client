@@ -22,6 +22,7 @@ import { styled } from "@mui/system";
 import { useDispatch, useSelector } from "../../../../hooks";
 import { setLocation } from "../../../../slices/location";
 import { LocationIndex } from "../../../../utils/constants";
+import { useTranslation } from "react-i18next";
 
 const StyledListBtn = styled(ListItemButton)({
   borderRadius: "5px",
@@ -45,6 +46,7 @@ const SideBar: React.FC = () => {
   const { locationIndex } = useSelector((state) => state.location);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {t} = useTranslation()
 
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -80,7 +82,7 @@ const SideBar: React.FC = () => {
       </div>
       <Divider className="bg-gray-config" flexItem />
       <Box sx={{ width: "100%", maxWidth: 360, color: "#fff" }}>
-        <List component="nav" aria-label="main mailbox folders">
+        <List component="nav" aria-label="main mailbox folders" >
           <h5 className="pb-3 text-blue-config">Account</h5>
           <StyledListBtn
             selected={locationIndex === DEPARTMENT}
@@ -119,7 +121,7 @@ const SideBar: React.FC = () => {
             <ListItemIcon>
               <UploadFileIcon className="fill-white" />
             </ListItemIcon>
-            <ListItemText primary="Template" />
+            <ListItemText primary={t('Template')} />
           </StyledListBtn>
         </List>
         <List component="nav" aria-label="main mailbox folders">
@@ -131,7 +133,7 @@ const SideBar: React.FC = () => {
             <ListItemIcon>
               <AssignmentIcon className="fill-white" />
             </ListItemIcon>
-            <ListItemText primary="Await Signing" />
+            <ListItemText primary={t('Await Signing')} />
           </StyledListBtn>
           <StyledListBtn
             selected={locationIndex === PERSONAL}

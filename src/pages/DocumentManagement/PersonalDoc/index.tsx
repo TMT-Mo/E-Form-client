@@ -55,18 +55,10 @@ const PersonalDoc = () => {
             </IconButton>
             <InputBase
               sx={{ ml: 1, flex: 1 }}
-              placeholder="Search Template"
+              placeholder="Search Document"
               inputProps={{ "aria-label": "search google maps" }}
             />
           </Paper>
-          <div className="flex space-x-8">
-            <StyledUploadBtn size="small" className="shadow-md" variant="outlined" startIcon={<UploadIcon />}>
-              Upload
-            </StyledUploadBtn>
-            <StyledAddBtn variant="outlined" size="small" className="shadow-md" startIcon={<AddIcon />}>
-              Add New
-            </StyledAddBtn>
-          </div>
         </div>
         <DataTable />
       </div>

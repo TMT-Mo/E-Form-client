@@ -55,7 +55,7 @@ const AwaitSigning = () => {
             </IconButton>
             <InputBase
               sx={{ ml: 1, flex: 1 }}
-              placeholder="Search Template"
+              placeholder="Search Document"
               inputProps={{ "aria-label": "search google maps" }}
             />
           </Paper>

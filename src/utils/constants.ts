@@ -23,7 +23,8 @@ export enum LocationIndex{
   AWAITSIGNING = 4,
   PERSONAL = 5,
   SHARED = 6,
-  HISTORY = 7, 
+  HISTORY = 7,
+  CHANGEPASSWORD = 8 
 }
 
 

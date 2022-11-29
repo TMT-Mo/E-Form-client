@@ -1,4 +1,14 @@
-import { GridColDef } from "@mui/x-data-grid";
+import { ReactNode } from 'react';
+import { GridColDef, GridColumns, GridRenderCellParams } from "@mui/x-data-grid";
+import { Template, TemplateListResponse } from "../models/templates";
+import word from '../assets/word.svg'
+import { Button } from '@mui/material';
+import { TouchRippleActions } from '@mui/material/ButtonBase/TouchRipple';
+import { style } from '@mui/system';
+import React from 'react';
+import { ActionCell } from '../components/DataTable/ActionCell';
+
+
 
 export const templateColumns: GridColDef[] = [
   { field: "file", headerName: "File", flex: 0.5 },
@@ -26,6 +36,7 @@ export const templateColumns: GridColDef[] = [
     field: "action",
     headerName: "Action",
     flex: 1,
+    renderCell: ActionCell 
   },
 ];
 
@@ -162,3 +173,18 @@ export const historyColumns: GridColDef[] = [
     flex: 1,
   },
 ];
+
+interface ITemplates{
+  file: ReactNode,
+  name: string,
+  description: string,
+  type: '.pdf' | '.doc',
+  department: string,
+  status: string,
+  action: ReactNode
+}
+
+export const templateRows = (data: Template[]) => {
+  const row: ITemplates[] = []
+  data.map(item => row.push())
+}

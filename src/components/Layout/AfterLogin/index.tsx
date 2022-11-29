@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "../../../hooks";
+import ChangePassword from "../../../pages/ChangePassword";
 import AwaitSigning from "../../../pages/DocumentManagement/AwaitSigning";
 import History from "../../../pages/DocumentManagement/History";
 import PersonalDoc from "../../../pages/DocumentManagement/PersonalDoc";
@@ -20,6 +21,7 @@ const {
   PERSONAL,
   POSITION,
   SHARED,
+  CHANGEPASSWORD
 } = LocationIndex;
 
 const Layout: React.FC = () => {
@@ -50,6 +52,8 @@ const Layout: React.FC = () => {
         return <PersonalDoc/>;
       case SHARED:
         return <SharedDoc/>;
+      case CHANGEPASSWORD:
+        return <ChangePassword/>;
       default:
         return <History/>;
     }
