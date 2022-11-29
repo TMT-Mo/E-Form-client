@@ -5,7 +5,7 @@ import "./style.css";
 const url = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Wikipedia_Logo_1.0.png/220px-Wikipedia_Logo_1.0.png";
 
 
-const Document = () => {
+const ViewTemplate = () => {
   const [image, setImage] = useState(null);
 //   const convertBase64 = async (e) => {
 //     const response = await fetch(url);
@@ -93,4 +93,4 @@ const Document = () => {
   );
 };
 
-export default Document;
+export default ViewTemplate;

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import Document from "./components/Document";
 import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
 import Introduction from "./pages/Introduction";
@@ -24,7 +23,7 @@ function App() {
         <Route path="" element={<Introduction />} />
         <Route path="unauthorized" element={<Unauthorized />} />
 
-        <Route path="document" element={<Document />} />
+        {/* <Route path="document" element={<Document />} /> */}
 
         <Route path="login" element={<Login />} />
       </Route>
