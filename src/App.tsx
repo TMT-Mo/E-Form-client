@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
-import Document from "./components/Document";
-import RequireAuth from "./components/RequireAuth";
+import React, { useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
 import Introduction from "./pages/Introduction";
@@ -10,15 +8,14 @@ import BeforeLogin from "./components/Layout/BeforeLogin";
 import NotFound from "./pages/NotFound";
 import AfterLogin from "./components/Layout/AfterLogin";
 import TemplateManagement from "./pages/TemplateManagement";
-import RequireToken from "./components/RequireToken";
-import { useAuth } from "./hooks";
+import { useAuth, useSelector } from "./hooks";
 
 function App() {
-  const {authenticate} = useAuth()
+  const { checkAuthenticated } = useSelector((state) => state.auth);
+  const { authenticate } = useAuth();
   useEffect(() => {
-    authenticate()
-  }, [authenticate]);
-
+    !checkAuthenticated && authenticate();
+  }, [authenticate, checkAuthenticated]);
   return (
     <Routes>
       {/* Public Routes */}
@@ -26,7 +23,7 @@ function App() {
         <Route path="" element={<Introduction />} />
         <Route path="unauthorized" element={<Unauthorized />} />
 
-        <Route path="document" element={<Document />} />
+        {/* <Route path="document" element={<Document />} /> */}
 
         <Route path="login" element={<Login />} />
       </Route>
@@ -34,8 +31,8 @@ function App() {
       {/* <Route
         element={<RequireToken />}
       > */}
-      <Route path="/home" element={<AfterLogin />}>
-        <Route path="" element={<TemplateManagement />} />
+      <Route path="/user" element={<AfterLogin />}>
+        {/* <Route path="/user/template" element={<TemplateManagement />} /> */}
       </Route>
       {/* </Route> */}
       <Route path="*" element={<NotFound />} />

@@ -1,23 +1,46 @@
 import { LoadingButton } from "@mui/lab";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import intropic from "../../assets/intropic.svg";
 import { useDispatch, useSelector } from "../../hooks";
 import { login } from "../../slices/auth";
-import { handleError, handleSuccess } from "../../slices/notification";
-import { ThemeProvider, createTheme } from "@mui/system";
-import { CircularProgress } from "@mui/material";
-import TextField from '@mui/material/TextField';
+// import { handleError, handleSuccess } from "../../slices/notification";
+// import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
+import {
+  CircularProgress,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+} from "@mui/material";
+import TextField from "@mui/material/TextField";
+import { styled } from "@mui/system";
+import { VisibilityOff, Visibility } from "@mui/icons-material";
 
-const theme = createTheme({
-  palette: {
-    background: {
-      blue: "#407AFF",
-    },
-    text: {
-      white: "#fff",
-    },
+interface State {
+  password: string;
+  showPassword: boolean;
+}
+
+const LoadingBtn = styled(
+  LoadingButton,
+  {}
+)({
+  backgroundColor: "#407AFF",
+  borderRadius: "5px",
+  color: "#fff",
+  paddingTop: "10px",
+  paddingBottom: "10px",
+  ":hover": { backgroundColor: "#fff", color: "#407AFF" },
+  "&.Mui-disabled": {
+    color: "#F2F2F2",
+    backgroundColor: "#6F7276",
+  },
+  "&.MuiLoadingButton-loading": {
+    backgroundColor: "#fff",
+    borderColor: "#407AFF",
   },
 });
 
@@ -27,17 +50,26 @@ const Login = () => {
   const dispatch = useDispatch();
   const { isLoginLoading } = useSelector((state) => state.auth);
   const [username, setUsername] = useState<string>();
-  const [password, setPassword] = useState<string>();
+  const [values, setValues] = useState<State>({
+    password: "",
+    showPassword: false,
+  });
 
   const onLoginHandler = async (e: { preventDefault: () => void }) => {
     try {
       e.preventDefault();
-      await dispatch(login({ username, password })).unwrap();
-       navigate("/home");
+      await dispatch(login({ username, password: values.password })).unwrap();
+      navigate("/user");
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-    
+  };
+
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
   };
 
   return (
@@ -61,34 +93,71 @@ const Login = () => {
               <div className="">
                 Email address <span className="text-red-500">*</span>
               </div>
-              <TextField id="outlined-basic" className="bg-white " label="example@" variant="outlined" onChange={(e) => setUsername(e.target.value)}/>
+              <TextField
+                id="outlined-basic"
+                className="bg-white "
+                label="example@"
+                variant="outlined"
+                onChange={(e) => setUsername(e.target.value)}
+              />
             </div>
             <div className="flex flex-col space-y-2">
               <div>
                 Password <span className="text-red-500">*</span>
               </div>
-              <TextField id="outlined-basic" type='password' className="bg-white " label="Password" variant="outlined" onChange={(e) => setPassword(e.target.value)}/>
+              {/* <TextField
+                id="outlined-basic"
+                type="password"
+                className="bg-white "
+                label="Password"
+                variant="outlined"
+                onChange={(e) => setPassword(e.target.value)}
+              /> */}
+              <FormControl  variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-password">
+                  Password
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-password"
+                  type={values.showPassword ? "text" : "password"}
+                  value={values.password}
+                  onChange={(e) =>
+                    setValues({
+                      password: e.target.value,
+                      showPassword: values.showPassword,
+                    })
+                  }
+                  className="w-full bg-white"
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        // onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {values.showPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                />
+              </FormControl>
             </div>
-            <LoadingButton
+            <LoadingBtn
               size="small"
               loading={isLoginLoading}
-              loadingIndicator={<CircularProgress color="inherit" size={16}/>}
+              loadingIndicator={<CircularProgress color="inherit" size={16} />}
               variant="outlined"
               onClick={onLoginHandler}
-              disabled={!(password && username)}
-              sx={{
-                bgcolor: "#407AFF",
-                borderRadius: "5px",
-                color: "#fff",
-                paddingTop: '10px',
-                paddingBottom: '10px',
-                ":hover": { bgcolor: "#fff", color: "#407AFF" },
-                
-              }}
-              
+              disabled={!(values.password && username)}
             >
               {t("Sign in")}
-            </LoadingButton>
+            </LoadingBtn>
           </div>
         </form>
       </div>

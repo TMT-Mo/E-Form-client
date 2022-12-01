@@ -8,8 +8,8 @@ import {
 import React from "react";
 import UploadIcon from '@mui/icons-material/Upload';
 import AddIcon from '@mui/icons-material/Add';
-import { styled } from "@mui/system";
-import DataTable from "../../components/DataTable";
+import {  styled } from "@mui/system";
+import DataTable from "../../../components/DataTable";
 
 const StyledUploadBtn = styled(Button)({
   backgroundColor: '#fff',
@@ -34,10 +34,10 @@ const StyledAddBtn = styled(Button)({
   }
 })
 
-const TemplateManagement = () => {
+const PersonalDoc = () => {
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
-      <h2>Template Management</h2>
+      <h2>Personal Document</h2>
       <div className="flex flex-col rounded-md border border-gray-400 bg-white">
         <div className="flex px-10 py-6 justify-between">
           <Paper
@@ -55,18 +55,10 @@ const TemplateManagement = () => {
             </IconButton>
             <InputBase
               sx={{ ml: 1, flex: 1 }}
-              placeholder="Search Template"
+              placeholder="Search Document"
               inputProps={{ "aria-label": "search google maps" }}
             />
           </Paper>
-          <div className="flex space-x-8">
-            <StyledUploadBtn size="small" className="shadow-md" variant="outlined" startIcon={<UploadIcon />}>
-              Upload
-            </StyledUploadBtn>
-            <StyledAddBtn variant="outlined" size="small" className="shadow-md" startIcon={<AddIcon />}>
-              Add New
-            </StyledAddBtn>
-          </div>
         </div>
         <DataTable />
       </div>
@@ -74,4 +66,4 @@ const TemplateManagement = () => {
   );
 };
 
-export default TemplateManagement;
+export default PersonalDoc;

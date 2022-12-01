@@ -12,7 +12,7 @@ interface Props {
   autoHideDuration: number | undefined;
 }
 
-const Notification: React.FC<Props> = ({ anchorOrigin, autoHideDuration }) => {
+const AlertPopup: React.FC<Props> = ({ anchorOrigin, autoHideDuration }) => {
   const dispatch = useDispatch();
   const { status, message, errorMessage, isOpen } = useSelector(
     (state) => state.notification
@@ -36,4 +36,4 @@ const Notification: React.FC<Props> = ({ anchorOrigin, autoHideDuration }) => {
   );
 };
 
-export default Notification;
+export default AlertPopup;

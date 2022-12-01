@@ -2,10 +2,9 @@
 import { useDispatch } from "./use-dispatch";
 // import { rootReducer } from './../store/index';
 import { useNavigate } from "react-router-dom";
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { TOKEN_NAME } from "../utils/constants";
-import { setUserInfo } from "../slices/auth";
-import jwtDecode from "jwt-decode";
+import { setUserInfo, storeToken } from "../slices/auth";
 
 interface UseAuth {
   login: (token: string) => void;
@@ -29,12 +28,14 @@ export const useAuth = (): UseAuth => {
 
   const authenticate = useCallback(() => {
     try {
+      dispatch(storeToken({value: true}))
       const token = localStorage.getItem(TOKEN_NAME) as string;
+      // console.log('first')
       if (token) {
         dispatch(setUserInfo({token}));
-        navigate("/home");
+        navigate('/user');
       } else {
-        navigate("/login");
+        navigate('/login');
       }
     } catch (error) {
       localStorage.clear()

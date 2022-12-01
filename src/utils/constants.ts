@@ -10,20 +10,21 @@ export enum ResponseStatus {
   REJECTED = "rejected",
 }
 
-export enum HeaderTableId {
-  ID_QUESTION = "id_question",
-  QUESTION = "question",
-  STATUS_QUESTION = "status_question",
-}
-
-export enum HeaderTable {
-  ID = "Id",
-  QUESTION = "Question",
-  STATUS_QUESTION = "Status Question",
-}
 
 export enum Roles {
-  STUDENT = "Sinh Viên",
+  // STUDENT = "Sinh Viên"
+}
+
+export enum LocationIndex{
+  DEPARTMENT = 0,
+  POSITION = 1,
+  ACCOUNT = 2,
+  TEMPLATE = 3,
+  AWAITSIGNING = 4,
+  PERSONAL = 5,
+  SHARED = 6,
+  HISTORY = 7,
+  CHANGEPASSWORD = 8 
 }
 
 

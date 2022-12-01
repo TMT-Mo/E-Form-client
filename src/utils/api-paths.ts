@@ -7,7 +7,9 @@ const apiPaths = {
         extractToken: `${apiHead}`
     },
     employee:{
-        test: ``
+        getTemplates: `${apiHead}api/Template`,
+        searchTemplate: `${apiHead}api/Template?templateName_eq=test`,
+        test: ''
     },
     headOffice:{
     }
