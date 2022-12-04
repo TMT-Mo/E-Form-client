@@ -83,7 +83,7 @@ const SideBar: React.FC = () => {
       <Divider className="bg-gray-config" flexItem />
       <Box sx={{ width: "100%", maxWidth: 360, color: "#fff" }}>
         <List component="nav" aria-label="main mailbox folders" >
-          <h5 className="pb-3 text-blue-config">Account</h5>
+          <h5 className="pb-3 text-blue-config">{t("Account")}</h5>
           <StyledListBtn
             selected={locationIndex === DEPARTMENT}
             onClick={(event) => handleListItemClick(event, 0)}
@@ -91,7 +91,7 @@ const SideBar: React.FC = () => {
             <ListItemIcon>
               <WorkspacesIcon className="fill-white" />
             </ListItemIcon>
-            <ListItemText primary="Department" />
+            <ListItemText primary= {t('Department')} />
           </StyledListBtn>
           <StyledListBtn
             selected={locationIndex === POSITION}
@@ -100,7 +100,7 @@ const SideBar: React.FC = () => {
             <ListItemIcon>
               <RecentActorsIcon className="fill-white" />
             </ListItemIcon>
-            <ListItemText primary="Staff Position" />
+            <ListItemText primary={t('Staff Position')} />
           </StyledListBtn>
           <StyledListBtn
             selected={locationIndex === ACCOUNT}
@@ -109,11 +109,11 @@ const SideBar: React.FC = () => {
             <ListItemIcon>
               <ManageAccountsIcon className="fill-white" />
             </ListItemIcon>
-            <ListItemText primary="Account List" />
+            <ListItemText primary={t('Account List')} />
           </StyledListBtn>
         </List>
         <List component="nav" aria-label="main mailbox folders">
-          <h5 className="pb-3 text-blue-config">Template</h5>
+          <h5 className="pb-3 text-blue-config">{t('Template')}</h5>
           <StyledListBtn
             selected={locationIndex === TEMPLATE}
             onClick={(event) => handleListItemClick(event, 3)}
@@ -125,7 +125,7 @@ const SideBar: React.FC = () => {
           </StyledListBtn>
         </List>
         <List component="nav" aria-label="main mailbox folders">
-          <h5 className="pb-3 text-blue-config">Document</h5>
+          <h5 className="pb-3 text-blue-config">{t('Document')}</h5>
           <StyledListBtn
             selected={locationIndex === AWAITSIGNING}
             onClick={(event) => handleListItemClick(event, 4)}
@@ -142,7 +142,7 @@ const SideBar: React.FC = () => {
             <ListItemIcon>
               <ListAltIcon className="fill-white" />
             </ListItemIcon>
-            <ListItemText primary="Personal Doc" />
+            <ListItemText primary={t('Personal Doc')} />
           </StyledListBtn>
           <StyledListBtn
             selected={locationIndex === SHARED}
@@ -151,7 +151,7 @@ const SideBar: React.FC = () => {
             <ListItemIcon>
               <FolderSharedIcon className="fill-white" />
             </ListItemIcon>
-            <ListItemText primary="Shared Doc" />
+            <ListItemText primary={t('Shared Doc')}/>
           </StyledListBtn>
           <StyledListBtn
             selected={locationIndex === HISTORY}
@@ -160,14 +160,14 @@ const SideBar: React.FC = () => {
             <ListItemIcon>
               <HistoryEduIcon className="fill-white" />
             </ListItemIcon>
-            <ListItemText primary="History" />
+            <ListItemText primary={t('History')} />
           </StyledListBtn>
         </List>
       </Box>
       <div className="flex flex-col justify-self-end items-center space-y-6 text-white w-full">
         <Divider flexItem className="bg-white " />
         <div className="flex items-center space-x-2">
-          <span>Need help</span> <HelpIcon />
+          <span> {t('Need help')}</span> <HelpIcon />
         </div>
       </div>
     </div>
