@@ -73,7 +73,6 @@ const auth = createSlice({
     }));
     builder.addCase(login.fulfilled, (state, { payload }) => {
       if(payload?.token){
-        console.log(payload.token)
         return{
           ...state,
           isLoginLoading: false,

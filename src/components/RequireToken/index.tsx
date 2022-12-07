@@ -7,14 +7,6 @@ import { helpers } from "../../utils";
 const RequireToken: React.FC = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const location = useLocation();
-  // const navigate = useNavigate()
-  // const [token, setToken] = useState<string | undefined>()
-  // useEffect(() => {
-  //   const token = helpers.getToken()
-  //   console.log(token)
-  //   setToken(token)
-  // }, [navigate]);
-  // console.log(token)
   return userInfo ? (
     <Navigate to="/home" state={{ from: location }} replace />
   ) : (
