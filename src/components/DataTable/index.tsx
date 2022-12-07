@@ -8,9 +8,8 @@ import { handleError, handleSuccess } from "../../slices/notification";
 import { useDispatch, useSelector } from "../../hooks";
 import { LocationIndex } from "../../utils/constants";
 import { awaitSigningColumns, historyColumns, personalDocColumns, sharedDocColumns, templateColumns } from "../../utils/mui-data";
-import { Template, TemplateListResponse } from "../../models/templates";
-import { AwaitSigningResponse, HistoryResponse, PersonalDocResponse } from "../../models/documents";
-import { QuestionResponse } from "../../models/questions";
+import { Template, TemplateListResponse } from "../../models/template";
+import { AwaitSigningResponse, HistoryResponse, PersonalDocResponse } from "../../models/document";
 import { getTemplates } from "../../slices/template";
 
 interface GetRowIdParams {

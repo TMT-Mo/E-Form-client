@@ -1,4 +1,4 @@
-import { TemplateListResponse } from "../models/templates"
+import { TemplateListResponse } from "../models/template"
 import { apiPaths, httpClient } from "../utils"
 
 const getTemplates = async (): Promise<TemplateListResponse> => {

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { getGridStringOperators, GridColDef } from "@mui/x-data-grid";
-import { Template, } from "../models/templates";
+import { Template, } from "../models/template";
 import { ActionCell } from '../components/DataTable/ActionCell';
 
 

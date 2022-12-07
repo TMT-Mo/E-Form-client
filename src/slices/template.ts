@@ -1,4 +1,4 @@
-import { Template, TemplateListResponse } from './../models/templates';
+import { Template, TemplateListResponse } from './../models/template';
 import { templateServices } from './../services/template';
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";

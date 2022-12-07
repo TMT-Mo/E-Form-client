@@ -8,6 +8,7 @@ import SharedDoc from "../../../pages/Document/SharedDoc";
 import TemplateManagement from "../../../pages/Template";
 import { setLocation } from "../../../slices/location";
 import { LocationIndex } from "../../../utils/constants";
+import AlertPopup from "../../AlertPopup";
 // import DesktopOnly from "../DesktopOnly";
 import SideBar from "./SideBar";
 import TopBar from "./TopBar";
@@ -68,6 +69,7 @@ const Layout: React.FC = () => {
         {switchTab()}
         {/* <TemplateManagement/> */}
       </div>
+      <AlertPopup anchorOrigin={{vertical: "top", horizontal:"right"}} autoHideDuration={3000}/>
     </div>
   );
 };
