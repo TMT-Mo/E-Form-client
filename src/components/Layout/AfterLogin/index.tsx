@@ -5,7 +5,7 @@ import AwaitSigning from "../../../pages/Document/AwaitSigning";
 import History from "../../../pages/Document/History";
 import PersonalDoc from "../../../pages/Document/PersonalDoc";
 import SharedDoc from "../../../pages/Document/SharedDoc";
-import TemplateManagement from "../../../pages/Template";
+import Template from "../../../pages/Template/TemplateList";
 import { setLocation } from "../../../slices/location";
 import { LocationIndex } from "../../../utils/constants";
 import AlertPopup from "../../AlertPopup";
@@ -46,7 +46,7 @@ const Layout: React.FC = () => {
       case ACCOUNT:
         return <></>;
       case TEMPLATE:
-        return <TemplateManagement />;
+        return <Template />;
       case AWAITSIGNING:
         return <AwaitSigning/>;
       case PERSONAL:

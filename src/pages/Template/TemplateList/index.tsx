@@ -4,8 +4,8 @@ import React from "react";
 import UploadIcon from "@mui/icons-material/Upload";
 import AddIcon from "@mui/icons-material/Add";
 import { styled } from "@mui/system";
-import DataTable from "../../components/DataTable";
 import { Link } from "react-router-dom";
+import DataTable from "../../../components/DataTable";
 
 const StyledUploadBtn = styled(Button)({
   backgroundColor: "#fff",
@@ -31,7 +31,7 @@ const StyledAddBtn = styled(Button)({
   },
 });
 
-const TemplateManagement = () => {
+const TemplateList = () => {
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
       <h2>Template Management</h2>
@@ -69,7 +69,7 @@ const TemplateManagement = () => {
               type={"file"}
               onChange={(e) => console.log(e.target.files)}
             />
-            <Link to="/viewDocument">
+            <Link to="/viewDocument" className="no-underline">
               <StyledAddBtn
                 variant="outlined"
                 size="small"
@@ -87,4 +87,4 @@ const TemplateManagement = () => {
   );
 };
 
-export default TemplateManagement;
+export default TemplateList;
