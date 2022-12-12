@@ -25,7 +25,7 @@ const StyledAddBtn = styled(Button)({
   color: "#fff",
   padding: "0px 15px",
   height: "80%",
-  textDecoration: 'none',
+  textDecoration: "none",
   ":hover": {
     color: "#407AFF",
   },
@@ -65,10 +65,6 @@ const TemplateList = () => {
             >
               Upload
             </StyledUploadBtn>
-            <input
-              type={"file"}
-              onChange={(e) => console.log(e.target.files)}
-            />
             <Link to="/viewDocument" className="no-underline">
               <StyledAddBtn
                 variant="outlined"

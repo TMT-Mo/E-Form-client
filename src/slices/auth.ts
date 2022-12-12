@@ -20,6 +20,8 @@ interface State {
 
 type CR<T> = CaseReducer<State, PayloadAction<T>>;
 
+const ACTION_TYPE = 'auth/'
+
 const initialState: State = {
   checkAuthenticated: undefined,
   userInfo: undefined,
@@ -27,7 +29,7 @@ const initialState: State = {
 };
 
 const login = createAsyncThunk(
-  `login`,
+  `${ACTION_TYPE}login`,
   async (args: LoginArgument, { dispatch }) => {
     try {
       const result = await authServices.login(args as LoginArgument);

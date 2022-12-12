@@ -1,92 +1,152 @@
 import {
-  Box,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Divider,
+  Autocomplete,
+  CircularProgress,
+  TextField,
+  IconButton,
 } from "@mui/material";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import React, { Fragment, useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import WorkspacesIcon from "@mui/icons-material/Workspaces";
-import HelpIcon from "@mui/icons-material/Help";
-import RecentActorsIcon from "@mui/icons-material/RecentActors";
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import FolderSharedIcon from "@mui/icons-material/FolderShared";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import WebViewer, { Core } from "@pdftron/webviewer";
-import Document from "../../components/DocumentManagement/ViewTemplate";
-// import imgBase from '../../../assets/logos_typescript-icon.png'
-const url =
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Wikipedia_Logo_1.0.png/220px-Wikipedia_Logo_1.0.png";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import WebViewer, { WebViewerInstance } from "@pdftron/webviewer";
+import { ref, uploadBytesResumable } from "firebase/storage";
+import storage from "../../../utils/firebase";
+import { useDispatch, useSelector } from "../../../hooks";
+import {
+  clearUserList,
+  getDepartmentList,
+  getTemplateTypeList,
+  getUserListByDepartmentID,
+  toggleDepartmentList,
+  toggleTemplateTypeList,
+} from "../../../slices/system";
+import { handleError } from "../../../slices/notification";
+import { LoadingButton } from "@mui/lab";
+import { IFile } from "../../../models/system";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import { addNewTemplate } from "../../../slices/template";
+import { TemplateArgs } from "../../../models/template";
+import AlertPopup from "../../../components/AlertPopup";
 
-const a = `<?xml version="1.0" encoding="UTF-8" ?><xfdf xmlns="http://ns.adobe.com/xfdf/" xml:space="preserve"><pdf-info xmlns="http://www.pdftron.com/pdfinfo" version="2" import-version="4" /><fields /><annots><freetext page="0" rect="330.920,702.430,483.590,741.110" flags="print" name="62416ebe-0280-929c-b34f-2c88cf1fb0b2" title="Guest" subject="Free Text" date="D:20221206102619+07'00'" width="0" creationdate="D:20221206102612+07'00'" TextColor="#000000" FontSize="12"><trn-custom-data bytes="{&quot;trn-wrapped-text-lines&quot;:&quot;[asdadad ]&quot;}"/><contents>asdadad</contents><contents-richtext><body><p><span>asdadad</span></p></body></contents-richtext><defaultappearance>0 0 0 rg /Helvetica 12 Tf</defaultappearance><defaultstyle>font: Helvetica 12pt; text-align: left; text-vertical-align: top; color: #000000</defaultstyle></freetext></annots><pages><defmtx matrix="1,0,0,-1,0,792" /></pages></xfdf>`;
-//
-
-const StyledListBtn = styled(ListItemButton)({
+const LoadingBtn = styled(
+  LoadingButton,
+  {}
+)({
+  backgroundColor: "#407AFF",
   borderRadius: "5px",
-  "&.Mui-selected": {
-    backgroundColor: "#22394f",
+  color: "#fff",
+  paddingTop: "10px",
+  paddingBottom: "10px",
+  ":hover": { backgroundColor: "#fff", color: "#407AFF" },
+  "&.Mui-disabled": {
+    color: "#F2F2F2",
+    backgroundColor: "#6F7276",
+  },
+  "&.MuiLoadingButton-loading": {
+    backgroundColor: "#fff",
+    borderColor: "#407AFF",
+  },
+});
+
+const TextFieldStyled = styled(TextField)({
+  color: "#fff",
+  input: {
+    color: "#fff",
+  },
+  "& .MuiSvgIcon-root": {
+    fill: "#fff",
   },
 });
 
 const ViewAddTemplate: React.FC = () => {
   const viewer = useRef(null);
+  const instance = useRef<WebViewerInstance>();
   const navigate = useNavigate();
-  
-  // const [image, setImage] = useState<string | null>(null);
-  //   const convertBase64 = async (e: any) => {
-  //     const response = await fetch(url);
-  //     const blob = await response.blob();
-  //     const newBlob = new Blob([blob], { type: "image/png" });
-  //     console.log(newBlob);
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setImage(reader.result!.toString());
-  //       console.log(reader.result!.toString())
-  //     };
-  //     reader.readAsDataURL(newBlob);
-  //   };
+  const dispatch = useDispatch();
+  const {
+    isGetDepartmentsLoading,
+    departmentList,
+    isOpenDepartmentList,
+    isGetUserListLoading,
+    userList,
+    isGetTemplateTypesLoading,
+    isOpenTemplateTypes,
+    templateTypeList,
+  } = useSelector((state) => state.system);
+  const { isAddNewTemplateLoading } = useSelector((state) => state.template);
 
-  //   useEffect(() => {
-  //     convertBase64(imgBase);
-  //   }, []);
-  // console.log(image);
-  // console.log(imgBase);
+  const [form, setForm] = useState<TemplateArgs>({
+    templateName: undefined,
+    description: undefined,
+    // idDepartment: undefined,
+    idTemplateType: undefined,
+    size: undefined,
+    signatoryList: undefined,
+  });
 
-  const jsonData = {
-    COMPANYNAME: "PDFTron",
-    CUSTOMERNAME: "Andrey Safonov",
-    CompanyAddressLine1: "838 W Hastings St 5th floor",
-    CompanyAddressLine2: "Vancouver, BC V6C 0A6",
-    CustomerAddressLine1: "123 Main Street",
-    CustomerAddressLine2: "Vancouver, BC V6A 2S5",
-    Date: "Nov 5th, 2021",
-    ExpiryDate: "Dec 5th, 2021",
-    QuoteNumber: "134",
-    WEBSITE: "www.pdftron.com",
-    // billed_items: {
-    //   insert_rows: [
-    //     ["Apples", "3", "$5.00", "$15.00"],
-    //     ["Oranges", "2", "$5.00", "$10.00"],
-    //   ],
-    // },
-    days: "30",
-    total: "$25.00",
+  const [selectedDepartment, setSelectedDepartment] = useState<
+    number | undefined
+  >(undefined);
+  const [file, setFile] = useState<File>();
+  const [isEnableSave, setIsEnableSave] = useState(false);
+
+  useEffect(() => {
+    let check = false;
+    Object.values(form).forEach((value) => {
+      if (!value) {
+        check = true;
+        return;
+      }
+    });
+    check ? setIsEnableSave(false) : setIsEnableSave(true);
+  }, [form]);
+
+  console.log(isEnableSave);
+  // Handle file upload event and update state
+  function handleChange(event: any) {
+    const newFile: File = event.target.files[0];
+    setFile(newFile);
+    setForm({ ...form, templateName: newFile.name, size: newFile.size });
+  }
+
+  const handleUpload = async () => {
+    if (!file) {
+      alert("Please upload an image first!");
+    }
+
+    const storageRef = ref(storage, `/${file!.name}`);
+
+    // progress can be paused and resumed. It also exposes progress updates.
+    // Receives the storage reference and the file to upload.
+    try {
+      
+      await dispatch(
+        addNewTemplate({
+          templateInfo: form,
+          storageRef,
+          file: file!
+        })
+      ).unwrap();
+      navigate(-1);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // if using a class, equivalent of componentDidMount
+
   useEffect(() => {
     WebViewer(
       {
         path: "/webviewer/lib",
-        initialDoc: "https://pdftron.s3.amazonaws.com/downloads/pl/report.docx",
+        initialDoc: undefined,
         disabledElements: [
           // 'viewControlsButton',
           // 'leftPanel'
@@ -95,50 +155,16 @@ const ViewAddTemplate: React.FC = () => {
         ],
       },
       viewer.current!
-    ).then(async (instance) => {
-      const { documentViewer, annotationManager, Annotations } = instance.Core;
+    ).then(async (inst) => {
+      instance.current = inst;
+      const { documentViewer, annotationManager, Annotations } = inst.Core;
       const signatureTool = documentViewer.getTool("AnnotationCreateSignature");
       const annotManager = documentViewer.getAnnotationManager();
 
-      // instance.UI.disableElements([ 'leftPanel', 'leftPanelButton' ]);
-      instance.UI.disableElements(["", ""]);
-      // instance.UI.enableFeatures([instance.UI.Feature.Initials]);
-      annotManager.enableReadOnlyMode()
+      annotManager.enableReadOnlyMode();
       documentViewer.addEventListener("documentLoaded", async () => {
         await documentViewer.getDocument().getDocumentCompletePromise();
-        //   await signatureTool.importSignatures([image]);
-        await annotationManager.importAnnotations(a);
-        // const annotations = annotationManager.importAnnotationCommand(a);
-        // (await annotations).forEach((annotation) => {
-        //   annotationManager.redrawAnnotation(annotation);
-        // });
         documentViewer.updateView();
-        console.log(annotationManager.getAnnotationsList());
-        annotationManager.addEventListener(
-          "annotationChanged",
-          async (annotations, action, { imported }) => {
-            const annots = annotationManager.getAnnotationsList()[0];
-
-            console.log(annots);
-            console.log(annotations);
-            // If the event is triggered by importing then it can be ignored
-            // This will happen when importing the initial annotations
-            // from the server or individual changes from other users
-
-            console.log(imported);
-            if (imported) return;
-            // annots.modi
-
-            // const xfdfString = annotationManager.exportAnnotationCommand();
-            // console.log((await xfdfString).toString());
-            console.log(
-              (await annotationManager.exportAnnotations()).replaceAll(
-                /\\&quot;/gi,
-                ""
-              )
-            );
-          }
-        );
       });
 
       // documentViewer.addEventListener('annotationsLoaded', () => {
@@ -166,29 +192,259 @@ const ViewAddTemplate: React.FC = () => {
       // console.log(xfdf);
     });
   }, []);
+
+  useEffect(() => {
+    if (!file) {
+      return;
+    }
+    if (instance.current) {
+      instance.current.UI.loadDocument(file);
+      console.log(instance);
+    }
+  }, [file]);
+
+  console.log(form);
+
+  const getDepartmentListHandler = async () => {
+    try {
+      if (!departmentList) {
+        await dispatch(getDepartmentList()).unwrap();
+      }
+      dispatch(toggleDepartmentList({ isOpen: !isOpenDepartmentList }));
+    } catch (error) {
+      dispatch(handleError({ errorMessage: undefined }));
+    }
+  };
+
+  const getTemplateListHandler = async () => {
+    try {
+      if (!templateTypeList) {
+        await dispatch(getTemplateTypeList()).unwrap();
+      }
+      dispatch(toggleTemplateTypeList({ isOpen: !isOpenTemplateTypes }));
+    } catch (error) {
+      dispatch(handleError({ errorMessage: undefined }));
+    }
+  };
+
+  const getUserListHandler = useCallback(async () => {
+    try {
+      await dispatch(getUserListByDepartmentID(selectedDepartment!)).unwrap();
+    } catch (error) {
+      dispatch(handleError({ errorMessage: undefined }));
+    }
+  }, [dispatch, selectedDepartment]);
+
+  useEffect(() => {
+    if (selectedDepartment) {
+      getUserListHandler();
+    } else {
+      dispatch(clearUserList());
+    }
+  }, [selectedDepartment, getUserListHandler, dispatch]);
+
+  const onChangeSelectedDepartment = (value: number | undefined) => {
+    if (!value) {
+      setSelectedDepartment(undefined);
+      setForm({ ...form, signatoryList: undefined });
+      return;
+    }
+    setSelectedDepartment(value);
+    if (form.signatoryList) {
+      setForm({ ...form, signatoryList: undefined });
+    }
+  };
+
   return (
     <Fragment>
-      <div className="bg-blue-config px-20 py-6">
-        <ArrowBackIosIcon fontSize="small" className="fill-white" onClick={()=> navigate(-1)}/>
+      <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
+        <ArrowBackIosIcon
+          fontSize="small"
+          className="fill-white cursor-pointer"
+          onClick={() => navigate(-1)}
+        />
+        <span className="text-white">Add a template</span>
       </div>
       <div className="flex">
-        <div className="flex flex-col bg-dark-config min-h-screen items-center px-10 pt-8 space-y-8 w-80">
-          <div className="flex flex-col space-y-3 items-center w-full">
-            <AccountCircleIcon className="fill-white"/>
-            <h5 className="font-semibold text-white">Username</h5>
-            <span className="text-gray-config">abc@gmail.com</span>
-          </div>
-          <Divider className="bg-gray-config" flexItem />
-          <Box sx={{ width: "100%", maxWidth: 360, color: "#fff" }}></Box>
-          <div className="flex flex-col justify-self-end items-center space-y-6 text-white w-full">
-            <Divider flexItem className="bg-white " />
-            <div className="flex items-center space-x-2">
-              <span>Need help</span> <HelpIcon />
+        <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 w-80">
+          <div className="flex flex-col space-y-8 text-white">
+            <div className="flex flex-col space-y-4">
+              <h4>Choose a file</h4>
+              <IconButton
+                color="primary"
+                aria-label="upload picture"
+                component="label"
+                className="w-fit flex space-x-2"
+              >
+                <input
+                  hidden
+                  accept=".pdf,.doc,.docx"
+                  type="file"
+                  id="file-picker"
+                  onChange={handleChange}
+                />
+                <FileUploadIcon />
+                <span className="text-white text-base">
+                  {form.templateName}
+                </span>
+              </IconButton>
             </div>
+            <Divider className="bg-white" />
+            <div className="flex flex-col space-y-4">
+              <h4>Description</h4>
+              <TextField
+                id="outlined-multiline-flexible"
+                sx={{
+                  border: "1px solid #fff",
+                  borderRadius: "5px",
+                  textarea: {
+                    color: "#fff",
+                  },
+                }}
+                multiline
+                minRows={4}
+                maxRows={4}
+                color="primary"
+                value={form.description}
+                onChange={(e) =>
+                  setForm({ ...form, description: e.target.value })
+                }
+              />
+            </div>
+            <div className="flex flex-col space-y-4">
+              <h4>Type</h4>
+
+              <Autocomplete
+                id="asynchronous-demo"
+                sx={{
+                  width: 300,
+                }}
+                open={isOpenTemplateTypes}
+                onOpen={getTemplateListHandler}
+                onClose={getTemplateListHandler}
+                onChange={(e, value) =>
+                  setForm({ ...form, idTemplateType: value?.id })
+                }
+                isOptionEqualToValue={(option, value) =>
+                  option.typeName === value.typeName
+                }
+                getOptionLabel={(option) => option.typeName}
+                options={templateTypeList?.items!}
+                loading={isGetTemplateTypesLoading}
+                renderInput={(params) => (
+                  <TextFieldStyled
+                    {...params}
+                    sx={{
+                      border: "1px solid #fff",
+                      borderRadius: "5px",
+                    }}
+                    InputProps={{
+                      ...params.InputProps,
+                      endAdornment: (
+                        <React.Fragment>
+                          {isGetTemplateTypesLoading ? (
+                            <CircularProgress color="primary" size={20} />
+                          ) : null}
+                          {params.InputProps.endAdornment}
+                        </React.Fragment>
+                      ),
+                    }}
+                  />
+                )}
+              />
+            </div>
+            <div className="flex flex-col space-y-4">
+              <h4>Department</h4>
+
+              <Autocomplete
+                id="asynchronous-demo"
+                sx={{
+                  width: 300,
+                }}
+                open={isOpenDepartmentList}
+                onOpen={getDepartmentListHandler}
+                onClose={getDepartmentListHandler}
+                onChange={(e, value) => onChangeSelectedDepartment(value?.id)}
+                isOptionEqualToValue={(option, value) =>
+                  option.departmentName === value.departmentName
+                }
+                getOptionLabel={(option) => option.departmentName}
+                options={departmentList?.items!}
+                loading={isGetDepartmentsLoading}
+                renderInput={(params) => (
+                  <TextFieldStyled
+                    {...params}
+                    sx={{
+                      border: "1px solid #fff",
+                      borderRadius: "5px",
+                    }}
+                    InputProps={{
+                      ...params.InputProps,
+                      endAdornment: (
+                        <React.Fragment>
+                          {isGetDepartmentsLoading ? (
+                            <CircularProgress color="primary" size={20} />
+                          ) : null}
+                          {params.InputProps.endAdornment}
+                        </React.Fragment>
+                      ),
+                    }}
+                  />
+                )}
+              />
+            </div>
+            <div className="flex flex-col space-y-4">
+              <h4>Select Signer(s)</h4>
+              {isGetUserListLoading && (
+                <div className="flex justify-center">
+                  <CircularProgress />
+                </div>
+              )}
+              {userList?.items && !isGetUserListLoading && (
+                <Autocomplete
+                  multiple
+                  limitTags={2}
+                  sx={{
+                    "& .MuiAutocomplete-tag": {
+                      backgroundColor: "#fff",
+                    },
+                  }}
+                  id="multiple-limit-tags"
+                  options={userList?.items!}
+                  getOptionLabel={(option) => option.email}
+                  onChange={(e, value) => {
+                    setForm({
+                      ...form,
+                      signatoryList: value.length > 0 ? value.map((item) => item.id) : undefined,
+                    });
+                  }}
+                  renderInput={(params) => (
+                    <TextFieldStyled
+                      {...params}
+                      sx={{ border: "1px solid #fff", borderRadius: "5px" }}
+                    />
+                  )}
+                />
+              )}
+            </div>
+            <LoadingBtn
+              size="small"
+              loading={isAddNewTemplateLoading}
+              loadingIndicator={<CircularProgress color="inherit" size={16} />}
+              variant="outlined"
+              onClick={handleUpload}
+              disabled={!isEnableSave}
+            >
+              Save
+            </LoadingBtn>
           </div>
         </div>
         <div className="webviewer w-full" ref={viewer}></div>
       </div>
+      <AlertPopup
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        autoHideDuration={3000}
+      />
     </Fragment>
   );
 };

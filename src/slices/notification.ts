@@ -36,6 +36,8 @@ const handleErrorCR: CR<{ errorMessage: string | undefined }> = (state, { payloa
 
 const handleCloseCR = (state: Notification) => ({
   ...state,
+  status: undefined,
+  message: undefined,
   errorMessage: undefined,
   isOpen: false,
 });
