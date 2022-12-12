@@ -6,12 +6,16 @@ const apiPaths = {
         login: `${apiHead}api/Users/login`,
         extractToken: `${apiHead}`
     },
-    employee:{
-        getTemplates: `${apiHead}api/Template`,
+    template:{
+        getTemplates: `${apiHead}api/Template/getTemplates`,
         searchTemplate: `${apiHead}api/Template?templateName_eq=test`,
+        addNewTemplate: `${apiHead}api/Template/create`,
         test: ''
     },
-    headOffice:{
+    system:{
+        getDepartmentList: `${apiHead}api/Department/getDepartments`,
+        getUserListByDepartmentID: `${apiHead}api/Users/getUsers?departmentId_eq=`,
+        getTemplateTypeList: `${apiHead}api/Category/getCategories`
     }
 }
 
