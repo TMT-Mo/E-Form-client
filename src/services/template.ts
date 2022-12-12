@@ -1,9 +1,9 @@
-import { AddNewTemplateArgs, AddNewTemplateResponse } from './../models/template';
+import { AddNewTemplateArgs, AddNewTemplateResponse, GetTemplateArgs } from './../models/template';
 import { TemplateListResponse } from "../models/template"
 import { apiPaths, httpClient } from "../utils"
 
-const getTemplates = async (): Promise<TemplateListResponse> => {
-    const response = await httpClient.get({url: apiPaths.template.getTemplates})
+const getTemplates = async (args: GetTemplateArgs): Promise<TemplateListResponse> => {
+    const response = await httpClient.get({url: apiPaths.template.getTemplates, params: args })
     return response.data as TemplateListResponse
 }
 

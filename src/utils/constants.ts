@@ -27,4 +27,10 @@ export enum LocationIndex{
   CHANGEPASSWORD = 8 
 }
 
+export enum TypeFile{
+  DOC = '.doc',
+  DOCX = '.docx',
+  PDF = '.pdf'
+}
+
 

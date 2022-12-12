@@ -6,6 +6,9 @@ import AddIcon from "@mui/icons-material/Add";
 import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import DataTable from "../../../components/DataTable";
+import { useDispatch, useSelector } from "../../../hooks";
+import { getTemplates, searchTemplate } from "../../../slices/template";
+import { handleSuccess, handleError } from "../../../slices/notification";
 
 const StyledUploadBtn = styled(Button)({
   backgroundColor: "#fff",
@@ -32,6 +35,8 @@ const StyledAddBtn = styled(Button)({
 });
 
 const TemplateList = () => {
+  const dispatch = useDispatch();
+
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
       <h2>Template Management</h2>
@@ -53,7 +58,9 @@ const TemplateList = () => {
             <InputBase
               sx={{ ml: 1, flex: 1 }}
               placeholder="Search Template"
-              inputProps={{ "aria-label": "search google maps" }}
+              onChange={(e) =>
+                dispatch(searchTemplate({ value: e.target.value }))
+              }
             />
           </Paper>
           <div className="flex space-x-8">

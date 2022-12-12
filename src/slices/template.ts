@@ -1,28 +1,38 @@
-import { getDownloadURL, StorageReference, uploadBytesResumable, UploadTask } from 'firebase/storage';
-import { Template, TemplateListResponse, AddNewTemplateArgs, TemplateArgs } from './../models/template';
+import { getDownloadURL, uploadBytesResumable } from 'firebase/storage';
+import { Template, GetTemplateArgs, AddTemplateToFirebaseArgs, } from './../models/template';
 import { templateServices } from './../services/template';
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { CaseReducer, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { ValidationErrors } from "../models/notification";
 import { handleError, handleSuccess } from "./notification";
+import { NotificationStatus } from '../utils/constants';
 
 interface State {
     isGetTemplatesLoading: boolean;
     templateList: Template[]
-    isAddNewTemplateLoading: boolean
+    isAddNewTemplateLoading: boolean;
+    searchItemValue?: string;
 }
 
-interface AddTemplateArgs{
-  templateInfo: TemplateArgs,
-  storageRef: StorageReference
-  file: File
-}
+const initialState: State = {
+  templateList: [],
+  isGetTemplatesLoading: false,
+  isAddNewTemplateLoading: false,
+  searchItemValue: undefined
+};
 
 const ACTION_TYPE = 'template/'
 
-const getTemplates = createAsyncThunk(`${ACTION_TYPE}getTemplates`, async (args, {dispatch}) => {
+type CR<T> = CaseReducer<State, PayloadAction<T>>;
+
+const searchTemplateCR: CR<{ value: string }> = (state, { payload }) => ({
+  ...state,
+  searchItemValue: payload.value
+});
+
+const getTemplates = createAsyncThunk(`${ACTION_TYPE}getTemplates`, async (args: GetTemplateArgs, {dispatch}) => {
   try {
-    const result = await templateServices.getTemplates()
+    const result = await templateServices.getTemplates(args)
     return result
   } catch (error) {
     const err = error as AxiosError;
@@ -37,7 +47,7 @@ const getTemplates = createAsyncThunk(`${ACTION_TYPE}getTemplates`, async (args,
   }
 });
 
-const addNewTemplate = createAsyncThunk(`${ACTION_TYPE}addNewTemplate`, async (args: AddTemplateArgs, {dispatch}) => {
+const addNewTemplate = createAsyncThunk(`${ACTION_TYPE}addNewTemplate`, async (args: AddTemplateToFirebaseArgs, {dispatch}) => {
   try {
     const uploadTask = await uploadBytesResumable(args.storageRef, args.file);
     const url = await getDownloadURL(uploadTask.ref);
@@ -59,16 +69,10 @@ const addNewTemplate = createAsyncThunk(`${ACTION_TYPE}addNewTemplate`, async (a
   }
 });
 
-const initialState: State = {
-    templateList: [],
-    isGetTemplatesLoading: false,
-    isAddNewTemplateLoading: false
-};
-
 const template = createSlice({
   name: "template",
   initialState,
-  reducers: {},
+  reducers: {searchTemplate: searchTemplateCR},
   extraReducers:(builder) => {
       builder.addCase(getTemplates.pending, (state) => ({
         ...state,
@@ -100,6 +104,6 @@ const template = createSlice({
 
 export {getTemplates, addNewTemplate}
 
-export const {} = template.actions;
+export const {searchTemplate} = template.actions;
 
 export default template.reducer;

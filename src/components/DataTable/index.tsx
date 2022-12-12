@@ -37,7 +37,7 @@ const {
 const DataTable: React.FC = () => {
   const dispatch = useDispatch();
   const { locationIndex } = useSelector((state) => state.location);
-  const {isGetTemplatesLoading, templateList } = useSelector(state => state.template)
+  const {isGetTemplatesLoading, templateList, searchItemValue } = useSelector(state => state.template)
 
   const onFilterChange = React.useCallback((filterModel: GridFilterModel) => {
     // Here you save the data you need from the filter model
@@ -66,12 +66,11 @@ const DataTable: React.FC = () => {
   };
   const request = useCallback(async () => {
     try {
-      await dispatch(getTemplates()).unwrap(); //* Unwrap to catch error when failed
-      dispatch(handleSuccess({ message: "successful" }));
+      await dispatch(getTemplates({templateName_eq: searchItemValue || undefined})).unwrap(); //* Unwrap to catch error when failed
     } catch {
       dispatch(handleError({ errorMessage: undefined }));
     }
-  }, [dispatch]);
+  }, [dispatch, searchItemValue]);
 
   useEffect(() => {
     request();
@@ -86,13 +85,13 @@ const DataTable: React.FC = () => {
       <DataGrid
         rows={data().table}
         columns={data().columns!}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
+        pageSize={10}
+        rowsPerPageOptions={[10]}
         loading={data().loading}
         getRowId={getRowId}
         onFilterModelChange={onFilterChange}
         filterMode="server"
-        // components={{ LoadingOverlay: () => <LinearProgress /> }}
+        hideFooterPagination
       ></DataGrid>
     </div>
   );

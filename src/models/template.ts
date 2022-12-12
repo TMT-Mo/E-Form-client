@@ -1,3 +1,4 @@
+import { StorageReference } from 'firebase/storage';
 export interface Template{
     id: number,
     createdAt: string,
@@ -15,7 +16,10 @@ export interface TemplateListResponse{
     size: number
 }
 
-
+export interface GetTemplateArgs{
+    templateName_eq?: string,
+    page_eq?: number
+}
 
 export interface TemplateArgs{
     templateName?: string,
@@ -33,6 +37,12 @@ export interface AddNewTemplateArgs extends TemplateArgs{
 export interface AddNewTemplateResponse{
     message: string
 }
+
+export interface AddTemplateToFirebaseArgs{
+    templateInfo: TemplateArgs,
+    storageRef: StorageReference
+    file: File
+  }
 
 export interface TemplateType{
     id: number,

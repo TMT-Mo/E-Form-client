@@ -1,14 +1,20 @@
-import { ReactNode } from 'react';
+import { TypeFile } from "./constants";
+import { ReactNode } from "react";
 import { getGridStringOperators, GridColDef } from "@mui/x-data-grid";
-import { Template, } from "../models/template";
-import { ActionCell } from '../components/DataTable/ActionCell';
-
-
+import { Template } from "../models/template";
+import { ActionCell } from "../components/DataTable/ActionCell";
+import docIcon from "../assets/doc.svg";
+import pdfIcon from "../assets/pdf.svg";
 
 export const templateColumns: GridColDef[] = [
-  { field: "typeFile", headerName: "File", flex: 0.5, filterOperators: getGridStringOperators().filter(
-    (operator) => operator.value === 'contains',
-  ), },
+  {
+    field: "type",
+    headerName: 'File',
+    flex: 0.5,
+    filterOperators: getGridStringOperators().filter(
+      (operator) => operator.value === "contains"
+    ),
+  },
   {
     field: "templateName",
     headerName: "Name",
@@ -16,7 +22,7 @@ export const templateColumns: GridColDef[] = [
   },
   { field: "description", headerName: "Description", flex: 1 },
   {
-    field: "typeTemplate",
+    field: "typeName",
     headerName: "Type",
   },
   {
@@ -33,7 +39,7 @@ export const templateColumns: GridColDef[] = [
     field: "action",
     headerName: "Action",
     flex: 1,
-    renderCell: ActionCell 
+    renderCell: ActionCell,
   },
 ];
 
@@ -171,17 +177,17 @@ export const historyColumns: GridColDef[] = [
   },
 ];
 
-interface ITemplates{
-  file: ReactNode,
-  name: string,
-  description: string,
-  type: '.pdf' | '.doc',
-  department: string,
-  status: string,
-  action: ReactNode
+interface ITemplates {
+  file: ReactNode;
+  name: string;
+  description: string;
+  type: ".pdf" | ".doc";
+  department: string;
+  status: string;
+  action: ReactNode;
 }
 
 export const templateRows = (data: Template[]) => {
-  const row: ITemplates[] = []
-  data.map(item => row.push())
-}
+  const row: ITemplates[] = [];
+  data.map((item) => row.push());
+};

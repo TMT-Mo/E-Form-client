@@ -19,7 +19,7 @@ const request = (args: FullOptions): Promise<AxiosResponse> => {
     url,
     method,
     contentType = "application/json",
-    // params,
+    params,
     responseType = "json",
     data,
     signal,
@@ -43,6 +43,7 @@ const request = (args: FullOptions): Promise<AxiosResponse> => {
     },
     data,
     responseType,
+    params
     // cancelToken: source.token,
   });
 };

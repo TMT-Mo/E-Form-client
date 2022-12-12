@@ -8,7 +8,7 @@ const apiPaths = {
     },
     template:{
         getTemplates: `${apiHead}api/Template/getTemplates`,
-        searchTemplate: `${apiHead}api/Template?templateName_eq=test`,
+        searchTemplate: `${apiHead}api/Template/getTemplates?templateName_eq=test`,
         addNewTemplate: `${apiHead}api/Template/create`,
         test: ''
     },
