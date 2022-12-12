@@ -5,6 +5,8 @@ import React from "react";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import { Link } from "react-router-dom";
+
 export const ActionCell = (props: GridRenderCellParams<Date>) => {
   const { hasFocus, value } = props;
   const buttonElement = React.useRef<HTMLButtonElement | null>(null);
@@ -22,11 +24,11 @@ export const ActionCell = (props: GridRenderCellParams<Date>) => {
 
   return (
     <div>
-      <IconButton aria-label="lock" size="small">
-        <LockIcon />
+      <IconButton aria-label="lock" >
+        <LockIcon fontSize="small"/>
       </IconButton>
       <IconButton aria-label="delete">
-        <BorderColorIcon/>
+        <Link to='/viewDocument' replace><BorderColorIcon fontSize="small"/></Link>
       </IconButton>
     </div>
   );

@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "../../../hooks";
 import ChangePassword from "../../../pages/ChangePassword";
-import AwaitSigning from "../../../pages/DocumentManagement/AwaitSigning";
-import History from "../../../pages/DocumentManagement/History";
-import PersonalDoc from "../../../pages/DocumentManagement/PersonalDoc";
-import SharedDoc from "../../../pages/DocumentManagement/SharedDoc";
-import TemplateManagement from "../../../pages/TemplateManagement";
+import AwaitSigning from "../../../pages/Document/AwaitSigning";
+import History from "../../../pages/Document/History";
+import PersonalDoc from "../../../pages/Document/PersonalDoc";
+import SharedDoc from "../../../pages/Document/SharedDoc";
+import Template from "../../../pages/Template/TemplateList";
 import { setLocation } from "../../../slices/location";
 import { LocationIndex } from "../../../utils/constants";
+import AlertPopup from "../../AlertPopup";
 // import DesktopOnly from "../DesktopOnly";
 import SideBar from "./SideBar";
 import TopBar from "./TopBar";
@@ -45,7 +46,7 @@ const Layout: React.FC = () => {
       case ACCOUNT:
         return <></>;
       case TEMPLATE:
-        return <TemplateManagement />;
+        return <Template />;
       case AWAITSIGNING:
         return <AwaitSigning/>;
       case PERSONAL:
@@ -68,6 +69,7 @@ const Layout: React.FC = () => {
         {switchTab()}
         {/* <TemplateManagement/> */}
       </div>
+      <AlertPopup anchorOrigin={{vertical: "top", horizontal:"right"}} autoHideDuration={3000}/>
     </div>
   );
 };
