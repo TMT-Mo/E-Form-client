@@ -5,20 +5,25 @@ import { CaseReducer, createAsyncThunk, createSlice, PayloadAction } from "@redu
 import { AxiosError } from "axios";
 import { ValidationErrors } from "../models/notification";
 import { handleError, handleSuccess } from "./notification";
-import { NotificationStatus } from '../utils/constants';
 
 interface State {
     isGetTemplatesLoading: boolean;
     templateList: Template[]
     isAddNewTemplateLoading: boolean;
     searchItemValue?: string;
+    total?: number,
+    size?:number,
+    currentPage?: number,
 }
 
 const initialState: State = {
   templateList: [],
   isGetTemplatesLoading: false,
   isAddNewTemplateLoading: false,
-  searchItemValue: undefined
+  searchItemValue: undefined,
+  total: undefined,
+  size: undefined,
+  currentPage: undefined
 };
 
 const ACTION_TYPE = 'template/'
@@ -27,8 +32,14 @@ type CR<T> = CaseReducer<State, PayloadAction<T>>;
 
 const searchTemplateCR: CR<{ value: string }> = (state, { payload }) => ({
   ...state,
-  searchItemValue: payload.value
+  searchItemValue: payload.value,
+  currentPage: undefined
 });
+
+const onChangeTemplatePageCR: CR<{selectedPage: number}> = (state, {payload}) => ({
+  ...state,
+  currentPage: payload.selectedPage!
+})
 
 const getTemplates = createAsyncThunk(`${ACTION_TYPE}getTemplates`, async (args: GetTemplateArgs, {dispatch}) => {
   try {
@@ -72,7 +83,7 @@ const addNewTemplate = createAsyncThunk(`${ACTION_TYPE}addNewTemplate`, async (a
 const template = createSlice({
   name: "template",
   initialState,
-  reducers: {searchTemplate: searchTemplateCR},
+  reducers: {searchTemplate: searchTemplateCR, onChangeTemplatePage: onChangeTemplatePageCR},
   extraReducers:(builder) => {
       builder.addCase(getTemplates.pending, (state) => ({
         ...state,
@@ -81,7 +92,10 @@ const template = createSlice({
       builder.addCase(getTemplates.fulfilled, (state, {payload}) => ({
         ...state,
         isGetTemplatesLoading: false,
-        templateList: payload?.items!
+        templateList: payload?.items!,
+        total: payload?.total!,
+        size: payload?.size!,
+        currentPage: payload?.page!,
       }));
       builder.addCase(getTemplates.rejected, (state) => ({
         ...state,
@@ -94,6 +108,7 @@ const template = createSlice({
       builder.addCase(addNewTemplate.fulfilled, (state, {payload}) => ({
         ...state,
         isAddNewTemplateLoading: false,
+        
       }));
       builder.addCase(addNewTemplate.rejected, (state) => ({
         ...state,
@@ -104,6 +119,6 @@ const template = createSlice({
 
 export {getTemplates, addNewTemplate}
 
-export const {searchTemplate} = template.actions;
+export const {searchTemplate, onChangeTemplatePage} = template.actions;
 
 export default template.reducer;

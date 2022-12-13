@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer, { WebViewerInstance } from "@pdftron/webviewer";
-import { ref, uploadBytesResumable } from "firebase/storage";
+import { ref } from "firebase/storage";
 import storage from "../../../utils/firebase";
 import { useDispatch, useSelector } from "../../../hooks";
 import {
@@ -29,7 +29,6 @@ import {
 } from "../../../slices/system";
 import { handleError } from "../../../slices/notification";
 import { LoadingButton } from "@mui/lab";
-import { IFile } from "../../../models/system";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { addNewTemplate } from "../../../slices/template";
 import { TemplateArgs } from "../../../models/template";
@@ -70,6 +69,7 @@ const ViewAddTemplate: React.FC = () => {
   const instance = useRef<WebViewerInstance>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const {userInfo} = useSelector(state => state.auth)
   const {
     isGetDepartmentsLoading,
     departmentList,
@@ -89,6 +89,7 @@ const ViewAddTemplate: React.FC = () => {
     idTemplateType: undefined,
     size: undefined,
     signatoryList: undefined,
+    createdBy: userInfo?.userId!
   });
 
   const [selectedDepartment, setSelectedDepartment] = useState<
@@ -281,10 +282,11 @@ const ViewAddTemplate: React.FC = () => {
                   accept=".pdf,.doc,.docx"
                   type="file"
                   id="file-picker"
+                  className=""
                   onChange={handleChange}
                 />
                 <FileUploadIcon />
-                <span className="text-white text-base">
+                <span className="text-white text-base break-words w-60">
                   {form.templateName}
                 </span>
               </IconButton>

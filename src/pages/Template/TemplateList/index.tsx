@@ -1,6 +1,6 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase, Paper, Button } from "@mui/material";
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import UploadIcon from "@mui/icons-material/Upload";
 import AddIcon from "@mui/icons-material/Add";
 import { styled } from "@mui/system";
@@ -36,6 +36,27 @@ const StyledAddBtn = styled(Button)({
 
 const TemplateList = () => {
   const dispatch = useDispatch();
+  const {searchItemValue, currentPage, size} =
+    useSelector((state) => state.template);
+  const request = useCallback(async () => {
+    try {
+      await dispatch(
+        getTemplates({
+          templateName_contains: searchItemValue || undefined,
+          _page: currentPage || undefined,
+          _size: size || undefined,
+          _sort: undefined
+        })
+      ).unwrap(); //* Unwrap to catch error when failed
+       
+    } catch {
+      dispatch(handleError({ errorMessage: undefined }));
+    }
+  }, [dispatch, searchItemValue, currentPage, size]);
+
+  useEffect(() => {
+    request();
+  }, [request]);
 
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">

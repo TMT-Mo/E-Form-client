@@ -17,8 +17,10 @@ export interface TemplateListResponse{
 }
 
 export interface GetTemplateArgs{
-    templateName_eq?: string,
-    page_eq?: number
+    templateName_contains?: string,
+    _page?: number,
+    _size?:number,
+    _sort?: string
 }
 
 export interface TemplateArgs{
@@ -28,6 +30,7 @@ export interface TemplateArgs{
     // idDepartment?: number,
     description?: string,
     size?: number,
+    createdBy?: number,
 }
 
 export interface AddNewTemplateArgs extends TemplateArgs{
