@@ -30,7 +30,6 @@ export const useAuth = (): UseAuth => {
     try {
       dispatch(storeToken({value: true}))
       const token = localStorage.getItem(TOKEN_NAME) as string;
-      // console.log('first')
       if (token) {
         dispatch(setUserInfo({token}));
         navigate('/user');

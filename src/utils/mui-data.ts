@@ -1,29 +1,26 @@
 import { ReactNode } from 'react';
-import { GridColDef, GridColumns, GridRenderCellParams } from "@mui/x-data-grid";
-import { Template, TemplateListResponse } from "../models/templates";
-import word from '../assets/word.svg'
-import { Button } from '@mui/material';
-import { TouchRippleActions } from '@mui/material/ButtonBase/TouchRipple';
-import { style } from '@mui/system';
-import React from 'react';
+import { getGridStringOperators, GridColDef } from "@mui/x-data-grid";
+import { Template, } from "../models/template";
 import { ActionCell } from '../components/DataTable/ActionCell';
 
 
 
 export const templateColumns: GridColDef[] = [
-  { field: "file", headerName: "File", flex: 0.5 },
+  { field: "typeFile", headerName: "File", flex: 0.5, filterOperators: getGridStringOperators().filter(
+    (operator) => operator.value === 'contains',
+  ), },
   {
-    field: "name",
+    field: "templateName",
     headerName: "Name",
     flex: 1,
   },
   { field: "description", headerName: "Description", flex: 1 },
   {
-    field: "type",
+    field: "typeTemplate",
     headerName: "Type",
   },
   {
-    field: "department",
+    field: "departmentName",
     headerName: "Department",
     flex: 1,
   },

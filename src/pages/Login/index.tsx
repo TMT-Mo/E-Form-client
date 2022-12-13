@@ -1,7 +1,7 @@
 import { LoadingButton } from "@mui/lab";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import intropic from "../../assets/intropic.svg";
 import { useDispatch, useSelector } from "../../hooks";
 import { login } from "../../slices/auth";
@@ -76,7 +76,7 @@ const Login = () => {
     <div className="flex justify-center mt-10">
       <div className="flex items-center w-10/12 justify-around bg-blue-light-config px-20 py-32 rounded-xl">
         <div className="flex flex-col space-y-4 items-center">
-          <img alt="" src={intropic} className="cursor-pointer" />
+          <Link to='/user'><img alt="" src={intropic} className="cursor-pointer"/></Link>
           <h1 className="text-4xl font-medium pt-10">
             {t("Welcome to E-Form")}
           </h1>
