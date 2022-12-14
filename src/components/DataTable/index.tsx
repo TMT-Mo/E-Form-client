@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect } from "react";
+import React from "react";
 import { DataGrid, GridColDef, GridFilterModel } from "@mui/x-data-grid";
-import { handleError, handleSuccess } from "../../slices/notification";
 import { useDispatch, useSelector } from "../../hooks";
 import { LocationIndex } from "../../utils/constants";
 import {
@@ -10,15 +9,8 @@ import {
   sharedDocColumns,
   templateColumns,
 } from "../../utils/mui-data";
-import { Template, TemplateListResponse } from "../../models/template";
-import {
-  AwaitSigningResponse,
-  HistoryResponse,
-  PersonalDocResponse,
-} from "../../models/document";
-import { getTemplates, onChangeTemplatePage } from "../../slices/template";
-import { setPagination } from "../../slices/pagination";
-import { Pagination } from "@mui/material";
+import { Template } from "../../models/template";
+import { onChangeTemplatePage } from "../../slices/template";
 import CustomPagination from "./Pagination";
 
 interface GetRowIdParams {
@@ -36,14 +28,15 @@ interface Data {
 }
 
 const {
-  TEMPLATE,
+  SYSTEM,
   ACCOUNT,
-  AWAITSIGNING,
-  DEPARTMENT,
-  HISTORY,
+  NEW_TEMPLATE,
+  TEMPLATE,
+  TEMPLATE_HISTORY,
+  AWAIT_SIGNING,
   PERSONAL,
-  POSITION,
   SHARED,
+  DOCUMENT_HISTORY
 } = LocationIndex;
 
 const DataTable: React.FC = () => {
@@ -64,13 +57,13 @@ const DataTable: React.FC = () => {
 
   const data = (): Data => {
     switch (locationIndex) {
-      case DEPARTMENT:
+      case SYSTEM:
         return {
           columns: templateColumns,
           loading: false,
           table: templateList,
         };
-      case POSITION:
+      case NEW_TEMPLATE:
         return {
           columns: templateColumns,
           loading: false,
@@ -92,7 +85,13 @@ const DataTable: React.FC = () => {
           onChangePage: (e, value) =>
             dispatch(onChangeTemplatePage({ selectedPage: --value })),
         };
-      case AWAITSIGNING:
+      case AWAIT_SIGNING:
+        return {
+          columns: awaitSigningColumns,
+          loading: false,
+          table: templateList,
+        };
+      case TEMPLATE_HISTORY:
         return {
           columns: awaitSigningColumns,
           loading: false,
@@ -110,8 +109,14 @@ const DataTable: React.FC = () => {
           loading: false,
           table: templateList,
         };
+      case DOCUMENT_HISTORY:
+        return {
+          columns: sharedDocColumns,
+          loading: false,
+          table: templateList,
+        };
       default:
-        return { columns: historyColumns, loading: false, table: templateList };
+        return {table: []};
     }
   };
   // const request = useCallback(async () => {

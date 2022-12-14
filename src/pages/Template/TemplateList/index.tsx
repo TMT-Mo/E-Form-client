@@ -7,7 +7,11 @@ import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import DataTable from "../../../components/DataTable";
 import { useDispatch, useSelector } from "../../../hooks";
-import { getTemplates, searchTemplate } from "../../../slices/template";
+import {
+  clearTemplates,
+  getTemplates,
+  searchTemplate,
+} from "../../../slices/template";
 import { handleSuccess, handleError } from "../../../slices/notification";
 
 const StyledUploadBtn = styled(Button)({
@@ -36,19 +40,21 @@ const StyledAddBtn = styled(Button)({
 
 const TemplateList = () => {
   const dispatch = useDispatch();
-  const {searchItemValue, currentPage, size} =
-    useSelector((state) => state.template);
+  const { searchItemValue, currentPage, size } = useSelector(
+    (state) => state.template
+  );
+
   const request = useCallback(async () => {
+    console.log("first");
     try {
       await dispatch(
         getTemplates({
           templateName_contains: searchItemValue || undefined,
           _page: currentPage || undefined,
           _size: size || undefined,
-          _sort: undefined
+          _sort: undefined,
         })
       ).unwrap(); //* Unwrap to catch error when failed
-       
     } catch {
       dispatch(handleError({ errorMessage: undefined }));
     }
@@ -57,6 +63,10 @@ const TemplateList = () => {
   useEffect(() => {
     request();
   }, [request]);
+
+  useEffect(() => {
+    return () => {dispatch(clearTemplates())};
+  }, [dispatch]);
 
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">

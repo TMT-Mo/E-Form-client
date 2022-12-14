@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "../../../hooks";
 import ChangePassword from "../../../pages/ChangePassword";
 import AwaitSigning from "../../../pages/Document/AwaitSigning";
-import History from "../../../pages/Document/History";
+import DocumentHistory from "../../../pages/Document/History";
 import PersonalDoc from "../../../pages/Document/PersonalDoc";
 import SharedDoc from "../../../pages/Document/SharedDoc";
 import Template from "../../../pages/Template/TemplateList";
@@ -16,13 +16,13 @@ import TopBar from "./TopBar";
 const {
   TEMPLATE,
   ACCOUNT,
-  AWAITSIGNING,
-  DEPARTMENT,
-  HISTORY,
+  AWAIT_SIGNING,
+  SYSTEM,
   PERSONAL,
-  POSITION,
+  NEW_TEMPLATE,
   SHARED,
-  CHANGEPASSWORD
+  CHANGE_PASSWORD,
+  DOCUMENT_HISTORY
 } = LocationIndex;
 
 const Layout: React.FC = () => {
@@ -39,24 +39,26 @@ const Layout: React.FC = () => {
   // const { innerWidth } = window;
   const switchTab = () => {
     switch (locationIndex) {
-      case DEPARTMENT:
+      case SYSTEM:
         return <></>;
-      case POSITION:
+      case NEW_TEMPLATE:
         return <></>;
       case ACCOUNT:
         return <></>;
       case TEMPLATE:
         return <Template />;
-      case AWAITSIGNING:
+      case AWAIT_SIGNING:
         return <AwaitSigning/>;
       case PERSONAL:
         return <PersonalDoc/>;
       case SHARED:
         return <SharedDoc/>;
-      case CHANGEPASSWORD:
+      case CHANGE_PASSWORD:
         return <ChangePassword/>;
+      case DOCUMENT_HISTORY:
+        return <DocumentHistory/>;
       default:
-        return <History/>;
+        return <></>;
     }
   };
   

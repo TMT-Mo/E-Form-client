@@ -16,15 +16,17 @@ export enum Roles {
 }
 
 export enum LocationIndex{
-  DEPARTMENT = 0,
-  POSITION = 1,
-  ACCOUNT = 2,
+  SYSTEM  = 0,
+  ACCOUNT = 1,
+  NEW_TEMPLATE = 2,
   TEMPLATE = 3,
-  AWAITSIGNING = 4,
-  PERSONAL = 5,
-  SHARED = 6,
-  HISTORY = 7,
-  CHANGEPASSWORD = 8 
+  TEMPLATE_HISTORY = 4,
+  AWAIT_SIGNING = 5,
+  PERSONAL = 6,
+  SHARED = 7,
+  DOCUMENT_HISTORY = 8,
+  CHANGE_PASSWORD = 9,
+
 }
 
 export enum TypeFile{
