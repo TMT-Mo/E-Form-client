@@ -1,19 +1,21 @@
-import { TypeFile } from "./constants";
+import { StatusCell } from './../components/DataTable/status-cell/index';
 import { ReactNode } from "react";
 import { getGridStringOperators, GridColDef } from "@mui/x-data-grid";
 import { Template } from "../models/template";
-import { ActionCell } from "../components/DataTable/ActionCell";
-import docIcon from "../assets/doc.svg";
-import pdfIcon from "../assets/pdf.svg";
+import { ActionCell } from '../components/DataTable/action-cell';
+import { FileCell } from '../components/DataTable/file-cell';
+import { IsDisabledCell } from '../components/DataTable/isDisabled-cell';
 
 export const templateColumns: GridColDef[] = [
   {
     field: "type",
     headerName: 'File',
-    flex: 0.5,
     filterOperators: getGridStringOperators().filter(
       (operator) => operator.value === "contains"
     ),
+    headerAlign:"center",
+    renderCell: FileCell,
+    align:"center"
   },
   {
     field: "templateName",
@@ -28,17 +30,25 @@ export const templateColumns: GridColDef[] = [
   {
     field: "departmentName",
     headerName: "Department",
-    flex: 1,
+    align: 'center'
+    // flex: 1,
   },
   {
     field: "status",
     headerName: "Status",
-    flex: 1,
+    // flex: 1,
+    renderCell: StatusCell
+  },
+  {
+    field: "isDisabled",
+    headerName: "Is disabled",
+    // flex: 1,
+    renderCell: IsDisabledCell
   },
   {
     field: "action",
     headerName: "Action",
-    flex: 1,
+    // flex: 1,
     renderCell: ActionCell,
   },
 ];

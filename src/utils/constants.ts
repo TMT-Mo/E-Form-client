@@ -32,8 +32,14 @@ export enum TypeFile {
   PDF = ".pdf",
 }
 
-export enum StatusQuery {
+export enum StatusTemplate{
   NEW = 1,
   APPROVED = 2,
   REJECTED = 3,
+}
+
+export enum StatusTemplateTag{
+  NEW_TAG = 'New',
+  APPROVED_TAG = 'Approved',
+  REJECTED_TAG = 'Rejected',
 }

@@ -17,22 +17,15 @@ import { styled } from "@mui/system";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer, { WebViewerInstance } from "@pdftron/webviewer";
 import { ref } from "firebase/storage";
-import storage from "../../../utils/firebase";
-import { useDispatch, useSelector } from "../../../hooks";
-import {
-  clearUserList,
-  getDepartmentList,
-  getTemplateTypeList,
-  getUserListByDepartmentID,
-  toggleDepartmentList,
-  toggleTemplateTypeList,
-} from "../../../slices/system";
-import { handleError } from "../../../slices/notification";
 import { LoadingButton } from "@mui/lab";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-import { addNewTemplate } from "../../../slices/template";
-import { TemplateArgs } from "../../../models/template";
-import AlertPopup from "../../../components/AlertPopup";
+import AlertPopup from "../../../../components/AlertPopup";
+import { TemplateArgs } from "../../../../models/template";
+import { handleError } from "../../../../slices/notification";
+import { getDepartmentList, toggleDepartmentList, getTemplateTypeList, toggleTemplateTypeList, getUserListByDepartmentID, clearUserList } from "../../../../slices/system";
+import { addNewTemplate } from "../../../../slices/template";
+import { useDispatch, useSelector } from "../../../../hooks";
+import storage from "../../../../utils/firebase";
 
 const LoadingBtn = styled(
   LoadingButton,
@@ -89,7 +82,7 @@ const ViewAddTemplate: React.FC = () => {
     idTemplateType: undefined,
     size: undefined,
     signatoryList: undefined,
-    createdBy: userInfo?.userId!
+    createdBy: +userInfo?.userId!
   });
 
   const [selectedDepartment, setSelectedDepartment] = useState<
@@ -108,8 +101,6 @@ const ViewAddTemplate: React.FC = () => {
     });
     check ? setIsEnableSave(false) : setIsEnableSave(true);
   }, [form]);
-
-  console.log(isEnableSave);
   // Handle file upload event and update state
   function handleChange(event: any) {
     const newFile: File = event.target.files[0];
@@ -118,16 +109,11 @@ const ViewAddTemplate: React.FC = () => {
   }
 
   const handleUpload = async () => {
-    if (!file) {
-      alert("Please upload an image first!");
-    }
-
     const storageRef = ref(storage, `/${file!.name}`);
 
     // progress can be paused and resumed. It also exposes progress updates.
     // Receives the storage reference and the file to upload.
     try {
-      
       await dispatch(
         addNewTemplate({
           templateInfo: form,
@@ -357,7 +343,6 @@ const ViewAddTemplate: React.FC = () => {
             </div>
             <div className="flex flex-col space-y-4">
               <h4>Department</h4>
-
               <Autocomplete
                 id="asynchronous-demo"
                 sx={{

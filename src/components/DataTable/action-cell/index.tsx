@@ -1,17 +1,18 @@
-import { Button, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { TouchRippleActions } from "@mui/material/ButtonBase/TouchRipple";
 import { GridRenderCellParams } from "@mui/x-data-grid";
 import React from "react";
 import LockIcon from "@mui/icons-material/Lock";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import { Link } from "react-router-dom";
 
 export const ActionCell = (props: GridRenderCellParams<Date>) => {
-  const { hasFocus, value } = props;
+  const { hasFocus, value, row } = props;
   const buttonElement = React.useRef<HTMLButtonElement | null>(null);
   const rippleRef = React.useRef<TouchRippleActions | null>(null);
 
+  // const rowValue = row as 
+  
   React.useLayoutEffect(() => {
     if (hasFocus) {
       const input = buttonElement.current?.querySelector("input");
@@ -28,7 +29,7 @@ export const ActionCell = (props: GridRenderCellParams<Date>) => {
         <LockIcon fontSize="small"/>
       </IconButton>
       <IconButton aria-label="delete">
-        <Link to='/viewDocument' replace><BorderColorIcon fontSize="small"/></Link>
+        <Link to='/viewCreateTemplate' replace><BorderColorIcon fontSize="small"/></Link>
       </IconButton>
     </div>
   );

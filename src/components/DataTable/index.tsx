@@ -11,7 +11,7 @@ import {
 } from "../../utils/mui-data";
 import { Template } from "../../models/template";
 import { onChangeTemplatePage } from "../../slices/template";
-import CustomPagination from "./Pagination";
+import CustomPagination from "./pagination";
 
 interface GetRowIdParams {
   // The data item provided to the grid for the row in question
@@ -45,7 +45,6 @@ const DataTable: React.FC = () => {
   const {
     isGetTemplatesLoading,
     templateList,
-    searchItemValue,
     total,
     currentPage,
   } = useSelector((state) => state.template);
@@ -166,7 +165,7 @@ const DataTable: React.FC = () => {
         hideFooter
         // components={{ Pagination: CustomPagination }}
       />
-      {data().currentPage !== undefined && (
+      {data().table !== undefined && (
         <CustomPagination
           currentPage={data().currentPage!}
           totalPages={data().totalPages!}

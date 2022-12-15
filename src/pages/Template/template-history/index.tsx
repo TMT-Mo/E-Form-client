@@ -1,30 +1,16 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase, Paper, Button } from "@mui/material";
 import React, { useCallback, useEffect } from "react";
-import UploadIcon from "@mui/icons-material/Upload";
 import AddIcon from "@mui/icons-material/Add";
 import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import DataTable from "../../../components/DataTable";
 import { useDispatch, useSelector } from "../../../hooks";
 import {
-  clearTemplates,
   getTemplates,
   searchTemplate,
 } from "../../../slices/template";
-import { handleSuccess, handleError } from "../../../slices/notification";
-
-const StyledUploadBtn = styled(Button)({
-  backgroundColor: "#fff",
-  borderRadius: "10px",
-  color: "#407AFF",
-  padding: "0px 15px",
-  height: "80%",
-  ":hover": {
-    backgroundColor: "#407AFF",
-    color: "#fff",
-  },
-});
+import { handleError } from "../../../slices/notification";
 
 const StyledAddBtn = styled(Button)({
   backgroundColor: "#407AFF",
@@ -40,13 +26,12 @@ const StyledAddBtn = styled(Button)({
 
 const TemplateHistory = () => {
   const dispatch = useDispatch();
-  const { searchItemValue, currentPage, size } = useSelector(
+  const { searchItemValue, currentPage } = useSelector(
     (state) => state.template
   );
   const {userInfo} = useSelector(state => state.auth)
 
   const request = useCallback(async () => {
-    console.log("first");
     try {
       await dispatch(
         getTemplates({
@@ -94,7 +79,7 @@ const TemplateHistory = () => {
           </Paper>
           <div className="flex space-x-8">
             
-            <Link to="/viewDocument" className="no-underline">
+            <Link to="/viewAddTemplate" className="no-underline">
               <StyledAddBtn
                 variant="outlined"
                 size="small"

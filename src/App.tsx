@@ -8,7 +8,8 @@ import BeforeLogin from "./components/Layout/BeforeLogin";
 import NotFound from "./pages/NotFound";
 import AfterLogin from "./components/Layout/AfterLogin";
 import { useAuth, useSelector } from "./hooks";
-import ViewAddTemplate from "./pages/Template/ViewAddTemplate";
+import ViewAddTemplate from "./pages/Template/view/add-template";
+import ViewCreateDocument from "./pages/Template/view/create-document";
 
 function App() {
   const { checkAuthenticated } = useSelector((state) => state.auth);
@@ -23,8 +24,6 @@ function App() {
         <Route path="" element={<Introduction />} />
         <Route path="unauthorized" element={<Unauthorized />} />
 
-        {/* <Route path="document" element={<ViewTemplate />} /> */}
-
         <Route path="login" element={<Login />} />
       </Route>
 
@@ -34,7 +33,8 @@ function App() {
       <Route path="/user" element={<AfterLogin />}>
         {/* <Route path="/user/template" element={<TemplateManagement />} /> */}
       </Route>
-        <Route path="/viewDocument" element={<ViewAddTemplate/>}/>
+      <Route path="/viewAddTemplate" element={<ViewAddTemplate />} />
+      <Route path="/viewCreateDocument" element={<ViewCreateDocument />} />
       {/* </Route> */}
       <Route path="*" element={<NotFound />} />
     </Routes>

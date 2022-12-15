@@ -1,14 +1,19 @@
-import { StatusQuery } from './../utils/constants';
 import { StorageReference } from 'firebase/storage';
 export interface Template{
     id: number,
     createdAt: string,
     updatedAt: string,
     templateName: string,
-    type: '.pdf',
-    size: string,
-    statusTemplate: 'Active',
-    departmentName: string    
+    type: string,
+    description: string,
+    size: number,
+    status: number,
+    typeName: string,
+    departmentName: string,
+    isEnable: boolean,
+    signatoryList: number[],
+    link: string,
+    createdBy: number
 }
 export interface TemplateListResponse{
     items: Template[],
@@ -22,7 +27,7 @@ export interface GetTemplateArgs{
     _page?: number,
     _size?:number,
     _sort?: string,
-    status_eq?: StatusQuery.NEW | StatusQuery.APPROVED | StatusQuery.REJECTED,
+    status_eq?: number,
     createdBy_eq?: number,
 }
 

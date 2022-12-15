@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../../assets/logo-dark.svg";
 import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import HelpIcon from "@mui/icons-material/Help";
@@ -48,7 +47,6 @@ const {
 const SideBar: React.FC = () => {
   const { locationIndex } = useSelector((state) => state.location);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const handleListItemClick = (

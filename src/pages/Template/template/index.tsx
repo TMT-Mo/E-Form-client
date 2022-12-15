@@ -1,19 +1,16 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase, Paper, Button } from "@mui/material";
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect } from "react";
 import UploadIcon from "@mui/icons-material/Upload";
-import AddIcon from "@mui/icons-material/Add";
 import { styled } from "@mui/system";
-import { Link } from "react-router-dom";
 import DataTable from "../../../components/DataTable";
 import { useDispatch, useSelector } from "../../../hooks";
 import {
-  clearTemplates,
   getTemplates,
   searchTemplate,
 } from "../../../slices/template";
-import { handleSuccess, handleError } from "../../../slices/notification";
-import store from "../../../store";
+import { handleError } from "../../../slices/notification";
+import { StatusTemplate } from "../../../utils/constants";
 
 const StyledUploadBtn = styled(Button)({
   backgroundColor: "#fff",
@@ -27,27 +24,13 @@ const StyledUploadBtn = styled(Button)({
   },
 });
 
-const StyledAddBtn = styled(Button)({
-  backgroundColor: "#407AFF",
-  borderRadius: "10px",
-  color: "#fff",
-  padding: "0px 15px",
-  height: "80%",
-  textDecoration: "none",
-  ":hover": {
-    color: "#407AFF",
-  },
-});
-
 const Template = () => {
   const dispatch = useDispatch();
   const { searchItemValue, currentPage } = useSelector(
     (state) => state.template
   );
-  const isFirstRender = useRef(true);
 
   const request = useCallback(async () => {
-    console.log(isFirstRender);
     try {
       await dispatch(
         getTemplates({
@@ -55,9 +38,9 @@ const Template = () => {
           _page: currentPage,
           _size: 10,
           _sort: undefined,
+          status_eq: StatusTemplate.APPROVED
         })
       ).unwrap(); //* Unwrap to catch error when failed
-      isFirstRender.current = false;
     } catch {
       dispatch(handleError({ errorMessage: undefined }));
     }
@@ -102,7 +85,6 @@ const Template = () => {
             >
               Upload
             </StyledUploadBtn>
-            
           </div>
         </div>
         <DataTable />
