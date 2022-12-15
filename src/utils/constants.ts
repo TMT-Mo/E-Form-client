@@ -10,13 +10,11 @@ export enum ResponseStatus {
   REJECTED = "rejected",
 }
 
+export enum Roles {}
+// STUDENT = "Sinh Viên"
 
-export enum Roles {
-  // STUDENT = "Sinh Viên"
-}
-
-export enum LocationIndex{
-  SYSTEM  = 0,
+export enum LocationIndex {
+  SYSTEM = 0,
   ACCOUNT = 1,
   NEW_TEMPLATE = 2,
   TEMPLATE = 3,
@@ -26,13 +24,16 @@ export enum LocationIndex{
   SHARED = 7,
   DOCUMENT_HISTORY = 8,
   CHANGE_PASSWORD = 9,
-
 }
 
-export enum TypeFile{
-  DOC = '.doc',
-  DOCX = '.docx',
-  PDF = '.pdf'
+export enum TypeFile {
+  DOC = ".doc",
+  DOCX = ".docx",
+  PDF = ".pdf",
 }
 
-
+export enum StatusQuery {
+  NEW = 1,
+  APPROVED = 2,
+  REJECTED = 3,
+}

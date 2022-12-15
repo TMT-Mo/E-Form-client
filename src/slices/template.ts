@@ -22,7 +22,7 @@ interface State {
   searchItemValue?: string;
   total?: number;
   size?: number;
-  currentPage?: number;
+  currentPage: number;
 }
 
 const initialState: State = {
@@ -31,8 +31,8 @@ const initialState: State = {
   isAddNewTemplateLoading: false,
   searchItemValue: undefined,
   total: undefined,
-  size: undefined,
-  currentPage: undefined,
+  size: 10,
+  currentPage: 0,
 };
 
 const ACTION_TYPE = "template/";
@@ -42,7 +42,7 @@ type CR<T> = CaseReducer<State, PayloadAction<T>>;
 const searchTemplateCR: CR<{ value: string }> = (state, { payload }) => ({
   ...state,
   searchItemValue: payload.value,
-  currentPage: undefined,
+  currentPage: 0,
 });
 
 const onChangeTemplatePageCR: CR<{ selectedPage: number }> = (
@@ -59,8 +59,8 @@ const clearTemplatesCR = (state: State) => ({
   isAddNewTemplateLoading: false,
   searchItemValue: undefined,
   total: undefined,
-  size: undefined,
-  currentPage: undefined,
+  size: 10,
+  currentPage: 0,
 });
 
 const getTemplates = createAsyncThunk(
@@ -127,8 +127,6 @@ const template = createSlice({
       isGetTemplatesLoading: false,
       templateList: payload?.items!,
       total: payload?.total!,
-      // size: payload?.size!,
-      currentPage: payload?.page!,
     }));
     builder.addCase(getTemplates.rejected, (state) => ({
       ...state,

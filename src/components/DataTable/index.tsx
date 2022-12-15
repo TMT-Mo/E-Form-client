@@ -66,8 +66,12 @@ const DataTable: React.FC = () => {
       case NEW_TEMPLATE:
         return {
           columns: templateColumns,
-          loading: false,
+          loading: isGetTemplatesLoading,
           table: templateList,
+          currentPage,
+          totalPages: Math.ceil(total! / 10),
+          onChangePage: (e, value) =>
+            dispatch(onChangeTemplatePage({ selectedPage: --value })),
         };
       case ACCOUNT:
         return {
@@ -93,9 +97,13 @@ const DataTable: React.FC = () => {
         };
       case TEMPLATE_HISTORY:
         return {
-          columns: awaitSigningColumns,
-          loading: false,
+          columns: templateColumns,
+          loading: isGetTemplatesLoading,
           table: templateList,
+          currentPage,
+          totalPages: Math.ceil(total! / 10),
+          onChangePage: (e, value) =>
+            dispatch(onChangeTemplatePage({ selectedPage: --value })),
         };
       case PERSONAL:
         return {

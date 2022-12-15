@@ -26,12 +26,12 @@ const request = (args: FullOptions): Promise<AxiosResponse> => {
   } = args;
   
 
-  // const source = axios.CancelToken.source();
-  // if (signal) {
-  //   signal.addEventListener("abort", () => {
-  //     source.cancel();
-  //   });
-  // }
+  const source = axios.CancelToken.source();
+  if (signal) {
+    signal.addEventListener("abort", () => {
+      source.cancel();
+    });
+  }
   const token = helpers.getToken();
   
   return axios.request({

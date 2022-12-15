@@ -1,6 +1,6 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase, Paper, Button } from "@mui/material";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import UploadIcon from "@mui/icons-material/Upload";
 import AddIcon from "@mui/icons-material/Add";
 import { styled } from "@mui/system";
@@ -13,6 +13,7 @@ import {
   searchTemplate,
 } from "../../../slices/template";
 import { handleSuccess, handleError } from "../../../slices/notification";
+import store from "../../../store";
 
 const StyledUploadBtn = styled(Button)({
   backgroundColor: "#fff",
@@ -38,35 +39,33 @@ const StyledAddBtn = styled(Button)({
   },
 });
 
-const TemplateList = () => {
+const Template = () => {
   const dispatch = useDispatch();
-  const { searchItemValue, currentPage, size } = useSelector(
+  const { searchItemValue, currentPage } = useSelector(
     (state) => state.template
   );
+  const isFirstRender = useRef(true);
 
   const request = useCallback(async () => {
-    console.log("first");
+    console.log(isFirstRender);
     try {
       await dispatch(
         getTemplates({
           templateName_contains: searchItemValue || undefined,
-          _page: currentPage || undefined,
-          _size: size || undefined,
+          _page: currentPage,
+          _size: 10,
           _sort: undefined,
         })
       ).unwrap(); //* Unwrap to catch error when failed
+      isFirstRender.current = false;
     } catch {
       dispatch(handleError({ errorMessage: undefined }));
     }
-  }, [dispatch, searchItemValue, currentPage, size]);
+  }, [dispatch, searchItemValue, currentPage]);
 
   useEffect(() => {
     request();
   }, [request]);
-
-  useEffect(() => {
-    return () => {dispatch(clearTemplates())};
-  }, [dispatch]);
 
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
@@ -103,16 +102,7 @@ const TemplateList = () => {
             >
               Upload
             </StyledUploadBtn>
-            <Link to="/viewDocument" className="no-underline">
-              <StyledAddBtn
-                variant="outlined"
-                size="small"
-                className="shadow-md"
-                startIcon={<AddIcon />}
-              >
-                Add New
-              </StyledAddBtn>
-            </Link>
+            
           </div>
         </div>
         <DataTable />
@@ -121,4 +111,4 @@ const TemplateList = () => {
   );
 };
 
-export default TemplateList;
+export default Template;

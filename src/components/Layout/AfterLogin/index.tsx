@@ -5,13 +5,15 @@ import AwaitSigning from "../../../pages/Document/AwaitSigning";
 import DocumentHistory from "../../../pages/Document/History";
 import PersonalDoc from "../../../pages/Document/PersonalDoc";
 import SharedDoc from "../../../pages/Document/SharedDoc";
-import Template from "../../../pages/Template/TemplateList";
+import TemplateHistory from "../../../pages/Template/template-history";
+import Template from "../../../pages/Template/template";
 import { setLocation } from "../../../slices/location";
 import { LocationIndex } from "../../../utils/constants";
 import AlertPopup from "../../AlertPopup";
 // import DesktopOnly from "../DesktopOnly";
 import SideBar from "./SideBar";
 import TopBar from "./TopBar";
+import NewTemplates from "../../../pages/Template/new-templates";
 
 const {
   TEMPLATE,
@@ -22,7 +24,8 @@ const {
   NEW_TEMPLATE,
   SHARED,
   CHANGE_PASSWORD,
-  DOCUMENT_HISTORY
+  DOCUMENT_HISTORY,
+  TEMPLATE_HISTORY
 } = LocationIndex;
 
 const Layout: React.FC = () => {
@@ -42,11 +45,13 @@ const Layout: React.FC = () => {
       case SYSTEM:
         return <></>;
       case NEW_TEMPLATE:
-        return <></>;
+        return <NewTemplates/>;
       case ACCOUNT:
         return <></>;
       case TEMPLATE:
         return <Template />;
+      case TEMPLATE_HISTORY:
+        return <TemplateHistory/>;
       case AWAIT_SIGNING:
         return <AwaitSigning/>;
       case PERSONAL:

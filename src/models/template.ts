@@ -1,3 +1,4 @@
+import { StatusQuery } from './../utils/constants';
 import { StorageReference } from 'firebase/storage';
 export interface Template{
     id: number,
@@ -20,7 +21,9 @@ export interface GetTemplateArgs{
     templateName_contains?: string,
     _page?: number,
     _size?:number,
-    _sort?: string
+    _sort?: string,
+    status_eq?: StatusQuery.NEW | StatusQuery.APPROVED | StatusQuery.REJECTED,
+    createdBy_eq?: number,
 }
 
 export interface TemplateArgs{
