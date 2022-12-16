@@ -31,25 +31,105 @@ export const templateColumns: GridColDef[] = [
     field: "departmentName",
     headerName: "Department",
     align: 'center'
-    // flex: 1,
   },
   {
     field: "status",
     headerName: "Status",
-    // flex: 1,
     renderCell: StatusCell
   },
   {
     field: "isEnable",
     headerName: "Is Enable",
-    // flex: 1,
     renderCell: IsEnableCell
   },
   {
     field: "action",
     headerName: "Action",
-    // flex: 1,
     renderCell: ActionCell,
+  },
+];
+export const templateHistoryColumns: GridColDef[] = [
+  {
+    field: "type",
+    headerName: 'File',
+    filterOperators: getGridStringOperators().filter(
+      (operator) => operator.value === "contains"
+    ),
+    headerAlign:"center",
+    renderCell: FileCell,
+    align:"center"
+  },
+  {
+    field: "templateName",
+    headerName: "Name",
+    flex: 1,
+  },
+  { field: "description", headerName: "Description", flex: 1 },
+  {
+    field: "typeName",
+    headerName: "Type",
+  },
+  {
+    field: "departmentName",
+    headerName: "Department",
+    align: 'center'
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    renderCell: StatusCell
+  },
+  {
+    field: "createdAt",
+    headerName: "Created At",
+  },
+  {
+    field: "updatedAt",
+    headerName: "Updated At",
+  },
+  {
+    field: "action",
+    headerName: "Action",
+  },
+];
+
+export const newTemplatesColumns: GridColDef[] = [
+  {
+    field: "type",
+    headerName: 'File',
+    filterOperators: getGridStringOperators().filter(
+      (operator) => operator.value === "contains"
+    ),
+    headerAlign:"center",
+    renderCell: FileCell,
+    align:"center"
+  },
+  {
+    field: "templateName",
+    headerName: "Name",
+    flex: 1,
+  },
+  { field: "description", headerName: "Description", flex: 1 },
+  {
+    field: "typeName",
+    headerName: "Type",
+  },
+  {
+    field: "departmentName",
+    headerName: "Department",
+    align: 'center'
+  },
+  {
+    field: "createdBy",
+    headerName: "Created By",
+  },
+  {
+    field: "createdAt",
+    headerName: "Created At",
+  },
+  {
+    field: "action",
+    headerName: "Action",
   },
 ];
 

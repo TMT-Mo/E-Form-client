@@ -5,9 +5,11 @@ import { LocationIndex } from "../../utils/constants";
 import {
   awaitSigningColumns,
   historyColumns,
+  newTemplatesColumns,
   personalDocColumns,
   sharedDocColumns,
   templateColumns,
+  templateHistoryColumns,
 } from "../../utils/mui-data";
 import { Template } from "../../models/template";
 import { onChangeTemplatePage } from "../../slices/template";
@@ -64,7 +66,7 @@ const DataTable: React.FC = () => {
         };
       case NEW_TEMPLATE:
         return {
-          columns: templateColumns,
+          columns: newTemplatesColumns,
           loading: isGetTemplatesLoading,
           table: templateList,
           currentPage,
@@ -96,7 +98,7 @@ const DataTable: React.FC = () => {
         };
       case TEMPLATE_HISTORY:
         return {
-          columns: templateColumns,
+          columns: templateHistoryColumns,
           loading: isGetTemplatesLoading,
           table: templateList,
           currentPage,

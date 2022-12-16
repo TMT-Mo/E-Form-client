@@ -58,8 +58,11 @@ const SideBar: React.FC = () => {
         locationIndex: index,
       })
     );
-    dispatch(clearTemplates())
+    if(locationIndex !== index){
+      dispatch(clearTemplates())
+    }
   };
+  
   return (
     <div className="flex flex-col bg-dark-config min-h-screen items-center px-10 pt-8 space-y-8 w-80">
       <img src={logo} alt="" />
