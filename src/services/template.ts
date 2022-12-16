@@ -1,4 +1,4 @@
-import { AddNewTemplateArgs, AddNewTemplateResponse, GetTemplateArgs } from './../models/template';
+import { AddNewTemplateArgs, AddNewTemplateResponse, GetTemplateArgs, EnableTemplateArgs, EnableTemplateResponse } from './../models/template';
 import { TemplateListResponse } from "../models/template"
 import { apiPaths, httpClient } from "../utils"
 
@@ -12,7 +12,14 @@ const addNewTemplate = async (data: AddNewTemplateArgs): Promise<AddNewTemplateR
     return response.data as AddNewTemplateResponse
 }
 
+const enableTemplate = async (data: EnableTemplateArgs): Promise<EnableTemplateResponse> => {
+    const response = await httpClient.patch({url: apiPaths.template.enableTemplate, data})
+    return response.data as EnableTemplateResponse
+}
+
+
 export const templateServices = {
     getTemplates,
-    addNewTemplate
+    addNewTemplate,
+    enableTemplate
 }

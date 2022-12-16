@@ -62,3 +62,12 @@ export interface TemplateType{
 export interface GetTemplateTypeListResponse{
     items: TemplateType[]
 }
+
+export interface EnableTemplateArgs{
+    id: number,
+    isEnable: boolean,
+}
+
+export interface EnableTemplateResponse{
+    message: string
+}

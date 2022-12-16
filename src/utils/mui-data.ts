@@ -4,7 +4,7 @@ import { getGridStringOperators, GridColDef } from "@mui/x-data-grid";
 import { Template } from "../models/template";
 import { ActionCell } from '../components/DataTable/action-cell';
 import { FileCell } from '../components/DataTable/file-cell';
-import { IsDisabledCell } from '../components/DataTable/isDisabled-cell';
+import { IsEnableCell } from '../components/DataTable/isEnable-cell';
 
 export const templateColumns: GridColDef[] = [
   {
@@ -40,10 +40,10 @@ export const templateColumns: GridColDef[] = [
     renderCell: StatusCell
   },
   {
-    field: "isDisabled",
-    headerName: "Is disabled",
+    field: "isEnable",
+    headerName: "Is Enable",
     // flex: 1,
-    renderCell: IsDisabledCell
+    renderCell: IsEnableCell
   },
   {
     field: "action",

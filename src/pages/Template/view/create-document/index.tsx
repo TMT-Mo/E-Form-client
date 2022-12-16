@@ -148,7 +148,6 @@ import {
         const signatureTool = documentViewer.getTool("AnnotationCreateSignature");
         const annotManager = documentViewer.getAnnotationManager();
   
-        annotManager.enableReadOnlyMode();
         documentViewer.addEventListener("documentLoaded", async () => {
           await documentViewer.getDocument().getDocumentCompletePromise();
           documentViewer.updateView();

@@ -10,7 +10,7 @@ const apiPaths = {
         getTemplates: `${apiHead}api/Template/getTemplates`,
         searchTemplate: `${apiHead}api/Template/getTemplates?templateName_eq=test`,
         addNewTemplate: `${apiHead}api/Template/create`,
-        test: ''
+        enableTemplate: `${apiHead}api/Template/update`,
     },
     system:{
         getDepartmentList: `${apiHead}api/Department/getDepartments`,

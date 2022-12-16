@@ -3,6 +3,7 @@ import {
   Template,
   GetTemplateArgs,
   AddTemplateToFirebaseArgs,
+  EnableTemplateArgs,
 } from "./../models/template";
 import { templateServices } from "./../services/template";
 import {
@@ -23,6 +24,8 @@ interface State {
   total?: number;
   size?: number;
   currentPage: number;
+  templateDetail?: Template;
+  isEnableTemplateLoading: boolean;
 }
 
 const initialState: State = {
@@ -33,6 +36,8 @@ const initialState: State = {
   total: undefined,
   size: 10,
   currentPage: 0,
+  templateDetail: undefined,
+  isEnableTemplateLoading: false,
 };
 
 const ACTION_TYPE = "template/";
@@ -53,14 +58,37 @@ const onChangeTemplatePageCR: CR<{ selectedPage: number }> = (
   currentPage: payload.selectedPage!,
 });
 
+const getTemplateDetailCR: CR<{ template: Template }> = (
+  state,
+  { payload }
+) => ({
+  ...state,
+  templateDetail: payload.template!,
+});
+
+const updateTemplateCR: CR<{ id: number; isEnable: boolean }> = (
+  state,
+  { payload }
+) => {
+  state.templateList.forEach(function(value, index){
+    if (value.id === payload.id) {
+      value.isEnable = payload.isEnable;
+    }
+  });
+};
+
 const clearTemplatesCR = (state: State) => ({
+  ...state,
   templateList: [],
-  isGetTemplatesLoading: false,
-  isAddNewTemplateLoading: false,
   searchItemValue: undefined,
   total: undefined,
   size: 10,
   currentPage: 0,
+});
+
+const clearTemplateDetailCR = (state: State) => ({
+  ...state,
+  templateDetail: undefined
 });
 
 const getTemplates = createAsyncThunk(
@@ -83,6 +111,29 @@ const getTemplates = createAsyncThunk(
   }
 );
 
+const enableTemplate = createAsyncThunk(
+  `${ACTION_TYPE}enableTemplate`,
+  async (args: EnableTemplateArgs, { dispatch }) => {
+    try {
+      const result = await templateServices.enableTemplate({
+        ...args,
+      });
+      dispatch(updateTemplate({...args}))
+      dispatch(handleSuccess({ message: result.message }));
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+        throw err;
+      }
+    }
+  }
+);
 const addNewTemplate = createAsyncThunk(
   `${ACTION_TYPE}addNewTemplate`,
   async (args: AddTemplateToFirebaseArgs, { dispatch }) => {
@@ -115,7 +166,10 @@ const template = createSlice({
   reducers: {
     searchTemplate: searchTemplateCR,
     onChangeTemplatePage: onChangeTemplatePageCR,
-    clearTemplates: clearTemplatesCR
+    clearTemplates: clearTemplatesCR,
+    getTemplateDetail: getTemplateDetailCR,
+    updateTemplate: updateTemplateCR,
+    clearTemplateDetail: clearTemplateDetailCR
   },
   extraReducers: (builder) => {
     builder.addCase(getTemplates.pending, (state) => ({
@@ -144,11 +198,33 @@ const template = createSlice({
       ...state,
       isAddNewTemplateLoading: false,
     }));
+    builder.addCase(enableTemplate.pending, (state) => ({
+      ...state,
+      isEnableTemplateLoading: true,
+    }));
+    builder.addCase(enableTemplate.fulfilled, (state, { payload }) => {
+      return {
+        ...state,
+        isEnableTemplateLoading: false,
+        templateDetail: undefined
+      }
+    });
+    builder.addCase(enableTemplate.rejected, (state) => ({
+      ...state,
+      isEnableTemplateLoading: false,
+    }));
   },
 });
 
-export { getTemplates, addNewTemplate };
+export { getTemplates, addNewTemplate, enableTemplate };
 
-export const { searchTemplate, onChangeTemplatePage, clearTemplates } = template.actions;
+export const {
+  searchTemplate,
+  onChangeTemplatePage,
+  clearTemplates,
+  getTemplateDetail,
+  updateTemplate,
+  clearTemplateDetail
+} = template.actions;
 
 export default template.reducer;
