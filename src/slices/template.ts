@@ -1,105 +1,230 @@
-import { getDownloadURL, StorageReference, uploadBytesResumable, UploadTask } from 'firebase/storage';
-import { Template, TemplateListResponse, AddNewTemplateArgs, TemplateArgs } from './../models/template';
-import { templateServices } from './../services/template';
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import {
+  Template,
+  GetTemplateArgs,
+  AddTemplateToFirebaseArgs,
+  EnableTemplateArgs,
+} from "./../models/template";
+import { templateServices } from "./../services/template";
+import {
+  CaseReducer,
+  createAsyncThunk,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { ValidationErrors } from "../models/notification";
 import { handleError, handleSuccess } from "./notification";
 
 interface State {
-    isGetTemplatesLoading: boolean;
-    templateList: Template[]
-    isAddNewTemplateLoading: boolean
+  isGetTemplatesLoading: boolean;
+  templateList: Template[];
+  isAddNewTemplateLoading: boolean;
+  searchItemValue?: string;
+  total?: number;
+  size?: number;
+  currentPage: number;
+  templateDetail?: Template;
+  isEnableTemplateLoading: boolean;
 }
-
-interface AddTemplateArgs{
-  templateInfo: TemplateArgs,
-  storageRef: StorageReference
-  file: File
-}
-
-const ACTION_TYPE = 'template/'
-
-const getTemplates = createAsyncThunk(`${ACTION_TYPE}getTemplates`, async (args, {dispatch}) => {
-  try {
-    const result = await templateServices.getTemplates()
-    return result
-  } catch (error) {
-    const err = error as AxiosError;
-    if (err.response) {
-      dispatch(
-        handleError({
-          errorMessage: (err.response?.data as ValidationErrors).errorMessage,
-        })
-      );
-      throw err;
-    }
-  }
-});
-
-const addNewTemplate = createAsyncThunk(`${ACTION_TYPE}addNewTemplate`, async (args: AddTemplateArgs, {dispatch}) => {
-  try {
-    const uploadTask = await uploadBytesResumable(args.storageRef, args.file);
-    const url = await getDownloadURL(uploadTask.ref);
-    const result = await templateServices.addNewTemplate({...args.templateInfo, link: url})
-    dispatch(
-      handleSuccess({message: result.message})
-    );
-    return result
-  } catch (error) {
-    const err = error as AxiosError;
-    if (err.response) {
-      dispatch(
-        handleError({
-          errorMessage: (err.response?.data as ValidationErrors).errorMessage,
-        })
-      );
-      throw err;
-    }
-  }
-});
 
 const initialState: State = {
-    templateList: [],
-    isGetTemplatesLoading: false,
-    isAddNewTemplateLoading: false
+  templateList: [],
+  isGetTemplatesLoading: false,
+  isAddNewTemplateLoading: false,
+  searchItemValue: undefined,
+  total: undefined,
+  size: 10,
+  currentPage: 0,
+  templateDetail: undefined,
+  isEnableTemplateLoading: false,
 };
+
+const ACTION_TYPE = "template/";
+
+type CR<T> = CaseReducer<State, PayloadAction<T>>;
+
+const searchTemplateCR: CR<{ value: string }> = (state, { payload }) => ({
+  ...state,
+  searchItemValue: payload.value,
+  currentPage: 0,
+});
+
+const onChangeTemplatePageCR: CR<{ selectedPage: number }> = (
+  state,
+  { payload }
+) => ({
+  ...state,
+  currentPage: payload.selectedPage!,
+});
+
+const getTemplateDetailCR: CR<{ template: Template }> = (
+  state,
+  { payload }
+) => ({
+  ...state,
+  templateDetail: payload.template!,
+});
+
+const updateTemplateCR: CR<{ id: number; isEnable: boolean }> = (
+  state,
+  { payload }
+) => {
+  state.templateList.forEach(function(value, index){
+    if (value.id === payload.id) {
+      value.isEnable = payload.isEnable;
+    }
+  });
+};
+
+const clearTemplatesCR = (state: State) => ({
+  ...state,
+  templateList: [],
+  searchItemValue: undefined,
+  total: undefined,
+  size: 10,
+  currentPage: 0,
+});
+
+const clearTemplateDetailCR = (state: State) => ({
+  ...state,
+  templateDetail: undefined
+});
+
+const getTemplates = createAsyncThunk(
+  `${ACTION_TYPE}getTemplates`,
+  async (args: GetTemplateArgs, { dispatch }) => {
+    try {
+      const result = await templateServices.getTemplates(args);
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+        throw err;
+      }
+    }
+  }
+);
+
+const enableTemplate = createAsyncThunk(
+  `${ACTION_TYPE}enableTemplate`,
+  async (args: EnableTemplateArgs, { dispatch }) => {
+    try {
+      const result = await templateServices.enableTemplate({
+        ...args,
+      });
+      dispatch(updateTemplate({...args}))
+      dispatch(handleSuccess({ message: result.message }));
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+        throw err;
+      }
+    }
+  }
+);
+const addNewTemplate = createAsyncThunk(
+  `${ACTION_TYPE}addNewTemplate`,
+  async (args: AddTemplateToFirebaseArgs, { dispatch }) => {
+    try {
+      const uploadTask = await uploadBytesResumable(args.storageRef, args.file);
+      const url = await getDownloadURL(uploadTask.ref);
+      const result = await templateServices.addNewTemplate({
+        ...args.templateInfo,
+        link: url,
+      });
+      dispatch(handleSuccess({ message: result.message }));
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+        throw err;
+      }
+    }
+  }
+);
 
 const template = createSlice({
   name: "template",
   initialState,
-  reducers: {},
-  extraReducers:(builder) => {
-      builder.addCase(getTemplates.pending, (state) => ({
+  reducers: {
+    searchTemplate: searchTemplateCR,
+    onChangeTemplatePage: onChangeTemplatePageCR,
+    clearTemplates: clearTemplatesCR,
+    getTemplateDetail: getTemplateDetailCR,
+    updateTemplate: updateTemplateCR,
+    clearTemplateDetail: clearTemplateDetailCR
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getTemplates.pending, (state) => ({
+      ...state,
+      isGetTemplatesLoading: true,
+    }));
+    builder.addCase(getTemplates.fulfilled, (state, { payload }) => ({
+      ...state,
+      isGetTemplatesLoading: false,
+      templateList: payload?.items!,
+      total: payload?.total!,
+    }));
+    builder.addCase(getTemplates.rejected, (state) => ({
+      ...state,
+      isGetTemplatesLoading: false,
+    }));
+    builder.addCase(addNewTemplate.pending, (state) => ({
+      ...state,
+      isAddNewTemplateLoading: true,
+    }));
+    builder.addCase(addNewTemplate.fulfilled, (state, { payload }) => ({
+      ...state,
+      isAddNewTemplateLoading: false,
+    }));
+    builder.addCase(addNewTemplate.rejected, (state) => ({
+      ...state,
+      isAddNewTemplateLoading: false,
+    }));
+    builder.addCase(enableTemplate.pending, (state) => ({
+      ...state,
+      isEnableTemplateLoading: true,
+    }));
+    builder.addCase(enableTemplate.fulfilled, (state, { payload }) => {
+      return {
         ...state,
-        isGetTemplatesLoading: true,
-      }));
-      builder.addCase(getTemplates.fulfilled, (state, {payload}) => ({
-        ...state,
-        isGetTemplatesLoading: false,
-        templateList: payload?.items!
-      }));
-      builder.addCase(getTemplates.rejected, (state) => ({
-        ...state,
-        isGetTemplatesLoading: false,
-      }))
-      builder.addCase(addNewTemplate.pending, (state) => ({
-        ...state,
-        isAddNewTemplateLoading: true,
-      }));
-      builder.addCase(addNewTemplate.fulfilled, (state, {payload}) => ({
-        ...state,
-        isAddNewTemplateLoading: false,
-      }));
-      builder.addCase(addNewTemplate.rejected, (state) => ({
-        ...state,
-        isAddNewTemplateLoading: false,
-      }))
+        isEnableTemplateLoading: false,
+        templateDetail: undefined
+      }
+    });
+    builder.addCase(enableTemplate.rejected, (state) => ({
+      ...state,
+      isEnableTemplateLoading: false,
+    }));
   },
 });
 
-export {getTemplates, addNewTemplate}
+export { getTemplates, addNewTemplate, enableTemplate };
 
-export const {} = template.actions;
+export const {
+  searchTemplate,
+  onChangeTemplatePage,
+  clearTemplates,
+  getTemplateDetail,
+  updateTemplate,
+  clearTemplateDetail
+} = template.actions;
 
 export default template.reducer;

@@ -19,19 +19,19 @@ const request = (args: FullOptions): Promise<AxiosResponse> => {
     url,
     method,
     contentType = "application/json",
-    // params,
+    params,
     responseType = "json",
     data,
     signal,
   } = args;
   
 
-  // const source = axios.CancelToken.source();
-  // if (signal) {
-  //   signal.addEventListener("abort", () => {
-  //     source.cancel();
-  //   });
-  // }
+  const source = axios.CancelToken.source();
+  if (signal) {
+    signal.addEventListener("abort", () => {
+      source.cancel();
+    });
+  }
   const token = helpers.getToken();
   
   return axios.request({
@@ -43,6 +43,7 @@ const request = (args: FullOptions): Promise<AxiosResponse> => {
     },
     data,
     responseType,
+    params
     // cancelToken: source.token,
   });
 };
