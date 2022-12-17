@@ -26,6 +26,16 @@ export enum LocationIndex {
   CHANGE_PASSWORD = 9,
 }
 
+export enum ViewerLocationIndex {
+  ADD_TEMPLATE = 0,
+  APPROVING_TEMPLATE = 1,
+  CREATE_DOCUMENT = 2,
+  CREATE_PERSONAL_DOCUMENT = 3,
+  APPROVING_DOCUMENT = 4,
+  VIEW_DOCUMENT = 5,
+  VIEW_DOCUMENT_HISTORY = 6,
+}
+
 export enum TypeFile {
   DOC = ".doc",
   DOCX = ".docx",
@@ -42,4 +52,18 @@ export enum StatusTemplateTag{
   NEW_TAG = 'New',
   APPROVED_TAG = 'Approved',
   REJECTED_TAG = 'Rejected',
+}
+
+export enum DataTableHeader{
+  TYPE = 'type',
+  STATUS = 'status',
+  IS_ENABLE = 'isEnable',
+  TYPE_TEMPLATE = 'typeName',
+  DEPARTMENT = 'department',
+  NAME = 'name',
+  DESCRIPTION = 'description',
+  ACTION = 'action',
+  CREATED_AT = 'createdAt',
+  UPDATED_AT = 'updatedAt',
+  CREATED_BY = 'createdBy',
 }

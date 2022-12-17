@@ -11,6 +11,8 @@ import {
   searchTemplate,
 } from "../../../slices/template";
 import { handleError } from "../../../slices/notification";
+import { setViewerLocation } from "../../../slices/location";
+import { ViewerLocationIndex } from "../../../utils/constants";
 
 const StyledAddBtn = styled(Button)({
   backgroundColor: "#407AFF",
@@ -24,6 +26,8 @@ const StyledAddBtn = styled(Button)({
   },
 });
 
+const {ADD_TEMPLATE} = ViewerLocationIndex
+
 const TemplateHistory = () => {
   const dispatch = useDispatch();
   const { searchItemValue, currentPage } = useSelector(
@@ -31,7 +35,7 @@ const TemplateHistory = () => {
   );
   const {userInfo} = useSelector(state => state.auth)
 
-  const request = useCallback(async () => {
+  const getTemplateList = useCallback(async () => {
     try {
       await dispatch(
         getTemplates({
@@ -48,8 +52,8 @@ const TemplateHistory = () => {
   }, [dispatch, searchItemValue, currentPage, userInfo?.userId]);
 
   useEffect(() => {
-    request();
-  }, [request]);
+    getTemplateList();
+  }, [getTemplateList]);
 
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
@@ -79,7 +83,7 @@ const TemplateHistory = () => {
           </Paper>
           <div className="flex space-x-8">
             
-            <Link to="/viewAddTemplate" className="no-underline">
+            <Link to="/viewer" className="no-underline" onClick={() => dispatch(setViewerLocation({viewerLocationIndex: ADD_TEMPLATE}))}>
               <StyledAddBtn
                 variant="outlined"
                 size="small"

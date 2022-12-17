@@ -29,6 +29,10 @@ export interface GetTemplateArgs{
     _sort?: string,
     status_eq?: number,
     createdBy_eq?: number,
+    type_eq?: string,
+    typeName_eq?: string,
+    department_eq?: string,
+    isEnable_eq?: boolean
 }
 
 export interface TemplateArgs{
@@ -70,4 +74,9 @@ export interface EnableTemplateArgs{
 
 export interface EnableTemplateResponse{
     message: string
+}
+
+export interface TemplateFilter{
+    value: number | string | boolean,
+    field: string,
 }

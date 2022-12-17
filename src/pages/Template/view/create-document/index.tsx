@@ -185,11 +185,8 @@ import {
       }
       if (instance.current) {
         instance.current.UI.loadDocument(file);
-        console.log(instance);
       }
     }, [file]);
-  
-    console.log(form);
   
     const getDepartmentListHandler = async () => {
       try {

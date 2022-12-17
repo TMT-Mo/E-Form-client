@@ -4,6 +4,7 @@ import {
   GetTemplateArgs,
   AddTemplateToFirebaseArgs,
   EnableTemplateArgs,
+  TemplateFilter,
 } from "./../models/template";
 import { templateServices } from "./../services/template";
 import {
@@ -26,6 +27,7 @@ interface State {
   currentPage: number;
   templateDetail?: Template;
   isEnableTemplateLoading: boolean;
+  filter?: TemplateFilter
 }
 
 const initialState: State = {
@@ -38,6 +40,7 @@ const initialState: State = {
   currentPage: 0,
   templateDetail: undefined,
   isEnableTemplateLoading: false,
+  filter: undefined
 };
 
 const ACTION_TYPE = "template/";
@@ -81,6 +84,7 @@ const clearTemplatesCR = (state: State) => ({
   ...state,
   templateList: [],
   searchItemValue: undefined,
+  filter: undefined,
   total: undefined,
   size: 10,
   currentPage: 0,
@@ -89,6 +93,14 @@ const clearTemplatesCR = (state: State) => ({
 const clearTemplateDetailCR = (state: State) => ({
   ...state,
   templateDetail: undefined
+});
+
+const setTemplateFilterCR: CR<TemplateFilter | undefined> = (
+  state,
+  { payload }
+) => ({
+  ...state,
+  filter: payload
 });
 
 const getTemplates = createAsyncThunk(
@@ -169,7 +181,8 @@ const template = createSlice({
     clearTemplates: clearTemplatesCR,
     getTemplateDetail: getTemplateDetailCR,
     updateTemplate: updateTemplateCR,
-    clearTemplateDetail: clearTemplateDetailCR
+    clearTemplateDetail: clearTemplateDetailCR,
+    setTemplateFilter: setTemplateFilterCR
   },
   extraReducers: (builder) => {
     builder.addCase(getTemplates.pending, (state) => ({
@@ -224,7 +237,8 @@ export const {
   clearTemplates,
   getTemplateDetail,
   updateTemplate,
-  clearTemplateDetail
+  clearTemplateDetail,
+  setTemplateFilter
 } = template.actions;
 
 export default template.reducer;

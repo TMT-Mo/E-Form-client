@@ -16,7 +16,7 @@ const NewTemplates = () => {
     (state) => state.template
   );
 
-  const request = useCallback(async () => {
+  const getTemplateList = useCallback(async () => {
     try {
       await dispatch(
         getTemplates({
@@ -33,8 +33,8 @@ const NewTemplates = () => {
   }, [dispatch, searchItemValue, currentPage]);
 
   useEffect(() => {
-    request();
-  }, [request]);
+    getTemplateList();
+  }, [getTemplateList]);
 
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">

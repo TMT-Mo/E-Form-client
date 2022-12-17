@@ -1,3 +1,4 @@
+import { isEnableOnlyOperators } from './../components/DataTable/filter/isEnable/index';
 import { StatusCell } from './../components/DataTable/status-cell/index';
 import { ReactNode } from "react";
 import { getGridStringOperators, GridColDef } from "@mui/x-data-grid";
@@ -5,14 +6,17 @@ import { Template } from "../models/template";
 import { ActionCell } from '../components/DataTable/action-cell';
 import { FileCell } from '../components/DataTable/file-cell';
 import { IsEnableCell } from '../components/DataTable/isEnable-cell';
+import { typeOnlyOperators } from '../components/DataTable/filter/type-file';
+import { typeTemplateOnlyOperators } from '../components/DataTable/filter/type-template';
+import { DataTableHeader } from './constants';
 
+const { TYPE, DEPARTMENT, IS_ENABLE, STATUS, TYPE_TEMPLATE } = DataTableHeader;
 export const templateColumns: GridColDef[] = [
   {
-    field: "type",
+    field: TYPE,
     headerName: 'File',
-    filterOperators: getGridStringOperators().filter(
-      (operator) => operator.value === "contains"
-    ),
+    filterOperators: typeOnlyOperators,
+    
     headerAlign:"center",
     renderCell: FileCell,
     align:"center"
@@ -21,11 +25,14 @@ export const templateColumns: GridColDef[] = [
     field: "templateName",
     headerName: "Name",
     flex: 1,
+    filterable: false
   },
-  { field: "description", headerName: "Description", flex: 1 },
+  { field: "description", headerName: "Description", flex: 1, filterable: false },
   {
-    field: "typeName",
+    field: TYPE_TEMPLATE,
     headerName: "Type",
+    filterOperators: typeTemplateOnlyOperators
+
   },
   {
     field: "departmentName",
@@ -33,24 +40,27 @@ export const templateColumns: GridColDef[] = [
     align: 'center'
   },
   {
-    field: "status",
+    field: STATUS,
     headerName: "Status",
     renderCell: StatusCell
   },
   {
-    field: "isEnable",
+    field: IS_ENABLE,
     headerName: "Is Enable",
-    renderCell: IsEnableCell
+    renderCell: IsEnableCell,
+    align: 'center',
+    filterOperators: isEnableOnlyOperators
   },
   {
     field: "action",
     headerName: "Action",
     renderCell: ActionCell,
+    filterable: false
   },
 ];
 export const templateHistoryColumns: GridColDef[] = [
   {
-    field: "type",
+    field: TYPE,
     headerName: 'File',
     filterOperators: getGridStringOperators().filter(
       (operator) => operator.value === "contains"
@@ -66,7 +76,7 @@ export const templateHistoryColumns: GridColDef[] = [
   },
   { field: "description", headerName: "Description", flex: 1 },
   {
-    field: "typeName",
+    field: TYPE_TEMPLATE,
     headerName: "Type",
   },
   {
@@ -75,7 +85,7 @@ export const templateHistoryColumns: GridColDef[] = [
     align: 'center'
   },
   {
-    field: "status",
+    field: STATUS,
     headerName: "Status",
     renderCell: StatusCell
   },
@@ -95,7 +105,7 @@ export const templateHistoryColumns: GridColDef[] = [
 
 export const newTemplatesColumns: GridColDef[] = [
   {
-    field: "type",
+    field: TYPE,
     headerName: 'File',
     filterOperators: getGridStringOperators().filter(
       (operator) => operator.value === "contains"
@@ -111,7 +121,7 @@ export const newTemplatesColumns: GridColDef[] = [
   },
   { field: "description", headerName: "Description", flex: 1 },
   {
-    field: "typeName",
+    field: TYPE_TEMPLATE,
     headerName: "Type",
   },
   {
@@ -144,13 +154,13 @@ export const awaitSigningColumns: GridColDef[] = [
   },
   { field: "datePublished", headerName: "Date published", flex: 1 },
   {
-    field: "type",
+    field: TYPE,
     headerName: "Type",
     type: "number",
     flex: 1,
   },
   {
-    field: "department",
+    field: DEPARTMENT,
     headerName: "Department",
     sortable: false,
     hideable: false,
@@ -177,16 +187,16 @@ export const personalDocColumns: GridColDef[] = [
   { field: "datePublished", headerName: "Date Published", flex: 1 },
   { field: "dateModified", headerName: "Date Modified", flex: 1 },
   {
-    field: "type",
+    field: TYPE,
     headerName: "Type",
   },
   {
-    field: "department",
+    field: DEPARTMENT,
     headerName: "Department",
     flex: 1,
   },
   {
-    field: "status",
+    field: STATUS,
     headerName: "Status",
     flex: 1,
   },
@@ -212,16 +222,16 @@ export const sharedDocColumns: GridColDef[] = [
   // { field: "datePublished", headerName: "Date Published", flex: 1 },
   { field: "dateModified", headerName: "Date Modified", flex: 1 },
   {
-    field: "type",
+    field: TYPE,
     headerName: "Type",
   },
   {
-    field: "department",
+    field: DEPARTMENT,
     headerName: "Department",
     flex: 1,
   },
   {
-    field: "status",
+    field: STATUS,
     headerName: "Status",
     flex: 1,
   },
@@ -242,16 +252,16 @@ export const historyColumns: GridColDef[] = [
   { field: "datePublished", headerName: "Date Published", flex: 1 },
   { field: "dateModified", headerName: "Date Modified", flex: 1 },
   {
-    field: "type",
+    field: TYPE,
     headerName: "Type",
   },
   {
-    field: "department",
+    field: DEPARTMENT,
     headerName: "Department",
     flex: 1,
   },
   {
-    field: "status",
+    field: STATUS,
     headerName: "Status",
     flex: 1,
   },

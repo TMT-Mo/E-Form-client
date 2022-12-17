@@ -9,13 +9,21 @@ import { useDispatch, useSelector } from "../../../hooks";
 import { enableTemplate, getTemplateDetail } from "../../../slices/template";
 import { Template } from "../../../models/template";
 import { handleError } from "../../../slices/notification";
+import { ViewerLocationIndex } from "../../../utils/constants";
+import { setViewerLocation } from "../../../slices/location";
+
+const {
+  CREATE_DOCUMENT,
+} = ViewerLocationIndex;
 
 export const ActionCell = (props: GridRenderCellParams<Date>) => {
-  const { hasFocus, value, row  } = props;
+  const { hasFocus, value, row } = props;
   const buttonElement = React.useRef<HTMLButtonElement | null>(null);
   const rippleRef = React.useRef<TouchRippleActions | null>(null);
   const dispatch = useDispatch();
-  const { isEnableTemplateLoading, templateDetail } = useSelector((state) => state.template);
+  const { isEnableTemplateLoading, templateDetail } = useSelector(
+    (state) => state.template
+  );
   // const [idTemplate, setIdTemplate] = useState<number>();
 
   const rowValue = row as Template;
@@ -40,26 +48,31 @@ export const ActionCell = (props: GridRenderCellParams<Date>) => {
   }, [dispatch, rowValue.id, rowValue.isEnable]);
 
   useEffect(() => {
-    if(templateDetail?.id === rowValue.id){
-      onEnableTemplate()
-    } ;
+    if (templateDetail?.id === rowValue.id) {
+      onEnableTemplate();
+    }
   }, [onEnableTemplate, rowValue.id, templateDetail?.id]);
 
   return (
     <div>
-      <IconButton aria-label="lock" onClick={() => dispatch(getTemplateDetail({ template: row }))}>
+      <IconButton
+        aria-label="lock"
+        onClick={() => dispatch(getTemplateDetail({ template: row }))}
+      >
         {isEnableTemplateLoading && templateDetail?.id === rowValue.id ? (
           <CircularProgress size={20} />
         ) : (
           <LockIcon fontSize="small" />
         )}
       </IconButton>
-      <IconButton aria-label="delete">
-        <Link
-          to="/viewCreateDocument"
-          replace
-          onClick={() => dispatch(getTemplateDetail({ template: row }))}
-        >
+      <IconButton
+        aria-label="delete"
+        onClick={() => {
+          dispatch(getTemplateDetail({ template: row }))
+          dispatch(setViewerLocation({viewerLocationIndex: CREATE_DOCUMENT}))
+        }}
+      >
+        <Link to="/viewer" replace>
           <BorderColorIcon fontSize="small" />
         </Link>
       </IconButton>

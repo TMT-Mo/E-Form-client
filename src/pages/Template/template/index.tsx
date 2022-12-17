@@ -5,12 +5,10 @@ import UploadIcon from "@mui/icons-material/Upload";
 import { styled } from "@mui/system";
 import DataTable from "../../../components/DataTable";
 import { useDispatch, useSelector } from "../../../hooks";
-import {
-  getTemplates,
-  searchTemplate,
-} from "../../../slices/template";
+import { getTemplates, searchTemplate } from "../../../slices/template";
 import { handleError } from "../../../slices/notification";
-import { StatusTemplate } from "../../../utils/constants";
+import { DataTableHeader, StatusTemplate } from "../../../utils/constants";
+import { TemplateFilter } from "../../../models/template";
 
 const StyledUploadBtn = styled(Button)({
   backgroundColor: "#fff",
@@ -24,13 +22,25 @@ const StyledUploadBtn = styled(Button)({
   },
 });
 
+const { TYPE, DEPARTMENT, IS_ENABLE, STATUS, TYPE_TEMPLATE } = DataTableHeader;
+
 const Template = () => {
   const dispatch = useDispatch();
-  const { searchItemValue, currentPage } = useSelector(
+  const { searchItemValue, currentPage, filter } = useSelector(
     (state) => state.template
   );
 
-  const request = useCallback(async () => {
+  // const handleFilter = (value: TemplateFilter) => {
+  //   switch (value.field) {
+  //     case TYPE:
+  //       break;
+
+  //     default:
+  //       break;
+  //   }
+  // };
+
+  const getTemplateList = useCallback(async () => {
     try {
       await dispatch(
         getTemplates({
@@ -38,17 +48,26 @@ const Template = () => {
           _page: currentPage,
           _size: 10,
           _sort: undefined,
-          status_eq: StatusTemplate.APPROVED
+          status_eq: StatusTemplate.APPROVED,
+          type_eq:
+            filter?.field === TYPE ? (filter.value as string) : undefined,
+          typeName_eq:
+            filter?.field === TYPE_TEMPLATE
+              ? (filter.value as string)
+              : undefined,
+          isEnable_eq:
+            filter?.field === IS_ENABLE ? (filter.value as boolean) : undefined,
+            
         })
       ).unwrap(); //* Unwrap to catch error when failed
     } catch {
       dispatch(handleError({ errorMessage: undefined }));
     }
-  }, [dispatch, searchItemValue, currentPage]);
+  }, [dispatch, searchItemValue, currentPage, filter?.field, filter?.value]);
 
   useEffect(() => {
-    request();
-  }, [request]);
+    getTemplateList();
+  }, [getTemplateList]);
 
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
