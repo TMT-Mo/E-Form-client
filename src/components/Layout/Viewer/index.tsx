@@ -17,6 +17,7 @@ import NewTemplates from "../../../pages/Template/new-templates";
 import ViewAddTemplate from "../../../pages/Template/view/add-template";
 import ViewCreateDocument from "../../../pages/Template/view/create-document";
 import { clearTemplateDetail } from "../../../slices/template";
+import ViewApproveTemplate from "../../../pages/Template/view/approve-template";
 
 const {
     ADD_TEMPLATE,
@@ -38,7 +39,7 @@ const Viewer: React.FC = () => {
       case ADD_TEMPLATE:
         return <ViewAddTemplate/>;
       case APPROVING_DOCUMENT:
-        return <NewTemplates />;
+        return <></>;
       case CREATE_DOCUMENT:
         return <ViewCreateDocument/>;
       case VIEW_DOCUMENT:
@@ -46,7 +47,7 @@ const Viewer: React.FC = () => {
       case CREATE_PERSONAL_DOCUMENT:
         return <TemplateHistory />;
       case APPROVING_TEMPLATE:
-        return <AwaitSigning />;
+        return <ViewApproveTemplate />;
       case VIEW_DOCUMENT_HISTORY:
         return <PersonalDoc />;
       default:

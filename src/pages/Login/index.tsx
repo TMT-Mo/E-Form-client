@@ -56,13 +56,9 @@ const Login = () => {
   });
 
   const onLoginHandler = async (e: { preventDefault: () => void }) => {
-    try {
-      e.preventDefault();
-      await dispatch(login({ username, password: values.password })).unwrap();
-      navigate("/user");
-    } catch (err) {
-      console.log(err);
-    }
+    e.preventDefault();
+    await dispatch(login({ username, password: values.password })).unwrap();
+    navigate("/user");
   };
 
   const handleClickShowPassword = () => {

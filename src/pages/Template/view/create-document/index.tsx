@@ -12,7 +12,7 @@ import {
     useRef,
     useState,
   } from "react";
-  import { useNavigate } from "react-router-dom";
+  import { Link, useNavigate } from "react-router-dom";
   import { styled } from "@mui/system";
   import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
   import WebViewer, { WebViewerInstance } from "@pdftron/webviewer";
@@ -241,11 +241,7 @@ import {
     return (
       <Fragment>
         <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
-          <ArrowBackIosIcon
-            fontSize="small"
-            className="fill-white cursor-pointer"
-            onClick={() => navigate(-1)}
-          />
+        <Link to='/user'><ArrowBackIosIcon fontSize="small" className="fill-white" /></Link>
           <span className="text-white">Create a document</span>
         </div>
         <div className="flex">

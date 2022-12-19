@@ -7,7 +7,6 @@ import {
   getTemplates,
   searchTemplate,
 } from "../../../slices/template";
-import { handleError } from "../../../slices/notification";
 import { StatusTemplate } from "../../../utils/constants";
 
 const NewTemplates = () => {
@@ -17,7 +16,6 @@ const NewTemplates = () => {
   );
 
   const getTemplateList = useCallback(async () => {
-    try {
       await dispatch(
         getTemplates({
           templateName_contains: searchItemValue || undefined,
@@ -27,9 +25,6 @@ const NewTemplates = () => {
           status_eq: StatusTemplate.NEW,
         })
       ).unwrap(); //* Unwrap to catch error when failed
-    } catch {
-      dispatch(handleError({ errorMessage: undefined }));
-    }
   }, [dispatch, searchItemValue, currentPage]);
 
   useEffect(() => {

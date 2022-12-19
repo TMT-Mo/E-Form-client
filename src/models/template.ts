@@ -1,4 +1,12 @@
+import { StatusTemplate } from './../utils/constants';
 import { StorageReference } from 'firebase/storage';
+
+interface Signer{
+    email: string,
+    signature: string,
+    status: number,
+    roleName: string
+}
 export interface Template{
     id: number,
     createdAt: string,
@@ -11,7 +19,7 @@ export interface Template{
     typeName: string,
     departmentName: string,
     isEnable: boolean,
-    signatoryList: number[],
+    signatoryList: Signer[],
     link: string,
     createdBy: number
 }
@@ -79,4 +87,15 @@ export interface EnableTemplateResponse{
 export interface TemplateFilter{
     value: number | string | boolean,
     field: string,
+}
+
+export interface ApproveTemplateArgs{
+    userId: number,
+    templateId: number,
+    statusTemplate: StatusTemplate,
+    reason?: string
+}
+
+export interface ApproveTemplateResponse{
+    message: string,
 }

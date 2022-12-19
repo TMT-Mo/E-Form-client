@@ -6,9 +6,7 @@ import { styled } from "@mui/system";
 import DataTable from "../../../components/DataTable";
 import { useDispatch, useSelector } from "../../../hooks";
 import { getTemplates, searchTemplate } from "../../../slices/template";
-import { handleError } from "../../../slices/notification";
 import { DataTableHeader, StatusTemplate } from "../../../utils/constants";
-import { TemplateFilter } from "../../../models/template";
 
 const StyledUploadBtn = styled(Button)({
   backgroundColor: "#fff",
@@ -22,7 +20,7 @@ const StyledUploadBtn = styled(Button)({
   },
 });
 
-const { TYPE, DEPARTMENT, IS_ENABLE, STATUS, TYPE_TEMPLATE } = DataTableHeader;
+const { TYPE, IS_ENABLE, TYPE_TEMPLATE } = DataTableHeader;
 
 const Template = () => {
   const dispatch = useDispatch();
@@ -30,43 +28,29 @@ const Template = () => {
     (state) => state.template
   );
 
-  // const handleFilter = (value: TemplateFilter) => {
-  //   switch (value.field) {
-  //     case TYPE:
-  //       break;
-
-  //     default:
-  //       break;
-  //   }
-  // };
-
   const getTemplateList = useCallback(async () => {
-    try {
-      await dispatch(
-        getTemplates({
-          templateName_contains: searchItemValue || undefined,
-          _page: currentPage,
-          _size: 10,
-          _sort: undefined,
-          status_eq: StatusTemplate.APPROVED,
-          type_eq:
-            filter?.field === TYPE ? (filter.value as string) : undefined,
-          typeName_eq:
-            filter?.field === TYPE_TEMPLATE
-              ? (filter.value as string)
-              : undefined,
-          isEnable_eq:
-            filter?.field === IS_ENABLE ? (filter.value as boolean) : undefined,
-            
-        })
-      ).unwrap(); //* Unwrap to catch error when failed
-    } catch {
-      dispatch(handleError({ errorMessage: undefined }));
-    }
+    await dispatch(
+      getTemplates({
+        templateName_contains: searchItemValue || undefined,
+        _page: currentPage,
+        _size: 10,
+        _sort: undefined,
+        status_eq: StatusTemplate.APPROVED,
+        type_eq: filter?.field === TYPE ? (filter.value as string) : undefined,
+        typeName_eq:
+          filter?.field === TYPE_TEMPLATE
+            ? (filter.value as string)
+            : undefined,
+        isEnable_eq:
+          filter?.field === IS_ENABLE ? (filter.value as boolean) : undefined,
+      })
+    ).unwrap(); //* Unwrap to catch error when failed
   }, [dispatch, searchItemValue, currentPage, filter?.field, filter?.value]);
 
   useEffect(() => {
     getTemplateList();
+
+    return () => {};
   }, [getTemplateList]);
 
   return (

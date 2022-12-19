@@ -65,14 +65,13 @@ const getDepartmentList = createAsyncThunk(
       return result;
     } catch (error) {
       const err = error as AxiosError;
-      if (err.response) {
-        dispatch(
-          handleError({
-            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
-          })
-        );
-        throw err;
+      if(err.response?.data){
+        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
       }
+      else{
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err
     }
   }
 );
@@ -85,14 +84,13 @@ const getTemplateTypeList = createAsyncThunk(
       return result;
     } catch (error) {
       const err = error as AxiosError;
-      if (err.response) {
-        dispatch(
-          handleError({
-            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
-          })
-        );
-        throw err;
+      if(err.response?.data){
+        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
       }
+      else{
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err
     }
   }
 );
@@ -107,14 +105,13 @@ const getUserListByDepartmentID = createAsyncThunk(
       return result;
     } catch (error) {
       const err = error as AxiosError;
-      if (err.response) {
-        dispatch(
-          handleError({
-            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
-          })
-        );
-        throw err;
+      if(err.response?.data){
+        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
       }
+      else{
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err
     }
   }
 );

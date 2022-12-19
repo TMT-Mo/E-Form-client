@@ -190,7 +190,6 @@ const DataTable: React.FC = () => {
         filterMode="server"
         hideFooterPagination
         hideFooter
-        // components={{ Pagination: CustomPagination }}
       />
       {data().table.length > 0 && (
         <CustomPagination

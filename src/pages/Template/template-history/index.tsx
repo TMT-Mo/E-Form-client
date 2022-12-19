@@ -10,7 +10,6 @@ import {
   getTemplates,
   searchTemplate,
 } from "../../../slices/template";
-import { handleError } from "../../../slices/notification";
 import { setViewerLocation } from "../../../slices/location";
 import { ViewerLocationIndex } from "../../../utils/constants";
 
@@ -36,7 +35,6 @@ const TemplateHistory = () => {
   const {userInfo} = useSelector(state => state.auth)
 
   const getTemplateList = useCallback(async () => {
-    try {
       await dispatch(
         getTemplates({
           templateName_contains: searchItemValue || undefined,
@@ -46,9 +44,6 @@ const TemplateHistory = () => {
           createdBy_eq: userInfo?.userId
         })
       ).unwrap(); //* Unwrap to catch error when failed
-    } catch {
-      dispatch(handleError({ errorMessage: undefined }));
-    }
   }, [dispatch, searchItemValue, currentPage, userInfo?.userId]);
 
   useEffect(() => {

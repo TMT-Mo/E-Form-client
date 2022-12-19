@@ -39,11 +39,7 @@ const SelectType = (props: GridFilterInputValueProps) => {
   };
 
   const getTypeListHandler = useCallback(async () => {
-    try {
       await dispatch(getTemplateTypeList()).unwrap();
-    } catch (error) {
-      dispatch(handleError({ errorMessage: undefined }));
-    }
   }, [dispatch]);
 
   useEffect(() => {
@@ -72,7 +68,7 @@ const SelectType = (props: GridFilterInputValueProps) => {
           </Select>
         </FormControl>
       )}
-      {isGetTemplateTypesLoading && <CircularProgress size={20} />}
+      {isGetTemplateTypesLoading && <div className="flex justify-center items-center"><CircularProgress size={20} /></div>}
     </>
   );
 };

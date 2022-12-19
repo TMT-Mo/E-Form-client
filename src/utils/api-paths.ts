@@ -11,6 +11,7 @@ const apiPaths = {
         searchTemplate: `${apiHead}api/Template/getTemplates?templateName_eq=test`,
         addNewTemplate: `${apiHead}api/Template/create`,
         enableTemplate: `${apiHead}api/Template/update`,
+        approveTemplate: `${apiHead}api/Template/approveTemplate`,
     },
     system:{
         getDepartmentList: `${apiHead}api/Department/getDepartments`,

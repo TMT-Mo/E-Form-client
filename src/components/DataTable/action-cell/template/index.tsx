@@ -1,23 +1,22 @@
 import { CircularProgress, IconButton } from "@mui/material";
 import { TouchRippleActions } from "@mui/material/ButtonBase/TouchRipple";
 import { GridRenderCellParams } from "@mui/x-data-grid";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import LockIcon from "@mui/icons-material/Lock";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "../../../hooks";
-import { enableTemplate, getTemplateDetail } from "../../../slices/template";
-import { Template } from "../../../models/template";
-import { handleError } from "../../../slices/notification";
-import { ViewerLocationIndex } from "../../../utils/constants";
-import { setViewerLocation } from "../../../slices/location";
+import { Template } from "../../../../models/template";
+import { setViewerLocation } from "../../../../slices/location";
+import { enableTemplate, getTemplateDetail } from "../../../../slices/template";
+import { ViewerLocationIndex } from "../../../../utils/constants";
+import { useDispatch, useSelector } from "../../../../hooks";
 
 const {
   CREATE_DOCUMENT,
 } = ViewerLocationIndex;
 
-export const ActionCell = (props: GridRenderCellParams<Date>) => {
-  const { hasFocus, value, row } = props;
+export const TemplateActionCell = (props: GridRenderCellParams<Date>) => {
+  const { hasFocus, row } = props;
   const buttonElement = React.useRef<HTMLButtonElement | null>(null);
   const rippleRef = React.useRef<TouchRippleActions | null>(null);
   const dispatch = useDispatch();
@@ -38,13 +37,9 @@ export const ActionCell = (props: GridRenderCellParams<Date>) => {
   }, [hasFocus]);
 
   const onEnableTemplate = useCallback(async () => {
-    try {
       await dispatch(
         enableTemplate({ id: rowValue.id, isEnable: !rowValue.isEnable })
       ).unwrap(); //* Unwrap to catch error when failed
-    } catch {
-      dispatch(handleError({ errorMessage: undefined }));
-    }
   }, [dispatch, rowValue.id, rowValue.isEnable]);
 
   useEffect(() => {
