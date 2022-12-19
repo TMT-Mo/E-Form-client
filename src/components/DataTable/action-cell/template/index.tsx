@@ -11,9 +11,7 @@ import { enableTemplate, getTemplateDetail } from "../../../../slices/template";
 import { ViewerLocationIndex } from "../../../../utils/constants";
 import { useDispatch, useSelector } from "../../../../hooks";
 
-const {
-  CREATE_DOCUMENT,
-} = ViewerLocationIndex;
+const { CREATE_DOCUMENT } = ViewerLocationIndex;
 
 export const TemplateActionCell = (props: GridRenderCellParams<Date>) => {
   const { hasFocus, row } = props;
@@ -36,10 +34,8 @@ export const TemplateActionCell = (props: GridRenderCellParams<Date>) => {
     }
   }, [hasFocus]);
 
-  const onEnableTemplate = useCallback(async () => {
-      await dispatch(
-        enableTemplate({ id: rowValue.id, isEnable: !rowValue.isEnable })
-      ).unwrap(); //* Unwrap to catch error when failed
+  const onEnableTemplate = useCallback(() => {
+    dispatch(enableTemplate({ id: rowValue.id, isEnable: !rowValue.isEnable }));
   }, [dispatch, rowValue.id, rowValue.isEnable]);
 
   useEffect(() => {
@@ -63,8 +59,8 @@ export const TemplateActionCell = (props: GridRenderCellParams<Date>) => {
       <IconButton
         aria-label="delete"
         onClick={() => {
-          dispatch(getTemplateDetail({ template: row }))
-          dispatch(setViewerLocation({viewerLocationIndex: CREATE_DOCUMENT}))
+          dispatch(getTemplateDetail({ template: row }));
+          dispatch(setViewerLocation({ viewerLocationIndex: CREATE_DOCUMENT }));
         }}
       >
         <Link to="/viewer" replace>

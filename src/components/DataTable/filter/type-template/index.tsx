@@ -38,8 +38,8 @@ const SelectType = (props: GridFilterInputValueProps) => {
     setValue(e.target.value);
   };
 
-  const getTypeListHandler = useCallback(async () => {
-      await dispatch(getTemplateTypeList()).unwrap();
+  const getTypeListHandler = useCallback(() => {
+      dispatch(getTemplateTypeList())
   }, [dispatch]);
 
   useEffect(() => {

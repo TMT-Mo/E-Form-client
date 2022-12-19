@@ -153,25 +153,6 @@ const DataTable: React.FC = () => {
         return {table: []};
     }
   };
-  // const request = useCallback(async () => {
-  //   try {
-  //     await dispatch(
-  //       getTemplates({
-  //         templateName_contains: searchItemValue || undefined,
-  //         _page: currentPage || 0,
-  //         _size: 10,
-  //         _sort: undefined
-  //       })
-  //     ).unwrap(); //* Unwrap to catch error when failed
-
-  //   } catch {
-  //     dispatch(handleError({ errorMessage: undefined }));
-  //   }
-  // }, [dispatch, searchItemValue, currentPage]);
-
-  // useEffect(() => {
-  //   request();
-  // }, [request]);
 
   const getRowId = (params: GetRowIdParams) => {
     return params.id;

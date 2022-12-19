@@ -57,7 +57,7 @@ const Login = () => {
 
   const onLoginHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    await dispatch(login({ username, password: values.password })).unwrap();
+    await dispatch(login({ username, password: values.password }))
     navigate("/user");
   };
 

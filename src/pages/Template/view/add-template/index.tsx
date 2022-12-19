@@ -21,13 +21,12 @@ import { LoadingButton } from "@mui/lab";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import AlertPopup from "../../../../components/AlertPopup";
 import { TemplateArgs } from "../../../../models/template";
-import { handleError } from "../../../../slices/notification";
 import {
   getDepartmentList,
   toggleDepartmentList,
   getTemplateTypeList,
   toggleTemplateTypeList,
-  getUserListByDepartmentID,
+  getUsers,
   clearUserList,
 } from "../../../../slices/system";
 import { addNewTemplate } from "../../../../slices/template";
@@ -126,7 +125,7 @@ const ViewAddTemplate: React.FC = () => {
         storageRef,
         file: file!,
       })
-    ).unwrap();
+    )
     navigate(-1);
   };
 
@@ -194,21 +193,20 @@ const ViewAddTemplate: React.FC = () => {
 
   const getDepartmentListHandler = async () => {
     if (!departmentList) {
-      await dispatch(getDepartmentList()).unwrap();
-      dispatch(toggleDepartmentList({ isOpen: !isOpenDepartmentList }));
-      dispatch(handleError({ errorMessage: undefined }));
+      await dispatch(getDepartmentList())
     }
+    dispatch(toggleDepartmentList({ isOpen: !isOpenDepartmentList }));
   };
 
-  const getTemplateListHandler = async () => {
+  const getTemplateTypesHandler = async () => {
     if (!templateTypeList) {
-      await dispatch(getTemplateTypeList()).unwrap();
-      dispatch(toggleTemplateTypeList({ isOpen: !isOpenTemplateTypes }));
+      await dispatch(getTemplateTypeList())
     }
+    dispatch(toggleTemplateTypeList({ isOpen: !isOpenTemplateTypes }));
   };
 
-  const getUserListHandler = useCallback(async () => {
-    await dispatch(getUserListByDepartmentID(selectedDepartment!)).unwrap();
+  const getUserListHandler = useCallback(() => {
+    dispatch(getUsers({ departmentId_eq: selectedDepartment }))
   }, [dispatch, selectedDepartment]);
 
   useEffect(() => {
@@ -295,8 +293,8 @@ const ViewAddTemplate: React.FC = () => {
                   width: 300,
                 }}
                 open={isOpenTemplateTypes}
-                onOpen={getTemplateListHandler}
-                onClose={getTemplateListHandler}
+                onOpen={getTemplateTypesHandler}
+                onClose={getTemplateTypesHandler}
                 onChange={(e, value) =>
                   setForm({ ...form, idTemplateType: value?.id })
                 }

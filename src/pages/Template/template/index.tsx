@@ -1,6 +1,6 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase, Paper, Button } from "@mui/material";
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import UploadIcon from "@mui/icons-material/Upload";
 import { styled } from "@mui/system";
 import DataTable from "../../../components/DataTable";
@@ -28,8 +28,8 @@ const Template = () => {
     (state) => state.template
   );
 
-  const getTemplateList = useCallback(async () => {
-    await dispatch(
+  useEffect(() => {
+    const getTemplateList = dispatch(
       getTemplates({
         templateName_contains: searchItemValue || undefined,
         _page: currentPage,
@@ -44,14 +44,9 @@ const Template = () => {
         isEnable_eq:
           filter?.field === IS_ENABLE ? (filter.value as boolean) : undefined,
       })
-    ).unwrap(); //* Unwrap to catch error when failed
-  }, [dispatch, searchItemValue, currentPage, filter?.field, filter?.value]);
-
-  useEffect(() => {
-    getTemplateList();
-
-    return () => {};
-  }, [getTemplateList]);
+    )
+    return () => { getTemplateList.abort()}
+  }, [currentPage, dispatch, filter?.field, filter?.value, searchItemValue]);
 
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">

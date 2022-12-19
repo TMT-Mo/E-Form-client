@@ -1,5 +1,5 @@
 import { systemServices } from "./../services/system";
-import { DepartmentListResponse, UserListResponse } from "./../models/system";
+import { DepartmentListResponse, GetUsersArgs, GetUsersResponse } from "./../models/system";
 import {
   CaseReducer,
   createAsyncThunk,
@@ -16,7 +16,7 @@ interface State {
   isOpenDepartmentList: boolean;
   departmentList?: DepartmentListResponse;
   isGetUserListLoading: boolean;
-  userList?: UserListResponse;
+  userList?: GetUsersResponse;
   isGetTemplateTypesLoading: boolean;
   templateTypeList?: GetTemplateTypeListResponse;
   isOpenTemplateTypes: boolean;
@@ -95,13 +95,11 @@ const getTemplateTypeList = createAsyncThunk(
   }
 );
 
-const getUserListByDepartmentID = createAsyncThunk(
-  `${ACTION_TYPE}getUserListByDepartmentID`,
-  async (departmentID: number, { dispatch }) => {
+const getUsers = createAsyncThunk(
+  `${ACTION_TYPE}getUsers`,
+  async (args: GetUsersArgs | undefined, { dispatch }) => {
     try {
-      const result = await systemServices.getUserListByDepartmentID(
-        departmentID
-      );
+      const result = await systemServices.getUsers(args)
       return result;
     } catch (error) {
       const err = error as AxiosError;
@@ -138,19 +136,19 @@ const system = createSlice({
       ...state,
       isGetDepartmentsLoading: false,
     }));
-    builder.addCase(getUserListByDepartmentID.pending, (state) => ({
+    builder.addCase(getUsers.pending, (state) => ({
       ...state,
       isGetUserListLoading: true,
     }));
     builder.addCase(
-      getUserListByDepartmentID.fulfilled,
+      getUsers.fulfilled,
       (state, { payload }) => ({
         ...state,
         isGetUserListLoading: false,
         userList: payload!,
       })
     );
-    builder.addCase(getUserListByDepartmentID.rejected, (state) => ({
+    builder.addCase(getUsers.rejected, (state) => ({
       ...state,
       isGetUserListLoading: false,
     }));
@@ -172,7 +170,7 @@ const system = createSlice({
 
 export {
   getDepartmentList,
-  getUserListByDepartmentID,
+  getUsers,
   getTemplateTypeList,
 };
 

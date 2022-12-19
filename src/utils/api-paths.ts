@@ -15,8 +15,8 @@ const apiPaths = {
     },
     system:{
         getDepartmentList: `${apiHead}api/Department/getDepartments`,
-        getUserListByDepartmentID: `${apiHead}api/Users/getUsers?departmentId_eq=`,
-        getTemplateTypeList: `${apiHead}api/Category/getCategories`
+        getTemplateTypeList: `${apiHead}api/Category/getCategories`,
+        getUsers: `${apiHead}api/Users/getUsers`,
     }
 }
 

@@ -1,6 +1,6 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase, Paper, Button } from "@mui/material";
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
@@ -34,21 +34,18 @@ const TemplateHistory = () => {
   );
   const {userInfo} = useSelector(state => state.auth)
 
-  const getTemplateList = useCallback(async () => {
-      await dispatch(
-        getTemplates({
-          templateName_contains: searchItemValue || undefined,
-          _page: currentPage ,
-          _size: 10,
-          _sort: undefined,
-          createdBy_eq: userInfo?.userId
-        })
-      ).unwrap(); //* Unwrap to catch error when failed
-  }, [dispatch, searchItemValue, currentPage, userInfo?.userId]);
-
   useEffect(() => {
-    getTemplateList();
-  }, [getTemplateList]);
+    const getTemplateList = dispatch(
+      getTemplates({
+        templateName_contains: searchItemValue || undefined,
+        _page: currentPage ,
+        _size: 10,
+        _sort: undefined,
+        createdBy_eq: userInfo?.userId
+      })
+    );
+    return () => { getTemplateList.abort()}
+  }, [currentPage, dispatch, searchItemValue, userInfo?.userId]);
 
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">

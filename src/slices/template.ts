@@ -83,21 +83,6 @@ const updateTemplateCR: CR<{ id: number; isEnable: boolean }> = (
   });
 };
 
-const clearTemplatesCR = (state: State) => ({
-  ...state,
-  templateList: [],
-  searchItemValue: undefined,
-  filter: undefined,
-  total: undefined,
-  size: 10,
-  currentPage: 0,
-});
-
-const clearTemplateDetailCR = (state: State) => ({
-  ...state,
-  templateDetail: undefined,
-});
-
 const setTemplateFilterCR: CR<TemplateFilter | undefined> = (
   state,
   { payload }
@@ -114,13 +99,16 @@ const getTemplates = createAsyncThunk(
       return result;
     } catch (error) {
       const err = error as AxiosError;
-      if(err.response?.data){
-        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
-      }
-      else{
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
         dispatch(handleError({ errorMessage: err.message }));
       }
-      throw err
+      throw err;
     }
   }
 );
@@ -137,13 +125,16 @@ const enableTemplate = createAsyncThunk(
       return result;
     } catch (error) {
       const err = error as AxiosError;
-      if(err.response?.data){
-        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
-      }
-      else{
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
         dispatch(handleError({ errorMessage: err.message }));
       }
-      throw err
+      throw err;
     }
   }
 );
@@ -162,13 +153,16 @@ const addNewTemplate = createAsyncThunk(
       return result;
     } catch (error) {
       const err = error as AxiosError;
-      if(err.response?.data){
-        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
-      }
-      else{
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
         dispatch(handleError({ errorMessage: err.message }));
       }
-      throw err
+      throw err;
     }
   }
 );
@@ -184,13 +178,16 @@ const approveTemplate = createAsyncThunk(
       return result;
     } catch (error) {
       const err = error as AxiosError;
-      if(err.response?.data){
-        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
-      }
-      else{
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
         dispatch(handleError({ errorMessage: err.message }));
       }
-      throw err
+      throw err;
     }
   }
 );
@@ -201,10 +198,21 @@ const template = createSlice({
   reducers: {
     searchTemplate: searchTemplateCR,
     onChangeTemplatePage: onChangeTemplatePageCR,
-    clearTemplates: clearTemplatesCR,
+    clearTemplates: (state: State) => ({
+      ...state,
+      templateList: [],
+      searchItemValue: undefined,
+      filter: undefined,
+      total: undefined,
+      size: 10,
+      currentPage: 0,
+    }),
     getTemplateDetail: getTemplateDetailCR,
     updateTemplate: updateTemplateCR,
-    clearTemplateDetail: clearTemplateDetailCR,
+    clearTemplateDetail: (state: State) => ({
+      ...state,
+      templateDetail: undefined,
+    }),
     setTemplateFilter: setTemplateFilterCR,
   },
   extraReducers: (builder) => {
@@ -218,10 +226,13 @@ const template = createSlice({
       templateList: payload?.items!,
       total: payload?.total!,
     }));
-    builder.addCase(getTemplates.rejected, (state) => ({
-      ...state,
-      isGetTemplatesLoading: false,
-    }));
+    builder.addCase(getTemplates.rejected, (state) => {
+      if(state.isGetTemplatesLoading) return //* Handle api abort
+      return {
+        ...state,
+        isGetTemplatesLoading: false,
+      }
+    });
     builder.addCase(addNewTemplate.pending, (state) => ({
       ...state,
       isAddNewTemplateLoading: true,

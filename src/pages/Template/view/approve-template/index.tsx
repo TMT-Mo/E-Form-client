@@ -190,7 +190,7 @@ const ViewApproveTemplate: React.FC = () => {
           statusTemplate: StatusTemplate.APPROVED,
           reason: `${!isAccepting ? reason : undefined}`
         })
-      ).unwrap();
+      )
     } catch (error) {
       console.log(error);
     }

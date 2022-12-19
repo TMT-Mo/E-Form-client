@@ -28,6 +28,22 @@ const initialState: State = {
   isLoginLoading: false,
 };
 
+const setUserInfoCR: CR<{ token: string}> = (
+  state,
+  { payload }
+) => ({
+  ...state,
+  userInfo: jwtDecode(payload.token!),
+});
+
+const storeTokenCR: CR<{value: boolean}> = (
+  state,
+  { payload }
+) => ({
+  ...state,
+  checkAuthenticated: payload.value!
+});
+
 const login = createAsyncThunk(
   `${ACTION_TYPE}login`,
   async (args: LoginArgument, { dispatch }) => {
@@ -47,29 +63,12 @@ const login = createAsyncThunk(
   }
 );
 
-const setUserInfoCR: CR<{ token: string}> = (
-  state,
-  { payload }
-) => ({
-  ...state,
-  userInfo: jwtDecode(payload.token!),
-});
-
-const storeTokenCR: CR<{value: boolean}> = (
-  state,
-  { payload }
-) => ({
-  ...state,
-  checkAuthenticated: payload.value!
-});
-
 const auth = createSlice({
   name: "auth",
   initialState,
   reducers: {
     setUserInfo: setUserInfoCR,
     storeToken: storeTokenCR
-    // logout: state => {}
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => ({

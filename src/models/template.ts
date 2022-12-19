@@ -40,7 +40,8 @@ export interface GetTemplateArgs{
     type_eq?: string,
     typeName_eq?: string,
     department_eq?: string,
-    isEnable_eq?: boolean
+    isEnable_eq?: boolean,
+    signal?: AbortSignal
 }
 
 export interface TemplateArgs{
