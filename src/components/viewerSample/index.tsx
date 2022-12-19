@@ -169,7 +169,7 @@ import {
     return (
       <Fragment>
         <div className="bg-blue-config px-20 py-6">
-          <ArrowBackIosIcon fontSize="small" className="fill-white" onClick={()=> navigate(-1)}/>
+          <Link to='/user'><ArrowBackIosIcon fontSize="small" className="fill-white" /></Link>
         </div>
         <div className="flex">
           <div className="flex flex-col bg-dark-config min-h-screen items-center px-10 pt-8 space-y-8 w-80">

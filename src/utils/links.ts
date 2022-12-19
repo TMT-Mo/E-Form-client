@@ -1,6 +1,7 @@
 const links = {
     introduction: '/',
     login: '/login',
-    home:'/home'
+    home:'/home',
+    viewer:'/viewer'
 }
 export default links;

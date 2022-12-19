@@ -12,7 +12,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer, { WebViewerInstance } from "@pdftron/webviewer";
@@ -21,8 +21,14 @@ import { LoadingButton } from "@mui/lab";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import AlertPopup from "../../../../components/AlertPopup";
 import { TemplateArgs } from "../../../../models/template";
-import { handleError } from "../../../../slices/notification";
-import { getDepartmentList, toggleDepartmentList, getTemplateTypeList, toggleTemplateTypeList, getUserListByDepartmentID, clearUserList } from "../../../../slices/system";
+import {
+  getDepartmentList,
+  toggleDepartmentList,
+  getTemplateTypeList,
+  toggleTemplateTypeList,
+  getUsers,
+  clearUserList,
+} from "../../../../slices/system";
 import { addNewTemplate } from "../../../../slices/template";
 import { useDispatch, useSelector } from "../../../../hooks";
 import storage from "../../../../utils/firebase";
@@ -62,7 +68,7 @@ const ViewAddTemplate: React.FC = () => {
   const instance = useRef<WebViewerInstance>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {userInfo} = useSelector(state => state.auth)
+  const { userInfo } = useSelector((state) => state.auth);
   const {
     isGetDepartmentsLoading,
     departmentList,
@@ -82,7 +88,7 @@ const ViewAddTemplate: React.FC = () => {
     idTemplateType: undefined,
     size: undefined,
     signatoryList: undefined,
-    createdBy: +userInfo?.userId!
+    createdBy: +userInfo?.userId!,
   });
 
   const [selectedDepartment, setSelectedDepartment] = useState<
@@ -113,18 +119,14 @@ const ViewAddTemplate: React.FC = () => {
 
     // progress can be paused and resumed. It also exposes progress updates.
     // Receives the storage reference and the file to upload.
-    try {
-      await dispatch(
-        addNewTemplate({
-          templateInfo: form,
-          storageRef,
-          file: file!
-        })
-      ).unwrap();
-      navigate(-1);
-    } catch (error) {
-      console.log(error);
-    }
+    await dispatch(
+      addNewTemplate({
+        templateInfo: form,
+        storageRef,
+        file: file!,
+      })
+    )
+    navigate(-1);
   };
 
   // if using a class, equivalent of componentDidMount
@@ -190,33 +192,21 @@ const ViewAddTemplate: React.FC = () => {
   }, [file]);
 
   const getDepartmentListHandler = async () => {
-    try {
-      if (!departmentList) {
-        await dispatch(getDepartmentList()).unwrap();
-      }
-      dispatch(toggleDepartmentList({ isOpen: !isOpenDepartmentList }));
-    } catch (error) {
-      dispatch(handleError({ errorMessage: undefined }));
+    if (!departmentList) {
+      await dispatch(getDepartmentList())
     }
+    dispatch(toggleDepartmentList({ isOpen: !isOpenDepartmentList }));
   };
 
-  const getTemplateListHandler = async () => {
-    try {
-      if (!templateTypeList) {
-        await dispatch(getTemplateTypeList()).unwrap();
-      }
-      dispatch(toggleTemplateTypeList({ isOpen: !isOpenTemplateTypes }));
-    } catch (error) {
-      dispatch(handleError({ errorMessage: undefined }));
+  const getTemplateTypesHandler = async () => {
+    if (!templateTypeList) {
+      await dispatch(getTemplateTypeList())
     }
+    dispatch(toggleTemplateTypeList({ isOpen: !isOpenTemplateTypes }));
   };
 
-  const getUserListHandler = useCallback(async () => {
-    try {
-      await dispatch(getUserListByDepartmentID(selectedDepartment!)).unwrap();
-    } catch (error) {
-      dispatch(handleError({ errorMessage: undefined }));
-    }
+  const getUserListHandler = useCallback(() => {
+    dispatch(getUsers({ departmentId_eq: selectedDepartment }))
   }, [dispatch, selectedDepartment]);
 
   useEffect(() => {
@@ -242,11 +232,9 @@ const ViewAddTemplate: React.FC = () => {
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
-        <ArrowBackIosIcon
-          fontSize="small"
-          className="fill-white cursor-pointer"
-          onClick={() => navigate(-1)}
-        />
+        <Link to="/user">
+          <ArrowBackIosIcon fontSize="small" className="fill-white" />
+        </Link>
         <span className="text-white">Add a template</span>
       </div>
       <div className="flex">
@@ -305,8 +293,8 @@ const ViewAddTemplate: React.FC = () => {
                   width: 300,
                 }}
                 open={isOpenTemplateTypes}
-                onOpen={getTemplateListHandler}
-                onClose={getTemplateListHandler}
+                onOpen={getTemplateTypesHandler}
+                onClose={getTemplateTypesHandler}
                 onChange={(e, value) =>
                   setForm({ ...form, idTemplateType: value?.id })
                 }
@@ -399,7 +387,10 @@ const ViewAddTemplate: React.FC = () => {
                   onChange={(e, value) => {
                     setForm({
                       ...form,
-                      signatoryList: value.length > 0 ? value.map((item) => item.id) : undefined,
+                      signatoryList:
+                        value.length > 0
+                          ? value.map((item) => item.id)
+                          : undefined,
                     });
                   }}
                   renderInput={(params) => (

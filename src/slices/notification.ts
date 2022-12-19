@@ -34,20 +34,20 @@ const handleErrorCR: CR<{ errorMessage: string | undefined }> = (state, { payloa
   isOpen: true,
 });
 
-const handleCloseCR = (state: Notification) => ({
-  ...state,
-  status: undefined,
-  message: undefined,
-  errorMessage: undefined,
-  isOpen: false,
-});
+
 
 const notification = createSlice({
   name: "notification",
   initialState,
   reducers: {
     handleSuccess: handleSuccessCR,
-    handleClose: handleCloseCR,
+    handleClose: (state: Notification) => ({
+      ...state,
+      status: undefined,
+      isOpen: false,
+      message: undefined,
+      errorMessage: undefined,
+    }),
     handleError: handleErrorCR,
   },
 });

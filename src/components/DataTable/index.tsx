@@ -12,7 +12,7 @@ import {
   templateHistoryColumns,
 } from "../../utils/mui-data";
 import { Template } from "../../models/template";
-import { onChangeTemplatePage } from "../../slices/template";
+import { onChangeTemplatePage, setTemplateFilter } from "../../slices/template";
 import CustomPagination from "./pagination";
 
 interface GetRowIdParams {
@@ -54,7 +54,32 @@ const DataTable: React.FC = () => {
   const onFilterChange = React.useCallback((filterModel: GridFilterModel) => {
     // Here you save the data you need from the filter model
     console.log({ filterModel: { ...filterModel } });
-  }, []);
+    const {value, columnField} = filterModel.items[0]
+    if(!value){
+      dispatch(setTemplateFilter(undefined));
+      return
+    }
+    // switch (columnField) {
+    //   case TYPE:
+    //       dispatch(setTemplateFilter({type: columnField, value}));
+    //       break;
+    //   case TYPE_TEMPLATE:
+    //       dispatch(setTemplateFilter({typeName: columnField, value}));
+    //       break;
+    //   case DEPARTMENT:
+    //       dispatch(setTemplateFilter({department: columnField, value}));
+    //       break;
+    //   case STATUS:
+    //       dispatch(setTemplateFilter({status: columnField, value}));
+    //       break;
+    //   case IS_ENABLE:
+    //       dispatch(setTemplateFilter({isEnable: columnField, value}));
+    //       break;
+    //   default:
+    //     break;
+    // }
+    dispatch(setTemplateFilter({field: columnField, value}))
+  }, [dispatch]);
 
   const data = (): Data => {
     switch (locationIndex) {
@@ -128,25 +153,6 @@ const DataTable: React.FC = () => {
         return {table: []};
     }
   };
-  // const request = useCallback(async () => {
-  //   try {
-  //     await dispatch(
-  //       getTemplates({
-  //         templateName_contains: searchItemValue || undefined,
-  //         _page: currentPage || 0,
-  //         _size: 10,
-  //         _sort: undefined
-  //       })
-  //     ).unwrap(); //* Unwrap to catch error when failed
-
-  //   } catch {
-  //     dispatch(handleError({ errorMessage: undefined }));
-  //   }
-  // }, [dispatch, searchItemValue, currentPage]);
-
-  // useEffect(() => {
-  //   request();
-  // }, [request]);
 
   const getRowId = (params: GetRowIdParams) => {
     return params.id;
@@ -165,9 +171,8 @@ const DataTable: React.FC = () => {
         filterMode="server"
         hideFooterPagination
         hideFooter
-        // components={{ Pagination: CustomPagination }}
       />
-      {data().table !== undefined && (
+      {data().table.length > 0 && (
         <CustomPagination
           currentPage={data().currentPage!}
           totalPages={data().totalPages!}

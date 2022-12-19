@@ -1,9 +1,9 @@
-import { AddNewTemplateArgs, AddNewTemplateResponse, GetTemplateArgs, EnableTemplateArgs, EnableTemplateResponse } from './../models/template';
+import { AddNewTemplateArgs, AddNewTemplateResponse, GetTemplateArgs, EnableTemplateArgs, EnableTemplateResponse, ApproveTemplateArgs, ApproveTemplateResponse } from './../models/template';
 import { TemplateListResponse } from "../models/template"
 import { apiPaths, httpClient } from "../utils"
 
 const getTemplates = async (args: GetTemplateArgs): Promise<TemplateListResponse> => {
-    const response = await httpClient.get({url: apiPaths.template.getTemplates, params: args })
+    const response = await httpClient.get({url: apiPaths.template.getTemplates, params: args})
     return response.data as TemplateListResponse
 }
 
@@ -17,9 +17,14 @@ const enableTemplate = async (data: EnableTemplateArgs): Promise<EnableTemplateR
     return response.data as EnableTemplateResponse
 }
 
+const approveTemplate = async (data: ApproveTemplateArgs): Promise<ApproveTemplateResponse> => {
+    const response = await httpClient.post({url: apiPaths.template.approveTemplate, data})
+    return response.data as ApproveTemplateResponse
+}
 
 export const templateServices = {
     getTemplates,
     addNewTemplate,
-    enableTemplate
+    enableTemplate,
+    approveTemplate
 }

@@ -1,6 +1,6 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase, Paper, Button } from "@mui/material";
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
@@ -10,7 +10,8 @@ import {
   getTemplates,
   searchTemplate,
 } from "../../../slices/template";
-import { handleError } from "../../../slices/notification";
+import { setViewerLocation } from "../../../slices/location";
+import { ViewerLocationIndex } from "../../../utils/constants";
 
 const StyledAddBtn = styled(Button)({
   backgroundColor: "#407AFF",
@@ -24,6 +25,8 @@ const StyledAddBtn = styled(Button)({
   },
 });
 
+const {ADD_TEMPLATE} = ViewerLocationIndex
+
 const TemplateHistory = () => {
   const dispatch = useDispatch();
   const { searchItemValue, currentPage } = useSelector(
@@ -31,25 +34,18 @@ const TemplateHistory = () => {
   );
   const {userInfo} = useSelector(state => state.auth)
 
-  const request = useCallback(async () => {
-    try {
-      await dispatch(
-        getTemplates({
-          templateName_contains: searchItemValue || undefined,
-          _page: currentPage ,
-          _size: 10,
-          _sort: undefined,
-          createdBy_eq: userInfo?.userId
-        })
-      ).unwrap(); //* Unwrap to catch error when failed
-    } catch {
-      dispatch(handleError({ errorMessage: undefined }));
-    }
-  }, [dispatch, searchItemValue, currentPage, userInfo?.userId]);
-
   useEffect(() => {
-    request();
-  }, [request]);
+    const getTemplateList = dispatch(
+      getTemplates({
+        templateName_contains: searchItemValue || undefined,
+        _page: currentPage ,
+        _size: 10,
+        _sort: undefined,
+        createdBy_eq: userInfo?.userId
+      })
+    );
+    return () => { getTemplateList.abort()}
+  }, [currentPage, dispatch, searchItemValue, userInfo?.userId]);
 
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
@@ -79,7 +75,7 @@ const TemplateHistory = () => {
           </Paper>
           <div className="flex space-x-8">
             
-            <Link to="/viewAddTemplate" className="no-underline">
+            <Link to="/viewer" className="no-underline" onClick={() => dispatch(setViewerLocation({viewerLocationIndex: ADD_TEMPLATE}))}>
               <StyledAddBtn
                 variant="outlined"
                 size="small"

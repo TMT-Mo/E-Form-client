@@ -4,6 +4,8 @@ import {
   GetTemplateArgs,
   AddTemplateToFirebaseArgs,
   EnableTemplateArgs,
+  TemplateFilter,
+  ApproveTemplateArgs,
 } from "./../models/template";
 import { templateServices } from "./../services/template";
 import {
@@ -26,6 +28,8 @@ interface State {
   currentPage: number;
   templateDetail?: Template;
   isEnableTemplateLoading: boolean;
+  filter?: TemplateFilter;
+  isApproveTemplateLoading: boolean;
 }
 
 const initialState: State = {
@@ -38,6 +42,8 @@ const initialState: State = {
   currentPage: 0,
   templateDetail: undefined,
   isEnableTemplateLoading: false,
+  filter: undefined,
+  isApproveTemplateLoading: false,
 };
 
 const ACTION_TYPE = "template/";
@@ -70,25 +76,19 @@ const updateTemplateCR: CR<{ id: number; isEnable: boolean }> = (
   state,
   { payload }
 ) => {
-  state.templateList.forEach(function(value, index){
+  state.templateList.forEach(function (value, index) {
     if (value.id === payload.id) {
       value.isEnable = payload.isEnable;
     }
   });
 };
 
-const clearTemplatesCR = (state: State) => ({
+const setTemplateFilterCR: CR<TemplateFilter | undefined> = (
+  state,
+  { payload }
+) => ({
   ...state,
-  templateList: [],
-  searchItemValue: undefined,
-  total: undefined,
-  size: 10,
-  currentPage: 0,
-});
-
-const clearTemplateDetailCR = (state: State) => ({
-  ...state,
-  templateDetail: undefined
+  filter: payload,
 });
 
 const getTemplates = createAsyncThunk(
@@ -99,14 +99,16 @@ const getTemplates = createAsyncThunk(
       return result;
     } catch (error) {
       const err = error as AxiosError;
-      if (err.response) {
+      if (err.response?.data) {
         dispatch(
           handleError({
             errorMessage: (err.response?.data as ValidationErrors).errorMessage,
           })
         );
-        throw err;
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
       }
+      throw err;
     }
   }
 );
@@ -118,22 +120,25 @@ const enableTemplate = createAsyncThunk(
       const result = await templateServices.enableTemplate({
         ...args,
       });
-      dispatch(updateTemplate({...args}))
+      dispatch(updateTemplate({ ...args }));
       dispatch(handleSuccess({ message: result.message }));
       return result;
     } catch (error) {
       const err = error as AxiosError;
-      if (err.response) {
+      if (err.response?.data) {
         dispatch(
           handleError({
             errorMessage: (err.response?.data as ValidationErrors).errorMessage,
           })
         );
-        throw err;
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
       }
+      throw err;
     }
   }
 );
+
 const addNewTemplate = createAsyncThunk(
   `${ACTION_TYPE}addNewTemplate`,
   async (args: AddTemplateToFirebaseArgs, { dispatch }) => {
@@ -148,14 +153,41 @@ const addNewTemplate = createAsyncThunk(
       return result;
     } catch (error) {
       const err = error as AxiosError;
-      if (err.response) {
+      if (err.response?.data) {
         dispatch(
           handleError({
             errorMessage: (err.response?.data as ValidationErrors).errorMessage,
           })
         );
-        throw err;
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
       }
+      throw err;
+    }
+  }
+);
+
+const approveTemplate = createAsyncThunk(
+  `${ACTION_TYPE}approveTemplate`,
+  async (args: ApproveTemplateArgs, { dispatch }) => {
+    try {
+      const result = await templateServices.approveTemplate({
+        ...args,
+      });
+      dispatch(handleSuccess({ message: result.message }));
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
     }
   }
 );
@@ -166,10 +198,22 @@ const template = createSlice({
   reducers: {
     searchTemplate: searchTemplateCR,
     onChangeTemplatePage: onChangeTemplatePageCR,
-    clearTemplates: clearTemplatesCR,
+    clearTemplates: (state: State) => ({
+      ...state,
+      templateList: [],
+      searchItemValue: undefined,
+      filter: undefined,
+      total: undefined,
+      size: 10,
+      currentPage: 0,
+    }),
     getTemplateDetail: getTemplateDetailCR,
     updateTemplate: updateTemplateCR,
-    clearTemplateDetail: clearTemplateDetailCR
+    clearTemplateDetail: (state: State) => ({
+      ...state,
+      templateDetail: undefined,
+    }),
+    setTemplateFilter: setTemplateFilterCR,
   },
   extraReducers: (builder) => {
     builder.addCase(getTemplates.pending, (state) => ({
@@ -182,10 +226,13 @@ const template = createSlice({
       templateList: payload?.items!,
       total: payload?.total!,
     }));
-    builder.addCase(getTemplates.rejected, (state) => ({
-      ...state,
-      isGetTemplatesLoading: false,
-    }));
+    builder.addCase(getTemplates.rejected, (state) => {
+      if(state.isGetTemplatesLoading) return //* Handle api abort
+      return {
+        ...state,
+        isGetTemplatesLoading: false,
+      }
+    });
     builder.addCase(addNewTemplate.pending, (state) => ({
       ...state,
       isAddNewTemplateLoading: true,
@@ -202,21 +249,31 @@ const template = createSlice({
       ...state,
       isEnableTemplateLoading: true,
     }));
-    builder.addCase(enableTemplate.fulfilled, (state, { payload }) => {
-      return {
-        ...state,
-        isEnableTemplateLoading: false,
-        templateDetail: undefined
-      }
-    });
+    builder.addCase(enableTemplate.fulfilled, (state, { payload }) => ({
+      ...state,
+      isEnableTemplateLoading: false,
+      templateDetail: undefined,
+    }));
     builder.addCase(enableTemplate.rejected, (state) => ({
       ...state,
       isEnableTemplateLoading: false,
     }));
+    builder.addCase(approveTemplate.pending, (state) => ({
+      ...state,
+      isApproveTemplateLoading: true,
+    }));
+    builder.addCase(approveTemplate.fulfilled, (state, { payload }) => ({
+      ...state,
+      isApproveTemplateLoading: false,
+    }));
+    builder.addCase(approveTemplate.rejected, (state) => ({
+      ...state,
+      isApproveTemplateLoading: false,
+    }));
   },
 });
 
-export { getTemplates, addNewTemplate, enableTemplate };
+export { getTemplates, addNewTemplate, enableTemplate, approveTemplate };
 
 export const {
   searchTemplate,
@@ -224,7 +281,8 @@ export const {
   clearTemplates,
   getTemplateDetail,
   updateTemplate,
-  clearTemplateDetail
+  clearTemplateDetail,
+  setTemplateFilter,
 } = template.actions;
 
 export default template.reducer;

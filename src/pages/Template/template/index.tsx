@@ -1,16 +1,12 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase, Paper, Button } from "@mui/material";
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import UploadIcon from "@mui/icons-material/Upload";
 import { styled } from "@mui/system";
 import DataTable from "../../../components/DataTable";
 import { useDispatch, useSelector } from "../../../hooks";
-import {
-  getTemplates,
-  searchTemplate,
-} from "../../../slices/template";
-import { handleError } from "../../../slices/notification";
-import { StatusTemplate } from "../../../utils/constants";
+import { getTemplates, searchTemplate } from "../../../slices/template";
+import { DataTableHeader, StatusTemplate } from "../../../utils/constants";
 
 const StyledUploadBtn = styled(Button)({
   backgroundColor: "#fff",
@@ -24,31 +20,33 @@ const StyledUploadBtn = styled(Button)({
   },
 });
 
+const { TYPE, IS_ENABLE, TYPE_TEMPLATE } = DataTableHeader;
+
 const Template = () => {
   const dispatch = useDispatch();
-  const { searchItemValue, currentPage } = useSelector(
+  const { searchItemValue, currentPage, filter } = useSelector(
     (state) => state.template
   );
 
-  const request = useCallback(async () => {
-    try {
-      await dispatch(
-        getTemplates({
-          templateName_contains: searchItemValue || undefined,
-          _page: currentPage,
-          _size: 10,
-          _sort: undefined,
-          status_eq: StatusTemplate.APPROVED
-        })
-      ).unwrap(); //* Unwrap to catch error when failed
-    } catch {
-      dispatch(handleError({ errorMessage: undefined }));
-    }
-  }, [dispatch, searchItemValue, currentPage]);
-
   useEffect(() => {
-    request();
-  }, [request]);
+    const getTemplateList = dispatch(
+      getTemplates({
+        templateName_contains: searchItemValue || undefined,
+        _page: currentPage,
+        _size: 10,
+        _sort: undefined,
+        status_eq: StatusTemplate.APPROVED,
+        type_eq: filter?.field === TYPE ? (filter.value as string) : undefined,
+        typeName_eq:
+          filter?.field === TYPE_TEMPLATE
+            ? (filter.value as string)
+            : undefined,
+        isEnable_eq:
+          filter?.field === IS_ENABLE ? (filter.value as boolean) : undefined,
+      })
+    )
+    return () => { getTemplateList.abort()}
+  }, [currentPage, dispatch, filter?.field, filter?.value, searchItemValue]);
 
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">

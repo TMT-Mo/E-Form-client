@@ -14,6 +14,7 @@ import AlertPopup from "../../AlertPopup";
 import SideBar from "./SideBar";
 import TopBar from "./TopBar";
 import NewTemplates from "../../../pages/Template/new-templates";
+import { clearTemplates } from "../../../slices/template";
 
 const {
   TEMPLATE,
@@ -33,11 +34,17 @@ const Layout: React.FC = () => {
   const { locationIndex } = useSelector((state) => state.location);
   
   useEffect(() => {
-    dispatch(
+    !locationIndex && dispatch(
       setLocation({
         locationIndex: LocationIndex.TEMPLATE,
       })
     );
+  }, [dispatch, locationIndex]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearTemplates())
+    }
   }, [dispatch]);
   // const { innerWidth } = window;
   const switchTab = () => {
