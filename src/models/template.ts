@@ -10,7 +10,7 @@ interface Signer {
 export interface Template {
   id: number;
   createdAt: string;
-  updatedAt: string;
+  updateAt: string;
   templateName: string;
   type: string;
   description: string;
@@ -22,6 +22,7 @@ export interface Template {
   signatoryList: Signer[];
   link: string;
   createdBy: number;
+  reason?: string
 }
 export interface TemplateListResponse {
   items: Template[];

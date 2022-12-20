@@ -34,6 +34,7 @@ export enum ViewerLocationIndex {
   APPROVING_DOCUMENT = 4,
   VIEW_DOCUMENT = 5,
   VIEW_DOCUMENT_HISTORY = 6,
+  VIEW_TEMPLATE_HISTORY = 7
 }
 
 export enum TypeFile {
@@ -64,6 +65,6 @@ export enum DataTableHeader{
   DESCRIPTION = 'description',
   ACTION = 'action',
   CREATED_AT = 'createdAt',
-  UPDATED_AT = 'updatedAt',
+  UPDATED_AT = 'updateAt',
   CREATED_BY = 'createdBy',
 }
