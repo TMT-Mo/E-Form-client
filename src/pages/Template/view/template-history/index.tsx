@@ -1,4 +1,4 @@
-import { Divider} from "@mui/material";
+import { Divider } from "@mui/material";
 import React, { Fragment, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
@@ -9,8 +9,8 @@ import AlertPopup from "../../../../components/AlertPopup";
 import { useDispatch, useSelector } from "../../../../hooks";
 import { StatusTemplate, StatusTemplateTag } from "../../../../utils/constants";
 
-const { APPROVED, REJECTED } = StatusTemplate;
-const { APPROVED_TAG, REJECTED_TAG } = StatusTemplateTag;
+const { APPROVED, REJECTED, NEW } = StatusTemplate;
+const { APPROVED_TAG, REJECTED_TAG, NEW_TAG } = StatusTemplateTag;
 
 const ViewTemplateHistory: React.FC = () => {
   const viewer = useRef(null);
@@ -39,6 +39,12 @@ const ViewTemplateHistory: React.FC = () => {
           {APPROVED_TAG}
         </span>
       );
+    } else if (status === NEW) {
+      return (
+        <span className="w-full px-3 py-1 rounded-md bg-blue-100 text-blue-600 text-xs border-blue-400 border border-solid">
+          {NEW_TAG}
+        </span>
+      );
     } else {
       return (
         <span className="w-full px-3 py-1 rounded-md bg-red-100 text-red-600 text-xs border-red-400 border border-solid">
@@ -48,16 +54,16 @@ const ViewTemplateHistory: React.FC = () => {
     }
   };
 
-  const signers = signatoryList.map((signer) => (
-    <div className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4">
+  const signers = signatoryList.map((signer, index) => (
+    <div className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4" key={index}>
       <div className="flex space-x-2 items-center ">
         <h4>Signer:</h4>
         <span className="text-white text-base break-words">{signer.email}</span>
       </div>
-      <div className="flex space-x-2">
+      {/* <div className="flex space-x-2">
         <h4>Department:</h4>
         <span className="text-white text-base break-words">{templateName}</span>
-      </div>
+      </div> */}
       <div className="flex space-x-2 items-center">
         <h4>Role:</h4>
         <span className="text-white text-base break-words">
@@ -173,13 +179,13 @@ const ViewTemplateHistory: React.FC = () => {
                 {description}
               </span>
             </div>
-            <div className="flex flex-col space-y-2">
+            <div className="flex items-center space-x-2">
               <h4>Type:</h4>
               <span className="text-white text-base break-words w-60">
                 {typeName}
               </span>
             </div>
-            <div className="flex flex-col space-y-2">
+            <div className="flex items-center space-x-2">
               <h4>Department:</h4>
               <span className="text-white text-base break-words w-60">
                 {departmentName}
@@ -191,13 +197,13 @@ const ViewTemplateHistory: React.FC = () => {
                 {createdBy}
               </span>
             </div>
-            <div className="flex flex-col space-y-2">
-              <h4>Created At:</h4>
+            <div className="flex items-center space-x-2">
+              <h4 className="whitespace-nowrap ">Created At:</h4>
               <span className="text-white text-base break-words w-60">
                 {createdAt}
               </span>
             </div>
-            <div className="flex flex-col space-y-2">
+            <div className="flex items-center space-x-2">
               <h4>Status:</h4>
               <span className="text-white text-base break-words w-60">
                 {createStatus()}
@@ -216,7 +222,6 @@ const ViewTemplateHistory: React.FC = () => {
               <h4>Signer List:</h4>
             </div>
             {signers}
-            
           </div>
         </div>
         <div className="webviewer w-full" ref={viewer}></div>

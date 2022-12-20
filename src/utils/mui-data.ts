@@ -117,11 +117,13 @@ export const templateHistoryColumns: GridColDef[] = [
   {
     field: CREATED_AT,
     headerName: "Created At",
+    flex: 0.4
   },
   {
     field: UPDATED_AT,
     headerName: "Updated At",
     filterable: false,
+    flex: 0.4
   },
   {
     field: ACTION,
