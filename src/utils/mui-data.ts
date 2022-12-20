@@ -1,3 +1,4 @@
+import { TemplateHistoryActionCell } from './../components/DataTable/action-cell/templateHistory/index';
 import { statusOnlyOperators } from "./../components/DataTable/filter/status/index";
 
 import { isEnableOnlyOperators } from "./../components/DataTable/filter/isEnable/index";
@@ -126,6 +127,7 @@ export const templateHistoryColumns: GridColDef[] = [
     field: ACTION,
     headerName: "Action",
     filterable: false,
+    renderCell: TemplateHistoryActionCell,
   },
 ];
 

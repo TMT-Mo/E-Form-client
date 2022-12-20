@@ -18,6 +18,7 @@ import ViewAddTemplate from "../../../pages/Template/view/add-template";
 import ViewCreateDocument from "../../../pages/Template/view/create-document";
 import { clearTemplateDetail } from "../../../slices/template";
 import ViewApproveTemplate from "../../../pages/Template/view/approve-template";
+import ViewTemplateHistory from "../../../pages/Template/view/template-history";
 
 const {
     ADD_TEMPLATE,
@@ -26,7 +27,8 @@ const {
     CREATE_DOCUMENT,
     CREATE_PERSONAL_DOCUMENT,
     VIEW_DOCUMENT,
-    VIEW_DOCUMENT_HISTORY
+    VIEW_DOCUMENT_HISTORY,
+    VIEW_TEMPLATE_HISTORY
 } = ViewerLocationIndex;
 
 const Viewer: React.FC = () => {
@@ -38,6 +40,8 @@ const Viewer: React.FC = () => {
     switch (viewerLocationIndex) {
       case ADD_TEMPLATE:
         return <ViewAddTemplate/>;
+      case VIEW_TEMPLATE_HISTORY:
+        return <ViewTemplateHistory/>;
       case APPROVING_DOCUMENT:
         return <></>;
       case CREATE_DOCUMENT:
