@@ -12,28 +12,27 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer, { WebViewerInstance } from "@pdftron/webviewer";
-import { ref, uploadBytesResumable } from "firebase/storage";
-import storage from "../../../utils/firebase";
-import { useDispatch, useSelector } from "../../../hooks";
-import {
-  clearUserList,
-  getDepartmentList,
-  getTemplateTypeList,
-  getUserListByDepartmentID,
-  toggleDepartmentList,
-  toggleTemplateTypeList,
-} from "../../../slices/system";
-import { handleError } from "../../../slices/notification";
+import { ref } from "firebase/storage";
 import { LoadingButton } from "@mui/lab";
-import { IFile } from "../../../models/system";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-import { addNewTemplate } from "../../../slices/template";
-import { TemplateArgs } from "../../../models/template";
-import AlertPopup from "../../../components/AlertPopup";
+import AlertPopup from "../../../../components/AlertPopup";
+import { TemplateArgs } from "../../../../models/template";
+import { handleError } from "../../../../slices/notification";
+import {
+  getDepartmentList,
+  toggleDepartmentList,
+  getTemplateTypeList,
+  toggleTemplateTypeList,
+  getUsers,
+  clearUserList,
+} from "../../../../slices/system";
+import { addNewTemplate } from "../../../../slices/template";
+import { useDispatch, useSelector } from "../../../../hooks";
+import storage from "../../../../utils/firebase";
 
 const LoadingBtn = styled(
   LoadingButton,
@@ -65,11 +64,12 @@ const TextFieldStyled = styled(TextField)({
   },
 });
 
-const ViewAddTemplate: React.FC = () => {
+const ViewCreateDocument: React.FC = () => {
   const viewer = useRef(null);
   const instance = useRef<WebViewerInstance>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
   const {
     isGetDepartmentsLoading,
     departmentList,
@@ -89,6 +89,7 @@ const ViewAddTemplate: React.FC = () => {
     idTemplateType: undefined,
     size: undefined,
     signatoryList: undefined,
+    createdBy: +userInfo?.userId!,
   });
 
   const [selectedDepartment, setSelectedDepartment] = useState<
@@ -107,8 +108,6 @@ const ViewAddTemplate: React.FC = () => {
     });
     check ? setIsEnableSave(false) : setIsEnableSave(true);
   }, [form]);
-
-  console.log(isEnableSave);
   // Handle file upload event and update state
   function handleChange(event: any) {
     const newFile: File = event.target.files[0];
@@ -117,23 +116,18 @@ const ViewAddTemplate: React.FC = () => {
   }
 
   const handleUpload = async () => {
-    if (!file) {
-      alert("Please upload an image first!");
-    }
-
     const storageRef = ref(storage, `/${file!.name}`);
 
     // progress can be paused and resumed. It also exposes progress updates.
     // Receives the storage reference and the file to upload.
     try {
-      
       await dispatch(
         addNewTemplate({
           templateInfo: form,
           storageRef,
-          file: file!
+          file: file!,
         })
-      ).unwrap();
+      )
       navigate(-1);
     } catch (error) {
       console.log(error);
@@ -161,7 +155,6 @@ const ViewAddTemplate: React.FC = () => {
       const signatureTool = documentViewer.getTool("AnnotationCreateSignature");
       const annotManager = documentViewer.getAnnotationManager();
 
-      annotManager.enableReadOnlyMode();
       documentViewer.addEventListener("documentLoaded", async () => {
         await documentViewer.getDocument().getDocumentCompletePromise();
         documentViewer.updateView();
@@ -199,16 +192,13 @@ const ViewAddTemplate: React.FC = () => {
     }
     if (instance.current) {
       instance.current.UI.loadDocument(file);
-      console.log(instance);
     }
   }, [file]);
-
-  console.log(form);
 
   const getDepartmentListHandler = async () => {
     try {
       if (!departmentList) {
-        await dispatch(getDepartmentList()).unwrap();
+        await dispatch(getDepartmentList())
       }
       dispatch(toggleDepartmentList({ isOpen: !isOpenDepartmentList }));
     } catch (error) {
@@ -216,23 +206,15 @@ const ViewAddTemplate: React.FC = () => {
     }
   };
 
-  const getTemplateListHandler = async () => {
-    try {
+  const getTemplateListHandler = () => {
       if (!templateTypeList) {
-        await dispatch(getTemplateTypeList()).unwrap();
+        dispatch(getTemplateTypeList())
       }
       dispatch(toggleTemplateTypeList({ isOpen: !isOpenTemplateTypes }));
-    } catch (error) {
-      dispatch(handleError({ errorMessage: undefined }));
-    }
   };
 
-  const getUserListHandler = useCallback(async () => {
-    try {
-      await dispatch(getUserListByDepartmentID(selectedDepartment!)).unwrap();
-    } catch (error) {
-      dispatch(handleError({ errorMessage: undefined }));
-    }
+  const getUserListHandler = useCallback(() => {
+    dispatch(getUsers());
   }, [dispatch, selectedDepartment]);
 
   useEffect(() => {
@@ -258,12 +240,10 @@ const ViewAddTemplate: React.FC = () => {
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
-        <ArrowBackIosIcon
-          fontSize="small"
-          className="fill-white cursor-pointer"
-          onClick={() => navigate(-1)}
-        />
-        <span className="text-white">Add a template</span>
+        <Link to="/user">
+          <ArrowBackIosIcon fontSize="small" className="fill-white" />
+        </Link>
+        <span className="text-white">Create a document</span>
       </div>
       <div className="flex">
         <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 w-80">
@@ -281,10 +261,11 @@ const ViewAddTemplate: React.FC = () => {
                   accept=".pdf,.doc,.docx"
                   type="file"
                   id="file-picker"
+                  className=""
                   onChange={handleChange}
                 />
                 <FileUploadIcon />
-                <span className="text-white text-base">
+                <span className="text-white text-base break-words w-60">
                   {form.templateName}
                 </span>
               </IconButton>
@@ -355,7 +336,6 @@ const ViewAddTemplate: React.FC = () => {
             </div>
             <div className="flex flex-col space-y-4">
               <h4>Department</h4>
-
               <Autocomplete
                 id="asynchronous-demo"
                 sx={{
@@ -415,7 +395,10 @@ const ViewAddTemplate: React.FC = () => {
                   onChange={(e, value) => {
                     setForm({
                       ...form,
-                      signatoryList: value.length > 0 ? value.map((item) => item.id) : undefined,
+                      signatoryList:
+                        value.length > 0
+                          ? value.map((item) => item.id)
+                          : undefined,
                     });
                   }}
                   renderInput={(params) => (
@@ -449,4 +432,4 @@ const ViewAddTemplate: React.FC = () => {
   );
 };
 
-export default ViewAddTemplate;
+export default ViewCreateDocument;

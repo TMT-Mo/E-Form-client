@@ -9,7 +9,7 @@ interface Props {
 const RequireAuth: React.FC<Props> = ({ allowedRoles }) => {
   const { userInfo } = useSelector((state) => state.auth);
   const location = useLocation();
-  return userInfo?.role_name === allowedRoles ? (
+  return userInfo?.roleName === allowedRoles ? (
     <Outlet />
   ) : (
     <Navigate to="/unauthorized" state={{ from: location }} replace />

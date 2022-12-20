@@ -10,5 +10,5 @@ export default {
   notification,
   location,
   template,
-  system
+  system,
 };

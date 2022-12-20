@@ -1,15 +1,15 @@
 import { GetTemplateTypeListResponse } from './../models/template';
 import { httpClient, apiPaths } from '../utils';
-import { DepartmentListResponse, UserListResponse } from './../models/system';
+import { DepartmentListResponse, GetUsersResponse, GetUsersArgs } from './../models/system';
 
 const getDepartmentList = async (): Promise<DepartmentListResponse> => {
     const response = await httpClient.get({url: apiPaths.system.getDepartmentList})
     return response.data as DepartmentListResponse
 }
 
-const getUserListByDepartmentID = async (departmentID: number): Promise<UserListResponse> => {
-    const response = await httpClient.get({url: `${apiPaths.system.getUserListByDepartmentID}${departmentID}`})
-    return response.data as UserListResponse
+const getUsers = async (args: GetUsersArgs | undefined): Promise<GetUsersResponse> => {
+    const response = await httpClient.get({url: `${apiPaths.system.getUsers}`, params: args})
+    return response.data as GetUsersResponse
 }
 
 const getTemplateTypeList = async (): Promise<GetTemplateTypeListResponse> => {
@@ -19,6 +19,6 @@ const getTemplateTypeList = async (): Promise<GetTemplateTypeListResponse> => {
 
 export const systemServices =  {
     getDepartmentList,
-    getUserListByDepartmentID,
+    getUsers,
     getTemplateTypeList
 }

@@ -10,10 +10,22 @@ export interface DepartmentListResponse{
 export interface IUser{
     id: number,
     email: string,
+    signature: string,
+    roleName: string,
+    status: number,
+    createdAt: string,
 }
 
-export interface UserListResponse{
-    items: IUser[]
+export interface GetUsersResponse{
+    items: IUser[],
+    total: number,
+    page: number,
+    size: number
+}
+
+export interface GetUsersArgs{
+    departmentId_eq?: number,
+    id_eq?: number
 }
 
 export interface IFile{

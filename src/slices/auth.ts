@@ -28,22 +28,6 @@ const initialState: State = {
   isLoginLoading: false,
 };
 
-const login = createAsyncThunk(
-  `${ACTION_TYPE}login`,
-  async (args: LoginArgument, { dispatch }) => {
-    try {
-      const result = await authServices.login(args as LoginArgument);
-      return result;
-    } catch (error) {
-      const err = error as AxiosError
-      if(err.response){
-        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
-        throw err
-      }
-    }
-  }
-);
-
 const setUserInfoCR: CR<{ token: string}> = (
   state,
   { payload }
@@ -60,13 +44,31 @@ const storeTokenCR: CR<{value: boolean}> = (
   checkAuthenticated: payload.value!
 });
 
+const login = createAsyncThunk(
+  `${ACTION_TYPE}login`,
+  async (args: LoginArgument, { dispatch }) => {
+    try {
+      const result = await authServices.login(args as LoginArgument);
+      return result;
+    } catch (error) {
+      const err = error as AxiosError
+      if(err.response?.data){
+        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
+      }
+      else{
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err
+    }
+  }
+);
+
 const auth = createSlice({
   name: "auth",
   initialState,
   reducers: {
     setUserInfo: setUserInfoCR,
     storeToken: storeTokenCR
-    // logout: state => {}
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => ({
