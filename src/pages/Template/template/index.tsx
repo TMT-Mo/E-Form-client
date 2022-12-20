@@ -19,7 +19,7 @@ const StyledUploadBtn = styled(Button)({
     color: "#fff",
   },
 });
-
+// 
 const { TYPE, IS_ENABLE, TYPE_TEMPLATE, DEPARTMENT } = DataTableHeader;
 
 const Template = () => {
