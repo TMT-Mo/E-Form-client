@@ -11,7 +11,7 @@ import {
   searchTemplate,
 } from "../../../slices/template";
 import { setViewerLocation } from "../../../slices/location";
-import { ViewerLocationIndex } from "../../../utils/constants";
+import { DataTableHeader, ViewerLocationIndex } from "../../../utils/constants";
 
 const StyledAddBtn = styled(Button)({
   backgroundColor: "#407AFF",
@@ -26,10 +26,10 @@ const StyledAddBtn = styled(Button)({
 });
 
 const {ADD_TEMPLATE} = ViewerLocationIndex
-
+const { TYPE, IS_ENABLE, TYPE_TEMPLATE, DEPARTMENT, STATUS } = DataTableHeader;
 const TemplateHistory = () => {
   const dispatch = useDispatch();
-  const { searchItemValue, currentPage } = useSelector(
+  const { searchItemValue, currentPage, filter } = useSelector(
     (state) => state.template
   );
   const {userInfo} = useSelector(state => state.auth)
@@ -41,11 +41,12 @@ const TemplateHistory = () => {
         _page: currentPage ,
         _size: 10,
         _sort: undefined,
-        createdBy_eq: userInfo?.userId
+        createdBy_eq: userInfo?.userId,
+        status_eq: filter?.field === STATUS ? (filter.value as number) : undefined,
       })
     );
     return () => { getTemplateList.abort()}
-  }, [currentPage, dispatch, searchItemValue, userInfo?.userId]);
+  }, [currentPage, dispatch, filter?.field, filter?.value, searchItemValue, userInfo?.userId]);
 
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">

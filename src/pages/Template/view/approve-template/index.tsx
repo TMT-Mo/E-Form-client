@@ -1,15 +1,5 @@
-import {
-  Divider,
-  CircularProgress,
-  TextField,
-  Switch,
-} from "@mui/material";
-import React, {
-  Fragment,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { Divider, CircularProgress, TextField, Switch } from "@mui/material";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { styled } from "@mui/system";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -78,7 +68,7 @@ const ViewApproveTemplate: React.FC = () => {
     id,
   } = templateDetail!;
   const [isAccepting, setIsAccepting] = useState<boolean>(true);
-  const [reason, setReason] = useState<string | undefined>()
+  const [reason, setReason] = useState<string | undefined>();
 
   const signers = signatoryList.map((signer) => (
     <div className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4">
@@ -181,21 +171,16 @@ const ViewApproveTemplate: React.FC = () => {
     });
   }, [link]);
 
-  const onApproveTemplate = async () => {
-    try {
-      await dispatch(
-        approveTemplate({
-          userId: +userInfo?.userId!,
-          templateId: id,
-          statusTemplate: StatusTemplate.APPROVED,
-          reason: `${!isAccepting ? reason : undefined}`
-        })
-      )
-    } catch (error) {
-      console.log(error);
-    }
+  const onApproveTemplate = () => {
+    dispatch(
+      approveTemplate({
+        userId: +userInfo?.userId!,
+        templateId: id,
+        statusTemplate: StatusTemplate.APPROVED,
+        reason: `${!isAccepting ? reason : undefined}`,
+      })
+    );
   };
-
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
@@ -258,7 +243,7 @@ const ViewApproveTemplate: React.FC = () => {
                     backgroundColor: "#ff5252",
                   },
                   "& .MuiSwitch-thumb": {
-                    backgroundColor: `${!isAccepting && '#ff5252'}`,
+                    backgroundColor: `${!isAccepting && "#ff5252"}`,
                   },
                 }}
               />
@@ -281,9 +266,7 @@ const ViewApproveTemplate: React.FC = () => {
                   maxRows={4}
                   color="primary"
                   value={reason}
-                  onChange={(e) =>
-                    setReason(e.target.value)
-                  }
+                  onChange={(e) => setReason(e.target.value)}
                 />
                 <RejectBtn
                   size="small"

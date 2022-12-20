@@ -1,5 +1,5 @@
 import React from "react";
-import { DataGrid, GridColDef, GridFilterModel } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridFilterModel, GridSortModel } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "../../hooks";
 import { LocationIndex } from "../../utils/constants";
 import {
@@ -12,7 +12,7 @@ import {
   templateHistoryColumns,
 } from "../../utils/mui-data";
 import { Template } from "../../models/template";
-import { onChangeTemplatePage, setTemplateFilter } from "../../slices/template";
+import { onChangeTemplatePage, setTemplateFilter, setTemplateSorter } from "../../slices/template";
 import CustomPagination from "./pagination";
 
 interface GetRowIdParams {
@@ -53,32 +53,22 @@ const DataTable: React.FC = () => {
 
   const onFilterChange = React.useCallback((filterModel: GridFilterModel) => {
     // Here you save the data you need from the filter model
-    console.log({ filterModel: { ...filterModel } });
     const {value, columnField} = filterModel.items[0]
     if(!value){
       dispatch(setTemplateFilter(undefined));
       return
     }
-    // switch (columnField) {
-    //   case TYPE:
-    //       dispatch(setTemplateFilter({type: columnField, value}));
-    //       break;
-    //   case TYPE_TEMPLATE:
-    //       dispatch(setTemplateFilter({typeName: columnField, value}));
-    //       break;
-    //   case DEPARTMENT:
-    //       dispatch(setTemplateFilter({department: columnField, value}));
-    //       break;
-    //   case STATUS:
-    //       dispatch(setTemplateFilter({status: columnField, value}));
-    //       break;
-    //   case IS_ENABLE:
-    //       dispatch(setTemplateFilter({isEnable: columnField, value}));
-    //       break;
-    //   default:
-    //     break;
-    // }
     dispatch(setTemplateFilter({field: columnField, value}))
+  }, [dispatch]);
+
+  const handleSortModelChange = React.useCallback((sortModel: GridSortModel) => {
+    // Here you save the data you need from the sort model
+    if(!sortModel[0]){
+      dispatch(setTemplateSorter(undefined))
+      return
+    }
+    const {field, sort} = sortModel[0]
+    dispatch(setTemplateSorter({field, sort: sort!}))
   }, [dispatch]);
 
   const data = (): Data => {
@@ -169,6 +159,8 @@ const DataTable: React.FC = () => {
         getRowId={getRowId}
         onFilterModelChange={onFilterChange}
         filterMode="server"
+        sortingMode="server"
+        onSortModelChange={handleSortModelChange}
         hideFooterPagination
         hideFooter
       />

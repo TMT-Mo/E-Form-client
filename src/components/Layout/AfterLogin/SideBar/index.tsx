@@ -46,6 +46,7 @@ const {
 
 const SideBar: React.FC = () => {
   const { locationIndex } = useSelector((state) => state.location);
+  const {userInfo} = useSelector(state => state.auth)
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -68,8 +69,7 @@ const SideBar: React.FC = () => {
       <img src={logo} alt="" />
       <div className="flex flex-col space-y-3 items-center w-full">
         <AccountCircleIcon className="fill-white" />
-        <h5 className="font-semibold text-white">Username</h5>
-        <span className="text-gray-config">abc@gmail.com</span>
+        <h4 className="font-semibold text-white">{userInfo?.email}</h4>
       </div>
       <Divider className="bg-gray-config" flexItem />
       <Box sx={{ width: "100%", maxWidth: 360, color: "#fff" }}>

@@ -11,7 +11,7 @@ import { StatusTemplate } from "../../../utils/constants";
 
 const NewTemplates = () => {
   const dispatch = useDispatch();
-  const { searchItemValue, currentPage } = useSelector(
+  const { searchItemValue, currentPage, filter, sorter } = useSelector(
     (state) => state.template
   );
 

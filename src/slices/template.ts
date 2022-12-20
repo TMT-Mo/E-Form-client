@@ -6,6 +6,7 @@ import {
   EnableTemplateArgs,
   TemplateFilter,
   ApproveTemplateArgs,
+  TemplateSorter,
 } from "./../models/template";
 import { templateServices } from "./../services/template";
 import {
@@ -29,6 +30,7 @@ interface State {
   templateDetail?: Template;
   isEnableTemplateLoading: boolean;
   filter?: TemplateFilter;
+  sorter?: TemplateSorter;
   isApproveTemplateLoading: boolean;
 }
 
@@ -43,6 +45,7 @@ const initialState: State = {
   templateDetail: undefined,
   isEnableTemplateLoading: false,
   filter: undefined,
+  sorter: undefined,
   isApproveTemplateLoading: false,
 };
 
@@ -89,6 +92,14 @@ const setTemplateFilterCR: CR<TemplateFilter | undefined> = (
 ) => ({
   ...state,
   filter: payload,
+});
+
+const setTemplateSorterCR: CR<TemplateSorter | undefined> = (
+  state,
+  { payload }
+) => ({
+  ...state,
+  sorter: payload,
 });
 
 const getTemplates = createAsyncThunk(
@@ -214,6 +225,7 @@ const template = createSlice({
       templateDetail: undefined,
     }),
     setTemplateFilter: setTemplateFilterCR,
+    setTemplateSorter: setTemplateSorterCR
   },
   extraReducers: (builder) => {
     builder.addCase(getTemplates.pending, (state) => ({
@@ -283,6 +295,7 @@ export const {
   updateTemplate,
   clearTemplateDetail,
   setTemplateFilter,
+  setTemplateSorter
 } = template.actions;
 
 export default template.reducer;
