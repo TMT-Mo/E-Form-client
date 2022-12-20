@@ -1,5 +1,5 @@
-import { Divider, CircularProgress, TextField, Switch } from "@mui/material";
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import { Divider} from "@mui/material";
+import React, { Fragment, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -7,55 +7,16 @@ import WebViewer from "@pdftron/webviewer";
 import { LoadingButton } from "@mui/lab";
 import AlertPopup from "../../../../components/AlertPopup";
 import { useDispatch, useSelector } from "../../../../hooks";
-import { approveTemplate } from "../../../../slices/template";
-import { StatusTemplate } from "../../../../utils/constants";
+import { StatusTemplate, StatusTemplateTag } from "../../../../utils/constants";
 
-const ApproveBtn = styled(
-  LoadingButton,
-  {}
-)({
-  backgroundColor: "#407AFF",
-  borderRadius: "5px",
-  color: "#fff",
-  paddingTop: "10px",
-  paddingBottom: "10px",
-  ":hover": { backgroundColor: "#fff", color: "#407AFF" },
-  "&.Mui-disabled": {
-    color: "#F2F2F2",
-    backgroundColor: "#6F7276",
-  },
-  "&.MuiLoadingButton-loading": {
-    backgroundColor: "#fff",
-    borderColor: "#407AFF",
-  },
-});
-const RejectBtn = styled(
-  LoadingButton,
-  {}
-)({
-  backgroundColor: "#ff5252",
-  borderRadius: "5px",
-  color: "#fff",
-  paddingTop: "10px",
-  paddingBottom: "10px",
-  ":hover": { backgroundColor: "#fff", color: "#407AFF" },
-  "&.Mui-disabled": {
-    color: "#F2F2F2",
-    backgroundColor: "#6F7276",
-  },
-  "&.MuiLoadingButton-loading": {
-    backgroundColor: "#fff",
-    borderColor: "#407AFF",
-  },
-});
+const { APPROVED, REJECTED } = StatusTemplate;
+const { APPROVED_TAG, REJECTED_TAG } = StatusTemplateTag;
 
-const ViewApproveTemplate: React.FC = () => {
+const ViewTemplateHistory: React.FC = () => {
   const viewer = useRef(null);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  const { isApproveTemplateLoading, templateDetail } = useSelector(
-    (state) => state.template
-  );
+  const navigate = useNavigate();
+  const { templateDetail } = useSelector((state) => state.template);
   const { userInfo } = useSelector((state) => state.auth);
   const {
     createdAt,
@@ -67,9 +28,25 @@ const ViewApproveTemplate: React.FC = () => {
     signatoryList,
     link,
     id,
+    status,
+    reason,
   } = templateDetail!;
-  const [isAccepting, setIsAccepting] = useState<boolean>(true);
-  const [reason, setReason] = useState<string | undefined>();
+
+  const createStatus = () => {
+    if (status === APPROVED) {
+      return (
+        <span className="w-full px-3 py-1 rounded-md bg-green-100 text-green-600 text-xs border-green-400 border border-solid">
+          {APPROVED_TAG}
+        </span>
+      );
+    } else {
+      return (
+        <span className="w-full px-3 py-1 rounded-md bg-red-100 text-red-600 text-xs border-red-400 border border-solid">
+          {REJECTED_TAG}
+        </span>
+      );
+    }
+  };
 
   const signers = signatoryList.map((signer) => (
     <div className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4">
@@ -172,17 +149,6 @@ const ViewApproveTemplate: React.FC = () => {
     });
   }, [link]);
 
-  const onApproveTemplate = async () => {
-    await dispatch(
-      approveTemplate({
-        userId: +userInfo?.userId!,
-        templateId: id,
-        statusTemplate: isAccepting ? StatusTemplate.APPROVED : StatusTemplate.REJECTED,
-        reason: `${!isAccepting ? reason : undefined}`,
-      })
-    );
-    navigate('/user')
-  };
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
@@ -231,71 +197,26 @@ const ViewApproveTemplate: React.FC = () => {
                 {createdAt}
               </span>
             </div>
+            <div className="flex flex-col space-y-2">
+              <h4>Status:</h4>
+              <span className="text-white text-base break-words w-60">
+                {createStatus()}
+              </span>
+            </div>
+            {reason && (
+              <div className="flex flex-col space-y-2">
+                <h4>Reason:</h4>
+                <span className="text-white text-base break-words w-60">
+                  {reason}
+                </span>
+              </div>
+            )}
             <Divider className="bg-white" />
             <div className="flex justify-center">
               <h4>Signer List:</h4>
             </div>
             {signers}
-            <div className="flex items-center">
-              <Switch
-                defaultChecked={isAccepting}
-                onClick={() => setIsAccepting((prevState) => !prevState)}
-                sx={{
-                  "&	.MuiSwitch-track": {
-                    backgroundColor: "#ff5252",
-                  },
-                  "& .MuiSwitch-thumb": {
-                    backgroundColor: `${!isAccepting && "#ff5252"}`,
-                  },
-                }}
-              />
-              <h4>{isAccepting ? "Approve" : "Reject"}</h4>
-            </div>
-            {!isAccepting ? (
-              <div className="flex flex-col space-y-4">
-                <h4>Reason:</h4>
-                <TextField
-                  id="outlined-multiline-flexible"
-                  sx={{
-                    border: "1px solid #fff",
-                    borderRadius: "5px",
-                    textarea: {
-                      color: "#fff",
-                    },
-                  }}
-                  multiline
-                  minRows={4}
-                  maxRows={4}
-                  color="primary"
-                  value={reason}
-                  onChange={(e) => setReason(e.target.value)}
-                />
-                <RejectBtn
-                  size="small"
-                  loading={isApproveTemplateLoading}
-                  loadingIndicator={
-                    <CircularProgress color="inherit" size={16} />
-                  }
-                  variant="outlined"
-                  onClick={onApproveTemplate}
-                  disabled={!reason}
-                >
-                  Reject
-                </RejectBtn>
-              </div>
-            ) : (
-              <ApproveBtn
-                size="small"
-                loading={isApproveTemplateLoading}
-                loadingIndicator={
-                  <CircularProgress color="inherit" size={16} />
-                }
-                variant="outlined"
-                onClick={onApproveTemplate}
-              >
-                Approve
-              </ApproveBtn>
-            )}
+            
           </div>
         </div>
         <div className="webviewer w-full" ref={viewer}></div>
@@ -308,4 +229,4 @@ const ViewApproveTemplate: React.FC = () => {
   );
 };
 
-export default ViewApproveTemplate;
+export default ViewTemplateHistory;
