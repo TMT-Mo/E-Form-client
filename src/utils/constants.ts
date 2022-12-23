@@ -68,3 +68,41 @@ export enum DataTableHeader{
   UPDATED_AT = 'updateAt',
   CREATED_BY = 'createdBy',
 }
+
+export enum Permissions{
+  VIEW_TEMPLATE_HISTORY = 1,
+  ADD_TEMPLATE = 2,
+  VIEW_TEMPLATE_MANAGEMENT = 3,
+  ENABLE_TEMPLATE = 4,
+  CREATE_DOCUMENT = 5,
+  CREATE_PERSONAL_DOCUMENT = 6,
+  VIEW_NEW_TEMPLATE = 7,
+  APPROVE_TEMPLATE = 8,
+  VIEW_AWAIT_SIGNING_DOCUMENT = 9,
+  APPROVE_DOCUMENT = 10,
+  VIEW_PERSONAL_DOCUMENT = 11,
+  LOCK_DOCUMENT = 12,
+  GROUP_VIEWER = 13,
+  VIEW_SHARED_DOCUMENT = 14,
+  VIEW_DOCUMENT_HISTORY = 15
+}
+
+export enum PermissionTag{
+  VIEW_TEMPLATE_HISTORY_TAG = 'View Template History',
+  ADD_TEMPLATE_TAG = 'Add New Template',
+  VIEW_TEMPLATE_MANAGEMENT_TAG = 'View Template Management',
+  ENABLE_TEMPLATE_TAG = 'Enable Template',
+  CREATE_DOCUMENT_TAG = 'Create Document',
+  CREATE_PERSONAL_DOCUMENT_TAG = 'Create Personal Document',
+  VIEW_NEW_TEMPLATE_TAG = 'View New Template',
+  APPROVE_TEMPLATE_TAG = 'Approve Template',
+  VIEW_AWAIT_SIGNING_DOCUMENT_TAG = 'View Await Signing Document',
+  APPROVE_DOCUMENT_TAG = 'Approve Document',
+  VIEW_PERSONAL_DOCUMENT_TAG = 'View Personal Document',
+  LOCK_DOCUMENT_TAG = 'Lock Document',
+  GROUP_VIEWER_TAG = 'Group Viewer',
+  VIEW_SHARED_DOCUMENT_TAG = 'View Shared Document',
+  VIEW_DOCUMENT_HISTORY_TAG = 'View Document History'
+}
+
+

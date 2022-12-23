@@ -69,7 +69,7 @@ const SideBar: React.FC = () => {
       <img src={logo} alt="" />
       <div className="flex flex-col space-y-3 items-center w-full">
         <AccountCircleIcon className="fill-white" />
-        <h4 className="font-semibold text-white">{userInfo?.email}</h4>
+        <h4 className="font-semibold text-white">{userInfo?.userName}</h4>
       </div>
       <Divider className="bg-gray-config" flexItem />
       <Box sx={{ width: "100%", maxWidth: 360, color: "#fff" }}>

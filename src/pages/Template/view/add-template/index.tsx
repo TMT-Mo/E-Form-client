@@ -4,6 +4,7 @@ import {
   CircularProgress,
   TextField,
   IconButton,
+  Typography,
 } from "@mui/material";
 import React, {
   Fragment,
@@ -42,6 +43,9 @@ const LoadingBtn = styled(
   color: "#fff",
   paddingTop: "10px",
   paddingBottom: "10px",
+  // textTransform: 'unset',
+  // fontSize: '15px',
+  // width: 'fit-content',
   ":hover": { backgroundColor: "#fff", color: "#407AFF" },
   "&.Mui-disabled": {
     color: "#F2F2F2",
@@ -257,9 +261,9 @@ const ViewAddTemplate: React.FC = () => {
                   onChange={handleChange}
                 />
                 <FileUploadIcon />
-                <span className="text-white text-base break-words w-60">
+                <Typography className="text-white">
                   {form.templateName}
-                </span>
+                </Typography>
               </IconButton>
             </div>
             <Divider className="bg-white" />
@@ -380,6 +384,9 @@ const ViewAddTemplate: React.FC = () => {
                     "& .MuiAutocomplete-tag": {
                       backgroundColor: "#fff",
                     },
+                    "& .MuiChip-deleteIcon":{
+                      fill: '#000'
+                    }
                   }}
                   id="multiple-limit-tags"
                   options={userList?.items!}

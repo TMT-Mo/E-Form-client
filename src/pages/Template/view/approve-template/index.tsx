@@ -1,4 +1,4 @@
-import { Divider, CircularProgress, TextField, Switch } from "@mui/material";
+import { Divider, CircularProgress, TextField, Switch, Typography } from "@mui/material";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
@@ -75,17 +75,17 @@ const ViewApproveTemplate: React.FC = () => {
     <div className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4">
       <div className="flex space-x-2 items-center ">
         <h4>Signer:</h4>
-        <span className="text-white text-base break-words">{signer.email}</span>
+        <Typography className="text-white">{signer.email}</Typography>
       </div>
-      <div className="flex space-x-2">
+      <div className="flex space-x-2 items-center">
         <h4>Department:</h4>
-        <span className="text-white text-base break-words">{templateName}</span>
+        <Typography className="text-white">{templateName}</Typography>
       </div>
       <div className="flex space-x-2 items-center">
         <h4>Role:</h4>
-        <span className="text-white text-base break-words">
+        <Typography className="text-white">
           {signer.roleName}
-        </span>
+        </Typography>
       </div>
     </div>
   ));

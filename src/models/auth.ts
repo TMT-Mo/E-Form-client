@@ -13,6 +13,7 @@ export interface UserInfo {
   nbf: string;
   iat: number;
   exp: number;
-  email:string,
+  userName:string,
   signature: string,
+  idPermissions: number[]
 }
