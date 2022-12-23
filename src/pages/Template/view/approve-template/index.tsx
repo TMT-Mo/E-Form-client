@@ -1,4 +1,4 @@
-import { Divider, CircularProgress, TextField, Switch, Typography } from "@mui/material";
+import { Divider, CircularProgress, TextField, Switch, Typography, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
@@ -10,8 +10,38 @@ import { useDispatch, useSelector } from "../../../../hooks";
 import { approveTemplate } from "../../../../slices/template";
 import { StatusTemplate } from "../../../../utils/constants";
 
-const ApproveBtn = styled(
+const LoadingBtn = styled(
   LoadingButton,
+  {}
+)({
+  backgroundColor: "#407AFF",
+  borderRadius: "5px",
+  color: "#fff",
+  padding: '5px',
+  textTransform: 'unset',
+  // fontSize: '15px',
+  // width: 'fit-content',
+  ":hover": { backgroundColor: "#578aff" },
+  "&.MuiLoadingButton-loading": {
+    backgroundColor: "#fff",
+    borderColor: "#407AFF",
+  },
+});
+
+const CancelBtn = styled(
+  Button,
+  {}
+)({
+  backgroundColor: "#fff",
+  borderRadius: "5px",
+  color: "#407AFF",
+  padding: '5px',
+  textTransform: 'unset',
+  // ":hover": { backgroundColor: "#407AFF", color: "#fff", },
+});
+
+const ApproveBtn = styled(
+  Button,
   {}
 )({
   backgroundColor: "#407AFF",
@@ -24,13 +54,9 @@ const ApproveBtn = styled(
     color: "#F2F2F2",
     backgroundColor: "#6F7276",
   },
-  "&.MuiLoadingButton-loading": {
-    backgroundColor: "#fff",
-    borderColor: "#407AFF",
-  },
 });
 const RejectBtn = styled(
-  LoadingButton,
+  Button,
   {}
 )({
   backgroundColor: "#ff5252",
@@ -42,10 +68,6 @@ const RejectBtn = styled(
   "&.Mui-disabled": {
     color: "#F2F2F2",
     backgroundColor: "#6F7276",
-  },
-  "&.MuiLoadingButton-loading": {
-    backgroundColor: "#fff",
-    borderColor: "#407AFF",
   },
 });
 
@@ -70,6 +92,7 @@ const ViewApproveTemplate: React.FC = () => {
   } = templateDetail!;
   const [isAccepting, setIsAccepting] = useState<boolean>(true);
   const [reason, setReason] = useState<string | undefined>();
+  const [openDialog, setOpenDialog] = useState(false);
 
   const signers = signatoryList.map((signer) => (
     <div className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4">
@@ -106,69 +129,14 @@ const ViewApproveTemplate: React.FC = () => {
       },
       viewer.current!
     ).then(async (instance) => {
-      const { documentViewer, annotationManager, Annotations } = instance.Core;
-      const signatureTool = documentViewer.getTool("AnnotationCreateSignature");
+      const { documentViewer} = instance.Core;
       const annotManager = documentViewer.getAnnotationManager();
 
-      // instance.UI.disableElements([ 'leftPanel', 'leftPanelButton' ]);
-      instance.UI.disableElements(["", ""]);
-      // instance.UI.enableFeatures([instance.UI.Feature.Initials]);
       annotManager.enableReadOnlyMode();
       documentViewer.addEventListener("documentLoaded", async () => {
         await documentViewer.getDocument().getDocumentCompletePromise();
-        //   await signatureTool.importSignatures([image]);
-        // const annotations = annotationManager.importAnnotationCommand(a);
-        // (await annotations).forEach((annotation) => {
-        //   annotationManager.redrawAnnotation(annotation);
-        // });
         documentViewer.updateView();
-        annotationManager.addEventListener(
-          "annotationChanged",
-          async (annotations, action, { imported }) => {
-            const annots = annotationManager.getAnnotationsList()[0];
-
-            // If the event is triggered by importing then it can be ignored
-            // This will happen when importing the initial annotations
-            // from the server or individual changes from other users
-
-            if (imported) return;
-            // annots.modi
-
-            // const xfdfString = annotationManager.exportAnnotationCommand();
-            // console.log((await xfdfString).toString());
-            console.log(
-              (await annotationManager.exportAnnotations()).replaceAll(
-                /\\&quot;/gi,
-                ""
-              )
-            );
-          }
-        );
       });
-
-      // documentViewer.addEventListener('annotationsLoaded', () => {
-      //   const annot = new Annotations.FreeTextAnnotation(Annotations.FreeTextAnnotation.Intent.FreeTextCallout, {
-      //     PageNumber: 1,
-      //     TextAlign: 'center',
-      //     TextVerticalAlign: 'center',
-      //     TextColor: new Annotations.Color(255, 0, 0, 1),
-      //     StrokeColor: new Annotations.Color(0, 255, 0, 1),
-      //   });
-
-      //   annot.setPathPoint(0, 500, 25);  // Callout ending (start)
-      //   annot.setPathPoint(1, 425, 75);  // Callout knee
-      //   annot.setPathPoint(2, 300, 75);  // Callout joint
-      //   annot.setPathPoint(3, 100, 50);  // Top-left point
-      //   annot.setPathPoint(4, 300, 100); // Bottom-right point
-
-      //   annot.setContents(`Visited: ${new Date()}`);
-
-      //   annotationManager.addAnnotation(annot);
-      //   annotationManager.redrawAnnotation(annot);
-      // });
-      // await documentViewer.getAnnotationsLoadedPromise();
-      // const xfdf = await annotationManager.exportAnnotations();
-      // console.log(xfdf);
     });
   }, [link]);
 
@@ -272,12 +240,8 @@ const ViewApproveTemplate: React.FC = () => {
                 />
                 <RejectBtn
                   size="small"
-                  loading={isApproveTemplateLoading}
-                  loadingIndicator={
-                    <CircularProgress color="inherit" size={16} />
-                  }
                   variant="outlined"
-                  onClick={onApproveTemplate}
+                  onClick={() => setOpenDialog(true)}
                   disabled={!reason}
                 >
                   Reject
@@ -286,12 +250,8 @@ const ViewApproveTemplate: React.FC = () => {
             ) : (
               <ApproveBtn
                 size="small"
-                loading={isApproveTemplateLoading}
-                loadingIndicator={
-                  <CircularProgress color="inherit" size={16} />
-                }
                 variant="outlined"
-                onClick={onApproveTemplate}
+                onClick={() => setOpenDialog(true)}
               >
                 Approve
               </ApproveBtn>
@@ -300,6 +260,33 @@ const ViewApproveTemplate: React.FC = () => {
         </div>
         <div className="webviewer w-full" ref={viewer}></div>
       </div>
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Notification
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {isAccepting ? 'Are you sure you want to approve this template?' : 'Are you sure you want to reject this template?'}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <CancelBtn onClick={() => setOpenDialog(false)} size='small' >Cancel</CancelBtn>
+          <LoadingBtn
+            size="small"
+            loading={isApproveTemplateLoading}
+            loadingIndicator={<CircularProgress color="inherit" size={16} />}
+            variant="outlined"
+            onClick={onApproveTemplate}
+          >
+            Save
+          </LoadingBtn>
+        </DialogActions>
+      </Dialog>
       <AlertPopup
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         autoHideDuration={3000}
