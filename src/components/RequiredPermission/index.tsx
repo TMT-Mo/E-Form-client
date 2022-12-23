@@ -1,16 +1,17 @@
-import React from 'react'
-import { useSelector } from '../../hooks';
+import { ReactNode } from "react"
+import { usePermission } from "../../hooks/use-permission"
+import { Permissions } from "../../utils/constants"
 
-const RequiredPermission = (Component: any, requiredPermissions: number[]) => {
-  const {idPermissions} = useSelector(state => state.auth.userInfo!)
-  const ComponentParent = (props: any) => {
-    const hasPermission = requiredPermissions.every(r => idPermissions.includes(r));
-    return hasPermission ? <Component /> : null;
-  };
+interface IProps {
+  permission: Permissions
+  children: ReactNode
+}
 
-  return ComponentParent;
-};
+export const RequiredPermission: React.FC<IProps> = ({ permission, children }) => {
+  const hasPermission = usePermission(permission)
+  if (hasPermission) {
+    return <>{children}</>
+  }
 
-export default RequiredPermission;
-
-//example usage: const ComponentWithCheckedPermissions = RequiredPermissions(Component, ['user:write']);
+  return null
+}

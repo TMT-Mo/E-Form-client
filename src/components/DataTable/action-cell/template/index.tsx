@@ -8,10 +8,12 @@ import { Link } from "react-router-dom";
 import { Template } from "../../../../models/template";
 import { setViewerLocation } from "../../../../slices/location";
 import { enableTemplate, getTemplateDetail } from "../../../../slices/template";
-import { ViewerLocationIndex } from "../../../../utils/constants";
+import { Permissions, ViewerLocationIndex } from "../../../../utils/constants";
 import { useDispatch, useSelector } from "../../../../hooks";
+import { RequiredPermission } from "../../../RequiredPermission";
 
-const { CREATE_DOCUMENT } = ViewerLocationIndex;
+const { CREATE_DOCUMENT_INDEX } = ViewerLocationIndex;
+const { ENABLE_TEMPLATE } = Permissions;
 
 export const TemplateActionCell = (props: GridRenderCellParams<Date>) => {
   const { hasFocus, row } = props;
@@ -46,21 +48,25 @@ export const TemplateActionCell = (props: GridRenderCellParams<Date>) => {
 
   return (
     <div>
-      <IconButton
-        aria-label="lock"
-        onClick={() => dispatch(getTemplateDetail({ template: row }))}
-      >
-        {isEnableTemplateLoading && templateDetail?.id === rowValue.id ? (
-          <CircularProgress size={20} />
-        ) : (
-          <LockIcon fontSize="small" />
-        )}
-      </IconButton>
+      <RequiredPermission permission={ENABLE_TEMPLATE}>
+        <IconButton
+          aria-label="lock"
+          onClick={() => dispatch(getTemplateDetail({ template: row }))}
+        >
+          {isEnableTemplateLoading && templateDetail?.id === rowValue.id ? (
+            <CircularProgress size={20} />
+          ) : (
+            <LockIcon fontSize="small" />
+          )}
+        </IconButton>
+      </RequiredPermission>
       <IconButton
         aria-label="delete"
         onClick={() => {
           dispatch(getTemplateDetail({ template: row }));
-          dispatch(setViewerLocation({ viewerLocationIndex: CREATE_DOCUMENT }));
+          dispatch(
+            setViewerLocation({ viewerLocationIndex: CREATE_DOCUMENT_INDEX })
+          );
         }}
       >
         <Link to="/viewer" replace>

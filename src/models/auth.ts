@@ -15,5 +15,5 @@ export interface UserInfo {
   exp: number;
   userName:string,
   signature: string,
-  idPermissions: number[]
+  idPermissions: string
 }

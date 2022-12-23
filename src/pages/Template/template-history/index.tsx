@@ -6,12 +6,14 @@ import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import DataTable from "../../../components/DataTable";
 import { useDispatch, useSelector } from "../../../hooks";
-import {
-  getTemplates,
-  searchTemplate,
-} from "../../../slices/template";
+import { getTemplates, searchTemplate } from "../../../slices/template";
 import { setViewerLocation } from "../../../slices/location";
-import { DataTableHeader, ViewerLocationIndex } from "../../../utils/constants";
+import {
+  DataTableHeader,
+  Permissions,
+  ViewerLocationIndex,
+} from "../../../utils/constants";
+import { RequiredPermission } from "../../../components/RequiredPermission";
 
 const StyledAddBtn = styled(Button)({
   backgroundColor: "#407AFF",
@@ -25,28 +27,44 @@ const StyledAddBtn = styled(Button)({
   },
 });
 
-const {ADD_TEMPLATE} = ViewerLocationIndex
+const { ADD_TEMPLATE } = Permissions;
+
+const { ADD_TEMPLATE_INDEX } = ViewerLocationIndex;
 const { TYPE, IS_ENABLE, TYPE_TEMPLATE, DEPARTMENT, STATUS } = DataTableHeader;
 const TemplateHistory = () => {
   const dispatch = useDispatch();
   const { searchItemValue, currentPage, filter } = useSelector(
     (state) => state.template
   );
-  const {userInfo} = useSelector(state => state.auth)
+  const { userInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const getTemplateList = dispatch(
       getTemplates({
         templateName_contains: searchItemValue || undefined,
-        _page: currentPage ,
+        _page: currentPage,
         _size: 10,
         _sort: undefined,
         createdBy_eq: userInfo?.userId,
-        status_eq: filter?.field === STATUS ? (filter.value as number) : undefined,
+        status_eq:
+          filter?.field === STATUS ? (filter.value as number) : undefined,
       })
     );
-    return () => { getTemplateList.abort()}
-  }, [currentPage, dispatch, filter?.field, filter?.value, searchItemValue, userInfo?.userId]);
+    return () => {
+      getTemplateList.abort();
+    };
+  }, [
+    currentPage,
+    dispatch,
+    filter?.field,
+    filter?.value,
+    searchItemValue,
+    userInfo?.userId,
+  ]);
+
+  // const AddNewComponent = RequiredPermission(
+  //   , [ADD_TEMPLATE]
+  // );
 
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
@@ -74,19 +92,30 @@ const TemplateHistory = () => {
               }
             />
           </Paper>
-          <div className="flex space-x-8">
-            
-            <Link to="/viewer" className="no-underline" onClick={() => dispatch(setViewerLocation({viewerLocationIndex: ADD_TEMPLATE}))}>
-              <StyledAddBtn
-                variant="outlined"
-                size="small"
-                className="shadow-md"
-                startIcon={<AddIcon />}
+          <RequiredPermission permission={ADD_TEMPLATE}>
+            <div className="flex space-x-8">
+              <Link
+                to="/viewer"
+                className="no-underline"
+                onClick={() =>
+                  dispatch(
+                    setViewerLocation({
+                      viewerLocationIndex: ADD_TEMPLATE_INDEX,
+                    })
+                  )
+                }
               >
-                Add New
-              </StyledAddBtn>
-            </Link>
-          </div>
+                <StyledAddBtn
+                  variant="outlined"
+                  size="small"
+                  className="shadow-md"
+                  startIcon={<AddIcon />}
+                >
+                  Add New
+                </StyledAddBtn>
+              </Link>
+            </div>
+          </RequiredPermission>
         </div>
         <DataTable />
       </div>

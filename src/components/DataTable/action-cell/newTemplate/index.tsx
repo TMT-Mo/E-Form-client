@@ -10,7 +10,7 @@ import { ViewerLocationIndex } from "../../../../utils/constants";
 import { useDispatch } from "../../../../hooks";
 
 const {
-  APPROVING_TEMPLATE,
+  APPROVING_TEMPLATE_INDEX,
 } = ViewerLocationIndex;
 
 export const NewTemplateActionCell = (props: GridRenderCellParams<Date>) => {
@@ -35,7 +35,7 @@ export const NewTemplateActionCell = (props: GridRenderCellParams<Date>) => {
         aria-label="delete"
         onClick={() => {
           dispatch(getTemplateDetail({ template: row }))
-          dispatch(setViewerLocation({viewerLocationIndex: APPROVING_TEMPLATE}))
+          dispatch(setViewerLocation({viewerLocationIndex: APPROVING_TEMPLATE_INDEX}))
         }}
       >
         <Link to="/viewer" replace>

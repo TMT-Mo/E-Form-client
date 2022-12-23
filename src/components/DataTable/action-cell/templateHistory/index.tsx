@@ -10,7 +10,7 @@ import { ViewerLocationIndex } from "../../../../utils/constants";
 import { useDispatch } from "../../../../hooks";
 
 const {
-  VIEW_TEMPLATE_HISTORY,
+  VIEW_TEMPLATE_HISTORY_INDEX,
 } = ViewerLocationIndex;
 
 export const TemplateHistoryActionCell = (props: GridRenderCellParams<Date>) => {
@@ -35,7 +35,7 @@ export const TemplateHistoryActionCell = (props: GridRenderCellParams<Date>) => 
         aria-label="delete"
         onClick={() => {
           dispatch(getTemplateDetail({ template: row }))
-          dispatch(setViewerLocation({viewerLocationIndex: VIEW_TEMPLATE_HISTORY}))
+          dispatch(setViewerLocation({viewerLocationIndex: VIEW_TEMPLATE_HISTORY_INDEX}))
         }}
       >
         <Link to="/viewer" replace>

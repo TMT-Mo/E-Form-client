@@ -10,10 +10,11 @@ import { FileCell } from "../components/DataTable/file-cell";
 import { IsEnableCell } from "../components/DataTable/isEnable-cell";
 import { typeOnlyOperators } from "../components/DataTable/filter/type-file";
 import { typeTemplateOnlyOperators } from "../components/DataTable/filter/type-template";
-import { DataTableHeader } from "./constants";
+import { DataTableHeader, Permissions } from "./constants";
 import { TemplateActionCell } from "../components/DataTable/action-cell/template";
 import { NewTemplateActionCell } from "../components/DataTable/action-cell/newTemplate";
 import { departmentOnlyOperators } from "../components/DataTable/filter/department";
+
 
 const {
   TYPE,
@@ -28,6 +29,9 @@ const {
   TEMPLATE_NAME,
   UPDATED_AT,
 } = DataTableHeader;
+
+
+
 export const templateColumns: GridColDef[] = [
   {
     field: TYPE,

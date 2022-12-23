@@ -21,14 +21,14 @@ import ViewApproveTemplate from "../../../pages/Template/view/approve-template";
 import ViewTemplateHistory from "../../../pages/Template/view/template-history";
 
 const {
-    ADD_TEMPLATE,
-    APPROVING_DOCUMENT,
-    APPROVING_TEMPLATE,
-    CREATE_DOCUMENT,
-    CREATE_PERSONAL_DOCUMENT,
-    VIEW_DOCUMENT,
-    VIEW_DOCUMENT_HISTORY,
-    VIEW_TEMPLATE_HISTORY
+    ADD_TEMPLATE_INDEX,
+    APPROVING_DOCUMENT_INDEX,
+    APPROVING_TEMPLATE_INDEX,
+    CREATE_DOCUMENT_INDEX,
+    CREATE_PERSONAL_DOCUMENT_INDEX,
+    VIEW_DOCUMENT_INDEX,
+    VIEW_DOCUMENT_HISTORY_INDEX,
+    VIEW_TEMPLATE_HISTORY_INDEX
 } = ViewerLocationIndex;
 
 const Viewer: React.FC = () => {
@@ -38,21 +38,21 @@ const Viewer: React.FC = () => {
   // const { innerWidth } = window;
   const switchTab = () => {
     switch (viewerLocationIndex) {
-      case ADD_TEMPLATE:
+      case ADD_TEMPLATE_INDEX:
         return <ViewAddTemplate/>;
-      case VIEW_TEMPLATE_HISTORY:
+      case VIEW_TEMPLATE_HISTORY_INDEX:
         return <ViewTemplateHistory/>;
-      case APPROVING_DOCUMENT:
+      case APPROVING_DOCUMENT_INDEX:
         return <></>;
-      case CREATE_DOCUMENT:
+      case CREATE_DOCUMENT_INDEX:
         return <ViewCreateDocument/>;
-      case VIEW_DOCUMENT:
+      case VIEW_DOCUMENT_INDEX:
         return <Template />;
-      case CREATE_PERSONAL_DOCUMENT:
+      case CREATE_PERSONAL_DOCUMENT_INDEX:
         return <TemplateHistory />;
-      case APPROVING_TEMPLATE:
+      case APPROVING_TEMPLATE_INDEX:
         return <ViewApproveTemplate />;
-      case VIEW_DOCUMENT_HISTORY:
+      case VIEW_DOCUMENT_HISTORY_INDEX:
         return <PersonalDoc />;
       default:
         return <></>;
