@@ -17,6 +17,10 @@ const apiPaths = {
         getDepartmentList: `${apiHead}api/Department/getDepartments`,
         getTemplateTypeList: `${apiHead}api/Category/getCategories`,
         getUsers: `${apiHead}api/Users/getUsers`,
+    },
+    document:{
+        createDocument: `${apiHead}api/Document/create`,
+        getDocuments: `${apiHead}api/Document/getDocuments`
     }
 }
 

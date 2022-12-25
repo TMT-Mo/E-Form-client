@@ -47,6 +47,7 @@ const Template = () => {
           filter?.field === DEPARTMENT ? (filter.value as string) : undefined,
       })
     );
+    getTemplateList.unwrap()
     return () => {
       getTemplateList.abort();
     };

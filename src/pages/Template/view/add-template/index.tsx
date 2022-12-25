@@ -159,8 +159,8 @@ const ViewAddTemplate: React.FC = () => {
         storageRef,
         file: file!,
       })
-    );
-    navigate(-1);
+    ).unwrap();
+    navigate('/user');
   };
 
   // if using a class, equivalent of componentDidMount
@@ -202,20 +202,20 @@ const ViewAddTemplate: React.FC = () => {
 
   const getDepartmentListHandler = async () => {
     if (!departmentList) {
-      await dispatch(getDepartmentList());
+      await dispatch(getDepartmentList()).unwrap();
     }
     dispatch(toggleDepartmentList({ isOpen: !isOpenDepartmentList }));
   };
 
   const getTemplateTypesHandler = async () => {
     if (!templateTypeList) {
-      await dispatch(getTemplateTypeList());
+      await dispatch(getTemplateTypeList()).unwrap();
     }
     dispatch(toggleTemplateTypeList({ isOpen: !isOpenTemplateTypes }));
   };
 
   const getUserListHandler = useCallback(() => {
-    dispatch(getUsers({ departmentId_eq: selectedDepartment }));
+    dispatch(getUsers({ departmentId_eq: selectedDepartment })).unwrap();
   }, [dispatch, selectedDepartment]);
 
   useEffect(() => {

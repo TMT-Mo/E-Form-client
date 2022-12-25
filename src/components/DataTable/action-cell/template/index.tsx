@@ -37,7 +37,7 @@ export const TemplateActionCell = (props: GridRenderCellParams<Date>) => {
   }, [hasFocus]);
 
   const onEnableTemplate = useCallback(() => {
-    dispatch(enableTemplate({ id: rowValue.id, isEnable: !rowValue.isEnable }));
+    dispatch(enableTemplate({ id: rowValue.id, isEnable: !rowValue.isEnable })).unwrap();
   }, [dispatch, rowValue.id, rowValue.isEnable]);
 
   useEffect(() => {

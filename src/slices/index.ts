@@ -4,6 +4,7 @@ import notification from './notification'
 import location from './location'
 import template from "./template";
 import system from "./system";
+import document from './document'
 
 export default {
   auth,
@@ -11,4 +12,5 @@ export default {
   location,
   template,
   system,
+  document
 };

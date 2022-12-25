@@ -1,23 +1,18 @@
 import { Divider } from "@mui/material";
 import React, { Fragment, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { styled } from "@mui/system";
+import { Link} from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer from "@pdftron/webviewer";
-import { LoadingButton } from "@mui/lab";
 import AlertPopup from "../../../../components/AlertPopup";
-import { useDispatch, useSelector } from "../../../../hooks";
+import {  useSelector } from "../../../../hooks";
 import { StatusTemplate, StatusTemplateTag } from "../../../../utils/constants";
 
-const { APPROVED, REJECTED, NEW } = StatusTemplate;
+const { APPROVED, NEW } = StatusTemplate;
 const { APPROVED_TAG, REJECTED_TAG, NEW_TAG } = StatusTemplateTag;
 
 const ViewTemplateHistory: React.FC = () => {
   const viewer = useRef(null);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { templateDetail } = useSelector((state) => state.template);
-  const { userInfo } = useSelector((state) => state.auth);
   const {
     createdAt,
     createdBy,
@@ -27,7 +22,6 @@ const ViewTemplateHistory: React.FC = () => {
     typeName,
     signatoryList,
     link,
-    id,
     status,
     reason,
   } = templateDetail!;
@@ -89,69 +83,13 @@ const ViewTemplateHistory: React.FC = () => {
       },
       viewer.current!
     ).then(async (instance) => {
-      const { documentViewer, annotationManager, Annotations } = instance.Core;
-      const signatureTool = documentViewer.getTool("AnnotationCreateSignature");
+      const { documentViewer, annotationManager } = instance.Core;
       const annotManager = documentViewer.getAnnotationManager();
-
-      // instance.UI.disableElements([ 'leftPanel', 'leftPanelButton' ]);
-      instance.UI.disableElements(["", ""]);
-      // instance.UI.enableFeatures([instance.UI.Feature.Initials]);
       annotManager.enableReadOnlyMode();
       documentViewer.addEventListener("documentLoaded", async () => {
         await documentViewer.getDocument().getDocumentCompletePromise();
-        //   await signatureTool.importSignatures([image]);
-        // const annotations = annotationManager.importAnnotationCommand(a);
-        // (await annotations).forEach((annotation) => {
-        //   annotationManager.redrawAnnotation(annotation);
-        // });
         documentViewer.updateView();
-        annotationManager.addEventListener(
-          "annotationChanged",
-          async (annotations, action, { imported }) => {
-            const annots = annotationManager.getAnnotationsList()[0];
-
-            // If the event is triggered by importing then it can be ignored
-            // This will happen when importing the initial annotations
-            // from the server or individual changes from other users
-
-            if (imported) return;
-            // annots.modi
-
-            // const xfdfString = annotationManager.exportAnnotationCommand();
-            // console.log((await xfdfString).toString());
-            console.log(
-              (await annotationManager.exportAnnotations()).replaceAll(
-                /\\&quot;/gi,
-                ""
-              )
-            );
-          }
-        );
       });
-
-      // documentViewer.addEventListener('annotationsLoaded', () => {
-      //   const annot = new Annotations.FreeTextAnnotation(Annotations.FreeTextAnnotation.Intent.FreeTextCallout, {
-      //     PageNumber: 1,
-      //     TextAlign: 'center',
-      //     TextVerticalAlign: 'center',
-      //     TextColor: new Annotations.Color(255, 0, 0, 1),
-      //     StrokeColor: new Annotations.Color(0, 255, 0, 1),
-      //   });
-
-      //   annot.setPathPoint(0, 500, 25);  // Callout ending (start)
-      //   annot.setPathPoint(1, 425, 75);  // Callout knee
-      //   annot.setPathPoint(2, 300, 75);  // Callout joint
-      //   annot.setPathPoint(3, 100, 50);  // Top-left point
-      //   annot.setPathPoint(4, 300, 100); // Bottom-right point
-
-      //   annot.setContents(`Visited: ${new Date()}`);
-
-      //   annotationManager.addAnnotation(annot);
-      //   annotationManager.redrawAnnotation(annot);
-      // });
-      // await documentViewer.getAnnotationsLoadedPromise();
-      // const xfdf = await annotationManager.exportAnnotations();
-      // console.log(xfdf);
     });
   }, [link]);
 

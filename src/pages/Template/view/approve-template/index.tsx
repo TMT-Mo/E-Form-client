@@ -148,7 +148,7 @@ const ViewApproveTemplate: React.FC = () => {
         statusTemplate: isAccepting ? StatusTemplate.APPROVED : StatusTemplate.REJECTED,
         reason: `${!isAccepting ? reason : undefined}`,
       })
-    );
+    ).unwrap();
     navigate('/user')
   };
   return (

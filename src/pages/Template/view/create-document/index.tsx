@@ -1,4 +1,4 @@
-import { Divider, CircularProgress, TextField, Switch } from "@mui/material";
+import {  CircularProgress} from "@mui/material";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
@@ -7,8 +7,7 @@ import WebViewer from "@pdftron/webviewer";
 import { LoadingButton } from "@mui/lab";
 import AlertPopup from "../../../../components/AlertPopup";
 import { useDispatch, useSelector } from "../../../../hooks";
-import { approveTemplate } from "../../../../slices/template";
-import { StatusTemplate } from "../../../../utils/constants";
+import { createDocument } from "../../../../slices/document";
 
 const SendBtn = styled(
   LoadingButton,
@@ -29,35 +28,15 @@ const SendBtn = styled(
     borderColor: "#407AFF",
   },
 });
-const RejectBtn = styled(
-  LoadingButton,
-  {}
-)({
-  backgroundColor: "#ff5252",
-  borderRadius: "5px",
-  color: "#fff",
-  paddingTop: "10px",
-  paddingBottom: "10px",
-  ":hover": { backgroundColor: "#fff", color: "#407AFF" },
-  "&.Mui-disabled": {
-    color: "#F2F2F2",
-    backgroundColor: "#6F7276",
-  },
-  "&.MuiLoadingButton-loading": {
-    backgroundColor: "#fff",
-    borderColor: "#407AFF",
-  },
-});
 
 const ViewCreateDocument: React.FC = () => {
   const viewer = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { templateDetail } = useSelector((state) => state.template);
+  const { isCreateDocumentLoading } = useSelector((state) => state.document);
   const { userInfo } = useSelector((state) => state.auth);
   const {
-    createdAt,
-    createdBy,
     departmentName,
     description,
     templateName,
@@ -65,7 +44,7 @@ const ViewCreateDocument: React.FC = () => {
     link,
     id,
   } = templateDetail!;
-  const [xmlString, setXmlString] = useState<string | undefined>();
+  const [xfdfString, setXfdfString] = useState<string | undefined>();
 
   // if using a class, equivalent of componentDidMount
 
@@ -110,7 +89,7 @@ const ViewCreateDocument: React.FC = () => {
               await annotationManager.exportAnnotations()
             ).replaceAll(/\\&quot;/gi, "");
 
-            checkAnnotExists ? setXmlString(annots) : setXmlString(undefined);
+            checkAnnotExists ? setXfdfString(annots) : setXfdfString(undefined);
           }
         );
       });
@@ -139,6 +118,17 @@ const ViewCreateDocument: React.FC = () => {
       // console.log(xfdf);
     });
   }, [link]);
+
+  const onCreateTemplate = async () => {
+    await dispatch(
+      createDocument({
+        createdBy: +userInfo?.userId!,
+        idTemplate: id,
+        xfdfString: xfdfString!,
+      })
+    ).unwrap();
+    navigate('/user')
+  };
 
   return (
     <Fragment>
@@ -178,11 +168,11 @@ const ViewCreateDocument: React.FC = () => {
             </div>
             <SendBtn
               size="small"
-              // loading={isApproveTemplateLoading}
+              loading={isCreateDocumentLoading}
               loadingIndicator={<CircularProgress color="inherit" size={16} />}
               variant="outlined"
-              // onClick={onApproveTemplate}
-              disabled={!xmlString}
+              onClick={onCreateTemplate}
+              disabled={!xfdfString}
             >
               Send
             </SendBtn>

@@ -38,7 +38,7 @@ import {
     };
   
     const getDepartmentListHandler = useCallback(() => {
-        dispatch(getDepartmentList())
+        dispatch(getDepartmentList()).unwrap()
     }, [dispatch]);
   
     useEffect(() => {
