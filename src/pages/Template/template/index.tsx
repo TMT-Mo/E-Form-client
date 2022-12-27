@@ -19,12 +19,12 @@ const StyledUploadBtn = styled(Button)({
     color: "#fff",
   },
 });
-
-const { TYPE, IS_ENABLE, TYPE_TEMPLATE } = DataTableHeader;
+// 
+const { TYPE, IS_ENABLE, TYPE_TEMPLATE, DEPARTMENT } = DataTableHeader;
 
 const Template = () => {
   const dispatch = useDispatch();
-  const { searchItemValue, currentPage, filter } = useSelector(
+  const { searchItemValue, currentPage, filter, sorter } = useSelector(
     (state) => state.template
   );
 
@@ -34,7 +34,7 @@ const Template = () => {
         templateName_contains: searchItemValue || undefined,
         _page: currentPage,
         _size: 10,
-        _sort: undefined,
+        _sort: sorter ? `${sorter?.field}:${sorter?.sort}` : undefined,
         status_eq: StatusTemplate.APPROVED,
         type_eq: filter?.field === TYPE ? (filter.value as string) : undefined,
         typeName_eq:
@@ -43,10 +43,22 @@ const Template = () => {
             : undefined,
         isEnable_eq:
           filter?.field === IS_ENABLE ? (filter.value as boolean) : undefined,
+        department_eq:
+          filter?.field === DEPARTMENT ? (filter.value as string) : undefined,
       })
-    )
-    return () => { getTemplateList.abort()}
-  }, [currentPage, dispatch, filter?.field, filter?.value, searchItemValue]);
+    );
+    getTemplateList.unwrap()
+    return () => {
+      getTemplateList.abort();
+    };
+  }, [
+    currentPage,
+    dispatch,
+    filter?.field,
+    filter?.value,
+    searchItemValue,
+    sorter,
+  ]);
 
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">

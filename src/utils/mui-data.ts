@@ -1,4 +1,6 @@
-import { NewTemplateActionCell } from './../components/DataTable/action-cell/new-template/index';
+import { TemplateHistoryActionCell } from './../components/DataTable/action-cell/templateHistory/index';
+import { statusOnlyOperators } from "./../components/DataTable/filter/status/index";
+
 import { isEnableOnlyOperators } from "./../components/DataTable/filter/isEnable/index";
 import { StatusCell } from "./../components/DataTable/status-cell/index";
 import { ReactNode } from "react";
@@ -8,8 +10,11 @@ import { FileCell } from "../components/DataTable/file-cell";
 import { IsEnableCell } from "../components/DataTable/isEnable-cell";
 import { typeOnlyOperators } from "../components/DataTable/filter/type-file";
 import { typeTemplateOnlyOperators } from "../components/DataTable/filter/type-template";
-import { DataTableHeader } from "./constants";
+import { DataTableHeader, Permissions } from "./constants";
 import { TemplateActionCell } from "../components/DataTable/action-cell/template";
+import { NewTemplateActionCell } from "../components/DataTable/action-cell/newTemplate";
+import { departmentOnlyOperators } from "../components/DataTable/filter/department";
+
 
 const {
   TYPE,
@@ -24,6 +29,9 @@ const {
   TEMPLATE_NAME,
   UPDATED_AT,
 } = DataTableHeader;
+
+
+
 export const templateColumns: GridColDef[] = [
   {
     field: TYPE,
@@ -55,11 +63,14 @@ export const templateColumns: GridColDef[] = [
     field: DEPARTMENT,
     headerName: "Department",
     align: "center",
+    // filterOperators: departmentOnlyOperators,
+    filterable: false,
   },
   {
     field: STATUS,
     headerName: "Status",
     renderCell: StatusCell,
+    filterable: false,
   },
   {
     field: IS_ENABLE,
@@ -79,9 +90,7 @@ export const templateHistoryColumns: GridColDef[] = [
   {
     field: TYPE,
     headerName: "File",
-    filterOperators: getGridStringOperators().filter(
-      (operator) => operator.value === "contains"
-    ),
+    filterOperators: typeOnlyOperators,
     headerAlign: "center",
     renderCell: FileCell,
     align: "center",
@@ -90,8 +99,9 @@ export const templateHistoryColumns: GridColDef[] = [
     field: TEMPLATE_NAME,
     headerName: "Name",
     flex: 1,
+    filterable: false,
   },
-  { field: DESCRIPTION, headerName: "Description", flex: 1 },
+  { field: DESCRIPTION, headerName: "Description", flex: 1, filterable: false },
   {
     field: TYPE_TEMPLATE,
     headerName: "Type",
@@ -105,18 +115,25 @@ export const templateHistoryColumns: GridColDef[] = [
     field: STATUS,
     headerName: "Status",
     renderCell: StatusCell,
+    filterOperators: statusOnlyOperators,
+    headerAlign: "center",
   },
   {
     field: CREATED_AT,
     headerName: "Created At",
+    flex: 0.4
   },
   {
     field: UPDATED_AT,
     headerName: "Updated At",
+    filterable: false,
+    flex: 0.4
   },
   {
     field: ACTION,
     headerName: "Action",
+    filterable: false,
+    renderCell: TemplateHistoryActionCell,
   },
 ];
 
@@ -124,9 +141,7 @@ export const newTemplatesColumns: GridColDef[] = [
   {
     field: TYPE,
     headerName: "File",
-    filterOperators: getGridStringOperators().filter(
-      (operator) => operator.value === "contains"
-    ),
+    filterOperators: typeOnlyOperators,
     headerAlign: "center",
     renderCell: FileCell,
     align: "center",
@@ -135,8 +150,9 @@ export const newTemplatesColumns: GridColDef[] = [
     field: TEMPLATE_NAME,
     headerName: "Name",
     flex: 1,
+    filterable: false,
   },
-  { field: DESCRIPTION, headerName: "Description", flex: 1 },
+  { field: DESCRIPTION, headerName: "Description", flex: 1, filterable: false },
   {
     field: TYPE_TEMPLATE,
     headerName: "Type",
@@ -157,7 +173,8 @@ export const newTemplatesColumns: GridColDef[] = [
   {
     field: ACTION,
     headerName: "Action",
-    renderCell: NewTemplateActionCell
+    renderCell: NewTemplateActionCell,
+    filterable: false,
   },
 ];
 

@@ -13,7 +13,6 @@ import {
 } from "@mui/x-data-grid";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "../../../../hooks";
-import { handleError } from "../../../../slices/notification";
 import {
   getTemplateTypeList,
 } from "../../../../slices/system";
@@ -39,12 +38,12 @@ const SelectType = (props: GridFilterInputValueProps) => {
   };
 
   const getTypeListHandler = useCallback(() => {
-      dispatch(getTemplateTypeList())
+      dispatch(getTemplateTypeList()).unwrap()
   }, [dispatch]);
 
   useEffect(() => {
-    getTypeListHandler();
-  }, [getTypeListHandler]);
+    !templateTypeList && getTypeListHandler();
+  }, [getTypeListHandler, templateTypeList]);
 
   return (
     <>

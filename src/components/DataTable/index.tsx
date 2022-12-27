@@ -1,7 +1,13 @@
 import React from "react";
-import { DataGrid, GridColDef, GridFilterModel } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridColumnVisibilityModel,
+  GridFilterModel,
+  GridSortModel,
+} from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "../../hooks";
-import { LocationIndex } from "../../utils/constants";
+import { LocationIndex, Permissions } from "../../utils/constants";
 import {
   awaitSigningColumns,
   historyColumns,
@@ -12,12 +18,31 @@ import {
   templateHistoryColumns,
 } from "../../utils/mui-data";
 import { Template } from "../../models/template";
-import { onChangeTemplatePage, setTemplateFilter } from "../../slices/template";
+import {
+  onChangeTemplatePage,
+  setTemplateFilter,
+  setTemplateSorter,
+} from "../../slices/template";
 import CustomPagination from "./pagination";
+import { usePermission } from "../../hooks/use-permission";
 
 interface GetRowIdParams {
   // The data item provided to the grid for the row in question
   id: number;
+}
+
+interface GridColumnModel{
+  status?: boolean,
+  isEnable?: boolean,
+  type?: boolean,
+  typeName?: boolean,
+  departmentName?: boolean,
+  templateName?: boolean,
+  description?: boolean,
+  action?: boolean,
+  createdAt?: boolean,
+  updateAt?: boolean,
+  createdBy?: boolean
 }
 
 interface Data {
@@ -27,6 +52,7 @@ interface Data {
   currentPage?: number;
   totalPages?: number;
   onChangePage?: (event: React.ChangeEvent<unknown>, page: number) => void;
+  columnVisible?: GridColumnModel
 }
 
 const {
@@ -38,48 +64,46 @@ const {
   AWAIT_SIGNING,
   PERSONAL,
   SHARED,
-  DOCUMENT_HISTORY
+  DOCUMENT_HISTORY,
 } = LocationIndex;
+
+const {ENABLE_TEMPLATE, } = Permissions
 
 const DataTable: React.FC = () => {
   const dispatch = useDispatch();
   const { locationIndex } = useSelector((state) => state.location);
-  const {
-    isGetTemplatesLoading,
-    templateList,
-    total,
-    currentPage,
-  } = useSelector((state) => state.template);
+  const { isGetTemplatesLoading, templateList, total, currentPage } =
+    useSelector((state) => state.template);
 
-  const onFilterChange = React.useCallback((filterModel: GridFilterModel) => {
-    // Here you save the data you need from the filter model
-    console.log({ filterModel: { ...filterModel } });
-    const {value, columnField} = filterModel.items[0]
-    if(!value){
-      dispatch(setTemplateFilter(undefined));
-      return
-    }
-    // switch (columnField) {
-    //   case TYPE:
-    //       dispatch(setTemplateFilter({type: columnField, value}));
-    //       break;
-    //   case TYPE_TEMPLATE:
-    //       dispatch(setTemplateFilter({typeName: columnField, value}));
-    //       break;
-    //   case DEPARTMENT:
-    //       dispatch(setTemplateFilter({department: columnField, value}));
-    //       break;
-    //   case STATUS:
-    //       dispatch(setTemplateFilter({status: columnField, value}));
-    //       break;
-    //   case IS_ENABLE:
-    //       dispatch(setTemplateFilter({isEnable: columnField, value}));
-    //       break;
-    //   default:
-    //     break;
-    // }
-    dispatch(setTemplateFilter({field: columnField, value}))
-  }, [dispatch]);
+  const onFilterChange = React.useCallback(
+    (filterModel: GridFilterModel) => {
+      // Here you save the data you need from the filter model
+      const { value, columnField } = filterModel.items[0];
+      if (!value) {
+        dispatch(setTemplateFilter(undefined));
+        return;
+      }
+      dispatch(setTemplateFilter({ field: columnField, value }));
+    },
+    [dispatch]
+  );
+
+  const handleSortModelChange = React.useCallback(
+    (sortModel: GridSortModel) => {
+      // Here you save the data you need from the sort model
+      if (!sortModel[0]) {
+        dispatch(setTemplateSorter(undefined));
+        return;
+      }
+      const { field, sort } = sortModel[0];
+      dispatch(setTemplateSorter({ field, sort: sort! }));
+    },
+    [dispatch]
+  );
+  const columnVisible: GridColumnModel = {
+    status: usePermission(ENABLE_TEMPLATE),
+    isEnable: usePermission(ENABLE_TEMPLATE),
+  }
 
   const data = (): Data => {
     switch (locationIndex) {
@@ -114,6 +138,7 @@ const DataTable: React.FC = () => {
           totalPages: Math.ceil(total! / 10),
           onChangePage: (e, value) =>
             dispatch(onChangeTemplatePage({ selectedPage: --value })),
+          columnVisible
         };
       case AWAIT_SIGNING:
         return {
@@ -150,7 +175,7 @@ const DataTable: React.FC = () => {
           table: templateList,
         };
       default:
-        return {table: []};
+        return { table: [] };
     }
   };
 
@@ -169,6 +194,9 @@ const DataTable: React.FC = () => {
         getRowId={getRowId}
         onFilterModelChange={onFilterChange}
         filterMode="server"
+        sortingMode="server"
+        onSortModelChange={handleSortModelChange}
+        columnVisibilityModel={data().columnVisible as GridColumnVisibilityModel}
         hideFooterPagination
         hideFooter
       />

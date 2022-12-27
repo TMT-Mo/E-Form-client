@@ -4,6 +4,13 @@ import {
   CircularProgress,
   TextField,
   IconButton,
+  Typography,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import React, {
   Fragment,
@@ -40,16 +47,42 @@ const LoadingBtn = styled(
   backgroundColor: "#407AFF",
   borderRadius: "5px",
   color: "#fff",
+  padding: '5px',
+  textTransform: 'unset',
+  // fontSize: '15px',
+  // width: 'fit-content',
+  ":hover": { backgroundColor: "#578aff" },
+  "&.MuiLoadingButton-loading": {
+    backgroundColor: "#fff",
+    borderColor: "#407AFF",
+  },
+});
+
+const CancelBtn = styled(
+  Button,
+  {}
+)({
+  backgroundColor: "#fff",
+  borderRadius: "5px",
+  color: "#407AFF",
+  padding: '5px',
+  textTransform: 'unset',
+  // ":hover": { backgroundColor: "#407AFF", color: "#fff", },
+});
+
+const StyledBtn = styled(
+  Button,
+  {}
+)({
+  backgroundColor: "#407AFF",
+  borderRadius: "5px",
+  color: "#fff",
   paddingTop: "10px",
   paddingBottom: "10px",
   ":hover": { backgroundColor: "#fff", color: "#407AFF" },
   "&.Mui-disabled": {
     color: "#F2F2F2",
     backgroundColor: "#6F7276",
-  },
-  "&.MuiLoadingButton-loading": {
-    backgroundColor: "#fff",
-    borderColor: "#407AFF",
   },
 });
 
@@ -96,6 +129,7 @@ const ViewAddTemplate: React.FC = () => {
   >(undefined);
   const [file, setFile] = useState<File>();
   const [isEnableSave, setIsEnableSave] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     let check = false;
@@ -125,8 +159,8 @@ const ViewAddTemplate: React.FC = () => {
         storageRef,
         file: file!,
       })
-    )
-    navigate(-1);
+    ).unwrap();
+    navigate('/user');
   };
 
   // if using a class, equivalent of componentDidMount
@@ -146,8 +180,7 @@ const ViewAddTemplate: React.FC = () => {
       viewer.current!
     ).then(async (inst) => {
       instance.current = inst;
-      const { documentViewer, annotationManager, Annotations } = inst.Core;
-      const signatureTool = documentViewer.getTool("AnnotationCreateSignature");
+      const { documentViewer} = inst.Core;
       const annotManager = documentViewer.getAnnotationManager();
 
       annotManager.enableReadOnlyMode();
@@ -155,30 +188,6 @@ const ViewAddTemplate: React.FC = () => {
         await documentViewer.getDocument().getDocumentCompletePromise();
         documentViewer.updateView();
       });
-
-      // documentViewer.addEventListener('annotationsLoaded', () => {
-      //   const annot = new Annotations.FreeTextAnnotation(Annotations.FreeTextAnnotation.Intent.FreeTextCallout, {
-      //     PageNumber: 1,
-      //     TextAlign: 'center',
-      //     TextVerticalAlign: 'center',
-      //     TextColor: new Annotations.Color(255, 0, 0, 1),
-      //     StrokeColor: new Annotations.Color(0, 255, 0, 1),
-      //   });
-
-      //   annot.setPathPoint(0, 500, 25);  // Callout ending (start)
-      //   annot.setPathPoint(1, 425, 75);  // Callout knee
-      //   annot.setPathPoint(2, 300, 75);  // Callout joint
-      //   annot.setPathPoint(3, 100, 50);  // Top-left point
-      //   annot.setPathPoint(4, 300, 100); // Bottom-right point
-
-      //   annot.setContents(`Visited: ${new Date()}`);
-
-      //   annotationManager.addAnnotation(annot);
-      //   annotationManager.redrawAnnotation(annot);
-      // });
-      // await documentViewer.getAnnotationsLoadedPromise();
-      // const xfdf = await annotationManager.exportAnnotations();
-      // console.log(xfdf);
     });
   }, []);
 
@@ -193,20 +202,20 @@ const ViewAddTemplate: React.FC = () => {
 
   const getDepartmentListHandler = async () => {
     if (!departmentList) {
-      await dispatch(getDepartmentList())
+      await dispatch(getDepartmentList()).unwrap();
     }
     dispatch(toggleDepartmentList({ isOpen: !isOpenDepartmentList }));
   };
 
   const getTemplateTypesHandler = async () => {
     if (!templateTypeList) {
-      await dispatch(getTemplateTypeList())
+      await dispatch(getTemplateTypeList()).unwrap();
     }
     dispatch(toggleTemplateTypeList({ isOpen: !isOpenTemplateTypes }));
   };
 
   const getUserListHandler = useCallback(() => {
-    dispatch(getUsers({ departmentId_eq: selectedDepartment }))
+    dispatch(getUsers({ departmentId_eq: selectedDepartment })).unwrap();
   }, [dispatch, selectedDepartment]);
 
   useEffect(() => {
@@ -257,9 +266,9 @@ const ViewAddTemplate: React.FC = () => {
                   onChange={handleChange}
                 />
                 <FileUploadIcon />
-                <span className="text-white text-base break-words w-60">
+                <Typography className="text-white">
                   {form.templateName}
-                </span>
+                </Typography>
               </IconButton>
             </div>
             <Divider className="bg-white" />
@@ -380,6 +389,9 @@ const ViewAddTemplate: React.FC = () => {
                     "& .MuiAutocomplete-tag": {
                       backgroundColor: "#fff",
                     },
+                    "& .MuiChip-deleteIcon": {
+                      fill: "#000",
+                    },
                   }}
                   id="multiple-limit-tags"
                   options={userList?.items!}
@@ -402,16 +414,13 @@ const ViewAddTemplate: React.FC = () => {
                 />
               )}
             </div>
-            <LoadingBtn
-              size="small"
-              loading={isAddNewTemplateLoading}
-              loadingIndicator={<CircularProgress color="inherit" size={16} />}
-              variant="outlined"
-              onClick={handleUpload}
+            <StyledBtn
               disabled={!isEnableSave}
+              onClick={() => setOpenDialog(true)}
+              autoFocus
             >
               Save
-            </LoadingBtn>
+            </StyledBtn>
           </div>
         </div>
         <div className="webviewer w-full" ref={viewer}></div>
@@ -420,6 +429,33 @@ const ViewAddTemplate: React.FC = () => {
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         autoHideDuration={3000}
       />
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Are you sure you want to save this form ?
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            After saving this template, {form.templateName!} will be waiting for an approval
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <CancelBtn onClick={() => setOpenDialog(false)} size='small' >Cancel</CancelBtn>
+          <LoadingBtn
+            size="small"
+            loading={isAddNewTemplateLoading}
+            loadingIndicator={<CircularProgress color="inherit" size={16} />}
+            variant="outlined"
+            onClick={handleUpload}
+          >
+            Save
+          </LoadingBtn>
+        </DialogActions>
+      </Dialog>
     </Fragment>
   );
 };

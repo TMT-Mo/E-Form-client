@@ -33,3 +33,7 @@ export interface IFile{
     size: number,
     type: string,
 }
+
+// export interface PermissionList{
+
+// }

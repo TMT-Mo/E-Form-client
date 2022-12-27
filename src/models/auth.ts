@@ -9,8 +9,11 @@ export interface LoginArgument {
 
 export interface UserInfo {
   userId: number;
-  role_name: string;
+  roleName: string;
   nbf: string;
   iat: number;
   exp: number;
+  userName:string,
+  signature: string,
+  idPermissions: string
 }
