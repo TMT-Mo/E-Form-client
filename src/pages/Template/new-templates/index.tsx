@@ -22,9 +22,11 @@ const NewTemplates = () => {
         _page: currentPage,
         _size: 10,
         _sort: undefined,
-        status_eq: StatusTemplate.NEW,
+        status_eq: StatusTemplate.NEW_TEMPLATE,
       })
     )
+    
+    getTemplateList.unwrap()
     return () => { getTemplateList.abort()}
   }, [currentPage, dispatch, searchItemValue]);
 

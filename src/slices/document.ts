@@ -1,4 +1,10 @@
-import { CreateDocumentArgs } from "./../models/document";
+import {
+  CreateDocumentArgs,
+  Document,
+  DocumentFilter,
+  DocumentSorter,
+  GetDocumentsArgs,
+} from "./../models/document";
 import {
   CaseReducer,
   createAsyncThunk,
@@ -10,16 +16,48 @@ import { AxiosError } from "axios";
 import { ValidationErrors } from "../models/notification";
 import { handleSuccess, handleError } from "./notification";
 interface State {
-  isCreateDocumentLoading?: boolean;
+  isCreateDocumentLoading: boolean;
+  documentList: Document[];
+  isGetDocumentListLoading: boolean;
+  searchItemValue?: string;
+  total?: number;
+  size?: number;
+  currentPage: number;
+  documentDetail?: Document;
+  filter?: DocumentFilter;
+  sorter?: DocumentSorter;
 }
 
 const initialState: State = {
   isCreateDocumentLoading: false,
+  documentList: [],
+  isGetDocumentListLoading: false,
+  searchItemValue: undefined,
+  total: undefined,
+  size: 10,
+  currentPage: 0,
+  documentDetail: undefined,
 };
 
 const ACTION_TYPE = "document/";
 
 type CR<T> = CaseReducer<State, PayloadAction<T>>;
+
+const onChangeDocumentPageCR: CR<{ selectedPage: number }> = (
+  state,
+  { payload }
+) => ({
+  ...state,
+  currentPage: payload.selectedPage!,
+});
+
+const getDocumentDetailCR: CR<{ document: Document }> = (
+  state,
+  { payload }
+) => ({
+  ...state,
+  documentDetail: payload.document!,
+});
 
 const createDocument = createAsyncThunk(
   `${ACTION_TYPE}createDocument`,
@@ -37,7 +75,31 @@ const createDocument = createAsyncThunk(
           handleError({
             errorMessage: (err.response?.data as ValidationErrors).errorMessage,
           })
-        )
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
+
+const getDocuments = createAsyncThunk(
+  `${ACTION_TYPE}getDocuments`,
+  async (args: GetDocumentsArgs, { dispatch }) => {
+    try {
+      const result = await documentServices.getDocuments({
+        ...args,
+      });
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
       } else {
         dispatch(handleError({ errorMessage: err.message }));
       }
@@ -49,7 +111,23 @@ const createDocument = createAsyncThunk(
 const document = createSlice({
   name: "document",
   initialState,
-  reducers: {},
+  reducers: {
+    onChangeDocumentPage: onChangeDocumentPageCR,
+    clearDocuments: (state: State) => ({
+      ...state,
+      documentList: [],
+      searchItemValue: undefined,
+      filter: undefined,
+      total: undefined,
+      size: 10,
+      currentPage: 0,
+    }),
+    clearDocumentDetail: (state: State) => ({
+      ...state,
+      documentDetail: undefined,
+    }),
+    getDocumentDetail: getDocumentDetailCR
+  },
   extraReducers: (builder) => {
     builder.addCase(createDocument.pending, (state) => ({
       ...state,
@@ -63,12 +141,28 @@ const document = createSlice({
       ...state,
       isCreateDocumentLoading: false,
     }));
+    builder.addCase(getDocuments.pending, (state) => ({
+      ...state,
+      isGetDocumentListLoading: true,
+    }));
+    builder.addCase(getDocuments.fulfilled, (state, { payload }) => ({
+      ...state,
+      isGetDocumentListLoading: false,
+      documentList: payload.items,
+      total: payload?.total!,
+    }));
+    builder.addCase(getDocuments.rejected, (state) => {
+      if (state.isGetDocumentListLoading) return; //* Handle api abort
+      return {
+        ...state,
+        isGetDocumentListLoading: false,
+      };
+    });
   },
 });
 
-export {createDocument}
+export { createDocument, getDocuments };
 
-export const {} = document.actions
+export const { onChangeDocumentPage, clearDocuments, getDocumentDetail, clearDocumentDetail } = document.actions;
 
 export default document.reducer;
-

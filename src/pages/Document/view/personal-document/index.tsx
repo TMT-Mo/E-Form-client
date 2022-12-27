@@ -1,4 +1,15 @@
-import { Divider, CircularProgress, TextField, Switch, Typography, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import {
+  Divider,
+  TextField,
+  Switch,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Typography,
+} from "@mui/material";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
@@ -7,8 +18,7 @@ import WebViewer from "@pdftron/webviewer";
 import { LoadingButton } from "@mui/lab";
 import AlertPopup from "../../../../components/AlertPopup";
 import { useDispatch, useSelector } from "../../../../hooks";
-import { approveTemplate } from "../../../../slices/template";
-import { StatusTemplate } from "../../../../utils/constants";
+import StatusTag from "../../../../components/StatusTag";
 
 const LoadingBtn = styled(
   LoadingButton,
@@ -17,8 +27,8 @@ const LoadingBtn = styled(
   backgroundColor: "#407AFF",
   borderRadius: "5px",
   color: "#fff",
-  padding: '5px',
-  textTransform: 'unset',
+  padding: "5px",
+  textTransform: "unset",
   // fontSize: '15px',
   // width: 'fit-content',
   ":hover": { backgroundColor: "#578aff" },
@@ -35,8 +45,8 @@ const CancelBtn = styled(
   backgroundColor: "#fff",
   borderRadius: "5px",
   color: "#407AFF",
-  padding: '5px',
-  textTransform: 'unset',
+  padding: "5px",
+  textTransform: "unset",
   // ":hover": { backgroundColor: "#407AFF", color: "#fff", },
 });
 
@@ -71,27 +81,22 @@ const RejectBtn = styled(
   },
 });
 
-const {APPROVED_TEMPLATE, REJECTED_TEMPLATE} = StatusTemplate
-
-const ViewApproveTemplate: React.FC = () => {
+const ViewPersonalDocument: React.FC = () => {
   const viewer = useRef(null);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  const { isApproveTemplateLoading, templateDetail } = useSelector(
-    (state) => state.template
-  );
+  const navigate = useNavigate();
+  const { documentDetail } = useSelector((state) => state.document);
   const { userInfo } = useSelector((state) => state.auth);
   const {
     createdAt,
     createdBy,
-    departmentName,
     description,
-    templateName,
-    typeName,
+    documentName,
+    xfdfString,
     signatoryList,
     link,
     id,
-  } = templateDetail!;
+  } = documentDetail!;
   const [isAccepting, setIsAccepting] = useState<boolean>(true);
   const [reason, setReason] = useState<string | undefined>();
   const [openDialog, setOpenDialog] = useState(false);
@@ -103,18 +108,15 @@ const ViewApproveTemplate: React.FC = () => {
         <Typography className="text-white">{signer.email}</Typography>
       </div>
       <div className="flex space-x-2 items-center">
-        <h4>Department:</h4>
-        <Typography className="text-white">{templateName}</Typography>
+        <h4>Role:</h4>
+        <Typography className="text-white">{signer.roleName}</Typography>
       </div>
       <div className="flex space-x-2 items-center">
-        <h4>Role:</h4>
-        <Typography className="text-white">
-          {signer.roleName}
-        </Typography>
+        <h4>Status:</h4>
+        <Typography className="text-white"><StatusTag status={signer.status} type='document'/></Typography>
       </div>
     </div>
   ));
-
   // if using a class, equivalent of componentDidMount
 
   useEffect(() => {
@@ -131,35 +133,24 @@ const ViewApproveTemplate: React.FC = () => {
       },
       viewer.current!
     ).then(async (instance) => {
-      const { documentViewer} = instance.Core;
+      const { documentViewer, annotationManager } = instance.Core;
       const annotManager = documentViewer.getAnnotationManager();
 
-      annotManager.enableReadOnlyMode();
+      // annotManager.enableReadOnlyMode();
       documentViewer.addEventListener("documentLoaded", async () => {
         await documentViewer.getDocument().getDocumentCompletePromise();
+        await annotationManager.importAnnotations(xfdfString);
         documentViewer.updateView();
       });
     });
-  }, [link]);
-
-  const onApproveTemplate = async () => {
-    await dispatch(
-      approveTemplate({
-        userId: +userInfo?.userId!,
-        templateId: id,
-        statusTemplate: isAccepting ? APPROVED_TEMPLATE : REJECTED_TEMPLATE,
-        reason: `${!isAccepting ? reason : undefined}`,
-      })
-    ).unwrap();
-    navigate('/user')
-  };
+  }, [link, xfdfString]);
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
         <Link to="/user">
           <ArrowBackIosIcon fontSize="small" className="fill-white" />
         </Link>
-        <span className="text-white">Approve template</span>
+        <span className="text-white">Personal Document</span>
       </div>
       <div className="flex">
         <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 w-80">
@@ -167,7 +158,7 @@ const ViewApproveTemplate: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4>File name:</h4>
               <span className="text-white text-base break-words w-60">
-                {templateName}
+                {documentName}
               </span>
             </div>
 
@@ -180,13 +171,13 @@ const ViewApproveTemplate: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4>Type:</h4>
               <span className="text-white text-base break-words w-60">
-                {typeName}
+                {/* {typeName} */}
               </span>
             </div>
             <div className="flex flex-col space-y-2">
               <h4>Department:</h4>
               <span className="text-white text-base break-words w-60">
-                {departmentName}
+                {/* {departmentName} */}
               </span>
             </div>
             <div className="flex flex-col space-y-2">
@@ -211,7 +202,7 @@ const ViewApproveTemplate: React.FC = () => {
                 defaultChecked={isAccepting}
                 onClick={() => setIsAccepting((prevState) => !prevState)}
                 sx={{
-                  "&	.MuiSwitch-track": {
+                  "& .MuiSwitch-track": {
                     backgroundColor: "#ff5252",
                   },
                   "& .MuiSwitch-thumb": {
@@ -268,25 +259,27 @@ const ViewApproveTemplate: React.FC = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          Notification
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">Notification</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {isAccepting ? 'Are you sure you want to approve this template?' : 'Are you sure you want to reject this template?'}
+            {isAccepting
+              ? "Are you sure you want to approve this template?"
+              : "Are you sure you want to reject this template?"}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <CancelBtn onClick={() => setOpenDialog(false)} size='small' >Cancel</CancelBtn>
-          <LoadingBtn
-            size="small"
-            loading={isApproveTemplateLoading}
-            loadingIndicator={<CircularProgress color="inherit" size={16} />}
-            variant="outlined"
-            onClick={onApproveTemplate}
-          >
-            Save
-          </LoadingBtn>
+          <CancelBtn onClick={() => setOpenDialog(false)} size="small">
+            Cancel
+          </CancelBtn>
+          {/* <LoadingBtn
+              size="small"
+              // loading={isApproveTemplateLoading}
+              loadingIndicator={<CircularProgress color="inherit" size={16} />}
+              variant="outlined"
+              onClick={onApproveTemplate}
+            >
+              Save
+            </LoadingBtn> */}
         </DialogActions>
       </Dialog>
       <AlertPopup
@@ -297,4 +290,4 @@ const ViewApproveTemplate: React.FC = () => {
   );
 };
 
-export default ViewApproveTemplate;
+export default ViewPersonalDocument;

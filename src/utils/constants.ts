@@ -32,9 +32,10 @@ export enum ViewerLocationIndex {
   CREATE_DOCUMENT_INDEX = 2,
   CREATE_PERSONAL_DOCUMENT_INDEX = 3,
   APPROVING_DOCUMENT_INDEX = 4,
-  VIEW_DOCUMENT_INDEX = 5,
+  VIEW_PERSONAL_DOCUMENT_INDEX = 5,
   VIEW_DOCUMENT_HISTORY_INDEX = 6,
-  VIEW_TEMPLATE_HISTORY_INDEX = 7
+  VIEW_TEMPLATE_HISTORY_INDEX = 7,
+  VIEW_SHARED_DOCUMENT_INDEX = 8
 }
 
 export enum TypeFile {
@@ -44,15 +45,29 @@ export enum TypeFile {
 }
 
 export enum StatusTemplate{
-  NEW = 1,
-  APPROVED = 2,
-  REJECTED = 3,
+  NEW_TEMPLATE = 1,
+  APPROVED_TEMPLATE = 2,
+  REJECTED_TEMPLATE = 3,
 }
 
 export enum StatusTemplateTag{
-  NEW_TAG = 'New',
-  APPROVED_TAG = 'Approved',
-  REJECTED_TAG = 'Rejected',
+  NEW_TEMPLATE_TAG = 'New',
+  APPROVED_TEMPLATE_TAG = 'Approved',
+  REJECTED_TEMPLATE_TAG = 'Rejected',
+}
+
+export enum StatusDocument{
+  PROCESSING_DOCUMENT = 1,
+  APPROVED_DOCUMENT = 2,
+  REJECTED_DOCUMENT = 3,
+  NOT_YET_DOCUMENT = 4
+}
+
+export enum StatusDocumentTag{
+  PROCESSING_DOCUMENT_TAG = 'Processing',
+  APPROVED_DOCUMENT_TAG = 'Approved',
+  REJECTED_DOCUMENT_TAG = 'Rejected',
+  NOT_YET_DOCUMENT_TAG = 'Not Yet'
 }
 
 export enum DataTableHeader{
@@ -67,6 +82,8 @@ export enum DataTableHeader{
   CREATED_AT = 'createdAt',
   UPDATED_AT = 'updateAt',
   CREATED_BY = 'createdBy',
+  DOCUMENT_NAME = 'documentName',
+  IS_LOCKED = 'isLocked'
 }
 
 export enum Permissions{

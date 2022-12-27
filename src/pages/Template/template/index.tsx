@@ -35,7 +35,7 @@ const Template = () => {
         _page: currentPage,
         _size: 10,
         _sort: sorter ? `${sorter?.field}:${sorter?.sort}` : undefined,
-        status_eq: StatusTemplate.APPROVED,
+        status_eq: StatusTemplate.APPROVED_TEMPLATE,
         type_eq: filter?.field === TYPE ? (filter.value as string) : undefined,
         typeName_eq:
           filter?.field === TYPE_TEMPLATE

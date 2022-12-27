@@ -1,10 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "../../../hooks";
 import ChangePassword from "../../../pages/ChangePassword";
-import AwaitSigning from "../../../pages/Document/AwaitSigning";
-import DocumentHistory from "../../../pages/Document/History";
-import PersonalDoc from "../../../pages/Document/PersonalDoc";
-import SharedDoc from "../../../pages/Document/SharedDoc";
 import TemplateHistory from "../../../pages/Template/template-history";
 import Template from "../../../pages/Template/template";
 import { setLocation } from "../../../slices/location";
@@ -15,6 +11,11 @@ import SideBar from "./SideBar";
 import TopBar from "./TopBar";
 import NewTemplates from "../../../pages/Template/new-templates";
 import { clearTemplates } from "../../../slices/template";
+import AwaitSigning from "../../../pages/Document/await-signing";
+import PersonalDoc from "../../../pages/Document/personal";
+import SharedDoc from "../../../pages/Document/shared";
+import History from "../../../pages/Document/history";
+import { clearDocuments } from "../../../slices/document";
 
 const {
   TEMPLATE,
@@ -26,25 +27,27 @@ const {
   SHARED,
   CHANGE_PASSWORD,
   DOCUMENT_HISTORY,
-  TEMPLATE_HISTORY
+  TEMPLATE_HISTORY,
 } = LocationIndex;
 
 const Layout: React.FC = () => {
   const dispatch = useDispatch();
   const { locationIndex } = useSelector((state) => state.location);
-  
+
   useEffect(() => {
-    !locationIndex && dispatch(
-      setLocation({
-        locationIndex: LocationIndex.TEMPLATE,
-      })
-    );
+    !locationIndex &&
+      dispatch(
+        setLocation({
+          locationIndex: LocationIndex.TEMPLATE,
+        })
+      );
   }, [dispatch, locationIndex]);
 
   useEffect(() => {
     return () => {
-      dispatch(clearTemplates())
-    }
+      dispatch(clearDocuments());
+      dispatch(clearTemplates());
+    };
   }, [dispatch]);
   // const { innerWidth } = window;
   const switchTab = () => {
@@ -52,28 +55,28 @@ const Layout: React.FC = () => {
       case SYSTEM:
         return <></>;
       case NEW_TEMPLATE:
-        return <NewTemplates/>;
+        return <NewTemplates />;
       case ACCOUNT:
         return <></>;
       case TEMPLATE:
         return <Template />;
       case TEMPLATE_HISTORY:
-        return <TemplateHistory/>;
+        return <TemplateHistory />;
       case AWAIT_SIGNING:
-        return <AwaitSigning/>;
+        return <AwaitSigning />;
       case PERSONAL:
-        return <PersonalDoc/>;
+        return <PersonalDoc />;
       case SHARED:
-        return <SharedDoc/>;
+        return <SharedDoc />;
       case CHANGE_PASSWORD:
-        return <ChangePassword/>;
+        return <ChangePassword />;
       case DOCUMENT_HISTORY:
-        return <DocumentHistory/>;
+        return <History />;
       default:
         return <></>;
     }
   };
-  
+
   return (
     <div className="flex bg-blue-light-config">
       <SideBar />
@@ -83,7 +86,10 @@ const Layout: React.FC = () => {
         {switchTab()}
         {/* <TemplateManagement/> */}
       </div>
-      <AlertPopup anchorOrigin={{vertical: "top", horizontal:"right"}} autoHideDuration={3000}/>
+      <AlertPopup
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        autoHideDuration={3000}
+      />
     </div>
   );
 };

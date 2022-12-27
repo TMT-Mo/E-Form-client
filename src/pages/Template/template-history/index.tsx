@@ -50,6 +50,7 @@ const TemplateHistory = () => {
           filter?.field === STATUS ? (filter.value as number) : undefined,
       })
     );
+    getTemplateList.unwrap()
     return () => {
       getTemplateList.abort();
     };
@@ -61,10 +62,6 @@ const TemplateHistory = () => {
     searchItemValue,
     userInfo?.userId,
   ]);
-
-  // const AddNewComponent = RequiredPermission(
-  //   , [ADD_TEMPLATE]
-  // );
 
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">

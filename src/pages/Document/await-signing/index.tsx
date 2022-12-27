@@ -3,38 +3,34 @@ import {
   IconButton,
   InputBase,
   Paper,
-  Button,
 } from "@mui/material";
-import React from "react";
-import UploadIcon from '@mui/icons-material/Upload';
-import AddIcon from '@mui/icons-material/Add';
-import { styled } from "@mui/system";
+import React, { useEffect } from "react";
 import DataTable from "../../../components/DataTable";
-
-const StyledUploadBtn = styled(Button)({
-  backgroundColor: '#fff',
-  borderRadius: '10px',
-  color: '#407AFF',
-  padding: '0px 15px',
-  height: '80%',
-  ':hover':{
-    backgroundColor: '#407AFF',
-    color: '#fff'
-  }
-})
-
-const StyledAddBtn = styled(Button)({
-  backgroundColor: '#407AFF',
-  borderRadius: '10px',
-  color: '#fff',
-  padding: '0px 15px',
-  height: '80%',
-  ':hover':{
-    color: '#407AFF'
-  }
-})
+import { useDispatch, useSelector } from "../../../hooks";
+import { getDocuments } from "../../../slices/document";
 
 const AwaitSigning = () => {
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
+  const { searchItemValue, currentPage, filter} = useSelector(state => state.document)
+
+  useEffect(() => {
+    const getDocumentList = dispatch(
+      getDocuments({
+        documentName_contains: searchItemValue || undefined,
+        _page: currentPage,
+        _size: 10,
+        _sort: undefined,
+        signatoryList_contains: userInfo?.userId
+      })
+    );
+
+    getDocumentList.unwrap()
+    return () => {
+      getDocumentList.abort();
+    };
+  }, [currentPage, dispatch, searchItemValue, userInfo?.userId]);
+  
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
       <h2>Await Signing</h2>
@@ -59,14 +55,6 @@ const AwaitSigning = () => {
               inputProps={{ "aria-label": "search google maps" }}
             />
           </Paper>
-          <div className="flex space-x-8">
-            <StyledUploadBtn size="small" className="shadow-md" variant="outlined" startIcon={<UploadIcon />}>
-              Upload
-            </StyledUploadBtn>
-            <StyledAddBtn variant="outlined" size="small" className="shadow-md" startIcon={<AddIcon />}>
-              Add New
-            </StyledAddBtn>
-          </div>
         </div>
         <DataTable />
       </div>
