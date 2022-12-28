@@ -27,35 +27,7 @@ import CustomPagination from "./pagination";
 import { usePermission } from "../../hooks/use-permission";
 import { Document } from "../../models/document";
 import { onChangeDocumentPage } from "../../slices/document";
-
-interface GetRowIdParams {
-  // The data item provided to the grid for the row in question
-  id: number;
-}
-
-interface GridColumnModel {
-  status?: boolean;
-  isEnable?: boolean;
-  type?: boolean;
-  typeName?: boolean;
-  departmentName?: boolean;
-  templateName?: boolean;
-  description?: boolean;
-  action?: boolean;
-  createdAt?: boolean;
-  updateAt?: boolean;
-  createdBy?: boolean;
-}
-
-interface Data {
-  columns?: GridColDef[];
-  loading?: boolean;
-  table: Template[] | Document[];
-  currentPage?: number;
-  totalPages?: number;
-  onChangePage?: (event: React.ChangeEvent<unknown>, page: number) => void;
-  columnVisible?: GridColumnModel;
-}
+import { GridColumnModel, Data, GetRowIdParams } from "../../models/mui-data";
 
 const {
   SYSTEM,

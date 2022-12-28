@@ -168,7 +168,7 @@ const ViewApproveDocument: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4>Created By:</h4>
               <span className="text-white text-base break-words w-60">
-                {createdBy}
+                {createdBy.username}
               </span>
             </div>
             <div className="flex flex-col space-y-2">

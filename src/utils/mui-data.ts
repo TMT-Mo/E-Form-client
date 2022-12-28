@@ -1,5 +1,5 @@
-import { PersonalDocumentActionCell } from './../components/DataTable/action-cell/personalDocument/index';
-import { AwaitSigningActionCell } from './../components/DataTable/action-cell/awaitSigning/index';
+import { PersonalDocumentActionCell } from "./../components/DataTable/action-cell/personalDocument/index";
+import { AwaitSigningActionCell } from "./../components/DataTable/action-cell/awaitSigning/index";
 import { TemplateHistoryActionCell } from "./../components/DataTable/action-cell/templateHistory/index";
 import { statusOnlyOperators } from "./../components/DataTable/filter/status/index";
 
@@ -18,6 +18,7 @@ import { NewTemplateActionCell } from "../components/DataTable/action-cell/newTe
 import { departmentOnlyOperators } from "../components/DataTable/filter/department";
 import { DateCell } from "../components/DataTable/formatDate-cell";
 import { IsLockedCell } from "../components/DataTable/isLocked-cell";
+import { CreatedByCell } from "../components/DataTable/createdBy-cell";
 
 const {
   TYPE,
@@ -32,7 +33,7 @@ const {
   TEMPLATE_NAME,
   UPDATED_AT,
   DOCUMENT_NAME,
-  IS_LOCKED
+  IS_LOCKED,
 } = DataTableHeader;
 
 export const templateColumns: GridColDef[] = [
@@ -175,6 +176,8 @@ export const newTemplatesColumns: GridColDef[] = [
   {
     field: CREATED_BY,
     headerName: "Created By",
+    renderCell: CreatedByCell,
+    flex: 0.5,
   },
   {
     field: CREATED_AT,
@@ -212,7 +215,7 @@ export const awaitSigningColumns: GridColDef[] = [
     renderCell: DateCell,
     align: "center",
     flex: 0.2,
-    headerAlign: 'center'
+    headerAlign: "center",
   },
   {
     field: CREATED_BY,
@@ -220,11 +223,12 @@ export const awaitSigningColumns: GridColDef[] = [
     sortable: false,
     hideable: false,
     filterable: false,
+    renderCell: CreatedByCell,
   },
   {
     field: ACTION,
     headerName: "Action",
-    renderCell: AwaitSigningActionCell
+    renderCell: AwaitSigningActionCell,
   },
 ];
 
@@ -274,7 +278,7 @@ export const personalDocColumns: GridColDef[] = [
   {
     field: ACTION,
     headerName: "Action",
-    renderCell: PersonalDocumentActionCell
+    renderCell: PersonalDocumentActionCell,
   },
 ];
 

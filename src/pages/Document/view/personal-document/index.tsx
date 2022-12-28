@@ -105,7 +105,7 @@ const ViewPersonalDocument: React.FC = () => {
     <div className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4">
       <div className="flex space-x-2 items-center ">
         <h4>Signer:</h4>
-        <Typography className="text-white">{signer.email}</Typography>
+        <Typography className="text-white">{signer.username}</Typography>
       </div>
       <div className="flex space-x-2 items-center">
         <h4>Role:</h4>
@@ -183,7 +183,7 @@ const ViewPersonalDocument: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4>Created By:</h4>
               <span className="text-white text-base break-words w-60">
-                {createdBy}
+                {createdBy.username}
               </span>
             </div>
             <div className="flex flex-col space-y-2">

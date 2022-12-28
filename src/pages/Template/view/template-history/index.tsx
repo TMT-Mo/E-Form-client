@@ -53,7 +53,7 @@ const ViewTemplateHistory: React.FC = () => {
     <div className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4" key={index}>
       <div className="flex space-x-2 items-center ">
         <h4>Signer:</h4>
-        <span className="text-white text-base break-words">{signer.email}</span>
+        <span className="text-white text-base break-words">{signer.username}</span>
       </div>
       {/* <div className="flex space-x-2">
         <h4>Department:</h4>
@@ -133,7 +133,7 @@ const ViewTemplateHistory: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4>Created By:</h4>
               <span className="text-white text-base break-words w-60">
-                {createdBy}
+                {createdBy.username}
               </span>
             </div>
             <div className="flex items-center space-x-2">

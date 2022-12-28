@@ -31,7 +31,14 @@ export interface GetDocumentsArgs {
 }
 
 interface Signer {
-  email: string;
+  username: string;
+  signature: string;
+  status: number;
+  roleName: string;
+}
+
+interface Creator {
+  username: string;
   signature: string;
   status: number;
   roleName: string;
@@ -50,7 +57,7 @@ export interface Document {
   //   departmentName: string;
   signatoryList: Signer[];
   link: string;
-  createdBy: number;
+  createdBy: Creator;
   isLocked: boolean;
   xfdfString: string;
 }
