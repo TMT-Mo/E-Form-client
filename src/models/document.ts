@@ -53,8 +53,8 @@ export interface Document {
   description: string;
   size: number;
   status: number;
-  //   typeName: string;
-  //   departmentName: string;
+  typeName: string;
+  departmentName: string;
   signatoryList: Signer[];
   link: string;
   createdBy: Creator;

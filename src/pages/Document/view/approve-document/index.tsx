@@ -95,7 +95,8 @@ const ViewApproveDocument: React.FC = () => {
     documentName,
     xfdfString,
     link,
-    id,
+    departmentName,
+    typeName,
   } = documentDetail!;
   const [isAccepting, setIsAccepting] = useState<boolean>(true);
   const [reason, setReason] = useState<string | undefined>();
@@ -119,7 +120,6 @@ const ViewApproveDocument: React.FC = () => {
     ).then(async (instance) => {
       const { documentViewer, annotationManager } = instance.Core;
       const annotManager = documentViewer.getAnnotationManager();
-      
 
       // annotManager.enableReadOnlyMode();
       documentViewer.addEventListener("documentLoaded", async () => {
@@ -156,13 +156,13 @@ const ViewApproveDocument: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4>Type:</h4>
               <span className="text-white text-base break-words w-60">
-                {/* {typeName} */}
+                {typeName}
               </span>
             </div>
             <div className="flex flex-col space-y-2">
               <h4>Department:</h4>
               <span className="text-white text-base break-words w-60">
-                {/* {departmentName} */}
+                {departmentName}
               </span>
             </div>
             <div className="flex flex-col space-y-2">
@@ -174,7 +174,7 @@ const ViewApproveDocument: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4>Created At:</h4>
               <span className="text-white text-base break-words w-60">
-                {createdAt}
+                {new Date(createdAt).toUTCString().replace("GMT", "")}
               </span>
             </div>
             <Divider className="bg-white" />
@@ -226,6 +226,7 @@ const ViewApproveDocument: React.FC = () => {
                 size="small"
                 variant="outlined"
                 onClick={() => setOpenDialog(true)}
+                disabled
               >
                 Approve
               </ApproveBtn>

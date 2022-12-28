@@ -1,4 +1,16 @@
-import { Divider, CircularProgress, TextField, Switch, Typography, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import {
+  Divider,
+  CircularProgress,
+  TextField,
+  Switch,
+  Typography,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
@@ -17,8 +29,8 @@ const LoadingBtn = styled(
   backgroundColor: "#407AFF",
   borderRadius: "5px",
   color: "#fff",
-  padding: '5px',
-  textTransform: 'unset',
+  padding: "5px",
+  textTransform: "unset",
   // fontSize: '15px',
   // width: 'fit-content',
   ":hover": { backgroundColor: "#578aff" },
@@ -35,8 +47,8 @@ const CancelBtn = styled(
   backgroundColor: "#fff",
   borderRadius: "5px",
   color: "#407AFF",
-  padding: '5px',
-  textTransform: 'unset',
+  padding: "5px",
+  textTransform: "unset",
   // ":hover": { backgroundColor: "#407AFF", color: "#fff", },
 });
 
@@ -71,12 +83,12 @@ const RejectBtn = styled(
   },
 });
 
-const {APPROVED_TEMPLATE, REJECTED_TEMPLATE} = StatusTemplate
+const { APPROVED_TEMPLATE, REJECTED_TEMPLATE } = StatusTemplate;
 
 const ViewApproveTemplate: React.FC = () => {
   const viewer = useRef(null);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { isApproveTemplateLoading, templateDetail } = useSelector(
     (state) => state.template
   );
@@ -108,9 +120,7 @@ const ViewApproveTemplate: React.FC = () => {
       </div>
       <div className="flex space-x-2 items-center">
         <h4>Role:</h4>
-        <Typography className="text-white">
-          {signer.roleName}
-        </Typography>
+        <Typography className="text-white">{signer.roleName}</Typography>
       </div>
     </div>
   ));
@@ -131,7 +141,7 @@ const ViewApproveTemplate: React.FC = () => {
       },
       viewer.current!
     ).then(async (instance) => {
-      const { documentViewer} = instance.Core;
+      const { documentViewer } = instance.Core;
       const annotManager = documentViewer.getAnnotationManager();
 
       annotManager.enableReadOnlyMode();
@@ -151,7 +161,7 @@ const ViewApproveTemplate: React.FC = () => {
         reason: `${!isAccepting ? reason : undefined}`,
       })
     ).unwrap();
-    navigate('/user')
+    navigate("/user");
   };
   return (
     <Fragment>
@@ -198,7 +208,7 @@ const ViewApproveTemplate: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4>Created At:</h4>
               <span className="text-white text-base break-words w-60">
-                {createdAt}
+                {new Date(createdAt).toUTCString().replace("GMT", "")}
               </span>
             </div>
             <Divider className="bg-white" />
@@ -268,16 +278,18 @@ const ViewApproveTemplate: React.FC = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          Notification
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">Notification</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {isAccepting ? 'Are you sure you want to approve this template?' : 'Are you sure you want to reject this template?'}
+            {isAccepting
+              ? "Are you sure you want to approve this template?"
+              : "Are you sure you want to reject this template?"}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <CancelBtn onClick={() => setOpenDialog(false)} size='small' >Cancel</CancelBtn>
+          <CancelBtn onClick={() => setOpenDialog(false)} size="small">
+            Cancel
+          </CancelBtn>
           <LoadingBtn
             size="small"
             loading={isApproveTemplateLoading}

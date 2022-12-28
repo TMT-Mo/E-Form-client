@@ -1,10 +1,10 @@
 import { Divider } from "@mui/material";
 import React, { Fragment, useEffect, useRef } from "react";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer from "@pdftron/webviewer";
 import AlertPopup from "../../../../components/AlertPopup";
-import {  useSelector } from "../../../../hooks";
+import { useSelector } from "../../../../hooks";
 import { StatusTemplate, StatusTemplateTag } from "../../../../utils/constants";
 import StatusTag from "../../../../components/StatusTag";
 
@@ -50,10 +50,15 @@ const ViewTemplateHistory: React.FC = () => {
   // };
 
   const signers = signatoryList.map((signer, index) => (
-    <div className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4" key={index}>
+    <div
+      className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4"
+      key={index}
+    >
       <div className="flex space-x-2 items-center ">
         <h4>Signer:</h4>
-        <span className="text-white text-base break-words">{signer.username}</span>
+        <span className="text-white text-base break-words">
+          {signer.username}
+        </span>
       </div>
       {/* <div className="flex space-x-2">
         <h4>Department:</h4>
@@ -139,14 +144,14 @@ const ViewTemplateHistory: React.FC = () => {
             <div className="flex items-center space-x-2">
               <h4 className="whitespace-nowrap ">Created At:</h4>
               <span className="text-white text-base break-words w-60">
-                {createdAt}
+                {new Date(createdAt).toUTCString().replace("GMT", "")}
               </span>
             </div>
             <div className="flex items-center space-x-2">
               <h4>Status:</h4>
               <span className="text-white text-base break-words w-60">
                 {/* {createStatus()} */}
-                <StatusTag status={status} type='template'/>
+                <StatusTag status={status} type="template" />
               </span>
             </div>
             {reason && (

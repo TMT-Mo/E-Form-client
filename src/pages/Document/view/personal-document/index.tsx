@@ -95,7 +95,8 @@ const ViewPersonalDocument: React.FC = () => {
     xfdfString,
     signatoryList,
     link,
-    id,
+    departmentName,
+    typeName
   } = documentDetail!;
   const [isAccepting, setIsAccepting] = useState<boolean>(true);
   const [reason, setReason] = useState<string | undefined>();
@@ -114,6 +115,10 @@ const ViewPersonalDocument: React.FC = () => {
       <div className="flex space-x-2 items-center">
         <h4>Status:</h4>
         <Typography className="text-white"><StatusTag status={signer.status} type='document'/></Typography>
+      </div>
+      <div className="flex space-x-2 items-center">
+        <h4>Date modified:</h4>
+        <Typography className="text-white">{signer.roleName}</Typography>
       </div>
     </div>
   ));
@@ -171,13 +176,13 @@ const ViewPersonalDocument: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4>Type:</h4>
               <span className="text-white text-base break-words w-60">
-                {/* {typeName} */}
+                {typeName}
               </span>
             </div>
             <div className="flex flex-col space-y-2">
               <h4>Department:</h4>
               <span className="text-white text-base break-words w-60">
-                {/* {departmentName} */}
+                {departmentName}
               </span>
             </div>
             <div className="flex flex-col space-y-2">
@@ -189,7 +194,7 @@ const ViewPersonalDocument: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4>Created At:</h4>
               <span className="text-white text-base break-words w-60">
-                {createdAt}
+                {new Date(createdAt).toUTCString().replace('GMT','')}
               </span>
             </div>
             <Divider className="bg-white" />
@@ -245,6 +250,7 @@ const ViewPersonalDocument: React.FC = () => {
                 size="small"
                 variant="outlined"
                 onClick={() => setOpenDialog(true)}
+                disabled
               >
                 Approve
               </ApproveBtn>
