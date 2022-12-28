@@ -46,6 +46,7 @@ const ViewCreateDocument: React.FC = () => {
     isEnable,
   } = templateDetail!;
   const [xfdfString, setXfdfString] = useState<string | undefined>();
+  const [enableSend, setEnableSend] = useState<boolean>(false);
 
   // if using a class, equivalent of componentDidMount
 
@@ -63,24 +64,51 @@ const ViewCreateDocument: React.FC = () => {
       },
       viewer.current!
     ).then(async (instance) => {
-      const { documentViewer, annotationManager } = instance.Core;
+      const { documentViewer, annotationManager, Annotations } = instance.Core;
       documentViewer.addEventListener("documentLoaded", async () => {
         await documentViewer.getDocument().getDocumentCompletePromise();
         documentViewer.updateView();
+        documentViewer.addEventListener("annotationsLoaded", () => {
+          const annot = new Annotations.FreeTextAnnotation(
+            Annotations.FreeTextAnnotation.Intent.FreeText,
+            {
+              PageNumber: 1,
+              TextAlign: "center",
+              TextVerticalAlign: "center",
+              TextColor: new Annotations.Color(255, 0, 0, 1),
+              StrokeColor: new Annotations.Color(0, 255, 0, 0),
+            }
+          );
+
+          annot.setPathPoint(0, 100, 25); // Callout ending (start)
+          // annot.setPathPoint(1, 425, 75);  // Callout knee
+          // annot.setPathPoint(2, 300, 75);  // Callout joint
+          // annot.setPathPoint(3, 100, 50);  // Top-left point
+          // annot.setPathPoint(4, 300, 100); // Bottom-right point
+
+          annot.setContents(`${typeName}_${departmentName}_1`);
+
+          annotationManager.addAnnotation(annot);
+          annotationManager.redrawAnnotation(annot);
+        });
         annotationManager.addEventListener(
           "annotationChanged",
           async (annotations, action, { imported }) => {
-            const checkAnnotExists = annotationManager.getAnnotationsList()[0];
             const annots = (
               await annotationManager.exportAnnotations()
             ).replaceAll(/\\&quot;/gi, "");
+            setXfdfString(annots);
 
-            checkAnnotExists ? setXfdfString(annots) : setXfdfString(undefined);
+            const checkAnnotExists = annotationManager.getAnnotationsList();
+            console.log(checkAnnotExists);
+            checkAnnotExists.length >= 2
+              ? setEnableSend(true)
+              : setEnableSend(false);
           }
         );
       });
     });
-  }, [link]);
+  }, [departmentName, link, typeName]);
 
   const onCreateTemplate = async () => {
     await dispatch(
@@ -138,7 +166,7 @@ const ViewCreateDocument: React.FC = () => {
                 }
                 variant="outlined"
                 onClick={onCreateTemplate}
-                disabled={!xfdfString}
+                disabled={!enableSend}
               >
                 Send
               </SendBtn>
