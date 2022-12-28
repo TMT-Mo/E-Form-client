@@ -1,20 +1,24 @@
-import { TemplateHistoryActionCell } from './../components/DataTable/action-cell/templateHistory/index';
+import { PersonalDocumentActionCell } from "./../components/DataTable/action-cell/personalDocument/index";
+import { AwaitSigningActionCell } from "./../components/DataTable/action-cell/awaitSigning/index";
+import { TemplateHistoryActionCell } from "./../components/DataTable/action-cell/templateHistory/index";
 import { statusOnlyOperators } from "./../components/DataTable/filter/status/index";
 
 import { isEnableOnlyOperators } from "./../components/DataTable/filter/isEnable/index";
 import { StatusCell } from "./../components/DataTable/status-cell/index";
 import { ReactNode } from "react";
-import { getGridStringOperators, GridColDef } from "@mui/x-data-grid";
+import { GridColDef } from "@mui/x-data-grid";
 import { Template } from "../models/template";
 import { FileCell } from "../components/DataTable/file-cell";
 import { IsEnableCell } from "../components/DataTable/isEnable-cell";
 import { typeOnlyOperators } from "../components/DataTable/filter/type-file";
 import { typeTemplateOnlyOperators } from "../components/DataTable/filter/type-template";
-import { DataTableHeader, Permissions } from "./constants";
+import { DataTableHeader } from "./constants";
 import { TemplateActionCell } from "../components/DataTable/action-cell/template";
 import { NewTemplateActionCell } from "../components/DataTable/action-cell/newTemplate";
 import { departmentOnlyOperators } from "../components/DataTable/filter/department";
-
+import { DateCell } from "../components/DataTable/formatDate-cell";
+import { IsLockedCell } from "../components/DataTable/isLocked-cell";
+import { CreatedByCell } from "../components/DataTable/createdBy-cell";
 
 const {
   TYPE,
@@ -28,9 +32,9 @@ const {
   DESCRIPTION,
   TEMPLATE_NAME,
   UPDATED_AT,
+  DOCUMENT_NAME,
+  IS_LOCKED,
 } = DataTableHeader;
-
-
 
 export const templateColumns: GridColDef[] = [
   {
@@ -86,6 +90,7 @@ export const templateColumns: GridColDef[] = [
     filterable: false,
   },
 ];
+
 export const templateHistoryColumns: GridColDef[] = [
   {
     field: TYPE,
@@ -121,13 +126,19 @@ export const templateHistoryColumns: GridColDef[] = [
   {
     field: CREATED_AT,
     headerName: "Created At",
-    flex: 0.4
+    flex: 0.4,
+    renderCell: DateCell,
+    align: "center",
+    headerAlign: "center",
   },
   {
     field: UPDATED_AT,
     headerName: "Updated At",
     filterable: false,
-    flex: 0.4
+    flex: 0.4,
+    renderCell: DateCell,
+    align: "center",
+    headerAlign: "center",
   },
   {
     field: ACTION,
@@ -165,10 +176,14 @@ export const newTemplatesColumns: GridColDef[] = [
   {
     field: CREATED_BY,
     headerName: "Created By",
+    renderCell: CreatedByCell,
+    flex: 0.5,
   },
   {
     field: CREATED_AT,
     headerName: "Created At",
+    renderCell: DateCell,
+    align: "center",
   },
   {
     field: ACTION,
@@ -179,71 +194,91 @@ export const newTemplatesColumns: GridColDef[] = [
 ];
 
 export const awaitSigningColumns: GridColDef[] = [
-  { field: "file", headerName: "File", flex: 0.5 },
   {
-    field: "name",
+    field: TYPE,
+    headerName: "File",
+    filterOperators: typeOnlyOperators,
+    headerAlign: "center",
+    renderCell: FileCell,
+    align: "center",
+  },
+  {
+    field: DOCUMENT_NAME,
     headerName: "Name",
     flex: 1,
     disableColumnMenu: true,
     sortable: false,
   },
-  { field: "datePublished", headerName: "Date published", flex: 1 },
   {
-    field: TYPE,
-    headerName: "Type",
-    type: "number",
-    flex: 1,
+    field: CREATED_AT,
+    headerName: "Date Published",
+    renderCell: DateCell,
+    align: "center",
+    flex: 0.2,
+    headerAlign: "center",
   },
   {
-    field: DEPARTMENT,
-    headerName: "Department",
-    sortable: false,
-    hideable: false,
-    flex: 1,
-    filterable: false,
-  },
-  {
-    field: "owner",
+    field: CREATED_BY,
     headerName: "Owner",
     sortable: false,
     hideable: false,
-    flex: 1,
     filterable: false,
-  },
-];
-
-export const personalDocColumns: GridColDef[] = [
-  { field: "file", headerName: "File", flex: 0.5 },
-  {
-    field: "name",
-    headerName: "Name",
-    flex: 1,
-  },
-  { field: "datePublished", headerName: "Date Published", flex: 1 },
-  { field: "dateModified", headerName: "Date Modified", flex: 1 },
-  {
-    field: TYPE,
-    headerName: "Type",
-  },
-  {
-    field: DEPARTMENT,
-    headerName: "Department",
-    flex: 1,
-  },
-  {
-    field: STATUS,
-    headerName: "Status",
-    flex: 1,
-  },
-  {
-    field: "lock",
-    headerName: "Lock",
-    flex: 1,
+    renderCell: CreatedByCell,
   },
   {
     field: ACTION,
     headerName: "Action",
+    renderCell: AwaitSigningActionCell,
+  },
+];
+
+export const personalDocColumns: GridColDef[] = [
+  {
+    field: TYPE,
+    headerName: "File",
+    filterOperators: typeOnlyOperators,
+    headerAlign: "center",
+    renderCell: FileCell,
+    align: "center",
+  },
+  {
+    field: DOCUMENT_NAME,
+    headerName: "Name",
     flex: 1,
+  },
+  {
+    field: CREATED_AT,
+    headerName: "Date Published",
+    renderCell: DateCell,
+    align: "center",
+    headerAlign: "center",
+    flex: 0.2,
+  },
+  {
+    field: UPDATED_AT,
+    headerName: "Date Modified",
+    renderCell: DateCell,
+    align: "center",
+    headerAlign: "center",
+    flex: 0.2,
+  },
+  {
+    field: STATUS,
+    headerName: "Status",
+    align: "center",
+    renderCell: StatusCell,
+    headerAlign: "center",
+  },
+  {
+    field: IS_LOCKED,
+    headerName: "Is Locked",
+    renderCell: IsLockedCell,
+    align: "center",
+  },
+  {
+    field: ACTION,
+    headerName: "Action",
+    renderCell: PersonalDocumentActionCell,
   },
 ];
 

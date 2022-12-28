@@ -1,4 +1,5 @@
 import { CaseReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ViewerLocationIndex } from "../utils/constants";
 
 interface State {
   locationIndex?: number;
@@ -17,7 +18,7 @@ const setLocationCR: CR<State> = (state, { payload }) => ({
   locationIndex: payload.locationIndex,
 });
 
-const setViewerLocationCR: CR<{viewerLocationIndex: number}> = (state, { payload }) => ({
+const setViewerLocationCR: CR<{viewerLocationIndex: ViewerLocationIndex}> = (state, { payload }) => ({
   ...state,
   viewerLocationIndex: payload.viewerLocationIndex,
 });

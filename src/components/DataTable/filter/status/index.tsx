@@ -11,11 +11,11 @@ interface Items {
   value: StatusTemplate;
   label: string;
 }
-const {APPROVED, NEW, REJECTED} = StatusTemplate
+const {APPROVED_TEMPLATE, NEW_TEMPLATE, REJECTED_TEMPLATE} = StatusTemplate
 const items: Items[] = [
-  { value: NEW, label: "New" },
-  { value: APPROVED, label: "Approved" },
-  { value: REJECTED, label: "Rejected" },
+  { value: NEW_TEMPLATE, label: "New" },
+  { value: APPROVED_TEMPLATE, label: "Approved" },
+  { value: REJECTED_TEMPLATE, label: "Rejected" },
 ];
 
 const {STATUS } = DataTableHeader;

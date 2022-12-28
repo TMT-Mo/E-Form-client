@@ -25,6 +25,7 @@ import { LocationIndex, Permissions } from "../../../../utils/constants";
 import { useTranslation } from "react-i18next";
 import { clearTemplates } from "../../../../slices/template";
 import { RequiredPermission } from "../../../RequiredPermission";
+import { clearDocuments } from "../../../../slices/document";
 
 const StyledListBtn = styled(ListItemButton)({
   borderRadius: "5px",
@@ -72,6 +73,7 @@ const SideBar: React.FC = () => {
     );
     if (locationIndex !== index) {
       dispatch(clearTemplates());
+      dispatch(clearDocuments())
     }
   };
 
@@ -118,7 +120,7 @@ const SideBar: React.FC = () => {
               <ListItemIcon>
                 <WorkspacesIcon className="fill-white" />
               </ListItemIcon>
-              <ListItemText primary={t("New")} />
+              <ListItemText primary={t("Unapproved")} />
             </StyledListBtn>
           </RequiredPermission>
 
@@ -167,7 +169,7 @@ const SideBar: React.FC = () => {
               <ListItemIcon>
                 <ListAltIcon className="fill-white" />
               </ListItemIcon>
-              <ListItemText primary={t("Personal Doc")} />
+              <ListItemText primary={t("Personal")} />
             </StyledListBtn>
           </RequiredPermission>
           <RequiredPermission permission={VIEW_SHARED_DOCUMENT}>
@@ -178,7 +180,7 @@ const SideBar: React.FC = () => {
               <ListItemIcon>
                 <FolderSharedIcon className="fill-white" />
               </ListItemIcon>
-              <ListItemText primary={t("Shared Doc")} />
+              <ListItemText primary={t("Shared")} />
             </StyledListBtn>
           </RequiredPermission>
           <RequiredPermission permission={VIEW_DOCUMENT_HISTORY}>

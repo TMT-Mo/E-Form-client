@@ -5,17 +5,20 @@ import React from "react";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { Link } from "react-router-dom";
 import { setViewerLocation } from "../../../../slices/location";
-import { getTemplateDetail } from "../../../../slices/template";
 import { ViewerLocationIndex } from "../../../../utils/constants";
 import { useDispatch } from "../../../../hooks";
+import { getDocumentDetail } from "../../../../slices/document";
 
-const { CREATE_DOCUMENT_INDEX } = ViewerLocationIndex;
+const { VIEW_PERSONAL_DOCUMENT_INDEX } = ViewerLocationIndex;
 
-export const TemplateActionCell = (props: GridRenderCellParams<Date>) => {
+export const PersonalDocumentActionCell = (
+  props: GridRenderCellParams<Date>
+) => {
   const { hasFocus, row } = props;
   const buttonElement = React.useRef<HTMLButtonElement | null>(null);
   const rippleRef = React.useRef<TouchRippleActions | null>(null);
   const dispatch = useDispatch();
+
   React.useLayoutEffect(() => {
     if (hasFocus) {
       const input = buttonElement.current?.querySelector("input");
@@ -27,18 +30,23 @@ export const TemplateActionCell = (props: GridRenderCellParams<Date>) => {
   }, [hasFocus]);
 
   return (
-    <IconButton
-      aria-label="delete"
-      onClick={() => {
-        dispatch(getTemplateDetail({ template: row }));
-        dispatch(
-          setViewerLocation({ viewerLocationIndex: CREATE_DOCUMENT_INDEX })
-        );
-      }}
-    >
-      <Link to="/viewer" replace>
-        <BorderColorIcon fontSize="small" />
-      </Link>
-    </IconButton>
+    <div>
+      <IconButton
+        aria-label="delete"
+        onClick={() => {
+          dispatch(getDocumentDetail({ document: row }));
+          dispatch(
+            setViewerLocation({
+              viewerLocationIndex:
+                ViewerLocationIndex.VIEW_PERSONAL_DOCUMENT_INDEX,
+            })
+          );
+        }}
+      >
+        <Link to="/viewer" replace>
+          <BorderColorIcon fontSize="small" />
+        </Link>
+      </IconButton>
+    </div>
   );
 };

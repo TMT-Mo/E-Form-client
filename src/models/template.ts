@@ -2,11 +2,18 @@ import { StatusTemplate } from "./../utils/constants";
 import { StorageReference } from "firebase/storage";
 
 interface Signer {
-  email: string;
+  username: string;
   signature: string;
   status: number;
   roleName: string;
 }
+interface Creator {
+  username: string;
+  signature: string;
+  status: number;
+  roleName: string;
+}
+
 export interface Template {
   id: number;
   createdAt: string;
@@ -21,7 +28,7 @@ export interface Template {
   isEnable: boolean;
   signatoryList: Signer[];
   link: string;
-  createdBy: number;
+  createdBy: Creator;
   reason?: string
 }
 export interface TemplateListResponse {

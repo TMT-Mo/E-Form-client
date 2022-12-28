@@ -25,35 +25,9 @@ import {
 } from "../../slices/template";
 import CustomPagination from "./pagination";
 import { usePermission } from "../../hooks/use-permission";
-
-interface GetRowIdParams {
-  // The data item provided to the grid for the row in question
-  id: number;
-}
-
-interface GridColumnModel{
-  status?: boolean,
-  isEnable?: boolean,
-  type?: boolean,
-  typeName?: boolean,
-  departmentName?: boolean,
-  templateName?: boolean,
-  description?: boolean,
-  action?: boolean,
-  createdAt?: boolean,
-  updateAt?: boolean,
-  createdBy?: boolean
-}
-
-interface Data {
-  columns?: GridColDef[];
-  loading?: boolean;
-  table: Template[];
-  currentPage?: number;
-  totalPages?: number;
-  onChangePage?: (event: React.ChangeEvent<unknown>, page: number) => void;
-  columnVisible?: GridColumnModel
-}
+import { Document } from "../../models/document";
+import { onChangeDocumentPage } from "../../slices/document";
+import { GridColumnModel, Data, GetRowIdParams } from "../../models/mui-data";
 
 const {
   SYSTEM,
@@ -67,13 +41,21 @@ const {
   DOCUMENT_HISTORY,
 } = LocationIndex;
 
-const {ENABLE_TEMPLATE, } = Permissions
+const { ENABLE_TEMPLATE } = Permissions;
 
 const DataTable: React.FC = () => {
   const dispatch = useDispatch();
   const { locationIndex } = useSelector((state) => state.location);
-  const { isGetTemplatesLoading, templateList, total, currentPage } =
-    useSelector((state) => state.template);
+  const { isGetTemplatesLoading, templateList } = useSelector(
+    (state) => state.template
+  );
+  const { isGetDocumentListLoading, documentList } = useSelector((state) => state.document);
+  const totalTemplate = useSelector((state) => state.template.total);
+  const currentPageTemplate = useSelector(
+    (state) => state.template.currentPage
+  );
+  const totalDocument = useSelector(state => state.document.total)
+  const currentPageDocument = useSelector(state => state.document.currentPage)
 
   const onFilterChange = React.useCallback(
     (filterModel: GridFilterModel) => {
@@ -103,7 +85,7 @@ const DataTable: React.FC = () => {
   const columnVisible: GridColumnModel = {
     status: usePermission(ENABLE_TEMPLATE),
     isEnable: usePermission(ENABLE_TEMPLATE),
-  }
+  };
 
   const data = (): Data => {
     switch (locationIndex) {
@@ -118,8 +100,8 @@ const DataTable: React.FC = () => {
           columns: newTemplatesColumns,
           loading: isGetTemplatesLoading,
           table: templateList,
-          currentPage,
-          totalPages: Math.ceil(total! / 10),
+          currentPage: currentPageTemplate,
+          totalPages: Math.ceil(totalTemplate! / 10),
           onChangePage: (e, value) =>
             dispatch(onChangeTemplatePage({ selectedPage: --value })),
         };
@@ -134,33 +116,41 @@ const DataTable: React.FC = () => {
           columns: templateColumns,
           loading: isGetTemplatesLoading,
           table: templateList,
-          currentPage,
-          totalPages: Math.ceil(total! / 10),
+          currentPage: currentPageTemplate,
+          totalPages: Math.ceil(totalTemplate! / 10),
           onChangePage: (e, value) =>
             dispatch(onChangeTemplatePage({ selectedPage: --value })),
-          columnVisible
+          columnVisible,
         };
       case AWAIT_SIGNING:
         return {
           columns: awaitSigningColumns,
-          loading: false,
-          table: templateList,
+          loading: isGetDocumentListLoading,
+          table: documentList,
+          currentPage: currentPageDocument,
+          totalPages: Math.ceil(totalDocument! / 10),
+          onChangePage: (e, value) =>
+            dispatch(onChangeDocumentPage({ selectedPage: --value })),
         };
       case TEMPLATE_HISTORY:
         return {
           columns: templateHistoryColumns,
           loading: isGetTemplatesLoading,
           table: templateList,
-          currentPage,
-          totalPages: Math.ceil(total! / 10),
+          currentPage: currentPageTemplate,
+          totalPages: Math.ceil(totalTemplate! / 10),
           onChangePage: (e, value) =>
             dispatch(onChangeTemplatePage({ selectedPage: --value })),
         };
       case PERSONAL:
         return {
           columns: personalDocColumns,
-          loading: false,
-          table: templateList,
+          loading: isGetDocumentListLoading,
+          table: documentList,
+          currentPage: currentPageDocument,
+          totalPages: Math.ceil(totalDocument! / 10),
+          onChangePage: (e, value) =>
+            dispatch(onChangeDocumentPage({ selectedPage: --value })),
         };
       case SHARED:
         return {
@@ -196,7 +186,9 @@ const DataTable: React.FC = () => {
         filterMode="server"
         sortingMode="server"
         onSortModelChange={handleSortModelChange}
-        columnVisibilityModel={data().columnVisible as GridColumnVisibilityModel}
+        columnVisibilityModel={
+          data().columnVisible as GridColumnVisibilityModel
+        }
         hideFooterPagination
         hideFooter
       />
