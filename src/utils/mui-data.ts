@@ -1,3 +1,5 @@
+import { createdByOnlyOperators } from './../components/DataTable/filter/createdBy/index';
+import { usePermission } from './../hooks/use-permission';
 import { PersonalDocumentActionCell } from "./../components/DataTable/action-cell/personalDocument/index";
 import { AwaitSigningActionCell } from "./../components/DataTable/action-cell/awaitSigning/index";
 import { TemplateHistoryActionCell } from "./../components/DataTable/action-cell/templateHistory/index";
@@ -62,6 +64,7 @@ export const templateColumns: GridColDef[] = [
     field: TYPE_TEMPLATE,
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
+    headerAlign: 'center' 
   },
   {
     field: DEPARTMENT,
@@ -75,6 +78,7 @@ export const templateColumns: GridColDef[] = [
     headerName: "Status",
     renderCell: StatusCell,
     filterable: false,
+    headerAlign: 'center'
   },
   {
     field: IS_ENABLE,
@@ -82,6 +86,7 @@ export const templateColumns: GridColDef[] = [
     renderCell: IsEnableCell,
     align: "center",
     filterOperators: isEnableOnlyOperators,
+    headerAlign: 'center',
   },
   {
     field: ACTION,
@@ -110,6 +115,8 @@ export const templateHistoryColumns: GridColDef[] = [
   {
     field: TYPE_TEMPLATE,
     headerName: "Type",
+    filterOperators: typeTemplateOnlyOperators,
+    headerAlign: 'center' 
   },
   {
     field: DEPARTMENT,
@@ -167,6 +174,8 @@ export const newTemplatesColumns: GridColDef[] = [
   {
     field: TYPE_TEMPLATE,
     headerName: "Type",
+    filterOperators: typeTemplateOnlyOperators,
+    headerAlign: 'center' 
   },
   {
     field: DEPARTMENT,
@@ -178,6 +187,7 @@ export const newTemplatesColumns: GridColDef[] = [
     headerName: "Created By",
     renderCell: CreatedByCell,
     flex: 0.5,
+    filterOperators: createdByOnlyOperators
   },
   {
     field: CREATED_AT,
