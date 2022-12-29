@@ -5,6 +5,7 @@ import {
   MenuItem,
   SelectChangeEvent,
   CircularProgress,
+  Box,
 } from "@mui/material";
 import {
   GridFilterOperator,
@@ -67,7 +68,14 @@ const SelectType = (props: GridFilterInputValueProps) => {
           </Select>
         </FormControl>
       )}
-      {isGetTemplateTypesLoading && <div className="flex justify-center items-center"><CircularProgress size={20} /></div>}
+      {isGetTemplateTypesLoading && <Box
+          sx={{
+            display: "inline-flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            height: 48,
+          }}><CircularProgress size={20} /></Box>}
     </>
   );
 };

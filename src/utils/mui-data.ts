@@ -21,6 +21,7 @@ import { departmentOnlyOperators } from "../components/DataTable/filter/departme
 import { DateCell } from "../components/DataTable/formatDate-cell";
 import { IsLockedCell } from "../components/DataTable/isLocked-cell";
 import { CreatedByCell } from "../components/DataTable/createdBy-cell";
+import { createdAtOnlyOperators } from '../components/DataTable/filter/createdAt';
 
 const {
   TYPE,
@@ -194,6 +195,7 @@ export const newTemplatesColumns: GridColDef[] = [
     headerName: "Created At",
     renderCell: DateCell,
     align: "center",
+    filterOperators: createdAtOnlyOperators
   },
   {
     field: ACTION,
