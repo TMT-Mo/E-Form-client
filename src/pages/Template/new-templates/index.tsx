@@ -8,9 +8,12 @@ import {
   getTemplates,
   searchTemplate,
 } from "../../../slices/template";
-import { StatusTemplate } from "../../../utils/constants";
+import { DataTableHeader, StatusTemplate } from "../../../utils/constants";
+
+const { TYPE, IS_ENABLE, TYPE_TEMPLATE, DEPARTMENT, CREATED_BY } = DataTableHeader;
 
 const NewTemplates = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { searchItemValue, currentPage, filter, sorter } = useSelector(
     (state) => state.template
@@ -22,15 +25,22 @@ const NewTemplates = () => {
         templateName_contains: searchItemValue || undefined,
         _page: currentPage,
         _size: 10,
-        _sort: undefined,
+        _sort: sorter ? `${sorter?.field}:${sorter?.sort}` : undefined,
         status_eq: StatusTemplate.NEW_TEMPLATE,
+        typeName_eq:
+          filter?.field === TYPE_TEMPLATE
+            ? (filter.value as string)
+            : undefined,
+        createdBy_eq: filter?.field === CREATED_BY
+        ? (filter.value as number)
+        : undefined,
       })
     )
-    
+    //
     getTemplateList.unwrap()
     return () => { getTemplateList.abort()}
-  }, [currentPage, dispatch, searchItemValue]);
-  const { t } = useTranslation();
+  }, [currentPage, dispatch, filter?.field, filter?.value, searchItemValue, sorter]);
+
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
       <h2>{t ("New Templates")}</h2>

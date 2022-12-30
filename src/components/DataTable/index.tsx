@@ -49,13 +49,17 @@ const DataTable: React.FC = () => {
   const { isGetTemplatesLoading, templateList } = useSelector(
     (state) => state.template
   );
-  const { isGetDocumentListLoading, documentList } = useSelector((state) => state.document);
+  const { isGetDocumentListLoading, documentList } = useSelector(
+    (state) => state.document
+  );
   const totalTemplate = useSelector((state) => state.template.total);
   const currentPageTemplate = useSelector(
     (state) => state.template.currentPage
   );
-  const totalDocument = useSelector(state => state.document.total)
-  const currentPageDocument = useSelector(state => state.document.currentPage)
+  const totalDocument = useSelector((state) => state.document.total);
+  const currentPageDocument = useSelector(
+    (state) => state.document.currentPage
+  );
 
   const onFilterChange = React.useCallback(
     (filterModel: GridFilterModel) => {
@@ -82,6 +86,7 @@ const DataTable: React.FC = () => {
     },
     [dispatch]
   );
+
   const columnVisible: GridColumnModel = {
     status: usePermission(ENABLE_TEMPLATE),
     isEnable: usePermission(ENABLE_TEMPLATE),
@@ -113,7 +118,11 @@ const DataTable: React.FC = () => {
         };
       case TEMPLATE:
         return {
-          columns: templateColumns,
+          columns: templateColumns.map((col) =>
+            col.field === "isEnable"
+              ? { ...col, filterable: columnVisible.isEnable }
+              : col
+          ),
           loading: isGetTemplatesLoading,
           table: templateList,
           currentPage: currentPageTemplate,

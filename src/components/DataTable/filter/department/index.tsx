@@ -60,7 +60,7 @@ import {
               onChange={handleChange}
             >
               {departmentList.items.map((item) => (
-                <MenuItem value={item.departmentName} key={item.id}>
+                <MenuItem value={item.id} key={item.id}>
                   {item.departmentName}
                 </MenuItem>
               ))}

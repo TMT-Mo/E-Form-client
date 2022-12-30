@@ -2,15 +2,15 @@ import { TOKEN_NAME } from "./constants";
 
 // *-------------------------------------------- HANDLE TOKEN --------------------------------------------
 const setToken = (tokenValue: string) => {
-  localStorage.setItem(TOKEN_NAME, JSON.stringify(tokenValue));
+  sessionStorage.setItem(TOKEN_NAME, JSON.stringify(tokenValue));
 };
 
 const clearToken = ()=>{
-  localStorage.removeItem(TOKEN_NAME)
+  sessionStorage.removeItem(TOKEN_NAME)
 }
 
 const getToken = (): string => {
-  const token = localStorage.getItem(TOKEN_NAME) as string;
+  const token = sessionStorage.getItem(TOKEN_NAME) as string;
   return token;
 };
 

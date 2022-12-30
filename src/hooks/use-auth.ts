@@ -4,10 +4,10 @@ import { useDispatch } from "./use-dispatch";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
 import { TOKEN_NAME } from "../utils/constants";
-import { setUserInfo, storeToken } from "../slices/auth";
+import { checkAuthentication, setUserInfo } from "../slices/auth";
+import { helpers } from "../utils";
 
 interface UseAuth {
-  login: (token: string) => void;
   logout: () => void;
   authenticate: () => void;
 }
@@ -15,35 +15,27 @@ interface UseAuth {
 export const useAuth = (): UseAuth => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { getToken, clearToken} = helpers
   // const auth = useSelector(state => state)
-  const login = (token: string): void => {
-    localStorage.setItem(TOKEN_NAME, JSON.stringify(token));
-  };
 
-  const logout = (): void => {
-    localStorage.clear();
+  const logout = useCallback((): void => {
+    clearToken()
     // rootReducer(auth.auth, {type: 'Reset'})
     navigate("/login", { replace: true });
-  };
+  },[clearToken, navigate])
 
   const authenticate = useCallback(() => {
-    try {
-      dispatch(storeToken({value: true}))
-      const token = localStorage.getItem(TOKEN_NAME) as string;
+      dispatch(checkAuthentication({value: true}))
+      const token = getToken()
       if (token) {
         dispatch(setUserInfo({token}));
         navigate('/user');
       } else {
         navigate('/login');
       }
-    } catch (error) {
-      localStorage.clear()
-      navigate("/login");
-    }
-  }, [dispatch, navigate]);
+  }, [dispatch, getToken, navigate]);
 
   return {
-    login,
     logout,
     authenticate,
   };

@@ -15,5 +15,6 @@ export interface UserInfo {
   exp: number;
   userName:string,
   signature: string,
-  idPermissions: string
+  idPermissions: string,
+  idDepartment: string,
 }

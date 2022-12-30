@@ -34,7 +34,7 @@ const { ADD_TEMPLATE_INDEX } = ViewerLocationIndex;
 const { TYPE, IS_ENABLE, TYPE_TEMPLATE, DEPARTMENT, STATUS } = DataTableHeader;
 const TemplateHistory = () => {
   const dispatch = useDispatch();
-  const { searchItemValue, currentPage, filter } = useSelector(
+  const { searchItemValue, currentPage, filter, sorter } = useSelector(
     (state) => state.template
   );
   const { userInfo } = useSelector((state) => state.auth);
@@ -45,13 +45,17 @@ const TemplateHistory = () => {
         templateName_contains: searchItemValue || undefined,
         _page: currentPage,
         _size: 10,
-        _sort: undefined,
+        _sort: sorter ? `${sorter?.field}:${sorter?.sort}` : undefined,
         createdBy_eq: userInfo?.userId,
         status_eq:
           filter?.field === STATUS ? (filter.value as number) : undefined,
+        typeName_eq:
+          filter?.field === TYPE_TEMPLATE
+            ? (filter.value as string)
+            : undefined,
       })
     );
-    getTemplateList.unwrap()
+    getTemplateList.unwrap();
     return () => {
       getTemplateList.abort();
     };

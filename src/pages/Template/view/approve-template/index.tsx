@@ -124,6 +124,7 @@ const ViewApproveTemplate: React.FC = () => {
       </div>
       <div className="flex space-x-2 items-center">
         <h4>{t ("Role")}:</h4>
+        <h4>Role:</h4>
         <Typography className="text-white">{signer.roleName}</Typography>
       </div>
     </div>
@@ -191,14 +192,14 @@ const ViewApproveTemplate: React.FC = () => {
                 {description}
               </span>
             </div>
-            <div className="flex flex-col space-y-2">
-              <h4>{t ("Type")}:</h4>
+            <div className="flex items-center space-x-1">
+              <h4>{t('Type')}:</h4>
               <span className="text-white text-base break-words w-60">
                 {typeName}
               </span>
             </div>
-            <div className="flex flex-col space-y-2">
-              <h4>{t ("Department")}:</h4>
+            <div className="flex items-center space-x-1">
+              <h4>{t('Department')}:</h4>
               <span className="text-white text-base break-words w-60">
                 {departmentName}
               </span>
