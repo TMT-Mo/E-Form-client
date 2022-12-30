@@ -395,7 +395,7 @@ const ViewAddTemplate: React.FC = () => {
                   }}
                   id="multiple-limit-tags"
                   options={userList?.items!}
-                  getOptionLabel={(option) => option.email}
+                  getOptionLabel={(option) => option.username}
                   onChange={(e, value) => {
                     setForm({
                       ...form,

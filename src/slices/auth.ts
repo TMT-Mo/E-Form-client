@@ -36,7 +36,7 @@ const setUserInfoCR: CR<{ token: string}> = (
   userInfo: jwtDecode(payload.token!),
 });
 
-const storeTokenCR: CR<{value: boolean}> = (
+const checkAuthenticationCR: CR<{value: boolean}> = (
   state,
   { payload }
 ) => ({
@@ -68,7 +68,7 @@ const auth = createSlice({
   initialState,
   reducers: {
     setUserInfo: setUserInfoCR,
-    storeToken: storeTokenCR
+    checkAuthentication: checkAuthenticationCR
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => ({
@@ -98,6 +98,6 @@ const auth = createSlice({
 
 export { login };
 
-export const { setUserInfo, storeToken} = auth.actions;
+export const { setUserInfo, checkAuthentication} = auth.actions;
 
 export default auth.reducer;

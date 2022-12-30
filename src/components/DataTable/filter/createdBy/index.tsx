@@ -14,18 +14,17 @@ import {
 } from "@mui/x-data-grid";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "../../../../hooks";
-import {
-  getTemplateTypeList,
-} from "../../../../slices/system";
+import { getUsers } from "../../../../slices/system";
 import { DataTableHeader } from "../../../../utils/constants";
 
-const {TYPE_TEMPLATE } = DataTableHeader;
+const { CREATED_BY } = DataTableHeader;
 const SelectType = (props: GridFilterInputValueProps) => {
   const { applyValue, item } = props;
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [value, setValue] = useState<any>("");
   const dispatch = useDispatch();
-  const { isGetTemplateTypesLoading, templateTypeList } = useSelector(
+  const { userInfo } = useSelector((state) => state.auth);
+  const { isGetUserListLoading, userList } = useSelector(
     (state) => state.system
   );
 
@@ -33,22 +32,22 @@ const SelectType = (props: GridFilterInputValueProps) => {
     applyValue({
       ...item,
       value: e.target.value,
-      columnField: TYPE_TEMPLATE,
+      columnField: CREATED_BY,
     });
     setValue(e.target.value);
   };
 
-  const getTypeListHandler = useCallback(() => {
-      dispatch(getTemplateTypeList()).unwrap()
-  }, [dispatch]);
+  const getUserListHandler = useCallback(() => {
+    dispatch(getUsers({ departmentId_eq: +userInfo?.idDepartment! })).unwrap();
+  }, [dispatch, userInfo?.idDepartment]);
 
   useEffect(() => {
-    !templateTypeList && getTypeListHandler();
-  }, [getTypeListHandler, templateTypeList]);
+    !userList && getUserListHandler();
+  }, [getUserListHandler, userList]);
 
   return (
     <>
-      {templateTypeList && (
+      {userList && (
         <FormControl variant="standard" sx={{ minWidth: 120 }}>
           <InputLabel id="demo-simple-select-standard-label">
             Filter value
@@ -60,27 +59,33 @@ const SelectType = (props: GridFilterInputValueProps) => {
             value={value}
             onChange={handleChange}
           >
-            {templateTypeList.items.map((item) => (
-              <MenuItem value={item.typeName} key={item.id}>
-                {item.typeName}
+            {userList.items.map((item) => (
+              <MenuItem value={item.id} key={item.id}>
+                {item.username}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
       )}
-      {isGetTemplateTypesLoading && <Box
+      {isGetUserListLoading && (
+        <Box
           sx={{
             display: "inline-flex",
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
             height: 48,
-          }}><CircularProgress size={20} /></Box>}
+          }}
+          className="flex justify-center items-center w-full"
+        >
+          <CircularProgress size={20} />
+        </Box>
+      )}
     </>
   );
 };
 
-export const typeTemplateOnlyOperators: GridFilterOperator[] = [
+export const createdByOnlyOperators: GridFilterOperator[] = [
   {
     label: "equal",
     value: "equal",

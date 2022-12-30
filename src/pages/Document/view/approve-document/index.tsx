@@ -10,16 +10,20 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import WebViewer from "@pdftron/webviewer";
+import WebViewer, { WebViewerInstance } from "@pdftron/webviewer";
 import { LoadingButton } from "@mui/lab";
 import AlertPopup from "../../../../components/AlertPopup";
 import { useDispatch, useSelector } from "../../../../hooks";
-import { approveTemplate } from "../../../../slices/template";
-import { StatusTemplate } from "../../../../utils/constants";
 
 const LoadingBtn = styled(
   LoadingButton,
@@ -101,7 +105,13 @@ const ViewApproveDocument: React.FC = () => {
   const [isAccepting, setIsAccepting] = useState<boolean>(true);
   const [reason, setReason] = useState<string | undefined>();
   const [openDialog, setOpenDialog] = useState(false);
+  const [initialXfdfString, setInitialXfdfString] = useState<any[] | null>();
+  const [annotationList, setAnnotationList] = useState<any[] | null>();
 
+  const [enableBtn, setEnableBtn] = useState<boolean>(false);
+  const [newXfdfString, setNewXfdfString] = useState<string | undefined>();
+  const instance = useRef<WebViewerInstance>();
+  const [file, setFile] = useState<File>();
   // if using a class, equivalent of componentDidMount
 
   useEffect(() => {
@@ -109,26 +119,83 @@ const ViewApproveDocument: React.FC = () => {
       {
         path: "/webviewer/lib",
         initialDoc: link!,
-        disabledElements: [
-          // 'viewControlsButton',
-          // 'leftPanel'
-          // 'viewControlsOverlay'
-          // 'toolbarGroup-Annotate'
-        ],
+        disabledElements: ["toolbarGroup-Insert", "toolbarGroup-Forms"],
+        annotationUser: userInfo?.userId!.toString(),
       },
       viewer.current!
-    ).then(async (instance) => {
-      const { documentViewer, annotationManager } = instance.Core;
-      const annotManager = documentViewer.getAnnotationManager();
+    ).then(async (inst) => {
+      // instance.current = inst;
+      // inst.UI.loadDocument(link)
+      const { documentViewer, annotationManager } = inst.Core;
 
-      // annotManager.enableReadOnlyMode();
       documentViewer.addEventListener("documentLoaded", async () => {
-        await documentViewer.getDocument().getDocumentCompletePromise();
         await annotationManager.importAnnotations(xfdfString);
+        setInitialXfdfString(annotationManager.getAnnotationsList());
+        await documentViewer.getDocument().getDocumentCompletePromise();
         documentViewer.updateView();
+        annotationManager.setAnnotationDisplayAuthorMap((userId) => {
+          if (userId === userInfo?.userId!.toString()) {
+            return userInfo?.userName!;
+          }
+          else if(userId !== 'Admin'){
+            return userId
+          }
+          return "Admin";
+        });
+        annotationManager.addEventListener(
+          "annotationChanged",
+          async (annotations, action, { imported }) => {
+            const annots = (
+              await annotationManager.exportAnnotations({
+                useDisplayAuthor: true,
+              })
+            ).replaceAll(/\\&quot;/gi, "");
+            setNewXfdfString(annots);
+
+            const annotList = annotationManager.getAnnotationsList();
+            setAnnotationList(annotList);
+
+            // console.log(checkAnnotExists)
+          }
+        );
       });
     });
-  }, [link, xfdfString]);
+  }, [link, userInfo?.userId, userInfo?.userName, xfdfString]);
+
+  // useEffect(() => {
+  //   async function createFile(url: string) {
+
+  //   }
+  //   setFile(async () => await createFile(link));
+  // }, []);
+
+  const loadFile = useCallback(async () => {
+    const response = await fetch(link);
+    const data = await response.blob();
+    setFile(new File([data], documentName));
+  }, [documentName, link]);
+
+  // useEffect(() => {
+  //   loadFile();
+  // }, [link, loadFile]);
+
+  // useEffect(() => {
+  //   if (!file) return;
+  //   console.log(file);
+  //   if (instance.current) {
+  //     instance.current.UI.loadDocument(file);
+  //   }
+  // }, [file]);
+
+  // useEffect(() => {
+  //   if(!annotationList){
+  //     return
+  //   }
+  //   annotationList.every((annot) => initialXfdfString?.includes(annot)) ? setEnableBtn(true) : setEnableBtn(false)
+  //   console.log(annotationList.every((annot) => initialXfdfString?.includes(annot)))
+  // }, [annotationList, initialXfdfString]);
+  // console.log(annotationList)
+
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
@@ -153,13 +220,13 @@ const ViewApproveDocument: React.FC = () => {
                 {description}
               </span>
             </div>
-            <div className="flex flex-col space-y-2">
+            <div className="flex items-center space-x-1">
               <h4>Type:</h4>
               <span className="text-white text-base break-words w-60">
                 {typeName}
               </span>
             </div>
-            <div className="flex flex-col space-y-2">
+            <div className="flex items-center space-x-1">
               <h4>Department:</h4>
               <span className="text-white text-base break-words w-60">
                 {departmentName}
@@ -226,7 +293,13 @@ const ViewApproveDocument: React.FC = () => {
                 size="small"
                 variant="outlined"
                 onClick={() => setOpenDialog(true)}
-                disabled
+                disabled={
+                  annotationList
+                    ? annotationList.every((annot) =>
+                        initialXfdfString?.includes(annot)
+                      )
+                    : true
+                }
               >
                 Approve
               </ApproveBtn>
