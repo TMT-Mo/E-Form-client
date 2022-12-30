@@ -81,7 +81,7 @@ const Template = () => {
             </IconButton>
             <InputBase
               sx={{ ml: 1, flex: 1 }}
-              placeholder="Search Template"
+              placeholder={t ("Search Template")}
               onChange={(e) =>
                 dispatch(searchTemplate({ value: e.target.value }))
               }

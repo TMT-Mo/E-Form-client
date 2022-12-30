@@ -233,11 +233,11 @@ const ViewApproveTemplate: React.FC = () => {
                   },
                 }}
               />
-              <h4>[t ("{isAccepting ? "Approve" : "Reject"}")]</h4>
+              <h4>{isAccepting ? "Approve" : "Reject"}</h4>
             </div>
             {!isAccepting ? (
               <div className="flex flex-col space-y-4">
-                <h4>Reason:</h4>
+                <h4>{t ("Reason")}:</h4>
                 <TextField
                   id="outlined-multiline-flexible"
                   sx={{
@@ -282,7 +282,7 @@ const ViewApproveTemplate: React.FC = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Notification</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{t("Notification")}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {isAccepting
@@ -292,7 +292,7 @@ const ViewApproveTemplate: React.FC = () => {
         </DialogContent>
         <DialogActions>
           <CancelBtn onClick={() => setOpenDialog(false)} size="small">
-            Cancel
+            {t ("Cancel")}
           </CancelBtn>
           <LoadingBtn
             size="small"
@@ -301,7 +301,7 @@ const ViewApproveTemplate: React.FC = () => {
             variant="outlined"
             onClick={onApproveTemplate}
           >
-            Save
+            {t ("Save")}
           </LoadingBtn>
         </DialogActions>
       </Dialog>

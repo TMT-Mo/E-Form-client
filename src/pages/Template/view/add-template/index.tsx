@@ -420,7 +420,7 @@ const ViewAddTemplate: React.FC = () => {
               onClick={() => setOpenDialog(true)}
               autoFocus
             >
-              Save
+              {t ("Save")}
             </StyledBtn>
           </div>
         </div>
@@ -437,15 +437,15 @@ const ViewAddTemplate: React.FC = () => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          Are you sure you want to save this form ?
+          {t ("Are you sure you want to save this form ?")}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            After saving this template, {form.templateName!} will be waiting for an approval
+           {t("After saving this template")}, {form.templateName!} {t("will be waiting for an approval")}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <CancelBtn onClick={() => setOpenDialog(false)} size='small' >Cancel</CancelBtn>
+          <CancelBtn onClick={() => setOpenDialog(false)} size='small' >{t ("Cancel")}</CancelBtn>
           <LoadingBtn
             size="small"
             loading={isAddNewTemplateLoading}
@@ -453,7 +453,7 @@ const ViewAddTemplate: React.FC = () => {
             variant="outlined"
             onClick={handleUpload}
           >
-            Save
+            {t ("Save")}
           </LoadingBtn>
         </DialogActions>
       </Dialog>
