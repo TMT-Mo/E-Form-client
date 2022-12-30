@@ -135,6 +135,7 @@ const ViewPersonalDocument: React.FC = () => {
           // 'viewControlsOverlay'
           // 'toolbarGroup-Annotate'
         ],
+        isReadOnly: true
       },
       viewer.current!
     ).then(async (instance) => {

@@ -61,6 +61,7 @@ const ViewCreateDocument: React.FC = () => {
           // 'viewControlsOverlay'
           // 'toolbarGroup-Annotate'
         ],
+        annotationUser: userInfo?.userId!.toString()
       },
       viewer.current!
     ).then(async (instance) => {
@@ -91,24 +92,41 @@ const ViewCreateDocument: React.FC = () => {
           annotationManager.addAnnotation(annot);
           annotationManager.redrawAnnotation(annot);
         });
+        // annotationManager.setPermissionCheckCallback((author, annotation) => {
+        //   const defaultPermission = annotation.Author === annotationManager.getCurrentUser();
+        // })
+        annotationManager.setAnnotationDisplayAuthorMap((userId) => {
+          if(userId === userInfo?.userId!.toString()){
+            return userInfo?.userName!
+          }
+          return 'Guest'
+          // if (userId === "1") {
+          //   return "John Smith";
+          // } else if (userId === "2") {
+          //   return "Sally Smith";
+          // } else {
+          //   return "Guest";
+          // }
+        });
         annotationManager.addEventListener(
           "annotationChanged",
           async (annotations, action, { imported }) => {
             const annots = (
-              await annotationManager.exportAnnotations()
+              await annotationManager.exportAnnotations({useDisplayAuthor: true})
             ).replaceAll(/\\&quot;/gi, "");
             setXfdfString(annots);
 
             const checkAnnotExists = annotationManager.getAnnotationsList();
-            console.log(checkAnnotExists);
+            // console.log(checkAnnotExists);
             checkAnnotExists.length >= 2
               ? setEnableSend(true)
               : setEnableSend(false);
           }
         );
+        
       });
     });
-  }, [departmentName, link, typeName]);
+  }, [departmentName, link, typeName, userInfo?.userId, userInfo?.userName]);
 
   const onCreateTemplate = async () => {
     await dispatch(
