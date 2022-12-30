@@ -11,6 +11,7 @@ import {
 import { StatusTemplate } from "../../../utils/constants";
 
 const NewTemplates = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { searchItemValue, currentPage, filter, sorter } = useSelector(
     (state) => state.template
@@ -30,7 +31,7 @@ const NewTemplates = () => {
     getTemplateList.unwrap()
     return () => { getTemplateList.abort()}
   }, [currentPage, dispatch, searchItemValue]);
-  const { t } = useTranslation();
+  
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
       <h2>{t ("New Templates")}</h2>
