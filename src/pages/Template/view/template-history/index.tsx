@@ -7,6 +7,7 @@ import AlertPopup from "../../../../components/AlertPopup";
 import { useSelector } from "../../../../hooks";
 import { StatusTemplate, StatusTemplateTag } from "../../../../utils/constants";
 import StatusTag from "../../../../components/StatusTag";
+import { useTranslation } from "react-i18next";
 
 // const { APPROVED, NEW } = StatusTemplate;
 // const { APPROVED_TAG, REJECTED_TAG, NEW_TAG } = StatusTemplateTag;
@@ -48,14 +49,14 @@ const ViewTemplateHistory: React.FC = () => {
   //     );
   //   }
   // };
-
+  const { t } = useTranslation();
   const signers = signatoryList.map((signer, index) => (
     <div
       className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4"
       key={index}
     >
       <div className="flex space-x-2 items-center ">
-        <h4>Signer:</h4>
+        <h4>{t ("Signer")}:</h4>
         <span className="text-white text-base break-words">
           {signer.username}
         </span>
@@ -65,7 +66,7 @@ const ViewTemplateHistory: React.FC = () => {
         <span className="text-white text-base break-words">{templateName}</span>
       </div> */}
       <div className="flex space-x-2 items-center">
-        <h4>Role:</h4>
+        <h4>{t ("Role")}:</h4>
         <span className="text-white text-base break-words">
           {signer.roleName}
         </span>
@@ -105,38 +106,38 @@ const ViewTemplateHistory: React.FC = () => {
         <Link to="/user">
           <ArrowBackIosIcon fontSize="small" className="fill-white" />
         </Link>
-        <span className="text-white">View Template History</span>
+        <span className="text-white">"{t ("View Template History")}"</span>
       </div>
       <div className="flex">
         <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 w-80">
           <div className="flex flex-col space-y-8 text-white">
             <div className="flex flex-col space-y-2">
-              <h4>File name:</h4>
+              <h4>{t ("File name")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {templateName}
               </span>
             </div>
 
             <div className="flex flex-col space-y-2">
-              <h4>Description:</h4>
+              <h4>{t ("Description")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {description}
               </span>
             </div>
             <div className="flex items-center space-x-2">
-              <h4>Type:</h4>
+              <h4>{t ("Type")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {typeName}
               </span>
             </div>
             <div className="flex items-center space-x-2">
-              <h4>Department:</h4>
+              <h4>{t ("Department")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {departmentName}
               </span>
             </div>
             <div className="flex flex-col space-y-2">
-              <h4>Created By:</h4>
+              <h4>{t ("Created By")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {createdBy.username}
               </span>
@@ -148,7 +149,7 @@ const ViewTemplateHistory: React.FC = () => {
               </span>
             </div>
             <div className="flex items-center space-x-2">
-              <h4>Status:</h4>
+              <h4>{t ("Status")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {/* {createStatus()} */}
                 <StatusTag status={status} type="template" />
@@ -156,7 +157,7 @@ const ViewTemplateHistory: React.FC = () => {
             </div>
             {reason && (
               <div className="flex flex-col space-y-2">
-                <h4>Reason:</h4>
+                <h4>{t ("Reason")}:</h4>
                 <span className="text-white text-base break-words w-60">
                   {reason}
                 </span>
@@ -164,7 +165,7 @@ const ViewTemplateHistory: React.FC = () => {
             )}
             <Divider className="bg-white" />
             <div className="flex justify-center">
-              <h4>Signer List:</h4>
+              <h4>{t ("Signer List")}:</h4>
             </div>
             {signers}
           </div>

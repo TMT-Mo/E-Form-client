@@ -5,6 +5,7 @@ import {
   Paper,
 } from "@mui/material";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import DataTable from "../../../components/DataTable";
 import { useDispatch, useSelector } from "../../../hooks";
 import { getDocuments } from "../../../slices/document";
@@ -30,10 +31,10 @@ const AwaitSigning = () => {
       getDocumentList.abort();
     };
   }, [currentPage, dispatch, searchItemValue, userInfo?.userId]);
-  
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
-      <h2>Await Signing</h2>
+      <h2>{t ("Await Signing")}</h2>
       <div className="flex flex-col rounded-md border border-gray-400 bg-white">
         <div className="flex px-10 py-6 justify-between">
           <Paper

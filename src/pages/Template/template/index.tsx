@@ -7,6 +7,7 @@ import DataTable from "../../../components/DataTable";
 import { useDispatch, useSelector } from "../../../hooks";
 import { getTemplates, searchTemplate } from "../../../slices/template";
 import { DataTableHeader, StatusTemplate } from "../../../utils/constants";
+import { useTranslation } from "react-i18next";
 
 const StyledUploadBtn = styled(Button)({
   backgroundColor: "#fff",
@@ -59,10 +60,10 @@ const Template = () => {
     searchItemValue,
     sorter,
   ]);
-
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
-      <h2>Template Management</h2>
+      <h2>{t ("Template Management")}</h2>
       <div className="flex flex-col rounded-md border border-gray-400 bg-white">
         <div className="flex px-10 py-6 justify-between">
           <Paper
@@ -93,7 +94,7 @@ const Template = () => {
               variant="outlined"
               startIcon={<UploadIcon />}
             >
-              Upload
+              {t ("Upload")}
             </StyledUploadBtn>
           </div>
         </div>

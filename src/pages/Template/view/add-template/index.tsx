@@ -39,6 +39,7 @@ import {
 import { addNewTemplate } from "../../../../slices/template";
 import { useDispatch, useSelector } from "../../../../hooks";
 import storage from "../../../../utils/firebase";
+import { useTranslation } from "react-i18next";
 
 const LoadingBtn = styled(
   LoadingButton,
@@ -237,20 +238,20 @@ const ViewAddTemplate: React.FC = () => {
       setForm({ ...form, signatoryList: undefined });
     }
   };
-
+  const { t } = useTranslation();
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
         <Link to="/user">
           <ArrowBackIosIcon fontSize="small" className="fill-white" />
         </Link>
-        <span className="text-white">Add a template</span>
+        <span className="text-white">{t ("Add a template")}</span>
       </div>
       <div className="flex">
         <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 w-80">
           <div className="flex flex-col space-y-8 text-white">
             <div className="flex flex-col space-y-4">
-              <h4>Choose a file</h4>
+              <h4>{t ("Choose a file")}</h4>
               <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -273,7 +274,7 @@ const ViewAddTemplate: React.FC = () => {
             </div>
             <Divider className="bg-white" />
             <div className="flex flex-col space-y-4">
-              <h4>Description</h4>
+              <h4>{t ("Description")}</h4>
               <TextField
                 id="outlined-multiline-flexible"
                 sx={{
@@ -294,7 +295,7 @@ const ViewAddTemplate: React.FC = () => {
               />
             </div>
             <div className="flex flex-col space-y-4">
-              <h4>Type</h4>
+              <h4>{t ("Type")}</h4>
 
               <Autocomplete
                 id="asynchronous-demo"
@@ -336,7 +337,7 @@ const ViewAddTemplate: React.FC = () => {
               />
             </div>
             <div className="flex flex-col space-y-4">
-              <h4>Department</h4>
+              <h4>{t ("Department")}</h4>
               <Autocomplete
                 id="asynchronous-demo"
                 sx={{
@@ -375,7 +376,7 @@ const ViewAddTemplate: React.FC = () => {
               />
             </div>
             <div className="flex flex-col space-y-4">
-              <h4>Select Signer(s)</h4>
+              <h4>{t ("Select Signer(s)")}</h4>
               {isGetUserListLoading && (
                 <div className="flex justify-center">
                   <CircularProgress />
