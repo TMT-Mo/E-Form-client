@@ -120,7 +120,7 @@ const SideBar: React.FC = () => {
               <ListItemIcon>
                 <WorkspacesIcon className="fill-white" />
               </ListItemIcon>
-              <ListItemText primary={t("Unapproved")} />
+              <ListItemText primary={t ("Unapproved")} />
             </StyledListBtn>
           </RequiredPermission>
 

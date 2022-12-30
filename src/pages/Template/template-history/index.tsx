@@ -14,6 +14,7 @@ import {
   ViewerLocationIndex,
 } from "../../../utils/constants";
 import { RequiredPermission } from "../../../components/RequiredPermission";
+import { useTranslation } from "react-i18next";
 
 const StyledAddBtn = styled(Button)({
   backgroundColor: "#407AFF",
@@ -62,10 +63,10 @@ const TemplateHistory = () => {
     searchItemValue,
     userInfo?.userId,
   ]);
-
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
-      <h2>History</h2>
+      <h2>{t ("History")}</h2>
       <div className="flex flex-col rounded-md border border-gray-400 bg-white">
         <div className="flex px-10 py-6 justify-between">
           <Paper
@@ -108,7 +109,7 @@ const TemplateHistory = () => {
                   className="shadow-md"
                   startIcon={<AddIcon />}
                 >
-                  Add New
+                  {t ("Add New")}
                 </StyledAddBtn>
               </Link>
             </div>

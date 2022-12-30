@@ -8,6 +8,7 @@ import { LoadingButton } from "@mui/lab";
 import AlertPopup from "../../../../components/AlertPopup";
 import { useDispatch, useSelector } from "../../../../hooks";
 import { createDocument } from "../../../../slices/document";
+import { useTranslation } from "react-i18next";
 
 const SendBtn = styled(
   LoadingButton,
@@ -47,7 +48,7 @@ const ViewCreateDocument: React.FC = () => {
   } = templateDetail!;
   const [xfdfString, setXfdfString] = useState<string | undefined>();
   const [enableSend, setEnableSend] = useState<boolean>(false);
-
+  const { t } = useTranslation();
   // if using a class, equivalent of componentDidMount
 
   useEffect(() => {
@@ -127,32 +128,32 @@ const ViewCreateDocument: React.FC = () => {
         <Link to="/user">
           <ArrowBackIosIcon fontSize="small" className="fill-white" />
         </Link>
-        <span className="text-white">Create await signing document</span>
+        <span className="text-white">{t("Create await signing document")}</span>
       </div>
       <div className="flex">
         <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 w-80">
           <div className="flex flex-col space-y-8 text-white">
             <div className="flex flex-col space-y-2">
-              <h4>File name:</h4>
+              <h4>{t("File name")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {templateName}
               </span>
             </div>
 
             <div className="flex flex-col space-y-2">
-              <h4>Description:</h4>
+              <h4>{t("Description")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {description}
               </span>
             </div>
             <div className="flex flex-col space-y-2">
-              <h4>Type:</h4>
+              <h4>{t("Type")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {typeName}
               </span>
             </div>
             <div className="flex flex-col space-y-2">
-              <h4>Department:</h4>
+              <h4>{t("Department")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {departmentName}
               </span>

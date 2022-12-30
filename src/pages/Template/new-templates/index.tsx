@@ -1,6 +1,7 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase, Paper } from "@mui/material";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import DataTable from "../../../components/DataTable";
 import { useDispatch, useSelector } from "../../../hooks";
 import {
@@ -29,10 +30,10 @@ const NewTemplates = () => {
     getTemplateList.unwrap()
     return () => { getTemplateList.abort()}
   }, [currentPage, dispatch, searchItemValue]);
-
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
-      <h2>New Templates</h2>
+      <h2>{t ("New Templates")}</h2>
       <div className="flex flex-col rounded-md border border-gray-400 bg-white">
         <div className="flex px-10 py-6 justify-between">
           <Paper
