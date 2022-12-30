@@ -234,7 +234,7 @@ const ViewApproveTemplate: React.FC = () => {
                   },
                 }}
               />
-              <h4>{isAccepting ? "Approve" : "Reject"}</h4>
+              <h4>{isAccepting ? [t ("Approve")] : [t ("Reject")]}</h4>
             </div>
             {!isAccepting ? (
               <div className="flex flex-col space-y-4">
@@ -287,8 +287,8 @@ const ViewApproveTemplate: React.FC = () => {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {isAccepting
-              ? "Are you sure you want to approve this template?"
-              : "Are you sure you want to reject this template?"}
+              ? [t ("Are you sure you want to approve this template?")]
+              : [t ("Are you sure you want to reject this template?")]}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

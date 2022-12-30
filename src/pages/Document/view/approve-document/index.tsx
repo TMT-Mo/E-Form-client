@@ -24,6 +24,7 @@ import WebViewer, { WebViewerInstance } from "@pdftron/webviewer";
 import { LoadingButton } from "@mui/lab";
 import AlertPopup from "../../../../components/AlertPopup";
 import { useDispatch, useSelector } from "../../../../hooks";
+import { useTranslation } from "react-i18next";
 
 const LoadingBtn = styled(
   LoadingButton,
@@ -195,51 +196,51 @@ const ViewApproveDocument: React.FC = () => {
   //   console.log(annotationList.every((annot) => initialXfdfString?.includes(annot)))
   // }, [annotationList, initialXfdfString]);
   // console.log(annotationList)
-
+  const [t] = useTranslation();
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
         <Link to="/user">
           <ArrowBackIosIcon fontSize="small" className="fill-white" />
         </Link>
-        <span className="text-white">Approve Document</span>
+        <span className="text-white">{t ("Approve Document")}</span>
       </div>
       <div className="flex">
         <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 w-80">
           <div className="flex flex-col space-y-8 text-white">
             <div className="flex flex-col space-y-2">
-              <h4>File name:</h4>
+              <h4>{t ("File name")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {documentName}
               </span>
             </div>
 
             <div className="flex flex-col space-y-2">
-              <h4>Description:</h4>
+              <h4>{t ("Description")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {description}
               </span>
             </div>
             <div className="flex items-center space-x-1">
-              <h4>Type:</h4>
+              <h4>{t ("Type")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {typeName}
               </span>
             </div>
             <div className="flex items-center space-x-1">
-              <h4>Department:</h4>
+              <h4>{t ("Department")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {departmentName}
               </span>
             </div>
             <div className="flex flex-col space-y-2">
-              <h4>Created By:</h4>
+              <h4>{t ("Created By")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {createdBy.username}
               </span>
             </div>
             <div className="flex flex-col space-y-2">
-              <h4>Created At:</h4>
+              <h4>{t ("Created At")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {new Date(createdAt).toUTCString().replace("GMT", "")}
               </span>
@@ -258,11 +259,11 @@ const ViewApproveDocument: React.FC = () => {
                   },
                 }}
               />
-              <h4>{isAccepting ? "Approve" : "Reject"}</h4>
+              <h4>{isAccepting ? [t ("Approve")] : [t ("Reject")]}</h4>
             </div>
             {!isAccepting ? (
               <div className="flex flex-col space-y-4">
-                <h4>Reason:</h4>
+                <h4>{t ("Reason")}:</h4>
                 <TextField
                   id="outlined-multiline-flexible"
                   sx={{
@@ -285,7 +286,7 @@ const ViewApproveDocument: React.FC = () => {
                   onClick={() => setOpenDialog(true)}
                   disabled={!reason}
                 >
-                  Reject
+                  {t ("Reject")}
                 </RejectBtn>
               </div>
             ) : (
@@ -301,7 +302,7 @@ const ViewApproveDocument: React.FC = () => {
                     : true
                 }
               >
-                Approve
+                {t ("Approve")}
               </ApproveBtn>
             )}
           </div>
@@ -314,17 +315,17 @@ const ViewApproveDocument: React.FC = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Notification</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{t ("Notification")}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {isAccepting
-              ? "Are you sure you want to approve this template?"
-              : "Are you sure you want to reject this template?"}
+              ? [t("Are you sure you want to approve this template?")]
+              : [t ("Are you sure you want to reject this template?")]}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <CancelBtn onClick={() => setOpenDialog(false)} size="small">
-            Cancel
+            {t ("Cancel")}
           </CancelBtn>
           {/* <LoadingBtn
             size="small"

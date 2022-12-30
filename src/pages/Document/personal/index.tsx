@@ -8,6 +8,7 @@ import React, { useEffect } from "react";
 import DataTable from "../../../components/DataTable";
 import { getDocuments } from "../../../slices/document";
 import { useDispatch, useSelector } from "../../../hooks";
+import { useTranslation } from "react-i18next";
 
 const PersonalDoc = () => {
   const dispatch = useDispatch();
@@ -30,10 +31,10 @@ const PersonalDoc = () => {
       getDocumentList.abort();
     };
   }, [currentPage, dispatch, searchItemValue, userInfo?.userId]);
-  
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
-      <h2>Personal Document</h2>
+      <h2>{t ("Personal Document")}</h2>
       <div className="flex flex-col rounded-md border border-gray-400 bg-white">
         <div className="flex px-10 py-6 justify-between">
           <Paper
@@ -51,7 +52,7 @@ const PersonalDoc = () => {
             </IconButton>
             <InputBase
               sx={{ ml: 1, flex: 1 }}
-              placeholder="Search Document"
+              placeholder={t ("Search Document")}
               inputProps={{ "aria-label": "search google maps" }}
             />
           </Paper>

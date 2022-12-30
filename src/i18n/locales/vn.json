@@ -60,6 +60,16 @@
   "Search Document": "Nhập từ khóa tìm kiếm",
   "Are you sure you want to save this form ?": "Bạn có chắc muốn lưu mẫu này?",
   "will be waiting for an approval": "sẽ sang trạng thái chờ phê duyệt",
-  "After saving this template": "Sau khi chọn lưu"
+  "After saving this template": "Sau khi chọn lưu",
+  "Email address": "Địa chỉ Email",
+  "Password": "Mật khẩu",
+  "example@": "Ví dụ: eform@email.com",
+  "Enter password": "Nhập mật khẩu",
+  "Approve Document": "Phê duyệt tài liệu",
+  "Are you sure you want to approve this template?": "Bạn có chắc chắn muốn phê duyệt mẫu này không?",
+  "Are you sure you want to reject this template?": "Bạn có chắc chắn muốn từ chối mẫu này?",
+  "Send": "Gửi",
+  "Personal Document": "Tài liệu cá nhân",
+  "Date modified": "Ngày sửa đổi"
   
 }

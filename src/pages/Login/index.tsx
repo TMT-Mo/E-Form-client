@@ -87,19 +87,19 @@ const Login = () => {
             <h1 className="text-4xl font-bold ">{t("Sign in")}</h1>
             <div className="flex flex-col space-y-2">
               <div className="">
-                Email address <span className="text-red-500">*</span>
+                {t ("Email address")} <span className="text-red-500">*</span>
               </div>
               <TextField
                 id="outlined-basic"
                 className="bg-white "
-                label="example@"
+                label={t ("example@")}
                 variant="outlined"
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div className="flex flex-col space-y-2">
               <div>
-                Password <span className="text-red-500">*</span>
+                {t ("Password")} <span className="text-red-500">*</span>
               </div>
               {/* <TextField
                 id="outlined-basic"
@@ -111,7 +111,7 @@ const Login = () => {
               /> */}
               <FormControl  variant="outlined">
                 <InputLabel htmlFor="outlined-adornment-password">
-                  Password
+                  {t ("Enter password")}
                 </InputLabel>
                 <OutlinedInput
                   id="outlined-adornment-password"

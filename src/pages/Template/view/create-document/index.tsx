@@ -9,7 +9,7 @@ import AlertPopup from "../../../../components/AlertPopup";
 import { useDispatch, useSelector } from "../../../../hooks";
 import { createDocument } from "../../../../slices/document";
 import { useTranslation } from "react-i18next";
-import {v4 as uuidv4} from 'uuid'
+import {v4 as uuidv4} from "uuid"
 
 const SendBtn = styled(
   LoadingButton,
@@ -160,13 +160,13 @@ const ViewCreateDocument: React.FC = () => {
               </span>
             </div>
             <div className="flex items-center space-x-1">
-              <h4>{t('Type')}:</h4>
+              <h4>{t("Type")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {typeName}
               </span>
             </div>
             <div className="flex items-center space-x-1">
-              <h4>{t('Department')}:</h4>
+              <h4>{t("Department")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {departmentName}
               </span>
@@ -182,7 +182,7 @@ const ViewCreateDocument: React.FC = () => {
                 onClick={onCreateTemplate}
                 disabled={!enableSend}
               >
-                Send
+                {t ("Send")}
               </SendBtn>
             )}
           </div>
