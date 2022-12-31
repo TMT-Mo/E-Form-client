@@ -59,6 +59,14 @@ const getDocumentDetailCR: CR<{ document: Document }> = (
   documentDetail: payload.document!,
 });
 
+const searchDocumentCR: CR<{ value: string }> = (
+  state,
+  { payload }
+) => ({
+  ...state,
+  searchItemValue: payload.value!,
+});
+
 const createDocument = createAsyncThunk(
   `${ACTION_TYPE}createDocument`,
   async (args: CreateDocumentArgs, { dispatch }) => {
@@ -126,7 +134,8 @@ const document = createSlice({
       ...state,
       documentDetail: undefined,
     }),
-    getDocumentDetail: getDocumentDetailCR
+    getDocumentDetail: getDocumentDetailCR,
+    searchDocument: searchDocumentCR
   },
   extraReducers: (builder) => {
     builder.addCase(createDocument.pending, (state) => ({
@@ -163,6 +172,6 @@ const document = createSlice({
 
 export { createDocument, getDocuments };
 
-export const { onChangeDocumentPage, clearDocuments, getDocumentDetail, clearDocumentDetail } = document.actions;
+export const { onChangeDocumentPage, clearDocuments, getDocumentDetail, clearDocumentDetail, searchDocument } = document.actions;
 
 export default document.reducer;

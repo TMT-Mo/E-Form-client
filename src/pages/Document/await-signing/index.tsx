@@ -8,7 +8,7 @@ import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import DataTable from "../../../components/DataTable";
 import { useDispatch, useSelector } from "../../../hooks";
-import { getDocuments } from "../../../slices/document";
+import { getDocuments, searchDocument } from "../../../slices/document";
 
 const AwaitSigning = () => {
   const dispatch = useDispatch();
@@ -54,6 +54,9 @@ const AwaitSigning = () => {
               sx={{ ml: 1, flex: 1 }}
               placeholder={t ("Search Document")}
               inputProps={{ "aria-label": "search google maps" }}
+              // onChange={(e) =>
+              //   dispatch(searchDocument({ value: e.target.value }))
+              // }
             />
           </Paper>
         </div>
