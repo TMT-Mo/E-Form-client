@@ -23,9 +23,6 @@ import { approveTemplate } from "../../../../slices/template";
 import { StatusTemplate } from "../../../../utils/constants";
 import { useTranslation } from "react-i18next";
 
-
-
-
 const LoadingBtn = styled(
   LoadingButton,
   {}
@@ -115,21 +112,17 @@ const ViewApproveTemplate: React.FC = () => {
   const signers = signatoryList.map((signer) => (
     <div className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4">
       <div className="flex space-x-2 items-center ">
-        <h4>{t ("Signer")}:</h4>
+        <h4>{t("Signer")}:</h4>
         <Typography className="text-white">{signer.username}</Typography>
       </div>
       <div className="flex space-x-2 items-center">
-        <h4>{t ("Department")}:</h4>
-        <Typography className="text-white">{templateName}</Typography>
-      </div>
-      <div className="flex space-x-2 items-center">
-        <h4>{t ("Role")}:</h4>
+        <h4>{t("Role")}:</h4>
         <h4>Role:</h4>
         <Typography className="text-white">{signer.roleName}</Typography>
       </div>
     </div>
   ));
-  
+
   // if using a class, equivalent of componentDidMount
 
   useEffect(() => {
@@ -174,51 +167,51 @@ const ViewApproveTemplate: React.FC = () => {
         <Link to="/user">
           <ArrowBackIosIcon fontSize="small" className="fill-white" />
         </Link>
-        <span className="text-white">{t ("Approve template")}</span>
+        <span className="text-white">{t("Approve template")}</span>
       </div>
       <div className="flex">
         <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 w-80">
           <div className="flex flex-col space-y-8 text-white">
             <div className="flex flex-col space-y-2">
-              <h4>{t ("File name")}:</h4>
+              <h4>{t("File name")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {templateName}
               </span>
             </div>
 
             <div className="flex flex-col space-y-2">
-              <h4>{t ("Description")}:</h4>
+              <h4>{t("Description")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {description}
               </span>
             </div>
             <div className="flex items-center space-x-1">
-              <h4>{t('Type')}:</h4>
+              <h4 className="whitespace-nowrap">{t("Type")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {typeName}
               </span>
             </div>
             <div className="flex items-center space-x-1">
-              <h4>{t('Department')}:</h4>
+              <h4 className="whitespace-nowrap">{t("Department")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {departmentName}
               </span>
             </div>
             <div className="flex flex-col space-y-2">
-              <h4>{t ("Created By")}:</h4>
+              <h4>{t("Created By")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {createdBy.username}
               </span>
             </div>
             <div className="flex flex-col space-y-2">
-              <h4>{t ("Created At")}:</h4>
+              <h4>{t("Created At")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {new Date(createdAt).toUTCString().replace("GMT", "")}
               </span>
             </div>
             <Divider className="bg-white" />
             <div className="flex justify-center">
-              <h4>{t ("Signer List")}:</h4>
+              <h4>{t("Signer List")}:</h4>
             </div>
             {signers}
             <div className="flex items-center">
@@ -234,11 +227,11 @@ const ViewApproveTemplate: React.FC = () => {
                   },
                 }}
               />
-              <h4>{isAccepting ? [t ("Approve")] : [t ("Reject")]}</h4>
+              <h4>{isAccepting ? [t("Approve")] : [t("Reject")]}</h4>
             </div>
             {!isAccepting ? (
               <div className="flex flex-col space-y-4">
-                <h4>{t ("Reason")}:</h4>
+                <h4>{t("Reason")}:</h4>
                 <TextField
                   id="outlined-multiline-flexible"
                   sx={{
@@ -261,7 +254,7 @@ const ViewApproveTemplate: React.FC = () => {
                   onClick={() => setOpenDialog(true)}
                   disabled={!reason}
                 >
-                  {t ("Reject")}
+                  {t("Reject")}
                 </RejectBtn>
               </div>
             ) : (
@@ -270,7 +263,7 @@ const ViewApproveTemplate: React.FC = () => {
                 variant="outlined"
                 onClick={() => setOpenDialog(true)}
               >
-                {t ("Approve")}
+                {t("Approve")}
               </ApproveBtn>
             )}
           </div>
@@ -287,13 +280,13 @@ const ViewApproveTemplate: React.FC = () => {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {isAccepting
-              ? [t ("Are you sure you want to approve this template?")]
-              : [t ("Are you sure you want to reject this template?")]}
+              ? [t("Are you sure you want to approve this template?")]
+              : [t("Are you sure you want to reject this template?")]}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <CancelBtn onClick={() => setOpenDialog(false)} size="small">
-            {t ("Cancel")}
+            {t("Cancel")}
           </CancelBtn>
           <LoadingBtn
             size="small"
@@ -302,7 +295,7 @@ const ViewApproveTemplate: React.FC = () => {
             variant="outlined"
             onClick={onApproveTemplate}
           >
-            {t ("Save")}
+            {t("Save")}
           </LoadingBtn>
         </DialogActions>
       </Dialog>
