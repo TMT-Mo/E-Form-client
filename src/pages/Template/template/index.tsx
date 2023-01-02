@@ -24,9 +24,10 @@ const StyledUploadBtn = styled(Button)({
 const { TYPE, IS_ENABLE, TYPE_TEMPLATE, DEPARTMENT } = DataTableHeader;
 
 const Template = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-  const {filter} = useSelector(state => state.filter)
-  const { searchItemValue, currentPage, sorter } = useSelector(
+  const {filter, sorter} = useSelector(state => state.filter)
+  const { searchItemValue, currentPage } = useSelector(
     (state) => state.template
   );
 
@@ -61,7 +62,7 @@ const Template = () => {
     searchItemValue,
     sorter,
   ]);
-  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
       <h2>{t ("Template Management")}</h2>

@@ -221,7 +221,8 @@ export const awaitSigningColumns: GridColDef[] = [
     headerName: "Name",
     flex: 1,
     disableColumnMenu: true,
-    sortable: false,
+    filterable: false,
+    
   },
   {
     field: CREATED_AT,
@@ -237,13 +238,14 @@ export const awaitSigningColumns: GridColDef[] = [
     headerName: "Owner",
     sortable: false,
     hideable: false,
-    filterable: false,
     renderCell: CreatedByCell,
+    filterOperators: createdByOnlyOperators
   },
   {
     field: ACTION,
     headerName: "Action",
     renderCell: AwaitSigningActionCell,
+    filterable: false
   },
 ];
 
@@ -296,6 +298,7 @@ export const personalDocColumns: GridColDef[] = [
     field: ACTION,
     headerName: "Action",
     renderCell: PersonalDocumentActionCell,
+    filterable: false
   },
 ];
 

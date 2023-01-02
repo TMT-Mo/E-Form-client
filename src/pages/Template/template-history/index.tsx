@@ -34,9 +34,10 @@ const { ADD_TEMPLATE } = Permissions;
 const { ADD_TEMPLATE_INDEX } = ViewerLocationIndex;
 const { TYPE, TYPE_TEMPLATE, STATUS, CREATED_AT, UPDATED_AT } = DataTableHeader;
 const TemplateHistory = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { filter } = useSelector((state) => state.filter);
-  const { searchItemValue, currentPage, sorter } = useSelector(
+  const { filter, sorter } = useSelector((state) => state.filter);
+  const { searchItemValue, currentPage } = useSelector(
     (state) => state.template
   );
   const { userInfo } = useSelector((state) => state.auth);
@@ -87,7 +88,7 @@ const TemplateHistory = () => {
     sorter,
     userInfo?.userId,
   ]);
-  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
       <h2>{t("History")}</h2>

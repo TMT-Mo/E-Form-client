@@ -6,7 +6,7 @@ import {
   GridSortModel,
 } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "../../hooks";
-import { LocationIndex, Permissions } from "../../utils/constants";
+import { DataTableHeader, LocationIndex, Permissions } from "../../utils/constants";
 import {
   awaitSigningColumns,
   newTemplatesColumns,
@@ -18,13 +18,12 @@ import {
 import {
   clearTemplatePagination,
   onChangeTemplatePage,
-  setTemplateSorter,
 } from "../../slices/template";
 import CustomPagination from "./pagination";
 import { usePermission } from "../../hooks/use-permission";
 import { clearDocumentPagination, onChangeDocumentPage } from "../../slices/document";
 import { GridColumnModel, Data, GetRowIdParams } from "../../models/mui-data";
-import { setFilter } from "../../slices/filter";
+import { setFilter, setSorter } from "../../slices/filter";
 
 const {
   SYSTEM,
@@ -69,7 +68,7 @@ const DataTable: React.FC = () => {
       }
       dispatch(clearTemplatePagination())
       dispatch(clearDocumentPagination())
-      dispatch(setFilter({ field: columnField, value }));
+      dispatch(setFilter({ field: columnField as DataTableHeader, value }));
     },
     [dispatch]
   );
@@ -78,11 +77,11 @@ const DataTable: React.FC = () => {
     (sortModel: GridSortModel) => {
       // Here you save the data you need from the sort model
       if (!sortModel[0]) {
-        dispatch(setTemplateSorter(undefined));
+        dispatch(setSorter(undefined));
         return;
       }
       const { field, sort } = sortModel[0];
-      dispatch(setTemplateSorter({ field, sort: sort! }));
+      dispatch(setSorter({ field: field as DataTableHeader, sort: sort! }));
     },
     [dispatch]
   );

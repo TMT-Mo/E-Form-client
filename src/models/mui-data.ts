@@ -1,3 +1,4 @@
+import { DataTableHeader } from './../utils/constants';
 import { GridColDef } from "@mui/x-data-grid";
 import { Document } from "./document";
 import { Template } from "./template";
@@ -27,7 +28,12 @@ export interface DateFilter{
 }
 export interface FilterModel {
   value: number | string | boolean | DateFilter;
-  field: string;
+  field: DataTableHeader;
+}
+
+export interface SorterModel {
+  field: DataTableHeader;
+  sort: "asc" | "desc";
 }
 
 export interface Data {

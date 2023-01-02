@@ -16,8 +16,9 @@ const { TYPE, TYPE_TEMPLATE, STATUS, CREATED_AT, UPDATED_AT } = DataTableHeader;
 const PersonalDoc = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
-  const {filter} = useSelector(state => state.filter)
+  const {filter, sorter} = useSelector(state => state.filter)
   const { searchItemValue, currentPage} = useSelector(state => state.document)
+  const { t } = useTranslation();
 
   useEffect(() => {
     const getDocumentList = dispatch(
@@ -25,7 +26,7 @@ const PersonalDoc = () => {
         documentName_contains: searchItemValue || undefined,
         _page: currentPage,
         _size: 10,                                                                  
-        _sort: undefined,
+        _sort: sorter ? `${sorter?.field}:${sorter?.sort}` : undefined,
         createdBy_eq: userInfo?.userId,
         createdAt_lte:
           filter?.field === CREATED_AT
@@ -50,8 +51,8 @@ const PersonalDoc = () => {
     return () => {
       getDocumentList.abort();
     };
-  }, [currentPage, dispatch, filter?.field, filter?.value, searchItemValue, userInfo?.userId]);
-  const { t } = useTranslation();
+  }, [currentPage, dispatch, filter?.field, filter?.value, searchItemValue, sorter, userInfo?.userId]);
+  
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
       <h2>{t ("Personal Document")}</h2>

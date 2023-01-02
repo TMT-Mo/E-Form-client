@@ -28,7 +28,6 @@ interface State {
   currentPage: number;
   templateDetail?: Template;
   isEnableTemplateLoading: boolean;
-  sorter?: TemplateSorter;
   isApproveTemplateLoading: boolean;
 }
 
@@ -42,7 +41,6 @@ const initialState: State = {
   currentPage: 0,
   templateDetail: undefined,
   isEnableTemplateLoading: false,
-  sorter: undefined,
   isApproveTemplateLoading: false,
 };
 
@@ -82,14 +80,6 @@ const updateTemplateCR: CR<{ id: number; isEnable: boolean }> = (
     }
   });
 };
-
-const setTemplateSorterCR: CR<TemplateSorter | undefined> = (
-  state,
-  { payload }
-) => ({
-  ...state,
-  sorter: payload,
-});
 
 const getTemplates = createAsyncThunk(
   `${ACTION_TYPE}getTemplates`,
@@ -217,7 +207,6 @@ const template = createSlice({
       ...state,
       templateDetail: undefined,
     }),
-    setTemplateSorter: setTemplateSorterCR
   },
   extraReducers: (builder) => {
     builder.addCase(getTemplates.pending, (state) => ({
@@ -286,7 +275,6 @@ export const {
   getTemplateDetail,
   updateTemplate,
   clearTemplateDetail,
-  setTemplateSorter,
   clearTemplatePagination
 } = template.actions;
 

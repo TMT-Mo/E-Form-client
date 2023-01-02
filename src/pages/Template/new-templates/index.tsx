@@ -15,8 +15,8 @@ const { TYPE_TEMPLATE, CREATED_BY, CREATED_AT } =
 const NewTemplates = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const {filter} = useSelector(state => state.filter)
-  const { searchItemValue, currentPage,  sorter } = useSelector(
+  const {filter, sorter} = useSelector(state => state.filter)
+  const { searchItemValue, currentPage } = useSelector(
     (state) => state.template
   );
 
