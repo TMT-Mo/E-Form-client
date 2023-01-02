@@ -10,6 +10,8 @@ import UploadIcon from '@mui/icons-material/Upload';
 import AddIcon from '@mui/icons-material/Add';
 import { styled } from "@mui/system";
 import DataTable from "../../../components/DataTable";
+import { useTranslation } from "react-i18next";
+
 
 const StyledUploadBtn = styled(Button)({
   backgroundColor: '#fff',

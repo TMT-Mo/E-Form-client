@@ -106,7 +106,7 @@ const ViewTemplateHistory: React.FC = () => {
         <Link to="/user">
           <ArrowBackIosIcon fontSize="small" className="fill-white" />
         </Link>
-        <span className="text-white">"{t ("View Template History")}"</span>
+        <span className="text-white">{t ("View Template History")}</span>
       </div>
       <div className="flex">
         <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 w-80">
@@ -143,7 +143,7 @@ const ViewTemplateHistory: React.FC = () => {
               </span>
             </div>
             <div className="flex items-center space-x-2">
-              <h4 className="whitespace-nowrap ">Created At:</h4>
+              <h4 className="whitespace-nowrap ">{t ("Created At")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {new Date(createdAt).toUTCString().replace("GMT", "")}
               </span>

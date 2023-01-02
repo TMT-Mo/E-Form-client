@@ -57,7 +57,7 @@ const Viewer: React.FC = () => {
   useEffect(() => {
     return () => {
       dispatch(clearTemplateDetail());
-      dispatch(clearDocumentDetail())
+      dispatch(clearDocumentDetail());
     };
   }, [dispatch]);
 

@@ -1,21 +1,22 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase, Paper } from "@mui/material";
+import dayjs from "dayjs";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import DataTable from "../../../components/DataTable";
 import { useDispatch, useSelector } from "../../../hooks";
-import {
-  getTemplates,
-  searchTemplate,
-} from "../../../slices/template";
+import { DateFilter } from "../../../models/mui-data";
+import { getTemplates, searchTemplate } from "../../../slices/template";
 import { DataTableHeader, StatusTemplate } from "../../../utils/constants";
 
-const { TYPE, IS_ENABLE, TYPE_TEMPLATE, DEPARTMENT, CREATED_BY } = DataTableHeader;
+const { TYPE_TEMPLATE, CREATED_BY, CREATED_AT } =
+  DataTableHeader;
 
 const NewTemplates = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { searchItemValue, currentPage, filter, sorter } = useSelector(
+  const {filter, sorter} = useSelector(state => state.filter)
+  const { searchItemValue, currentPage } = useSelector(
     (state) => state.template
   );
 
@@ -31,19 +32,33 @@ const NewTemplates = () => {
           filter?.field === TYPE_TEMPLATE
             ? (filter.value as string)
             : undefined,
-        createdBy_eq: filter?.field === CREATED_BY
-        ? (filter.value as number)
-        : undefined,
+        createdBy_eq:
+          filter?.field === CREATED_BY ? (filter.value as number) : undefined,
+        createdAt_lte:
+          filter?.field === CREATED_AT ?
+          (filter.value as DateFilter).endDate : undefined,
+        createdAt_gte:
+          filter?.field === CREATED_AT ?
+          (filter.value as DateFilter).startDate : undefined,
       })
-    )
-    //
-    getTemplateList.unwrap()
-    return () => { getTemplateList.abort()}
-  }, [currentPage, dispatch, filter?.field, filter?.value, searchItemValue, sorter]);
+    );
+
+    getTemplateList.unwrap();
+    return () => {
+      getTemplateList.abort();
+    };
+  }, [
+    currentPage,
+    dispatch,
+    filter?.field,
+    filter?.value,
+    searchItemValue,
+    sorter,
+  ]);
 
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
-      <h2>{t ("New Templates")}</h2>
+      <h2>{t("New Templates")}</h2>
       <div className="flex flex-col rounded-md border border-gray-400 bg-white">
         <div className="flex px-10 py-6 justify-between">
           <Paper
@@ -61,7 +76,7 @@ const NewTemplates = () => {
             </IconButton>
             <InputBase
               sx={{ ml: 1, flex: 1 }}
-              placeholder="Search Template"
+              placeholder={t("Search Template")}
               onChange={(e) =>
                 dispatch(searchTemplate({ value: e.target.value }))
               }

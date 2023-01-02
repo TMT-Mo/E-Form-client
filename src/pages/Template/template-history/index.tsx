@@ -15,6 +15,7 @@ import {
 } from "../../../utils/constants";
 import { RequiredPermission } from "../../../components/RequiredPermission";
 import { useTranslation } from "react-i18next";
+import { DateFilter } from "../../../models/mui-data";
 
 const StyledAddBtn = styled(Button)({
   backgroundColor: "#407AFF",
@@ -31,10 +32,12 @@ const StyledAddBtn = styled(Button)({
 const { ADD_TEMPLATE } = Permissions;
 
 const { ADD_TEMPLATE_INDEX } = ViewerLocationIndex;
-const { TYPE, IS_ENABLE, TYPE_TEMPLATE, DEPARTMENT, STATUS } = DataTableHeader;
+const { TYPE, TYPE_TEMPLATE, STATUS, CREATED_AT, UPDATED_AT } = DataTableHeader;
 const TemplateHistory = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { searchItemValue, currentPage, filter, sorter } = useSelector(
+  const { filter, sorter } = useSelector((state) => state.filter);
+  const { searchItemValue, currentPage } = useSelector(
     (state) => state.template
   );
   const { userInfo } = useSelector((state) => state.auth);
@@ -46,12 +49,29 @@ const TemplateHistory = () => {
         _page: currentPage,
         _size: 10,
         _sort: sorter ? `${sorter?.field}:${sorter?.sort}` : undefined,
+        type_eq: filter?.field === TYPE ? (filter.value as string) : undefined,
         createdBy_eq: userInfo?.userId,
         status_eq:
           filter?.field === STATUS ? (filter.value as number) : undefined,
         typeName_eq:
           filter?.field === TYPE_TEMPLATE
             ? (filter.value as string)
+            : undefined,
+        createdAt_lte:
+          filter?.field === CREATED_AT
+            ? (filter?.value as DateFilter).endDate
+            : undefined,
+        createdAt_gte:
+          filter?.field === CREATED_AT
+            ? (filter?.value as DateFilter).startDate
+            : undefined,
+        updateAt_lte:
+          filter?.field === UPDATED_AT
+            ? (filter?.value as DateFilter).endDate
+            : undefined,
+        updateAt_gte:
+          filter?.field === UPDATED_AT
+            ? (filter?.value as DateFilter).startDate
             : undefined,
       })
     );
@@ -65,12 +85,13 @@ const TemplateHistory = () => {
     filter?.field,
     filter?.value,
     searchItemValue,
+    sorter,
     userInfo?.userId,
   ]);
-  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
-      <h2>{t ("History")}</h2>
+      <h2>{t("History")}</h2>
       <div className="flex flex-col rounded-md border border-gray-400 bg-white">
         <div className="flex px-10 py-6 justify-between">
           <Paper
@@ -88,7 +109,7 @@ const TemplateHistory = () => {
             </IconButton>
             <InputBase
               sx={{ ml: 1, flex: 1 }}
-              placeholder="Search Template"
+              placeholder={t("Search Template")}
               onChange={(e) =>
                 dispatch(searchTemplate({ value: e.target.value }))
               }
@@ -113,7 +134,7 @@ const TemplateHistory = () => {
                   className="shadow-md"
                   startIcon={<AddIcon />}
                 >
-                  {t ("Add New")}
+                  {t("Add New")}
                 </StyledAddBtn>
               </Link>
             </div>

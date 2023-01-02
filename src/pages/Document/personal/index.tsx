@@ -8,11 +8,17 @@ import React, { useEffect } from "react";
 import DataTable from "../../../components/DataTable";
 import { getDocuments } from "../../../slices/document";
 import { useDispatch, useSelector } from "../../../hooks";
+import { useTranslation } from "react-i18next";
+import { DataTableHeader } from "../../../utils/constants";
+import { DateFilter } from "../../../models/mui-data";
 
+const { TYPE, TYPE_TEMPLATE, STATUS, CREATED_AT, UPDATED_AT } = DataTableHeader;
 const PersonalDoc = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
-  const { searchItemValue, currentPage, filter} = useSelector(state => state.document)
+  const {filter, sorter} = useSelector(state => state.filter)
+  const { searchItemValue, currentPage} = useSelector(state => state.document)
+  const { t } = useTranslation();
 
   useEffect(() => {
     const getDocumentList = dispatch(
@@ -20,8 +26,24 @@ const PersonalDoc = () => {
         documentName_contains: searchItemValue || undefined,
         _page: currentPage,
         _size: 10,                                                                  
-        _sort: undefined,
+        _sort: sorter ? `${sorter?.field}:${sorter?.sort}` : undefined,
         createdBy_eq: userInfo?.userId,
+        createdAt_lte:
+          filter?.field === CREATED_AT
+            ? (filter?.value as DateFilter).endDate
+            : undefined,
+        createdAt_gte:
+          filter?.field === CREATED_AT
+            ? (filter?.value as DateFilter).startDate
+            : undefined,
+        updateAt_lte:
+          filter?.field === UPDATED_AT
+            ? (filter?.value as DateFilter).endDate
+            : undefined,
+        updateAt_gte:
+          filter?.field === UPDATED_AT
+            ? (filter?.value as DateFilter).startDate
+            : undefined,
       })
     );
 
@@ -29,11 +51,11 @@ const PersonalDoc = () => {
     return () => {
       getDocumentList.abort();
     };
-  }, [currentPage, dispatch, searchItemValue, userInfo?.userId]);
+  }, [currentPage, dispatch, filter?.field, filter?.value, searchItemValue, sorter, userInfo?.userId]);
   
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
-      <h2>Personal Document</h2>
+      <h2>{t ("Personal Document")}</h2>
       <div className="flex flex-col rounded-md border border-gray-400 bg-white">
         <div className="flex px-10 py-6 justify-between">
           <Paper
@@ -51,7 +73,7 @@ const PersonalDoc = () => {
             </IconButton>
             <InputBase
               sx={{ ml: 1, flex: 1 }}
-              placeholder="Search Document"
+              placeholder={t ("Search Document")}
               inputProps={{ "aria-label": "search google maps" }}
             />
           </Paper>

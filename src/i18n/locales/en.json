@@ -50,6 +50,26 @@
   "Upload": "Upload",
   "Choose a file": "Choose a file",
   "Add a template": "Add a template",
-  "Select Signer(s)": "Select Signer(s)"
-  
+  "Select Signer(s)": "Select Signer(s)",
+  "Personal": "Personal",
+  "Shared": "Shared",
+  "Search Template": "Search Template",
+  "Notification": "Notification",
+  "System": "System",
+  "Cancel": "Cancel",
+  "Save": "Save",
+  "Search Document": "Search Document",
+  "Are you sure you want to save this form ?": "Are you sure you want to save this form ?",
+  "After saving this template": "After saving this template",
+  "will be waiting for an approval": "will be waiting for an approval",
+  "Email address": "Email address",
+  "Password": "Password",
+  "example@": "example@",
+  "Enter password": "Enter password",
+  "Approve Document": "Approve Document",
+  "Are you sure you want to approve this template?": "Are you sure you want to approve this template?",
+  "Are you sure you want to reject this template?": "Are you sure you want to reject this template?",
+  "Send": "Send",
+  "Personal Document": "Personal Document",
+  "Date modified": "Date modified"
 }

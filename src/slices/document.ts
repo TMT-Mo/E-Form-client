@@ -1,7 +1,6 @@
 import {
   CreateDocumentArgs,
   Document,
-  DocumentFilter,
   DocumentSorter,
   GetDocumentsArgs,
 } from "./../models/document";
@@ -24,7 +23,6 @@ interface State {
   size?: number;
   currentPage: number;
   documentDetail?: Document;
-  filter?: DocumentFilter;
   sorter?: DocumentSorter;
 }
 
@@ -57,6 +55,14 @@ const getDocumentDetailCR: CR<{ document: Document }> = (
 ) => ({
   ...state,
   documentDetail: payload.document!,
+});
+
+const searchDocumentCR: CR<{ value: string }> = (
+  state,
+  { payload }
+) => ({
+  ...state,
+  searchItemValue: payload.value!,
 });
 
 const createDocument = createAsyncThunk(
@@ -122,11 +128,16 @@ const document = createSlice({
       size: 10,
       currentPage: 0,
     }),
+    clearDocumentPagination: (state: State) => ({
+      ...state,
+      currentPage: 0
+    }),
     clearDocumentDetail: (state: State) => ({
       ...state,
       documentDetail: undefined,
     }),
-    getDocumentDetail: getDocumentDetailCR
+    getDocumentDetail: getDocumentDetailCR,
+    searchDocument: searchDocumentCR
   },
   extraReducers: (builder) => {
     builder.addCase(createDocument.pending, (state) => ({
@@ -163,6 +174,6 @@ const document = createSlice({
 
 export { createDocument, getDocuments };
 
-export const { onChangeDocumentPage, clearDocuments, getDocumentDetail, clearDocumentDetail } = document.actions;
+export const { onChangeDocumentPage, clearDocuments, getDocumentDetail, clearDocumentDetail, searchDocument, clearDocumentPagination } = document.actions;
 
 export default document.reducer;
