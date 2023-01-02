@@ -98,7 +98,7 @@ const ViewCreateDocument: React.FC = () => {
           if (userId === userInfo?.userId!.toString()) {
             return userInfo?.userName!;
           }
-          return "Admin";
+          return "System";
         });
         annotationManager.addEventListener(
           "annotationChanged",

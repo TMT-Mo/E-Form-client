@@ -137,10 +137,10 @@ const ViewApproveDocument: React.FC = () => {
         annotationManager.setAnnotationDisplayAuthorMap((userId) => {
           if (userId === userInfo?.userId!.toString()) {
             return userInfo?.userName!;
-          } else if (userId !== "Admin") {
+          } else if (userId !== "System") {
             return userId;
           }
-          return "Admin";
+          return "System";
         });
         annotationManager.addEventListener(
           "annotationChanged",
