@@ -18,7 +18,7 @@ import { useSelector } from "../../../../hooks";
 
 const { CREATED_AT } = DataTableHeader;
 function InputNumberInterval(props: GridFilterInputValueProps) {
-  const { item, applyValue, focusElementRef = null } = props;
+  const { item, applyValue } = props;
   const {filter} = useSelector(state => state.filter)
   const fromDate = (filter?.value as DateFilter)?.startDate
   const toDate = (filter?.value as DateFilter)?.endDate

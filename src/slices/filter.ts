@@ -17,9 +17,14 @@ const setFilterCR: CR<FilterModel | undefined> = (state, { payload }) => ({
 const filter = createSlice({
   name: "filter",
   initialState,
-  reducers: { setFilter: setFilterCR },
+  reducers: {
+    setFilter: setFilterCR,
+    clearFilter: (state: State) => {
+      state.filter = undefined;
+    },
+  },
 });
 
-export const { setFilter } = filter.actions;
+export const { setFilter, clearFilter } = filter.actions;
 
 export default filter.reducer;

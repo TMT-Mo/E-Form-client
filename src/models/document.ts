@@ -28,6 +28,8 @@ export interface GetDocumentsArgs {
   isLocked_eq?: boolean;
   documentName_contains?: string;
   signatoryList_contains?: number;
+  createdAt_gte?: string; //* gte: Greater than equal
+  createdAt_lte?: string //* lte: Lower than equal
 }
 
 interface Signer {

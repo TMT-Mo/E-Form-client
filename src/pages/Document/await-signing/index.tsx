@@ -5,11 +5,14 @@ import { useTranslation } from "react-i18next";
 import DataTable from "../../../components/DataTable";
 import { useDispatch, useSelector } from "../../../hooks";
 import { getDocuments, searchDocument } from "../../../slices/document";
+import { DataTableHeader } from "../../../utils/constants";
 
+const { TYPE, IS_ENABLE, TYPE_TEMPLATE, DEPARTMENT } = DataTableHeader;
 const AwaitSigning = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
-  const { searchItemValue, currentPage, filter } = useSelector(
+  const {filter} = useSelector(state => state.filter)
+  const { searchItemValue, currentPage} = useSelector(
     (state) => state.document
   );
 
@@ -21,6 +24,7 @@ const AwaitSigning = () => {
         _size: 10,
         _sort: undefined,
         signatoryList_contains: userInfo?.userId,
+        type_eq: filter?.field === TYPE ? (filter.value as string) : undefined,
       })
     );
 
@@ -28,7 +32,7 @@ const AwaitSigning = () => {
     return () => {
       getDocumentList.abort();
     };
-  }, [currentPage, dispatch, searchItemValue, userInfo?.userId]);
+  }, [currentPage, dispatch, filter?.field, filter?.value, searchItemValue, userInfo?.userId]);
   const { t } = useTranslation();
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">
