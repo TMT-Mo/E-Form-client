@@ -32,10 +32,10 @@ const StyledAddBtn = styled(Button)({
 const { ADD_TEMPLATE } = Permissions;
 
 const { ADD_TEMPLATE_INDEX } = ViewerLocationIndex;
-const { TYPE, TYPE_TEMPLATE, STATUS, CREATED_AT } = DataTableHeader;
+const { TYPE, TYPE_TEMPLATE, STATUS, CREATED_AT, UPDATED_AT } = DataTableHeader;
 const TemplateHistory = () => {
   const dispatch = useDispatch();
-  const {filter} = useSelector(state => state.filter)
+  const { filter } = useSelector((state) => state.filter);
   const { searchItemValue, currentPage, sorter } = useSelector(
     (state) => state.template
   );
@@ -62,6 +62,14 @@ const TemplateHistory = () => {
             : undefined,
         createdAt_gte:
           filter?.field === CREATED_AT
+            ? (filter?.value as DateFilter).startDate
+            : undefined,
+        updateAt_lte:
+          filter?.field === UPDATED_AT
+            ? (filter?.value as DateFilter).endDate
+            : undefined,
+        updateAt_gte:
+          filter?.field === UPDATED_AT
             ? (filter?.value as DateFilter).startDate
             : undefined,
       })

@@ -53,6 +53,8 @@ export interface GetTemplateArgs {
   signal?: AbortSignal;
   createdAt_gte?: string; //* gte: Greater than equal
   createdAt_lte?: string //* lte: Lower than equal
+  updateAt_gte?: string; //* gte: Greater than equal
+  updateAt_lte?: string //* lte: Lower than equal
 }
 
 export interface TemplateArgs {

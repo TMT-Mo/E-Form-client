@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 const PersonalDoc = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
-  const { searchItemValue, currentPage, filter} = useSelector(state => state.document)
+  const { searchItemValue, currentPage} = useSelector(state => state.document)
 
   useEffect(() => {
     const getDocumentList = dispatch(

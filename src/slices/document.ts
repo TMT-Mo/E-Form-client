@@ -1,7 +1,6 @@
 import {
   CreateDocumentArgs,
   Document,
-  DocumentFilter,
   DocumentSorter,
   GetDocumentsArgs,
 } from "./../models/document";
@@ -24,7 +23,6 @@ interface State {
   size?: number;
   currentPage: number;
   documentDetail?: Document;
-  filter?: DocumentFilter;
   sorter?: DocumentSorter;
 }
 

@@ -11,12 +11,11 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useState } from "react";
-import { SelectChangeEvent } from "@mui/material";
 import { DataTableHeader } from "../../../../utils/constants";
 import { DateFilter } from "../../../../models/mui-data";
 import { useSelector } from "../../../../hooks";
 
-const { CREATED_AT } = DataTableHeader;
+const { UPDATED_AT } = DataTableHeader;
 function InputNumberInterval(props: GridFilterInputValueProps) {
   const { item, applyValue } = props;
   const {filter} = useSelector(state => state.filter)
@@ -34,7 +33,7 @@ function InputNumberInterval(props: GridFilterInputValueProps) {
         startDate: handleFormatDate(value),
         endDate: handleFormatDate(endDate?.add(2, "day")),
       } as DateFilter,
-      columnField: CREATED_AT,
+      columnField: UPDATED_AT,
     });
     setStartDate(value.subtract(1, "day"));
   };
@@ -46,7 +45,7 @@ function InputNumberInterval(props: GridFilterInputValueProps) {
         startDate: handleFormatDate(startDate?.add(1, "day")),
         endDate: handleFormatDate(value.add(1,'day')),
       } as DateFilter,
-      columnField: CREATED_AT,
+      columnField: UPDATED_AT,
     });
     setEndDate(value.subtract(1, "day"));
   };
@@ -99,8 +98,8 @@ function InputNumberInterval(props: GridFilterInputValueProps) {
     </Box>
   );
 }
-//
-export const createdAtOnlyOperators: GridFilterOperator[] = [
+
+export const updatedAtOnlyOperators: GridFilterOperator[] = [
   {
     label: "Between",
     value: "between",

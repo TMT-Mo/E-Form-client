@@ -1,3 +1,4 @@
+import { updatedAtOnlyOperators } from './../components/DataTable/filter/updatedAt/index';
 import { createdByOnlyOperators } from './../components/DataTable/filter/createdBy/index';
 import { usePermission } from './../hooks/use-permission';
 import { PersonalDocumentActionCell } from "./../components/DataTable/action-cell/personalDocument/index";
@@ -133,7 +134,7 @@ export const templateHistoryColumns: GridColDef[] = [
   },
   {
     field: CREATED_AT,
-    headerName: "Created At",
+    headerName: "Date Created",
     flex: 0.4,
     renderCell: DateCell,
     align: "center",
@@ -142,12 +143,12 @@ export const templateHistoryColumns: GridColDef[] = [
   },
   {
     field: UPDATED_AT,
-    headerName: "Updated At",
-    filterable: false,
+    headerName: "Date Modified",
     flex: 0.4,
     renderCell: DateCell,
     align: "center",
     headerAlign: "center",
+    filterOperators: updatedAtOnlyOperators
   },
   {
     field: ACTION,
@@ -193,7 +194,7 @@ export const newTemplatesColumns: GridColDef[] = [
   },
   {
     field: CREATED_AT,
-    headerName: "Created At",
+    headerName: "Date Created",
     renderCell: DateCell,
     align: "center",
     filterOperators: createdAtOnlyOperators

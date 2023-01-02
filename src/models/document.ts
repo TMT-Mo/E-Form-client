@@ -71,10 +71,6 @@ export interface DocumentListResponse {
   size: number;
 }
 
-export interface DocumentFilter {
-  value: number | string | boolean;
-  field: string;
-}
 
 export interface DocumentSorter {
   field: string;
