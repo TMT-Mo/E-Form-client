@@ -6,7 +6,7 @@ import {
 } from "@mui/material";
 import React, { useEffect } from "react";
 import DataTable from "../../../components/DataTable";
-import { getDocuments } from "../../../slices/document";
+import { getDocuments, searchDocument } from "../../../slices/document";
 import { useDispatch, useSelector } from "../../../hooks";
 import { useTranslation } from "react-i18next";
 import { DataTableHeader } from "../../../utils/constants";
@@ -75,6 +75,9 @@ const PersonalDoc = () => {
               sx={{ ml: 1, flex: 1 }}
               placeholder={t ("Search Document")}
               inputProps={{ "aria-label": "search google maps" }}
+              onChange={(e) =>
+                dispatch(searchDocument({ value: e.target.value }))
+              }
             />
           </Paper>
         </div>
