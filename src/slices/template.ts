@@ -4,7 +4,6 @@ import {
   GetTemplateArgs,
   AddTemplateToFirebaseArgs,
   EnableTemplateArgs,
-  TemplateFilter,
   ApproveTemplateArgs,
   TemplateSorter,
 } from "./../models/template";
@@ -29,7 +28,6 @@ interface State {
   currentPage: number;
   templateDetail?: Template;
   isEnableTemplateLoading: boolean;
-  filter?: TemplateFilter;
   sorter?: TemplateSorter;
   isApproveTemplateLoading: boolean;
 }
@@ -44,7 +42,6 @@ const initialState: State = {
   currentPage: 0,
   templateDetail: undefined,
   isEnableTemplateLoading: false,
-  filter: undefined,
   sorter: undefined,
   isApproveTemplateLoading: false,
 };
@@ -85,14 +82,6 @@ const updateTemplateCR: CR<{ id: number; isEnable: boolean }> = (
     }
   });
 };
-
-const setTemplateFilterCR: CR<TemplateFilter | undefined> = (
-  state,
-  { payload }
-) => ({
-  ...state,
-  filter: payload,
-});
 
 const setTemplateSorterCR: CR<TemplateSorter | undefined> = (
   state,
@@ -224,7 +213,6 @@ const template = createSlice({
       ...state,
       templateDetail: undefined,
     }),
-    setTemplateFilter: setTemplateFilterCR,
     setTemplateSorter: setTemplateSorterCR
   },
   extraReducers: (builder) => {
@@ -294,7 +282,6 @@ export const {
   getTemplateDetail,
   updateTemplate,
   clearTemplateDetail,
-  setTemplateFilter,
   setTemplateSorter
 } = template.actions;
 

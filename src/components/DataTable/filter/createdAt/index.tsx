@@ -8,23 +8,50 @@ import {
 } from "@mui/x-data-grid";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useState } from "react";
+import { SelectChangeEvent } from "@mui/material";
+import { DataTableHeader } from "../../../../utils/constants";
+import { DateFilter } from "../../../../models/mui-data";
+import { useSelector } from "../../../../hooks";
 
+const { CREATED_AT } = DataTableHeader;
 function InputNumberInterval(props: GridFilterInputValueProps) {
   const { item, applyValue, focusElementRef = null } = props;
-  const [startDate, setStartDate] = useState<Dayjs | null>();
-  const [endDate, setEndDate] = useState<Dayjs | null>();
+  const {filter} = useSelector(state => state.filter)
+  const fromDate = (filter?.value as DateFilter)?.startDate
+  const toDate = (filter?.value as DateFilter)?.endDate
+  // const a = dayjs(fromDate).set
+  // console.log(fromDate)
+  const [startDate, setStartDate] = useState<Dayjs | null>(fromDate ? dayjs(fromDate) : null);
+  const [endDate, setEndDate] = useState<Dayjs | null>(toDate ? dayjs(toDate) : null);
+  const handleFormatDate = (date: Dayjs | undefined) =>
+    date?.toISOString().replace("Z", "").replace("T17", "T00");
 
-  //   const handleUpperFilterChange: TextFieldProps['onChange'] = (event) => {
-  //     const newUpperBound = event.target.value;
-  //     updateFilterValue(filterValueState[0], newUpperBound);
-  //   };
-  //   const handleLowerFilterChange: TextFieldProps['onChange'] = (event) => {
-  //     const newLowerBound = event.target.value;
-  //     updateFilterValue(newLowerBound, filterValueState[1]);
-  //   };
+  const handleChangeStartDate = (value: Dayjs) => {
+    applyValue({
+      ...item,
+      value: {
+        startDate: handleFormatDate(value),
+        endDate: handleFormatDate(endDate?.add(1, "day")),
+      } as DateFilter,
+      columnField: CREATED_AT,
+    });
+    setStartDate(value.subtract(1, "day"));
+  };
+
+  const handleChangeEndDate = (value: Dayjs) => {
+    applyValue({
+      ...item,
+      value: {
+        startDate: handleFormatDate(startDate?.add(1, "day")),
+        endDate: handleFormatDate(value),
+      } as DateFilter,
+      columnField: CREATED_AT,
+    });
+    setEndDate(value.subtract(1, "day"));
+  };
 
   return (
     <Box
@@ -36,30 +63,39 @@ function InputNumberInterval(props: GridFilterInputValueProps) {
         width: 300,
         height: 48,
       }}
-      columnGap='1em'
+      columnGap="1em"
     >
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DesktopDatePicker
           label="From"
           inputFormat="DD/MM/YYYY"
           value={startDate}
-          onChange={(newValue: Dayjs | null) => setStartDate(newValue)}
+          onChange={(newValue: Dayjs | null) =>
+            handleChangeStartDate(newValue!.add(1, "day"))
+          }
           renderInput={(params: any) => (
             <TextField
               {...params}
               variant="standard"
-              // sx={{ marginRight: 2, width: "fit-content" }}
+              disabled
+              value={null}
             />
           )}
+          disableFuture
+          maxDate={endDate ?? undefined}
         />
         <DesktopDatePicker
           label="To"
           inputFormat="DD/MM/YYYY"
           value={endDate}
-          onChange={(newValue: Dayjs | null) => setEndDate(newValue)}
+          onChange={(newValue: Dayjs | null) =>
+            handleChangeEndDate(newValue!.add(1, "day"))
+          }
           renderInput={(params: any) => (
-            <TextField {...params} variant="standard" />
+            <TextField {...params} variant="standard" disabled />
           )}
+          disableFuture
+          minDate={startDate ?? undefined}
         />
       </LocalizationProvider>
     </Box>

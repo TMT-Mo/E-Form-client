@@ -21,6 +21,15 @@ export interface GridColumnModel {
   createdBy?: boolean;
 }
 
+export interface DateFilter{
+  startDate?: string,
+  endDate?: string
+}
+export interface FilterModel {
+  value: number | string | boolean | DateFilter;
+  field: string;
+}
+
 export interface Data {
   columns?: GridColDef[];
   loading?: boolean;

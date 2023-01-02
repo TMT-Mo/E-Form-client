@@ -1,7 +1,6 @@
 import React from "react";
 import {
   DataGrid,
-  GridColDef,
   GridColumnVisibilityModel,
   GridFilterModel,
   GridSortModel,
@@ -10,24 +9,21 @@ import { useDispatch, useSelector } from "../../hooks";
 import { LocationIndex, Permissions } from "../../utils/constants";
 import {
   awaitSigningColumns,
-  historyColumns,
   newTemplatesColumns,
   personalDocColumns,
   sharedDocColumns,
   templateColumns,
   templateHistoryColumns,
 } from "../../utils/mui-data";
-import { Template } from "../../models/template";
 import {
   onChangeTemplatePage,
-  setTemplateFilter,
   setTemplateSorter,
 } from "../../slices/template";
 import CustomPagination from "./pagination";
 import { usePermission } from "../../hooks/use-permission";
-import { Document } from "../../models/document";
 import { onChangeDocumentPage } from "../../slices/document";
 import { GridColumnModel, Data, GetRowIdParams } from "../../models/mui-data";
+import { setFilter } from "../../slices/filter";
 
 const {
   SYSTEM,
@@ -66,10 +62,10 @@ const DataTable: React.FC = () => {
       // Here you save the data you need from the filter model
       const { value, columnField } = filterModel.items[0];
       if (!value) {
-        dispatch(setTemplateFilter(undefined));
+        dispatch(setFilter(undefined));
         return;
       }
-      dispatch(setTemplateFilter({ field: columnField, value }));
+      dispatch(setFilter({ field: columnField, value }));
     },
     [dispatch]
   );

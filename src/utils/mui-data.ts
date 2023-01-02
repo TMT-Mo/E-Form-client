@@ -138,6 +138,7 @@ export const templateHistoryColumns: GridColDef[] = [
     renderCell: DateCell,
     align: "center",
     headerAlign: "center",
+    filterOperators: createdAtOnlyOperators
   },
   {
     field: UPDATED_AT,

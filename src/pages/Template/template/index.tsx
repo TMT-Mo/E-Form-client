@@ -25,7 +25,8 @@ const { TYPE, IS_ENABLE, TYPE_TEMPLATE, DEPARTMENT } = DataTableHeader;
 
 const Template = () => {
   const dispatch = useDispatch();
-  const { searchItemValue, currentPage, filter, sorter } = useSelector(
+  const {filter} = useSelector(state => state.filter)
+  const { searchItemValue, currentPage, sorter } = useSelector(
     (state) => state.template
   );
 
