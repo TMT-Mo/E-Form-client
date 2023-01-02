@@ -207,6 +207,10 @@ const template = createSlice({
       size: 10,
       currentPage: 0,
     }),
+    clearTemplatePagination: (state: State) => ({
+      ...state,
+      currentPage: 0
+    }),
     getTemplateDetail: getTemplateDetailCR,
     updateTemplate: updateTemplateCR,
     clearTemplateDetail: (state: State) => ({
@@ -282,7 +286,8 @@ export const {
   getTemplateDetail,
   updateTemplate,
   clearTemplateDetail,
-  setTemplateSorter
+  setTemplateSorter,
+  clearTemplatePagination
 } = template.actions;
 
 export default template.reducer;

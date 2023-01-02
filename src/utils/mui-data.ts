@@ -134,7 +134,7 @@ export const templateHistoryColumns: GridColDef[] = [
   },
   {
     field: CREATED_AT,
-    headerName: "Date Created",
+    headerName: "Date Published",
     flex: 0.4,
     renderCell: DateCell,
     align: "center",
@@ -230,6 +230,7 @@ export const awaitSigningColumns: GridColDef[] = [
     align: "center",
     flex: 0.2,
     headerAlign: "center",
+    filterOperators: createdAtOnlyOperators
   },
   {
     field: CREATED_BY,
@@ -267,6 +268,7 @@ export const personalDocColumns: GridColDef[] = [
     align: "center",
     headerAlign: "center",
     flex: 0.2,
+    filterOperators: createdAtOnlyOperators
   },
   {
     field: UPDATED_AT,
@@ -275,6 +277,7 @@ export const personalDocColumns: GridColDef[] = [
     align: "center",
     headerAlign: "center",
     flex: 0.2,
+    filterOperators: updatedAtOnlyOperators
   },
   {
     field: STATUS,

@@ -43,11 +43,11 @@ function InputNumberInterval(props: GridFilterInputValueProps) {
       ...item,
       value: {
         startDate: handleFormatDate(startDate?.add(1, "day")),
-        endDate: handleFormatDate(value.add(1,'day')),
+        endDate: handleFormatDate(value),
       } as DateFilter,
       columnField: UPDATED_AT,
     });
-    setEndDate(value.subtract(1, "day"));
+    setEndDate(value.subtract(2, "day"));
   };
 
   return (
@@ -86,7 +86,7 @@ function InputNumberInterval(props: GridFilterInputValueProps) {
           inputFormat="DD/MM/YYYY"
           value={endDate}
           onChange={(newValue: Dayjs | null) =>
-            handleChangeEndDate(newValue!.add(1, "day"))
+            handleChangeEndDate(newValue!.add(2, "day"))
           }
           renderInput={(params: any) => (
             <TextField {...params} variant="standard" disabled />

@@ -9,10 +9,14 @@ import DataTable from "../../../components/DataTable";
 import { getDocuments } from "../../../slices/document";
 import { useDispatch, useSelector } from "../../../hooks";
 import { useTranslation } from "react-i18next";
+import { DataTableHeader } from "../../../utils/constants";
+import { DateFilter } from "../../../models/mui-data";
 
+const { TYPE, TYPE_TEMPLATE, STATUS, CREATED_AT, UPDATED_AT } = DataTableHeader;
 const PersonalDoc = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
+  const {filter} = useSelector(state => state.filter)
   const { searchItemValue, currentPage} = useSelector(state => state.document)
 
   useEffect(() => {
@@ -23,6 +27,22 @@ const PersonalDoc = () => {
         _size: 10,                                                                  
         _sort: undefined,
         createdBy_eq: userInfo?.userId,
+        createdAt_lte:
+          filter?.field === CREATED_AT
+            ? (filter?.value as DateFilter).endDate
+            : undefined,
+        createdAt_gte:
+          filter?.field === CREATED_AT
+            ? (filter?.value as DateFilter).startDate
+            : undefined,
+        updateAt_lte:
+          filter?.field === UPDATED_AT
+            ? (filter?.value as DateFilter).endDate
+            : undefined,
+        updateAt_gte:
+          filter?.field === UPDATED_AT
+            ? (filter?.value as DateFilter).startDate
+            : undefined,
       })
     );
 
@@ -30,7 +50,7 @@ const PersonalDoc = () => {
     return () => {
       getDocumentList.abort();
     };
-  }, [currentPage, dispatch, searchItemValue, userInfo?.userId]);
+  }, [currentPage, dispatch, filter?.field, filter?.value, searchItemValue, userInfo?.userId]);
   const { t } = useTranslation();
   return (
     <div className="flex flex-col px-20 py-10 space-y-6">

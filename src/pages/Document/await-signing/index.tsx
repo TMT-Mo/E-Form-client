@@ -4,10 +4,11 @@ import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import DataTable from "../../../components/DataTable";
 import { useDispatch, useSelector } from "../../../hooks";
+import { DateFilter } from "../../../models/mui-data";
 import { getDocuments, searchDocument } from "../../../slices/document";
 import { DataTableHeader } from "../../../utils/constants";
 
-const { TYPE, IS_ENABLE, TYPE_TEMPLATE, DEPARTMENT } = DataTableHeader;
+const { TYPE, CREATED_AT } = DataTableHeader;
 const AwaitSigning = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
@@ -25,6 +26,14 @@ const AwaitSigning = () => {
         _sort: undefined,
         signatoryList_contains: userInfo?.userId,
         type_eq: filter?.field === TYPE ? (filter.value as string) : undefined,
+        createdAt_lte:
+          filter?.field === CREATED_AT
+            ? (filter?.value as DateFilter).endDate
+            : undefined,
+        createdAt_gte:
+          filter?.field === CREATED_AT
+            ? (filter?.value as DateFilter).startDate
+            : undefined,
       })
     );
 

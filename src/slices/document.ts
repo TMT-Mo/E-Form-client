@@ -128,6 +128,10 @@ const document = createSlice({
       size: 10,
       currentPage: 0,
     }),
+    clearDocumentPagination: (state: State) => ({
+      ...state,
+      currentPage: 0
+    }),
     clearDocumentDetail: (state: State) => ({
       ...state,
       documentDetail: undefined,
@@ -170,6 +174,6 @@ const document = createSlice({
 
 export { createDocument, getDocuments };
 
-export const { onChangeDocumentPage, clearDocuments, getDocumentDetail, clearDocumentDetail, searchDocument } = document.actions;
+export const { onChangeDocumentPage, clearDocuments, getDocumentDetail, clearDocumentDetail, searchDocument, clearDocumentPagination } = document.actions;
 
 export default document.reducer;

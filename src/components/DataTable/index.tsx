@@ -16,12 +16,13 @@ import {
   templateHistoryColumns,
 } from "../../utils/mui-data";
 import {
+  clearTemplatePagination,
   onChangeTemplatePage,
   setTemplateSorter,
 } from "../../slices/template";
 import CustomPagination from "./pagination";
 import { usePermission } from "../../hooks/use-permission";
-import { onChangeDocumentPage } from "../../slices/document";
+import { clearDocumentPagination, onChangeDocumentPage } from "../../slices/document";
 import { GridColumnModel, Data, GetRowIdParams } from "../../models/mui-data";
 import { setFilter } from "../../slices/filter";
 
@@ -60,11 +61,14 @@ const DataTable: React.FC = () => {
   const onFilterChange = React.useCallback(
     (filterModel: GridFilterModel) => {
       // Here you save the data you need from the filter model
+      
       const { value, columnField } = filterModel.items[0];
       if (!value) {
         dispatch(setFilter(undefined));
         return;
       }
+      dispatch(clearTemplatePagination())
+      dispatch(clearDocumentPagination())
       dispatch(setFilter({ field: columnField, value }));
     },
     [dispatch]
