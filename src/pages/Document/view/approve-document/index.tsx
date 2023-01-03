@@ -121,7 +121,7 @@ const ViewApproveDocument: React.FC = () => {
       {
         path: "/webviewer/lib",
         initialDoc: link!,
-        disabledElements: ["toolbarGroup-Insert", "toolbarGroup-Forms"],
+        disabledElements: ["toolbarGroup-Insert", "toolbarGroup-Forms", 'downloadButton'],
         annotationUser: userInfo?.userId!.toString(),
       },
       viewer.current!
@@ -129,7 +129,17 @@ const ViewApproveDocument: React.FC = () => {
       // instance.current = inst;
       // inst.UI.loadDocument(link)
       const { documentViewer, annotationManager } = inst.Core;
-
+      inst.UI.setHeaderItems(function (header) {
+        header.push({
+          type: "actionButton",
+          img: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20"><path d="M19 9h-4V3H9v6H5l7 8zM4 19h16v2H4z"></path></svg>',
+          onClick: async () =>
+            await inst.UI.downloadPdf({
+              filename: documentName.replace(/.docx|.doc/g, ""),
+              xfdfString
+            }),
+        });
+      });
       documentViewer.addEventListener("documentLoaded", async () => {
         await annotationManager.importAnnotations(xfdfString);
         setInitialXfdfString(annotationManager.getAnnotationsList());
@@ -161,7 +171,7 @@ const ViewApproveDocument: React.FC = () => {
         );
       });
     });
-  }, [link, userInfo?.userId, userInfo?.userName, xfdfString]);
+  }, [documentName, link, userInfo?.userId, userInfo?.userName, xfdfString]);
 
   // useEffect(() => {
   //   async function createFile(url: string) {

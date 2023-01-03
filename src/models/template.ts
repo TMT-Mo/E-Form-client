@@ -61,7 +61,7 @@ export interface TemplateArgs {
   templateName?: string;
   signatoryList?: number[];
   idTemplateType?: number;
-  // idDepartment?: number,
+  idDepartment?: number,
   description?: string;
   size?: number;
   createdBy?: number;

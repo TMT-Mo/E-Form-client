@@ -45,7 +45,7 @@ export const templateColumns: GridColDef[] = [
     field: TYPE,
     headerName: "File",
     filterOperators: typeOnlyOperators,
-
+    
     headerAlign: "center",
     renderCell: FileCell,
     align: "center",

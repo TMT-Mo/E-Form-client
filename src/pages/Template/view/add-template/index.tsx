@@ -118,16 +118,13 @@ const ViewAddTemplate: React.FC = () => {
   const [form, setForm] = useState<TemplateArgs>({
     templateName: undefined,
     description: undefined,
-    // idDepartment: undefined,
+    idDepartment: undefined,
     idTemplateType: undefined,
     size: undefined,
     signatoryList: undefined,
     createdBy: +userInfo?.userId!,
   });
 
-  const [selectedDepartment, setSelectedDepartment] = useState<
-    number | undefined
-  >(undefined);
   const [file, setFile] = useState<File>();
   const [isEnableSave, setIsEnableSave] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -172,18 +169,14 @@ const ViewAddTemplate: React.FC = () => {
         path: "/webviewer/lib",
         initialDoc: undefined,
         disabledElements: [
-          // 'viewControlsButton',
-          // 'leftPanel'
-          // 'viewControlsOverlay'
-          // 'toolbarGroup-Annotate'
+          'downloadButton'
         ],
       },
       viewer.current!
     ).then(async (inst) => {
       instance.current = inst;
-      const { documentViewer} = inst.Core;
+      const { documentViewer } = inst.Core;
       const annotManager = documentViewer.getAnnotationManager();
-
       annotManager.enableReadOnlyMode();
       documentViewer.addEventListener("documentLoaded", async () => {
         await documentViewer.getDocument().getDocumentCompletePromise();
@@ -216,27 +209,23 @@ const ViewAddTemplate: React.FC = () => {
   };
 
   const getUserListHandler = useCallback(() => {
-    dispatch(getUsers({ departmentId_eq: selectedDepartment })).unwrap();
-  }, [dispatch, selectedDepartment]);
+    dispatch(getUsers({ departmentId_eq: form.idDepartment })).unwrap();
+  }, [dispatch, form.idDepartment]);
 
   useEffect(() => {
-    if (selectedDepartment) {
+    if (form.idDepartment) {
       getUserListHandler();
     } else {
       dispatch(clearUserList());
     }
-  }, [selectedDepartment, getUserListHandler, dispatch]);
+  }, [getUserListHandler, dispatch, form.idDepartment]);
 
   const onChangeSelectedDepartment = (value: number | undefined) => {
     if (!value) {
-      setSelectedDepartment(undefined);
-      setForm({ ...form, signatoryList: undefined });
+      setForm({ ...form, signatoryList: undefined, idDepartment: undefined });
       return;
     }
-    setSelectedDepartment(value);
-    if (form.signatoryList) {
-      setForm({ ...form, signatoryList: undefined });
-    }
+    setForm({...form, idDepartment: value, signatoryList: undefined})
   };
   const { t } = useTranslation();
   return (
