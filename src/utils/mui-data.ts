@@ -95,6 +95,7 @@ export const templateColumns: GridColDef[] = [
     headerName: "Action",
     renderCell: TemplateActionCell,
     filterable: false,
+    sortable: false
   },
 ];
 
@@ -155,6 +156,7 @@ export const templateHistoryColumns: GridColDef[] = [
     headerName: "Action",
     filterable: false,
     renderCell: TemplateHistoryActionCell,
+    sortable: false
   },
 ];
 
@@ -204,6 +206,7 @@ export const newTemplatesColumns: GridColDef[] = [
     headerName: "Action",
     renderCell: NewTemplateActionCell,
     filterable: false,
+    sortable: false
   },
 ];
 
@@ -245,7 +248,8 @@ export const awaitSigningColumns: GridColDef[] = [
     field: ACTION,
     headerName: "Action",
     renderCell: AwaitSigningActionCell,
-    filterable: false
+    filterable: false,
+    sortable: false
   },
 ];
 
@@ -298,7 +302,8 @@ export const personalDocColumns: GridColDef[] = [
     field: ACTION,
     headerName: "Action",
     renderCell: PersonalDocumentActionCell,
-    filterable: false
+    filterable: false,
+    sortable: false
   },
 ];
 
