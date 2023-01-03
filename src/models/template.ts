@@ -1,3 +1,4 @@
+
 import { StatusTemplate } from "./../utils/constants";
 import { StorageReference } from "firebase/storage";
 
@@ -50,6 +51,10 @@ export interface GetTemplateArgs {
   department_eq?: string;
   isEnable_eq?: boolean;
   signal?: AbortSignal;
+  createdAt_gte?: string; //* gte: Greater than equal
+  createdAt_lte?: string //* lte: Lower than equal
+  updateAt_gte?: string; //* gte: Greater than equal
+  updateAt_lte?: string //* lte: Lower than equal
 }
 
 export interface TemplateArgs {
@@ -91,11 +96,6 @@ export interface EnableTemplateArgs {
 
 export interface EnableTemplateResponse {
   message: string;
-}
-
-export interface TemplateFilter {
-  value: number | string | boolean;
-  field: string;
 }
 
 export interface TemplateSorter {

@@ -75,10 +75,10 @@ const ViewPersonalDocument: React.FC = () => {
           if (userId === userInfo?.userId!.toString()) {
             return userInfo?.userName!;
           }
-          else if(userId !== 'Admin'){
+          else if(userId !== 'System'){
             return userId
           }
-          return "Admin";
+          return "System";
         });
       });
     });

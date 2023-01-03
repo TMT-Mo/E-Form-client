@@ -1,4 +1,10 @@
-import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+} from "@mui/material";
 import {
   GridFilterOperator,
   GridFilterItem,
@@ -17,24 +23,26 @@ const items: Items[] = [
   { value: ".docx", label: "DOCX" },
 ];
 
-const {TYPE } = DataTableHeader;
+const { TYPE } = DataTableHeader;
 const SelectType = (props: GridFilterInputValueProps) => {
   const { applyValue, item } = props;
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [value, setValue] = useState<any>('');
+  const [value, setValue] = useState<any>("");
 
   const handleChange = (e: SelectChangeEvent) => {
     applyValue({
-        ...item,
-        value: e.target.value,
-        columnField: TYPE,
-      });
-      setValue(e.target.value);
-  } 
-  
+      ...item,
+      value: e.target.value,
+      columnField: TYPE,
+    });
+    setValue(e.target.value);
+  };
+
   return (
     <FormControl variant="standard" sx={{ minWidth: 120 }}>
-      <InputLabel id="demo-simple-select-standard-label">Filter value</InputLabel>
+      <InputLabel id="demo-simple-select-standard-label">
+        Filter value
+      </InputLabel>
       <Select
         labelId="demo-simple-select-standard-label"
         id="demo-simple-select-standard"
@@ -43,7 +51,9 @@ const SelectType = (props: GridFilterInputValueProps) => {
         onChange={handleChange}
       >
         {items.map((item, index) => (
-          <MenuItem value={item.value} key={index}>{item.label}</MenuItem>
+          <MenuItem value={item.value} key={index}>
+            {item.label}
+          </MenuItem>
         ))}
       </Select>
     </FormControl>

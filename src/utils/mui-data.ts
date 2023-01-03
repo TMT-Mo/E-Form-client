@@ -1,3 +1,4 @@
+import { updatedAtOnlyOperators } from './../components/DataTable/filter/updatedAt/index';
 import { createdByOnlyOperators } from './../components/DataTable/filter/createdBy/index';
 import { usePermission } from './../hooks/use-permission';
 import { PersonalDocumentActionCell } from "./../components/DataTable/action-cell/personalDocument/index";
@@ -133,20 +134,21 @@ export const templateHistoryColumns: GridColDef[] = [
   },
   {
     field: CREATED_AT,
-    headerName: "Created At",
+    headerName: "Date Published",
     flex: 0.4,
     renderCell: DateCell,
     align: "center",
     headerAlign: "center",
+    filterOperators: createdAtOnlyOperators
   },
   {
     field: UPDATED_AT,
-    headerName: "Updated At",
-    filterable: false,
+    headerName: "Date Modified",
     flex: 0.4,
     renderCell: DateCell,
     align: "center",
     headerAlign: "center",
+    filterOperators: updatedAtOnlyOperators
   },
   {
     field: ACTION,
@@ -192,7 +194,7 @@ export const newTemplatesColumns: GridColDef[] = [
   },
   {
     field: CREATED_AT,
-    headerName: "Created At",
+    headerName: "Date Created",
     renderCell: DateCell,
     align: "center",
     filterOperators: createdAtOnlyOperators
@@ -219,7 +221,8 @@ export const awaitSigningColumns: GridColDef[] = [
     headerName: "Name",
     flex: 1,
     disableColumnMenu: true,
-    sortable: false,
+    filterable: false,
+    
   },
   {
     field: CREATED_AT,
@@ -228,19 +231,21 @@ export const awaitSigningColumns: GridColDef[] = [
     align: "center",
     flex: 0.2,
     headerAlign: "center",
+    filterOperators: createdAtOnlyOperators
   },
   {
     field: CREATED_BY,
     headerName: "Owner",
     sortable: false,
     hideable: false,
-    filterable: false,
     renderCell: CreatedByCell,
+    filterOperators: createdByOnlyOperators
   },
   {
     field: ACTION,
     headerName: "Action",
     renderCell: AwaitSigningActionCell,
+    filterable: false
   },
 ];
 
@@ -265,6 +270,7 @@ export const personalDocColumns: GridColDef[] = [
     align: "center",
     headerAlign: "center",
     flex: 0.2,
+    filterOperators: createdAtOnlyOperators
   },
   {
     field: UPDATED_AT,
@@ -273,6 +279,7 @@ export const personalDocColumns: GridColDef[] = [
     align: "center",
     headerAlign: "center",
     flex: 0.2,
+    filterOperators: updatedAtOnlyOperators
   },
   {
     field: STATUS,
@@ -291,6 +298,7 @@ export const personalDocColumns: GridColDef[] = [
     field: ACTION,
     headerName: "Action",
     renderCell: PersonalDocumentActionCell,
+    filterable: false
   },
 ];
 

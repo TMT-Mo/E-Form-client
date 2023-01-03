@@ -26,6 +26,7 @@ import { useTranslation } from "react-i18next";
 import { clearTemplates } from "../../../../slices/template";
 import { RequiredPermission } from "../../../RequiredPermission";
 import { clearDocuments } from "../../../../slices/document";
+import { clearFilter } from "../../../../slices/filter";
 
 const StyledListBtn = styled(ListItemButton)({
   borderRadius: "5px",
@@ -73,7 +74,8 @@ const SideBar: React.FC = () => {
     );
     if (locationIndex !== index) {
       dispatch(clearTemplates());
-      dispatch(clearDocuments())
+      dispatch(clearDocuments());
+      dispatch(clearFilter())
     }
   };
 

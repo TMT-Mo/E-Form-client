@@ -1,33 +1,29 @@
 import React from "react";
 import {
   DataGrid,
-  GridColDef,
   GridColumnVisibilityModel,
   GridFilterModel,
   GridSortModel,
 } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "../../hooks";
-import { LocationIndex, Permissions } from "../../utils/constants";
+import { DataTableHeader, LocationIndex, Permissions } from "../../utils/constants";
 import {
   awaitSigningColumns,
-  historyColumns,
   newTemplatesColumns,
   personalDocColumns,
   sharedDocColumns,
   templateColumns,
   templateHistoryColumns,
 } from "../../utils/mui-data";
-import { Template } from "../../models/template";
 import {
+  clearTemplatePagination,
   onChangeTemplatePage,
-  setTemplateFilter,
-  setTemplateSorter,
 } from "../../slices/template";
 import CustomPagination from "./pagination";
 import { usePermission } from "../../hooks/use-permission";
-import { Document } from "../../models/document";
-import { onChangeDocumentPage } from "../../slices/document";
+import { clearDocumentPagination, onChangeDocumentPage } from "../../slices/document";
 import { GridColumnModel, Data, GetRowIdParams } from "../../models/mui-data";
+import { setFilter, setSorter } from "../../slices/filter";
 
 const {
   SYSTEM,
@@ -64,12 +60,15 @@ const DataTable: React.FC = () => {
   const onFilterChange = React.useCallback(
     (filterModel: GridFilterModel) => {
       // Here you save the data you need from the filter model
+      
       const { value, columnField } = filterModel.items[0];
       if (!value) {
-        dispatch(setTemplateFilter(undefined));
+        dispatch(setFilter(undefined));
         return;
       }
-      dispatch(setTemplateFilter({ field: columnField, value }));
+      dispatch(clearTemplatePagination())
+      dispatch(clearDocumentPagination())
+      dispatch(setFilter({ field: columnField as DataTableHeader, value }));
     },
     [dispatch]
   );
@@ -78,11 +77,11 @@ const DataTable: React.FC = () => {
     (sortModel: GridSortModel) => {
       // Here you save the data you need from the sort model
       if (!sortModel[0]) {
-        dispatch(setTemplateSorter(undefined));
+        dispatch(setSorter(undefined));
         return;
       }
       const { field, sort } = sortModel[0];
-      dispatch(setTemplateSorter({ field, sort: sort! }));
+      dispatch(setSorter({ field: field as DataTableHeader, sort: sort! }));
     },
     [dispatch]
   );

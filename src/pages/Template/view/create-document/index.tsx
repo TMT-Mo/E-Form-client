@@ -9,7 +9,7 @@ import AlertPopup from "../../../../components/AlertPopup";
 import { useDispatch, useSelector } from "../../../../hooks";
 import { createDocument } from "../../../../slices/document";
 import { useTranslation } from "react-i18next";
-import {v4 as uuidv4} from "uuid"
+import { v4 as uuidv4 } from "uuid";
 
 const SendBtn = styled(
   LoadingButton,
@@ -51,7 +51,6 @@ const ViewCreateDocument: React.FC = () => {
   const [enableSend, setEnableSend] = useState<boolean>(false);
   const { t } = useTranslation();
 
-
   // if using a class, equivalent of componentDidMount
 
   useEffect(() => {
@@ -59,11 +58,8 @@ const ViewCreateDocument: React.FC = () => {
       {
         path: "/webviewer/lib",
         initialDoc: link!,
-        disabledElements: [
-          'toolbarGroup-Insert',
-          'toolbarGroup-Forms'
-        ],
-        annotationUser: userInfo?.userId!.toString()
+        disabledElements: ["toolbarGroup-Insert", "toolbarGroup-Forms"],
+        annotationUser: userInfo?.userId!.toString(),
       },
       viewer.current!
     ).then(async (instance) => {
@@ -90,8 +86,8 @@ const ViewCreateDocument: React.FC = () => {
           // annot.setPathPoint(4, 300, 100); // Bottom-right point
 
           annot.setContents(`${typeName}_${departmentName}_1`);
-          annot.Author = uuidv4()
-          
+          annot.Author = uuidv4();
+
           annotationManager.addAnnotation(annot);
           annotationManager.redrawAnnotation(annot);
         });
@@ -99,27 +95,28 @@ const ViewCreateDocument: React.FC = () => {
         //   const defaultPermission = annotation.Author === annotationManager.getCurrentUser();
         // })
         annotationManager.setAnnotationDisplayAuthorMap((userId) => {
-          if(userId === userInfo?.userId!.toString()){
-            return userInfo?.userName!
+          if (userId === userInfo?.userId!.toString()) {
+            return userInfo?.userName!;
           }
-          return 'Admin'
+          return "System";
         });
         annotationManager.addEventListener(
           "annotationChanged",
           async (annotations, action, { imported }) => {
             const annots = (
-              await annotationManager.exportAnnotations({useDisplayAuthor: true, })
+              await annotationManager.exportAnnotations({
+                useDisplayAuthor: true,
+              })
             ).replaceAll(/\\&quot;/gi, "");
             setXfdfString(annots);
 
             const checkAnnotExists = annotationManager.getAnnotationsList();
             // console.log(checkAnnotExists);
-            checkAnnotExists.length >= 2
+            checkAnnotExists.length >= 3
               ? setEnableSend(true)
               : setEnableSend(false);
           }
         );
-        
       });
     });
   }, [departmentName, link, typeName, userInfo?.userId, userInfo?.userName]);
@@ -160,13 +157,13 @@ const ViewCreateDocument: React.FC = () => {
               </span>
             </div>
             <div className="flex items-center space-x-1">
-              <h4>{t("Type")}:</h4>
+              <h4 className="whitespace-nowrap">{t("Type")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {typeName}
               </span>
             </div>
             <div className="flex items-center space-x-1">
-              <h4>{t("Department")}:</h4>
+              <h4 className="whitespace-nowrap">{t("Department")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {departmentName}
               </span>
@@ -182,7 +179,7 @@ const ViewCreateDocument: React.FC = () => {
                 onClick={onCreateTemplate}
                 disabled={!enableSend}
               >
-                {t ("Send")}
+                {t("Send")}
               </SendBtn>
             )}
           </div>
