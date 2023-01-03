@@ -88,6 +88,7 @@ const RejectBtn = styled(
 });
 
 const ViewApproveDocument: React.FC = () => {
+  const [t] = useTranslation();
   const viewer = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -195,7 +196,7 @@ const ViewApproveDocument: React.FC = () => {
   //   console.log(annotationList.every((annot) => initialXfdfString?.includes(annot)))
   // }, [annotationList, initialXfdfString]);
   // console.log(annotationList)
-  const [t] = useTranslation();
+
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">

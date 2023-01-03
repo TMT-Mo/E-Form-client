@@ -112,7 +112,7 @@ const ViewCreateDocument: React.FC = () => {
 
             const checkAnnotExists = annotationManager.getAnnotationsList();
             // console.log(checkAnnotExists);
-            checkAnnotExists.length >= 2
+            checkAnnotExists.length >= 3
               ? setEnableSend(true)
               : setEnableSend(false);
           }
