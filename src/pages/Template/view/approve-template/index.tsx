@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "../../../../hooks";
 import { approveTemplate } from "../../../../slices/template";
 import { StatusTemplate } from "../../../../utils/constants";
 import { useTranslation } from "react-i18next";
+import { helpers } from "../../../../utils";
 
 const LoadingBtn = styled(
   LoadingButton,
@@ -211,7 +212,7 @@ const ViewApproveTemplate: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4>{t("Created At")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {new Date(createdAt).toUTCString().replace("GMT", "")}
+                {helpers.addHours(new Date(createdAt), 7)}
               </span>
             </div>
             <Divider className="bg-white" />

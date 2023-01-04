@@ -10,6 +10,7 @@ import WebViewer from "@pdftron/webviewer";
 import { useSelector } from "../../../../hooks";
 import StatusTag from "../../../../components/StatusTag";
 import { useTranslation } from "react-i18next";
+import { helpers } from "../../../../utils";
 
 const ViewPersonalDocument: React.FC = () => {
   const viewer = useRef(null);
@@ -26,7 +27,6 @@ const ViewPersonalDocument: React.FC = () => {
     departmentName,
     typeName
   } = documentDetail!;
-  const [isAccepting, setIsAccepting] = useState<boolean>(true);
   const [ t ] = useTranslation();
   const signers = signatoryList.map((signer) => (
     <div className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4">
@@ -89,7 +89,7 @@ const ViewPersonalDocument: React.FC = () => {
         });
       });
     });
-  }, [link, userInfo?.userId, userInfo?.userName, xfdfString]);
+  }, [documentName, link, userInfo?.userId, userInfo?.userName, xfdfString]);
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
@@ -135,7 +135,7 @@ const ViewPersonalDocument: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4>{t ("Created At")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {new Date(createdAt).toUTCString().replace('GMT','')}
+                {helpers.addHours(new Date(createdAt), 7)}
               </span>
             </div>
             <Divider className="bg-white" />

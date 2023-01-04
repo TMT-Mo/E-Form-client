@@ -14,13 +14,23 @@ const getToken = (): string => {
   return token;
 };
 
+// *-------------------------------------------- HANDLE TIME  --------------------------------------------
+const addHours = (date: Date, hours: number):string => {
+  // 👇 Make copy with "Date" constructor.
+  const dateCopy = new Date(date);
+
+  dateCopy.setHours(dateCopy.getHours() + hours);
+
+  return dateCopy.toLocaleString();
+}
 // *-------------------------------------------- HANDLE NOTIFICATIONS --------------------------------------------
 // export handleNotification = 
 
 const helpers = {
     setToken,
     getToken,
-    clearToken
+    clearToken,
+    addHours
 }
 
 export default helpers;

@@ -10,6 +10,7 @@ import StatusTag from "../../../../components/StatusTag";
 import { useTranslation } from "react-i18next";
 import { async } from "@firebase/util";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import { helpers } from "../../../../utils";
 // const { APPROVED, NEW } = StatusTemplate;
 // const { APPROVED_TAG, REJECTED_TAG, NEW_TAG } = StatusTemplateTag;
 
@@ -28,28 +29,6 @@ const ViewTemplateHistory: React.FC = () => {
     status,
     reason,
   } = templateDetail!;
-
-  // const createStatus = () => {
-  //   if (status === APPROVED) {
-  //     return (
-  //       <span className="w-full px-3 py-1 rounded-md bg-green-100 text-green-600 text-xs border-green-400 border border-solid">
-  //         {APPROVED_TAG}
-  //       </span>
-  //     );
-  //   } else if (status === NEW) {
-  //     return (
-  //       <span className="w-full px-3 py-1 rounded-md bg-blue-100 text-blue-600 text-xs border-blue-400 border border-solid">
-  //         {NEW_TAG}
-  //       </span>
-  //     );
-  //   } else {
-  //     return (
-  //       <span className="w-full px-3 py-1 rounded-md bg-red-100 text-red-600 text-xs border-red-400 border border-solid">
-  //         {REJECTED_TAG}
-  //       </span>
-  //     );
-  //   }
-  // };
   const { t } = useTranslation();
   const signers = signatoryList.map((signer, index) => (
     <div
@@ -155,13 +134,12 @@ const ViewTemplateHistory: React.FC = () => {
             <div className="flex items-center space-x-2">
               <h4 className="whitespace-nowrap ">{t("Created At")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {new Date(createdAt).toLocaleString("vn-VN")}
+                {helpers.addHours(new Date(createdAt), 7)}
               </span>
             </div>
             <div className="flex items-center space-x-2">
               <h4>{t("Status")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {/* {createStatus()} */}
                 <StatusTag status={status} type="template" />
               </span>
             </div>
