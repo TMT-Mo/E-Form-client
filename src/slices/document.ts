@@ -1,7 +1,6 @@
 import {
   CreateDocumentArgs,
   Document,
-  DocumentSorter,
   GetDocumentsArgs,
 } from "./../models/document";
 import {
@@ -23,7 +22,6 @@ interface State {
   size?: number;
   currentPage: number;
   documentDetail?: Document;
-  sorter?: DocumentSorter;
 }
 
 const initialState: State = {

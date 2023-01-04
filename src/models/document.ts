@@ -74,7 +74,3 @@ export interface DocumentListResponse {
 }
 
 
-export interface DocumentSorter {
-  field: string;
-  sort: "asc" | "desc";
-}

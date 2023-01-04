@@ -98,10 +98,6 @@ export interface EnableTemplateResponse {
   message: string;
 }
 
-export interface TemplateSorter {
-  field: string;
-  sort: "asc" | "desc";
-}
 
 export interface ApproveTemplateArgs {
   userId: number;

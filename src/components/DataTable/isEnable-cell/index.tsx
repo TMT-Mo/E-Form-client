@@ -1,6 +1,6 @@
 import { CircularProgress, IconButton } from "@mui/material";
 import { GridRenderCellParams } from "@mui/x-data-grid";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { useDispatch, useSelector } from "../../../hooks";
@@ -14,6 +14,7 @@ export const IsEnableCell = (props: GridRenderCellParams<Date>) => {
   );
   const { value, row } = props;
   const rowValue = row as Template;
+  const [selectedTemplate, setSelectedTemplate] = useState< number | undefined>()
 
   const createData = () => {
     const result = value as unknown as boolean;
@@ -25,25 +26,22 @@ export const IsEnableCell = (props: GridRenderCellParams<Date>) => {
   };
 
   const onEnableTemplate = useCallback(() => {
+    setSelectedTemplate(rowValue.id)
     dispatch(
       enableTemplate({ id: rowValue.id, isEnable: !rowValue.isEnable })
-    ).unwrap();
+    ).unwrap().then(() => setSelectedTemplate(undefined));
+    
   }, [dispatch, rowValue.id, rowValue.isEnable]);
-
-  useEffect(() => {
-    if (templateDetail?.id === rowValue.id) {
-      onEnableTemplate();
-    }
-  }, [onEnableTemplate, rowValue.id, templateDetail?.id]);
 
   return (
     <>
-      {isEnableTemplateLoading && templateDetail?.id === rowValue.id ? (
+      {isEnableTemplateLoading && selectedTemplate === rowValue.id ? (
         <CircularProgress size={20} />
       ) : (
         <IconButton
           aria-label="lock"
-          onClick={() => dispatch(getTemplateDetail({ template: row }))}
+          onClick={onEnableTemplate}
+          size='small'
         >
           {createData()}
         </IconButton>

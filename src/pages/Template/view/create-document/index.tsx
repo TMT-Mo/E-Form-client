@@ -117,11 +117,13 @@ const ViewCreateDocument: React.FC = () => {
             setXfdfString(annots);
 
             const checkAnnotExists = annotationManager.getAnnotationsList();
-            checkAnnotExists.length >= 3
-              ? setEnableSend(true)
-              : setEnableSend(false);
+            // console.log(checkAnnotExists[0].elementName)
+            // checkAnnotExists.length >= 3
+            //   ? setEnableSend(true)
+            //   : setEnableSend(false);
           }
         );
+        console.log(annotationManager.getAnnotationsList())
       });
     });
   }, [departmentName, link, templateName, typeName, userInfo?.userId, userInfo?.userName]);
@@ -182,7 +184,7 @@ const ViewCreateDocument: React.FC = () => {
                 }
                 variant="outlined"
                 onClick={onCreateTemplate}
-                disabled={!enableSend}
+                disabled={false}
               >
                 {t("Send")}
               </SendBtn>

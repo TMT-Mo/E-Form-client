@@ -95,7 +95,9 @@ export const templateColumns: GridColDef[] = [
     headerName: "Action",
     renderCell: TemplateActionCell,
     filterable: false,
-    sortable: false
+    sortable: false,
+    align: 'center',
+    headerAlign: 'center'
   },
 ];
 
