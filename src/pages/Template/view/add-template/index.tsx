@@ -48,8 +48,8 @@ const LoadingBtn = styled(
   backgroundColor: "#407AFF",
   borderRadius: "5px",
   color: "#fff",
-  padding: '5px',
-  textTransform: 'unset',
+  padding: "5px",
+  textTransform: "unset",
   // fontSize: '15px',
   // width: 'fit-content',
   ":hover": { backgroundColor: "#578aff" },
@@ -66,8 +66,8 @@ const CancelBtn = styled(
   backgroundColor: "#fff",
   borderRadius: "5px",
   color: "#407AFF",
-  padding: '5px',
-  textTransform: 'unset',
+  padding: "5px",
+  textTransform: "unset",
   // ":hover": { backgroundColor: "#407AFF", color: "#fff", },
 });
 
@@ -131,6 +131,7 @@ const ViewAddTemplate: React.FC = () => {
 
   useEffect(() => {
     let check = false;
+    if(!file) return 
     Object.values(form).forEach((value) => {
       if (!value) {
         check = true;
@@ -138,7 +139,7 @@ const ViewAddTemplate: React.FC = () => {
       }
     });
     check ? setIsEnableSave(false) : setIsEnableSave(true);
-  }, [form]);
+  }, [file, form]);
   // Handle file upload event and update state
   function handleChange(event: any) {
     const newFile: File = event.target.files[0];
@@ -158,7 +159,7 @@ const ViewAddTemplate: React.FC = () => {
         file: file!,
       })
     ).unwrap();
-    navigate('/user');
+    navigate("/user");
   };
 
   // if using a class, equivalent of componentDidMount
@@ -168,9 +169,7 @@ const ViewAddTemplate: React.FC = () => {
       {
         path: "/webviewer/lib",
         initialDoc: undefined,
-        disabledElements: [
-          'downloadButton'
-        ],
+        disabledElements: ["downloadButton"],
       },
       viewer.current!
     ).then(async (inst) => {
@@ -178,6 +177,11 @@ const ViewAddTemplate: React.FC = () => {
       const { documentViewer } = inst.Core;
       const annotManager = documentViewer.getAnnotationManager();
       annotManager.enableReadOnlyMode();
+      const UIEvents = inst.UI.Events;
+      inst.UI.addEventListener(UIEvents.LOAD_ERROR, function (err) {
+        inst.UI.showErrorMessage('This file has been broken! Please insert another one.')
+        setFile(undefined)
+      });
       documentViewer.addEventListener("documentLoaded", async () => {
         await documentViewer.getDocument().getDocumentCompletePromise();
         documentViewer.updateView();
@@ -225,7 +229,7 @@ const ViewAddTemplate: React.FC = () => {
       setForm({ ...form, signatoryList: undefined, idDepartment: undefined });
       return;
     }
-    setForm({...form, idDepartment: value, signatoryList: undefined})
+    setForm({ ...form, idDepartment: value, signatoryList: undefined });
   };
   const { t } = useTranslation();
   return (
@@ -234,13 +238,13 @@ const ViewAddTemplate: React.FC = () => {
         <Link to="/user">
           <ArrowBackIosIcon fontSize="small" className="fill-white" />
         </Link>
-        <span className="text-white">{t ("Add a template")}</span>
+        <span className="text-white">{t("Add a template")}</span>
       </div>
       <div className="flex">
         <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 w-80">
           <div className="flex flex-col space-y-8 text-white">
             <div className="flex flex-col space-y-4">
-              <h4>{t ("Choose a file")}</h4>
+              <h4>{t("Choose a file")}</h4>
               <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -263,7 +267,7 @@ const ViewAddTemplate: React.FC = () => {
             </div>
             <Divider className="bg-white" />
             <div className="flex flex-col space-y-4">
-              <h4>{t ("Description")}</h4>
+              <h4>{t("Description")}</h4>
               <TextField
                 id="outlined-multiline-flexible"
                 sx={{
@@ -284,7 +288,7 @@ const ViewAddTemplate: React.FC = () => {
               />
             </div>
             <div className="flex flex-col space-y-4">
-              <h4>{t ("Type")}</h4>
+              <h4>{t("Type")}</h4>
 
               <Autocomplete
                 id="asynchronous-demo"
@@ -326,7 +330,7 @@ const ViewAddTemplate: React.FC = () => {
               />
             </div>
             <div className="flex flex-col space-y-4">
-              <h4>{t ("Department")}</h4>
+              <h4>{t("Department")}</h4>
               <Autocomplete
                 id="asynchronous-demo"
                 sx={{
@@ -365,7 +369,7 @@ const ViewAddTemplate: React.FC = () => {
               />
             </div>
             <div className="flex flex-col space-y-4">
-              <h4>{t ("Select Signer(s)")}</h4>
+              <h4>{t("Select Signer(s)")}</h4>
               {isGetUserListLoading && (
                 <div className="flex justify-center">
                   <CircularProgress />
@@ -409,7 +413,7 @@ const ViewAddTemplate: React.FC = () => {
               onClick={() => setOpenDialog(true)}
               autoFocus
             >
-              {t ("Save")}
+              {t("Save")}
             </StyledBtn>
           </div>
         </div>
@@ -426,15 +430,18 @@ const ViewAddTemplate: React.FC = () => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {t ("Are you sure you want to save this form ?")}
+          {t("Are you sure you want to save this form ?")}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-           {t("After saving this template")}, {form.templateName!} {t("will be waiting for an approval")}
+            {t("After saving this template")}, {form.templateName!}{" "}
+            {t("will be waiting for an approval")}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <CancelBtn onClick={() => setOpenDialog(false)} size='small' >{t ("Cancel")}</CancelBtn>
+          <CancelBtn onClick={() => setOpenDialog(false)} size="small">
+            {t("Cancel")}
+          </CancelBtn>
           <LoadingBtn
             size="small"
             loading={isAddNewTemplateLoading}
@@ -442,7 +449,7 @@ const ViewAddTemplate: React.FC = () => {
             variant="outlined"
             onClick={handleUpload}
           >
-            {t ("Save")}
+            {t("Save")}
           </LoadingBtn>
         </DialogActions>
       </Dialog>

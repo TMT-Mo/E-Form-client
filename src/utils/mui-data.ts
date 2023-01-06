@@ -373,18 +373,3 @@ export const historyColumns: GridColDef[] = [
     flex: 1,
   },
 ];
-
-interface ITemplates {
-  file: ReactNode;
-  name: string;
-  description: string;
-  type: ".pdf" | ".doc";
-  department: string;
-  status: string;
-  action: ReactNode;
-}
-
-export const templateRows = (data: Template[]) => {
-  const row: ITemplates[] = [];
-  data.map((item) => row.push());
-};
