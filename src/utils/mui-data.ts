@@ -23,6 +23,7 @@ import { DateCell } from "../components/DataTable/formatDate-cell";
 import { IsLockedCell } from "../components/DataTable/isLocked-cell";
 import { CreatedByCell } from "../components/DataTable/createdBy-cell";
 import { createdAtOnlyOperators } from '../components/DataTable/filter/createdAt';
+import helpers from './helpers';
 
 const {
   TYPE,
@@ -45,6 +46,7 @@ export const templateColumns: GridColDef[] = [
     field: TYPE,
     headerName: "File",
     filterOperators: typeOnlyOperators,
+    // hide: helpers.checkHideColumn(IPAD)
     
     headerAlign: "center",
     renderCell: FileCell,
@@ -76,11 +78,18 @@ export const templateColumns: GridColDef[] = [
     filterable: false,
   },
   {
+    field: CREATED_BY,
+    headerName: "Created By",
+    renderCell: CreatedByCell,
+    flex: 0.5,
+    filterOperators: createdByOnlyOperators
+  },
+  {
     field: STATUS,
     headerName: "Status",
     renderCell: StatusCell,
     filterable: false,
-    headerAlign: 'center'
+    headerAlign: 'center',
   },
   {
     field: IS_ENABLE,

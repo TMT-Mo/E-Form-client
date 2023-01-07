@@ -147,8 +147,8 @@ const ViewCreateDocument: React.FC = () => {
         </Link>
         <span className="text-white">{t("Create await signing document")}</span>
       </div>
-      <div className="flex">
-        <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 w-80">
+      <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 md:w-80">
           <div className="flex flex-col space-y-8 text-white">
             <div className="flex flex-col space-y-2">
               <h4>{t("File name")}:</h4>
@@ -191,7 +191,7 @@ const ViewCreateDocument: React.FC = () => {
             )}
           </div>
         </div>
-        <div className="webviewer w-full" ref={viewer}></div>
+        <div className="webviewer w-full h-screen" ref={viewer}></div>
       </div>
       <AlertPopup
         anchorOrigin={{ vertical: "top", horizontal: "right" }}

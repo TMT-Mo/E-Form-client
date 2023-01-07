@@ -20,13 +20,14 @@ const StyledUploadBtn = styled(Button)({
     color: "#fff",
   },
 });
-// 
-const { TYPE, IS_ENABLE, TYPE_TEMPLATE, DEPARTMENT } = DataTableHeader;
+//
+const { TYPE, IS_ENABLE, TYPE_TEMPLATE, DEPARTMENT, CREATED_BY } =
+  DataTableHeader;
 
 const Template = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const {filter, sorter} = useSelector(state => state.filter)
+  const { filter, sorter } = useSelector((state) => state.filter);
   const { searchItemValue, currentPage } = useSelector(
     (state) => state.template
   );
@@ -48,9 +49,11 @@ const Template = () => {
           filter?.field === IS_ENABLE ? (filter.value as boolean) : undefined,
         department_eq:
           filter?.field === DEPARTMENT ? (filter.value as string) : undefined,
+        createdBy_eq:
+          filter?.field === CREATED_BY ? (filter.value as number) : undefined,
       })
     );
-    getTemplateList.unwrap()
+    getTemplateList.unwrap();
     return () => {
       getTemplateList.abort();
     };
@@ -64,8 +67,8 @@ const Template = () => {
   ]);
 
   return (
-    <div className="flex flex-col px-20 py-10 space-y-6">
-      <h2>{t ("Template Management")}</h2>
+    <div className="flex flex-col  py-10 space-y-6">
+      <h2>{t("Template Management")}</h2>
       <div className="flex flex-col rounded-md border border-gray-400 bg-white">
         <div className="flex px-10 py-6 justify-between">
           <Paper
@@ -83,7 +86,7 @@ const Template = () => {
             </IconButton>
             <InputBase
               sx={{ ml: 1, flex: 1 }}
-              placeholder={t ("Search Template")}
+              placeholder={t("Search Template")}
               onChange={(e) =>
                 dispatch(searchTemplate({ value: e.target.value }))
               }
@@ -96,7 +99,7 @@ const Template = () => {
               variant="outlined"
               startIcon={<UploadIcon />}
             >
-              {t ("Upload")}
+              {t("Upload")}
             </StyledUploadBtn>
           </div>
         </div>

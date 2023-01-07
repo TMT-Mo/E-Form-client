@@ -6,6 +6,7 @@ import template from "./template";
 import system from "./system";
 import document from './document';
 import filter from "./filter";
+import uiControl from "./ui-control";
 
 export default {
   auth,
@@ -14,5 +15,6 @@ export default {
   template,
   system,
   document,
-  filter
+  filter,
+  uiControl
 };

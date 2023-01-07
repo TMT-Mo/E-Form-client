@@ -17,6 +17,7 @@ import SharedDoc from "../../../pages/Document/shared";
 import History from "../../../pages/Document/history";
 import { clearDocuments } from "../../../slices/document";
 import { clearFilter } from "../../../slices/filter";
+import { Container } from "@mui/material";
 
 const {
   TEMPLATE,
@@ -48,7 +49,7 @@ const Layout: React.FC = () => {
     return () => {
       dispatch(clearDocuments());
       dispatch(clearTemplates());
-      dispatch(clearFilter())
+      dispatch(clearFilter());
     };
   }, [dispatch]);
   // const { innerWidth } = window;
@@ -85,7 +86,8 @@ const Layout: React.FC = () => {
       <div className="w-full">
         <TopBar />
         {/* <Outlet /> */}
-        {switchTab()}
+        <Container maxWidth='xl'>{switchTab()}</Container>
+        {/* {switchTab()} */}
         {/* <TemplateManagement/> */}
       </div>
       <AlertPopup
