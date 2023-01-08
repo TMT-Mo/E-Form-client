@@ -1,4 +1,5 @@
 import {
+  ApproveDocumentArgs,
   CreateDocumentArgs,
   Document,
   GetDocumentsArgs,
@@ -22,6 +23,7 @@ interface State {
   size?: number;
   currentPage: number;
   documentDetail?: Document;
+  isApproveDocumentLoading: boolean;
 }
 
 const initialState: State = {
@@ -33,6 +35,7 @@ const initialState: State = {
   size: 10,
   currentPage: 0,
   documentDetail: undefined,
+  isApproveDocumentLoading: false
 };
 
 const ACTION_TYPE = "document/";
@@ -68,6 +71,31 @@ const createDocument = createAsyncThunk(
   async (args: CreateDocumentArgs, { dispatch }) => {
     try {
       const result = await documentServices.createDocument({
+        ...args,
+      });
+      dispatch(handleSuccess({ message: result.message }));
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
+
+const approveDocument = createAsyncThunk(
+  `${ACTION_TYPE}approveDocument`,
+  async (args: ApproveDocumentArgs, { dispatch }) => {
+    try {
+      const result = await documentServices.approveDocument({
         ...args,
       });
       dispatch(handleSuccess({ message: result.message }));
@@ -150,6 +178,18 @@ const document = createSlice({
       ...state,
       isCreateDocumentLoading: false,
     }));
+    builder.addCase(approveDocument.pending, (state) => ({
+      ...state,
+      isApproveDocumentLoading: true,
+    }));
+    builder.addCase(approveDocument.fulfilled, (state, { payload }) => ({
+      ...state,
+      isApproveDocumentLoading: false,
+    }));
+    builder.addCase(approveDocument.rejected, (state) => ({
+      ...state,
+      isApproveDocumentLoading: false,
+    }));
     builder.addCase(getDocuments.pending, (state) => ({
       ...state,
       isGetDocumentListLoading: true,
@@ -170,7 +210,7 @@ const document = createSlice({
   },
 });
 
-export { createDocument, getDocuments };
+export { createDocument, getDocuments, approveDocument };
 
 export const { onChangeDocumentPage, clearDocuments, getDocumentDetail, clearDocumentDetail, searchDocument, clearDocumentPagination } = document.actions;
 

@@ -252,6 +252,7 @@ export const awaitSigningColumns: GridColDef[] = [
     headerName: "Owner",
     sortable: false,
     hideable: false,
+    flex: 0.5,
     renderCell: CreatedByCell,
     filterOperators: createdByOnlyOperators
   },

@@ -20,7 +20,8 @@ const apiPaths = {
     },
     document:{
         createDocument: `${apiHead}api/Document/create`,
-        getDocuments: `${apiHead}api/Document/getDocuments`
+        getDocuments: `${apiHead}api/Document/getDocuments`,
+        approveDocument: `${apiHead}api/Document/approveDocument`
     }
 }
 

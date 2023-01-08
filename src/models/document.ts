@@ -73,4 +73,14 @@ export interface DocumentListResponse {
   size: number;
 }
 
+export interface ApproveDocumentArgs{
+  userId: number,
+  documentId: number,
+  statusDocument: number,
+  comment?: string,
+  xfdfString: string
+}
 
+export interface ApproveDocumentResponse{
+  message: string;
+}

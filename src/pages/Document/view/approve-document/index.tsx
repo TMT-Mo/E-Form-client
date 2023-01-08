@@ -26,6 +26,8 @@ import AlertPopup from "../../../../components/AlertPopup";
 import { useDispatch, useSelector } from "../../../../hooks";
 import { useTranslation } from "react-i18next";
 import { helpers } from "../../../../utils";
+import { approveDocument } from "../../../../slices/document";
+import { StatusDocument } from "../../../../utils/constants";
 
 const LoadingBtn = styled(
   LoadingButton,
@@ -88,12 +90,13 @@ const RejectBtn = styled(
   },
 });
 
+const {APPROVED_DOCUMENT, REJECTED_DOCUMENT} = StatusDocument
 const ViewApproveDocument: React.FC = () => {
   const [t] = useTranslation();
   const viewer = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { documentDetail } = useSelector((state) => state.document);
+  const { documentDetail, isApproveDocumentLoading } = useSelector((state) => state.document);
   const { userInfo } = useSelector((state) => state.auth);
   const {
     createdAt,
@@ -104,19 +107,30 @@ const ViewApproveDocument: React.FC = () => {
     link,
     departmentName,
     typeName,
+    id
   } = documentDetail!;
   const [isAccepting, setIsAccepting] = useState<boolean>(true);
   const [reason, setReason] = useState<string | undefined>();
   const [openDialog, setOpenDialog] = useState(false);
   const [initialXfdfString, setInitialXfdfString] = useState<any[] | null>();
   const [annotationList, setAnnotationList] = useState<any[] | null>();
-
-  const [enableBtn, setEnableBtn] = useState<boolean>(false);
   const [newXfdfString, setNewXfdfString] = useState<string | undefined>();
-  const instance = useRef<WebViewerInstance>();
-  const [file, setFile] = useState<File>();
   // if using a class, equivalent of componentDidMount
 
+  const onApproveDocument = async () => {
+    await dispatch(
+      approveDocument({
+        userId: +userInfo?.userId!,
+        documentId: id,
+        xfdfString: !isAccepting ? xfdfString : newXfdfString!,
+        statusDocument: isAccepting ? APPROVED_DOCUMENT : REJECTED_DOCUMENT,
+        comment: reason
+        
+      })
+    ).unwrap();
+    navigate("/user");
+  }
+  
   useEffect(() => {
     WebViewer(
       {
@@ -173,40 +187,6 @@ const ViewApproveDocument: React.FC = () => {
       });
     });
   }, [documentName, link, userInfo?.userId, userInfo?.userName, xfdfString]);
-
-  // useEffect(() => {
-  //   async function createFile(url: string) {
-
-  //   }
-  //   setFile(async () => await createFile(link));
-  // }, []);
-
-  const loadFile = useCallback(async () => {
-    const response = await fetch(link);
-    const data = await response.blob();
-    setFile(new File([data], documentName));
-  }, [documentName, link]);
-
-  // useEffect(() => {
-  //   loadFile();
-  // }, [link, loadFile]);
-
-  // useEffect(() => {
-  //   if (!file) return;
-  //   console.log(file);
-  //   if (instance.current) {
-  //     instance.current.UI.loadDocument(file);
-  //   }
-  // }, [file]);
-
-  // useEffect(() => {
-  //   if(!annotationList){
-  //     return
-  //   }
-  //   annotationList.every((annot) => initialXfdfString?.includes(annot)) ? setEnableBtn(true) : setEnableBtn(false)
-  //   console.log(annotationList.every((annot) => initialXfdfString?.includes(annot)))
-  // }, [annotationList, initialXfdfString]);
-  // console.log(annotationList)
 
   return (
     <Fragment>
@@ -330,23 +310,23 @@ const ViewApproveDocument: React.FC = () => {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {isAccepting
-              ? [t("Are you sure you want to approve this template?")]
-              : [t("Are you sure you want to reject this template?")]}
+              ? [t("Are you sure you want to approve this document?")]
+              : [t("Are you sure you want to reject this document?")]}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <CancelBtn onClick={() => setOpenDialog(false)} size="small">
             {t("Cancel")}
           </CancelBtn>
-          {/* <LoadingBtn
+          <LoadingBtn
             size="small"
-            // loading={isApproveTemplateLoading}
+            loading={isApproveDocumentLoading}
             loadingIndicator={<CircularProgress color="inherit" size={16} />}
             variant="outlined"
-            onClick={onApproveTemplate}
+            onClick={onApproveDocument}
           >
             Save
-          </LoadingBtn> */}
+          </LoadingBtn>
         </DialogActions>
       </Dialog>
       <AlertPopup
