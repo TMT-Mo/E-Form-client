@@ -36,7 +36,7 @@ const SharedDoc = () => {
             sx={{
               p: "2px 4px",
               display: "flex",
-              alignItems: "center",
+              alignItems: "center", 
               width: 300,
             }}
             variant="outlined"

@@ -240,8 +240,8 @@ const ViewAddTemplate: React.FC = () => {
         </Link>
         <span className="text-white">{t("Add a template")}</span>
       </div>
-      <div className="flex">
-        <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 w-80">
+      <div className="flex flex-col-reverse md:flex-row">
+        <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 pb-8 md:w-80 md:pb-0">
           <div className="flex flex-col space-y-8 text-white">
             <div className="flex flex-col space-y-4">
               <h4>{t("Choose a file")}</h4>
@@ -417,7 +417,7 @@ const ViewAddTemplate: React.FC = () => {
             </StyledBtn>
           </div>
         </div>
-        <div className="webviewer w-full" ref={viewer}></div>
+        <div className="webviewer w-full h-screen" ref={viewer}></div>
       </div>
       <AlertPopup
         anchorOrigin={{ vertical: "top", horizontal: "right" }}

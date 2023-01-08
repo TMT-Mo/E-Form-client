@@ -1,3 +1,5 @@
+import { UserInfo } from './../models/auth';
+import jwtDecode from "jwt-decode";
 import { DeviceType, DeviceWidth, TOKEN_NAME } from "./constants";
 
 // *-------------------------------------------- HANDLE TOKEN --------------------------------------------
@@ -27,10 +29,13 @@ const addHours = (date: Date, hours: number): string => {
 // *-------------------------------------------- HANDLE MUI  --------------------------------------------
 const { MOBILE, LAPTOP, IPAD } = DeviceType;
 const {MOBILE_WIDTH, LAPTOP_WIDTH, IPAD_WIDTH} = DeviceWidth
-const checkHideColumn = (hideDevice: DeviceType ) => {
+type Type = 'check permission' | 'check device'
+const checkHideColumn = (hideDevice: DeviceType,   ) => {
   let result: boolean
   const { innerWidth } = window;
   
+  const permissions = (jwtDecode(getToken()) as UserInfo).idPermissions.split(",").map((id) => +id);
+  // result = permissions?.includes(permission)!;
 
   switch (hideDevice) {
     case MOBILE: {

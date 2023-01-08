@@ -147,7 +147,7 @@ const ViewCreateDocument: React.FC = () => {
         </Link>
         <span className="text-white">{t("Create await signing document")}</span>
       </div>
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col-reverse md:flex-row">
         <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 md:w-80">
           <div className="flex flex-col space-y-8 text-white">
             <div className="flex flex-col space-y-2">
