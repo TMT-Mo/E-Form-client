@@ -18,7 +18,7 @@ export const FileCell = (props: GridRenderCellParams<Date>) => {
 
   return (
     <div>
-      <IconButton aria-label="lock" >
+      <IconButton aria-label="lock" disableRipple>
         {createData()}
       </IconButton>
     </div>

@@ -39,6 +39,7 @@ interface Signer {
   signature: string;
   status: number;
   roleName: string;
+  updateAt: string
 }
 
 interface Creator {

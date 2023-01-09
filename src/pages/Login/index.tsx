@@ -72,7 +72,7 @@ const Login = () => {
     <div className="flex justify-center mt-10">
       <div className="flex flex-col items-center justify-center px-10 py-10 bg-blue-light-config  rounded-xl  lg:flex-row w-10/12 lg:justify-around lg:px-10 lg:py-32">
         <div className=" flex-col-reverse space-y-4 items-center hidden lg:flex-col lg:flex">
-          <Link to="/user">
+          <Link to="/">
             <img alt="" src={intropic} className="cursor-pointer lg:block" />
           </Link>
           <div className="flex flex-col space-y-4 pb-8 items-center text-center w-60 lg:w-fit">

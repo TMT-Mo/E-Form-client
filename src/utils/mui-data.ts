@@ -1,6 +1,6 @@
-import { updatedAtOnlyOperators } from './../components/DataTable/filter/updatedAt/index';
-import { createdByOnlyOperators } from './../components/DataTable/filter/createdBy/index';
-import { usePermission } from './../hooks/use-permission';
+import { renderEditEnableCell, renderEnableCell } from './../components/DataTable/isEnable-cell/index';
+import { updatedAtOnlyOperators } from "./../components/DataTable/filter/updatedAt/index";
+import { createdByOnlyOperators } from "./../components/DataTable/filter/createdBy/index";
 import { PersonalDocumentActionCell } from "./../components/DataTable/action-cell/personalDocument/index";
 import { AwaitSigningActionCell } from "./../components/DataTable/action-cell/awaitSigning/index";
 import { TemplateHistoryActionCell } from "./../components/DataTable/action-cell/templateHistory/index";
@@ -8,22 +8,18 @@ import { statusOnlyOperators } from "./../components/DataTable/filter/status/ind
 
 import { isEnableOnlyOperators } from "./../components/DataTable/filter/isEnable/index";
 import { StatusCell } from "./../components/DataTable/status-cell/index";
-import { ReactNode } from "react";
 import { GridColDef } from "@mui/x-data-grid";
-import { Template } from "../models/template";
 import { FileCell } from "../components/DataTable/file-cell";
-import { IsEnableCell } from "../components/DataTable/isEnable-cell";
 import { typeOnlyOperators } from "../components/DataTable/filter/type-file";
 import { typeTemplateOnlyOperators } from "../components/DataTable/filter/type-template";
-import { DataTableHeader } from "./constants";
+import { DataTableHeader, DeviceType, Permissions } from "./constants";
 import { TemplateActionCell } from "../components/DataTable/action-cell/template";
 import { NewTemplateActionCell } from "../components/DataTable/action-cell/newTemplate";
-import { departmentOnlyOperators } from "../components/DataTable/filter/department";
 import { DateCell } from "../components/DataTable/formatDate-cell";
 import { IsLockedCell } from "../components/DataTable/isLocked-cell";
 import { CreatedByCell } from "../components/DataTable/createdBy-cell";
-import { createdAtOnlyOperators } from '../components/DataTable/filter/createdAt';
-import helpers from './helpers';
+import { createdAtOnlyOperators } from "../components/DataTable/filter/createdAt";
+import helpers from "./helpers";
 
 const {
   TYPE,
@@ -41,13 +37,14 @@ const {
   IS_LOCKED,
 } = DataTableHeader;
 
+const { checkHideColumnFromDevice, checkHideColumnFromPermission } = helpers;
+const { IPAD } = DeviceType;
+const { ENABLE_TEMPLATE } = Permissions;
 export const templateColumns: GridColDef[] = [
   {
     field: TYPE,
     headerName: "File",
     filterOperators: typeOnlyOperators,
-    // hide: helpers.checkHideColumn(IPAD)
-    
     headerAlign: "center",
     renderCell: FileCell,
     align: "center",
@@ -56,7 +53,9 @@ export const templateColumns: GridColDef[] = [
     field: TEMPLATE_NAME,
     headerName: "Name",
     flex: 1,
+    minWidth: 200,
     filterable: false,
+    hideable: false,
   },
   {
     field: DESCRIPTION,
@@ -68,7 +67,6 @@ export const templateColumns: GridColDef[] = [
     field: TYPE_TEMPLATE,
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
-    headerAlign: 'center' 
   },
   {
     field: DEPARTMENT,
@@ -82,22 +80,27 @@ export const templateColumns: GridColDef[] = [
     headerName: "Created By",
     renderCell: CreatedByCell,
     flex: 0.5,
-    filterOperators: createdByOnlyOperators
+    filterOperators: createdByOnlyOperators,
   },
   {
     field: STATUS,
     headerName: "Status",
     renderCell: StatusCell,
     filterable: false,
-    headerAlign: 'center',
+    headerAlign: "center",
+    disableColumnMenu: true,
+    hideable: checkHideColumnFromPermission(ENABLE_TEMPLATE)
   },
   {
     field: IS_ENABLE,
     headerName: "Is Enable",
-    renderCell: IsEnableCell,
+    renderEditCell: renderEditEnableCell,
+    editable: true,
+    renderCell: renderEnableCell,
     align: "center",
     filterOperators: isEnableOnlyOperators,
-    headerAlign: 'center',
+    headerAlign: "center",
+    hideable: checkHideColumnFromPermission(ENABLE_TEMPLATE)
   },
   {
     field: ACTION,
@@ -105,8 +108,9 @@ export const templateColumns: GridColDef[] = [
     renderCell: TemplateActionCell,
     filterable: false,
     sortable: false,
-    align: 'center',
-    headerAlign: 'center'
+    hideable: false,
+    align: "center",
+    headerAlign: "center",
   },
 ];
 
@@ -124,13 +128,19 @@ export const templateHistoryColumns: GridColDef[] = [
     headerName: "Name",
     flex: 1,
     filterable: false,
+    minWidth: 200,
+    hideable: false
   },
-  { field: DESCRIPTION, headerName: "Description", flex: 1, filterable: false },
+  {
+    field: DESCRIPTION,
+    headerName: "Description",
+    flex: 1,
+    filterable: false,
+  },
   {
     field: TYPE_TEMPLATE,
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
-    headerAlign: 'center' 
   },
   {
     field: DEPARTMENT,
@@ -148,26 +158,29 @@ export const templateHistoryColumns: GridColDef[] = [
     field: CREATED_AT,
     headerName: "Date Published",
     flex: 0.4,
+    minWidth: 100,
     renderCell: DateCell,
     align: "center",
     headerAlign: "center",
-    filterOperators: createdAtOnlyOperators
+    filterOperators: createdAtOnlyOperators,
   },
   {
     field: UPDATED_AT,
     headerName: "Date Modified",
     flex: 0.4,
+    minWidth: 100,
     renderCell: DateCell,
     align: "center",
     headerAlign: "center",
-    filterOperators: updatedAtOnlyOperators
+    filterOperators: updatedAtOnlyOperators,
   },
   {
     field: ACTION,
     headerName: "Action",
     filterable: false,
     renderCell: TemplateHistoryActionCell,
-    sortable: false
+    sortable: false,
+    hideable: false,
   },
 ];
 
@@ -185,13 +198,18 @@ export const newTemplatesColumns: GridColDef[] = [
     headerName: "Name",
     flex: 1,
     filterable: false,
+    minWidth: 200,
   },
-  { field: DESCRIPTION, headerName: "Description", flex: 1, filterable: false },
+  {
+    field: DESCRIPTION,
+    headerName: "Description",
+    flex: 1,
+    filterable: false,
+  },
   {
     field: TYPE_TEMPLATE,
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
-    headerAlign: 'center' 
   },
   {
     field: DEPARTMENT,
@@ -203,21 +221,24 @@ export const newTemplatesColumns: GridColDef[] = [
     headerName: "Created By",
     renderCell: CreatedByCell,
     flex: 0.5,
-    filterOperators: createdByOnlyOperators
+    filterOperators: createdByOnlyOperators,
+    minWidth: 200,
   },
   {
     field: CREATED_AT,
     headerName: "Date Created",
     renderCell: DateCell,
     align: "center",
-    filterOperators: createdAtOnlyOperators
+    resizable: false,
+    filterOperators: createdAtOnlyOperators,
   },
   {
     field: ACTION,
     headerName: "Action",
     renderCell: NewTemplateActionCell,
     filterable: false,
-    sortable: false
+    sortable: false,
+    hideable: false,
   },
 ];
 
@@ -229,14 +250,16 @@ export const awaitSigningColumns: GridColDef[] = [
     headerAlign: "center",
     renderCell: FileCell,
     align: "center",
+    hide: !checkHideColumnFromDevice(IPAD)
   },
   {
     field: DOCUMENT_NAME,
     headerName: "Name",
     flex: 1,
     disableColumnMenu: true,
+    hideable: false,
     filterable: false,
-    
+    minWidth: 200
   },
   {
     field: CREATED_AT,
@@ -245,7 +268,8 @@ export const awaitSigningColumns: GridColDef[] = [
     align: "center",
     flex: 0.2,
     headerAlign: "center",
-    filterOperators: createdAtOnlyOperators
+    filterOperators: createdAtOnlyOperators,
+    minWidth: 100
   },
   {
     field: CREATED_BY,
@@ -253,15 +277,17 @@ export const awaitSigningColumns: GridColDef[] = [
     sortable: false,
     hideable: false,
     flex: 0.5,
+    minWidth: 200,
     renderCell: CreatedByCell,
-    filterOperators: createdByOnlyOperators
+    filterOperators: createdByOnlyOperators,
   },
   {
     field: ACTION,
     headerName: "Action",
     renderCell: AwaitSigningActionCell,
     filterable: false,
-    sortable: false
+    sortable: false,
+    hideable: false
   },
 ];
 
@@ -273,11 +299,13 @@ export const personalDocColumns: GridColDef[] = [
     headerAlign: "center",
     renderCell: FileCell,
     align: "center",
+    hide: !checkHideColumnFromDevice(IPAD)
   },
   {
     field: DOCUMENT_NAME,
     headerName: "Name",
     flex: 1,
+    minWidth: 200
   },
   {
     field: CREATED_AT,
@@ -286,7 +314,9 @@ export const personalDocColumns: GridColDef[] = [
     align: "center",
     headerAlign: "center",
     flex: 0.2,
-    filterOperators: createdAtOnlyOperators
+    filterOperators: createdAtOnlyOperators,
+    minWidth: 100,
+    hide: !checkHideColumnFromDevice(IPAD)
   },
   {
     field: UPDATED_AT,
@@ -295,7 +325,8 @@ export const personalDocColumns: GridColDef[] = [
     align: "center",
     headerAlign: "center",
     flex: 0.2,
-    filterOperators: updatedAtOnlyOperators
+    minWidth: 100,
+    filterOperators: updatedAtOnlyOperators,
   },
   {
     field: STATUS,
@@ -315,7 +346,8 @@ export const personalDocColumns: GridColDef[] = [
     headerName: "Action",
     renderCell: PersonalDocumentActionCell,
     filterable: false,
-    sortable: false
+    sortable: false,
+    hideable: false,
   },
 ];
 

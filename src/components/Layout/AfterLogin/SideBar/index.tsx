@@ -25,7 +25,6 @@ import { useDispatch, useSelector } from "../../../../hooks";
 import { setLocation } from "../../../../slices/location";
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import {
-  DeviceType,
   DeviceWidth,
   LocationIndex,
   Permissions,
@@ -111,7 +110,7 @@ const SideBar: React.FC = () => {
       {innerWidth > DeviceWidth.IPAD_WIDTH && <div
         className={`${
           isSideBarVisible && "w-80 px-10"
-        } flex flex-col bg-dark-config min-h-screen items-center pt-8 space-y-8 absolute z-50 md:relative `}
+        } flex flex-col bg-dark-config min-h-screen items-center pt-8 px-3 space-y-8 absolute z-50 md:relative `}
       >
         <IconButton
           onClick={() => dispatch(toggleSideBar())}
@@ -267,6 +266,7 @@ const SideBar: React.FC = () => {
           <div className="flex flex-col space-y-3 items-center w-full">
             <AccountCircleIcon className="fill-white" />
             <h4 className="font-semibold text-white">{userInfo?.userName}</h4>
+            <h4 className="font-semibold text-white">{userInfo?.roleName}</h4>
           </div>
         )}
         <Divider className="bg-gray-config" flexItem />

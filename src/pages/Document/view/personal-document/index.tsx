@@ -44,7 +44,7 @@ const ViewPersonalDocument: React.FC = () => {
       </div>
       <div className="flex space-x-2 items-center">
         <h4>{t ("Date modified")}:</h4>
-        <Typography className="text-white">---</Typography>
+        <Typography className="text-white">{helpers.addHours(new Date(signer.updateAt)) ?? '---'}</Typography>
       </div>
     </div>
   ));

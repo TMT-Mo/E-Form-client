@@ -1,6 +1,6 @@
-import { UserInfo } from './../models/auth';
+import { UserInfo } from "./../models/auth";
 import jwtDecode from "jwt-decode";
-import { DeviceType, DeviceWidth, TOKEN_NAME } from "./constants";
+import { DeviceType, DeviceWidth, Permissions, TOKEN_NAME } from "./constants";
 
 // *-------------------------------------------- HANDLE TOKEN --------------------------------------------
 const setToken = (tokenValue: string) => {
@@ -17,7 +17,7 @@ const getToken = (): string => {
 };
 
 // *-------------------------------------------- HANDLE TIME  --------------------------------------------
-const addHours = (date: Date, hours: number): string => {
+const addHours = (date: Date, hours: number = 7): string => {
   // 👇 Make copy with "Date" constructor.
   const dateCopy = new Date(date);
 
@@ -27,28 +27,32 @@ const addHours = (date: Date, hours: number): string => {
 };
 
 // *-------------------------------------------- HANDLE MUI  --------------------------------------------
-const { MOBILE, LAPTOP, IPAD } = DeviceType;
-const {MOBILE_WIDTH, LAPTOP_WIDTH, IPAD_WIDTH} = DeviceWidth
-type Type = 'check permission' | 'check device'
-const checkHideColumn = (hideDevice: DeviceType,   ) => {
-  let result: boolean
+const { MOBILE, IPAD } = DeviceType;
+const { MOBILE_WIDTH, IPAD_WIDTH } = DeviceWidth;
+const checkHideColumnFromDevice = (hideDevice: DeviceType) => {
+  let result: boolean;
   const { innerWidth } = window;
-  
-  const permissions = (jwtDecode(getToken()) as UserInfo).idPermissions.split(",").map((id) => +id);
-  // result = permissions?.includes(permission)!;
-
   switch (hideDevice) {
     case MOBILE: {
-      innerWidth <= MOBILE_WIDTH ? result = false : result = true;
+      innerWidth <= MOBILE_WIDTH ? (result = false) : (result = true);
       break;
     }
     case IPAD: {
-      innerWidth <= IPAD_WIDTH ? result = false : result = true;
+      innerWidth <= IPAD_WIDTH ? (result = false) : (result = true);
       break;
     }
-    default: result = true
+    default:
+      result = true;
   }
-  return result
+
+  return result;
+};
+
+const checkHideColumnFromPermission = (permission: Permissions) => {
+  const permissions = getToken() ? (jwtDecode(getToken()) as UserInfo)?.idPermissions
+    .split(",")
+    .map((id) => +id) : undefined;
+  return permissions?.includes(permission!) ;
 };
 // *-------------------------------------------- HANDLE NOTIFICATIONS --------------------------------------------
 // export handleNotification =
@@ -58,7 +62,8 @@ const helpers = {
   getToken,
   clearToken,
   addHours,
-  checkHideColumn
+  checkHideColumnFromDevice,
+  checkHideColumnFromPermission,
 };
 
 export default helpers;

@@ -48,9 +48,12 @@ const {
 
 const { ENABLE_TEMPLATE } = Permissions;
 const { MOBILE, IPAD, LAPTOP } = DeviceType;
+const { checkHideColumnFromDevice, checkHideColumnFromPermission } = helpers;
 
 const DataTable: React.FC = () => {
   const dispatch = useDispatch();
+  const [columnVisibilityModel, setColumnVisibilityModel] =
+    React.useState<GridColumnVisibilityModel>();
   const { locationIndex } = useSelector((state) => state.location);
   const { isGetTemplatesLoading, templateList } = useSelector(
     (state) => state.template
@@ -97,13 +100,14 @@ const DataTable: React.FC = () => {
   );
 
   const columnVisible: GridColumnModel = {
-    status: usePermission(ENABLE_TEMPLATE),
+    status: usePermission(ENABLE_TEMPLATE) && checkHideColumnFromDevice(IPAD),
     isEnable: usePermission(ENABLE_TEMPLATE),
-    type: helpers.checkHideColumn(IPAD),
-    description: helpers.checkHideColumn(IPAD),
-    createdAt: helpers.checkHideColumn(IPAD),
-    updateAt: helpers.checkHideColumn(IPAD),
-    createdBy: usePermission(ENABLE_TEMPLATE),
+    type: checkHideColumnFromDevice(IPAD),
+    description: checkHideColumnFromDevice(IPAD),
+    createdAt: checkHideColumnFromDevice(IPAD),
+    updateAt: checkHideColumnFromDevice(IPAD),
+    createdBy:
+      usePermission(ENABLE_TEMPLATE) && checkHideColumnFromDevice(IPAD),
   };
 
   const data = (): Data => {
@@ -123,6 +127,7 @@ const DataTable: React.FC = () => {
           totalPages: Math.ceil(totalTemplate! / 10),
           onChangePage: (e, value) =>
             dispatch(onChangeTemplatePage({ selectedPage: --value })),
+          columnVisible,
         };
       case ACCOUNT:
         return {
@@ -132,11 +137,7 @@ const DataTable: React.FC = () => {
         };
       case TEMPLATE:
         return {
-          columns: templateColumns.map((col) =>
-            col.field === "isEnable"
-              ? { ...col, filterable: columnVisible.isEnable }
-              : col
-          ),
+          columns: templateColumns,
           loading: isGetTemplatesLoading,
           table: templateList,
           currentPage: currentPageTemplate,
@@ -211,7 +212,12 @@ const DataTable: React.FC = () => {
         sortingMode="server"
         onSortModelChange={handleSortModelChange}
         columnVisibilityModel={
-          data().columnVisible as GridColumnVisibilityModel
+          columnVisibilityModel
+            ? columnVisibilityModel
+            : (data().columnVisible! as GridColumnVisibilityModel)
+        }
+        onColumnVisibilityModelChange={(newModel) =>
+          setColumnVisibilityModel(newModel)
         }
         hideFooterPagination
         hideFooter
