@@ -97,6 +97,7 @@ const SideBar: React.FC = () => {
         locationIndex: index,
       })
     );
+    innerWidth <= DeviceWidth.IPAD_WIDTH && dispatch(toggleSideBar())
     if (locationIndex !== index) {
       dispatch(clearTemplates());
       dispatch(clearDocuments());
@@ -110,7 +111,7 @@ const SideBar: React.FC = () => {
       {innerWidth > DeviceWidth.IPAD_WIDTH && <div
         className={`${
           isSideBarVisible && "w-80 px-10"
-        } flex flex-col bg-dark-config min-h-screen items-center px-3 pt-8 space-y-8 absolute z-50 md:relative `}
+        } flex flex-col bg-dark-config min-h-screen items-center pt-8 space-y-8 absolute z-50 md:relative `}
       >
         <IconButton
           onClick={() => dispatch(toggleSideBar())}
@@ -253,7 +254,7 @@ const SideBar: React.FC = () => {
 
       {/* // *-------------------------------------------- Mobile  -------------------------------------------- */}
       {innerWidth <= DeviceWidth.IPAD_WIDTH && <div
-        className={`${isSideBarVisible ? 'flex' : 'hidden'} flex-col bg-dark-config min-h-screen items-center px-10 w-80 pt-8 space-y-8 absolute z-50 md:relative `}
+        className={`${isSideBarVisible ? 'flex' : 'hidden'} flex-col bg-dark-config min-h-screen items-center px-10 w-60 pt-8 space-y-8 absolute z-50 md:relative md:max-w-full`}
       >
         <IconButton
           onClick={() => dispatch(toggleSideBar())}

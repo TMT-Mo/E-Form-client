@@ -10,6 +10,7 @@ import { getTemplates, searchTemplate } from "../../../slices/template";
 import { setViewerLocation } from "../../../slices/location";
 import {
   DataTableHeader,
+  DeviceWidth,
   Permissions,
   ViewerLocationIndex,
 } from "../../../utils/constants";
@@ -41,6 +42,7 @@ const TemplateHistory = () => {
     (state) => state.template
   );
   const { userInfo } = useSelector((state) => state.auth);
+  const {innerWidth} = window
 
   useEffect(() => {
     const getTemplateList = dispatch(
@@ -93,7 +95,7 @@ const TemplateHistory = () => {
     <div className="flex flex-col py-10 space-y-6">
       <h2>{t("History")}</h2>
       <div className="flex flex-col rounded-md border border-gray-400 bg-white">
-        <div className="flex px-10 py-6 justify-between">
+        <div className="flex px-2 py-6 justify-between scale-90 space-x-10 md:scale-100 md:px-10">
           <Paper
             component="form"
             sx={{
@@ -132,9 +134,9 @@ const TemplateHistory = () => {
                   variant="outlined"
                   size="small"
                   className="shadow-md"
-                  startIcon={<AddIcon />}
                 >
-                  {t("Add New")}
+                  <AddIcon className="md:mr-2"/>
+                  {innerWidth > DeviceWidth.IPAD_WIDTH && t("Add New")}
                 </StyledAddBtn>
               </Link>
             </div>

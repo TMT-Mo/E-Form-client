@@ -58,7 +58,7 @@ const TopBar: React.FC = () => {
     logout();
   };
   return (
-    <div className="flex py-6 px-20 space-x-20 justify-between items-center bg-white">
+    <div className="flex py-6 px-4 justify-between items-center bg-white md:px-20">
       <IconButton onClick={() => dispatch(toggleSideBar())}>
         {!isSideBarVisible ? <MenuIcon fontSize="small"/> : <ArrowBackIosNewIcon fontSize="small"/>}
       </IconButton>
