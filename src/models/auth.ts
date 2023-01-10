@@ -18,3 +18,11 @@ export interface UserInfo {
   idPermissions: string,
   departmentName: string,
 }
+
+export interface GetSignatureArgs{
+  userId: number
+}
+
+export interface GetSignatureResponse{
+  signature: string
+}
