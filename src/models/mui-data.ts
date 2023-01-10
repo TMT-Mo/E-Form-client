@@ -1,6 +1,6 @@
 import { DataTableHeader } from './../utils/constants';
 import { GridColDef } from "@mui/x-data-grid";
-import { Document } from "./document";
+import { Document, DocumentHistoryList } from "./document";
 import { Template } from "./template";
 
 export interface GetRowIdParams {
@@ -41,7 +41,7 @@ export interface SorterModel {
 export interface Data {
   columns?: GridColDef[];
   loading?: boolean;
-  table: Template[] | Document[];
+  table: Template[] | Document[] | DocumentHistoryList[];
   currentPage?: number;
   totalPages?: number;
   onChangePage?: (event: React.ChangeEvent<unknown>, page: number) => void;

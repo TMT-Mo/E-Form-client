@@ -382,36 +382,71 @@ export const sharedDocColumns: GridColDef[] = [
 ];
 
 export const historyColumns: GridColDef[] = [
-  { field: "file", headerName: "File", flex: 0.5 },
-  {
-    field: "name",
-    headerName: "Name",
-    flex: 1,
-  },
-  { field: "datePublished", headerName: "Date Published", flex: 1 },
-  { field: "dateModified", headerName: "Date Modified", flex: 1 },
   {
     field: TYPE,
+    headerName: "File",
+    filterOperators: typeOnlyOperators,
+    headerAlign: "center",
+    renderCell: FileCell,
+    align: "center",
+  },
+  {
+    field: DOCUMENT_NAME,
+    headerName: "Name",
+    flex: 1,
+    disableColumnMenu: true,
+    hideable: false,
+    filterable: false,
+    minWidth: 200
+  },
+  {
+    field: CREATED_AT,
+    headerName: "Date Published",
+    renderCell: DateCell,
+    align: "center",
+    headerAlign: "center",
+    flex: 0.2,
+    filterOperators: createdAtOnlyOperators,
+    minWidth: 100,
+    hide: !checkHideColumnFromDevice(IPAD)
+  },
+  {
+    field: UPDATED_AT,
+    headerName: "Date Modified",
+    renderCell: DateCell,
+    align: "center",
+    headerAlign: "center",
+    flex: 0.2,
+    minWidth: 100,
+    filterOperators: updatedAtOnlyOperators,
+  },
+  {
+    field: TYPE_TEMPLATE,
     headerName: "Type",
+    filterOperators: typeTemplateOnlyOperators,
   },
   {
     field: DEPARTMENT,
     headerName: "Department",
-    flex: 1,
+    align: "center",
   },
   {
     field: STATUS,
     headerName: "Status",
-    flex: 1,
+    align: "center",
+    renderCell: StatusCell,
+    headerAlign: "center",
   },
   {
     field: "version",
     headerName: "Version",
-    flex: 1,
   },
   {
     field: ACTION,
     headerName: "Action",
-    flex: 1,
+    renderCell: PersonalDocumentActionCell,
+    filterable: false,
+    sortable: false,
+    hideable: false,
   },
 ];

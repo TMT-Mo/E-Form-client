@@ -14,6 +14,7 @@ import {
 } from "../../utils/constants";
 import {
   awaitSigningColumns,
+  historyColumns,
   newTemplatesColumns,
   personalDocColumns,
   sharedDocColumns,
@@ -33,6 +34,7 @@ import {
 import { GridColumnModel, Data, GetRowIdParams } from "../../models/mui-data";
 import { setFilter, setSorter } from "../../slices/filter";
 import { helpers } from "../../utils";
+import { Document, DocumentHistoryList } from "../../models/document";
 
 const {
   SYSTEM,
@@ -58,7 +60,7 @@ const DataTable: React.FC = () => {
   const { isGetTemplatesLoading, templateList } = useSelector(
     (state) => state.template
   );
-  const { isGetDocumentListLoading, documentList } = useSelector(
+  const { isGetDocumentListLoading, documentList, isGetDocumentHistoryLoading } = useSelector(
     (state) => state.document
   );
   const totalTemplate = useSelector((state) => state.template.total);
@@ -150,7 +152,7 @@ const DataTable: React.FC = () => {
         return {
           columns: awaitSigningColumns,
           loading: isGetDocumentListLoading,
-          table: documentList,
+          table: documentList as Document[],
           currentPage: currentPageDocument,
           totalPages: Math.ceil(totalDocument! / 10),
           onChangePage: (e, value) =>
@@ -171,7 +173,7 @@ const DataTable: React.FC = () => {
         return {
           columns: personalDocColumns,
           loading: isGetDocumentListLoading,
-          table: documentList,
+          table: documentList as Document[],
           currentPage: currentPageDocument,
           totalPages: Math.ceil(totalDocument! / 10),
           onChangePage: (e, value) =>
@@ -185,9 +187,13 @@ const DataTable: React.FC = () => {
         };
       case DOCUMENT_HISTORY:
         return {
-          columns: sharedDocColumns,
-          loading: false,
-          table: templateList,
+          columns: historyColumns,
+          loading: isGetDocumentHistoryLoading,
+          table: documentList as DocumentHistoryList[],
+          currentPage: currentPageDocument,
+          totalPages: Math.ceil(totalDocument! / 10),
+          onChangePage: (e, value) =>
+            dispatch(onChangeDocumentPage({ selectedPage: --value })),
         };
       default:
         return { table: [] };

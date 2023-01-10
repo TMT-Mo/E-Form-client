@@ -2,6 +2,8 @@ import {
   ApproveDocumentArgs,
   CreateDocumentArgs,
   Document,
+  DocumentHistoryList,
+  GetDocumentHistoryArgs,
   GetDocumentsArgs,
 } from "./../models/document";
 import {
@@ -16,7 +18,7 @@ import { ValidationErrors } from "../models/notification";
 import { handleSuccess, handleError } from "./notification";
 interface State {
   isCreateDocumentLoading: boolean;
-  documentList: Document[];
+  documentList: Document[] | DocumentHistoryList[];
   isGetDocumentListLoading: boolean;
   searchItemValue?: string;
   total?: number;
@@ -24,6 +26,7 @@ interface State {
   currentPage: number;
   documentDetail?: Document;
   isApproveDocumentLoading: boolean;
+  isGetDocumentHistoryLoading: boolean;
 }
 
 const initialState: State = {
@@ -35,7 +38,8 @@ const initialState: State = {
   size: 10,
   currentPage: 0,
   documentDetail: undefined,
-  isApproveDocumentLoading: false
+  isApproveDocumentLoading: false,
+  isGetDocumentHistoryLoading: false,
 };
 
 const ACTION_TYPE = "document/";
@@ -58,10 +62,7 @@ const getDocumentDetailCR: CR<{ document: Document }> = (
   documentDetail: payload.document!,
 });
 
-const searchDocumentCR: CR<{ value: string }> = (
-  state,
-  { payload }
-) => ({
+const searchDocumentCR: CR<{ value: string }> = (state, { payload }) => ({
   ...state,
   searchItemValue: payload.value!,
 });
@@ -139,6 +140,29 @@ const getDocuments = createAsyncThunk(
     }
   }
 );
+const getDocumentHistory = createAsyncThunk(
+  `${ACTION_TYPE}getDocumentHistory`,
+  async (args: GetDocumentHistoryArgs, { dispatch }) => {
+    try {
+      const result = await documentServices.getDocumentHistory({
+        ...args,
+      });
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
 
 const document = createSlice({
   name: "document",
@@ -156,14 +180,14 @@ const document = createSlice({
     }),
     clearDocumentPagination: (state: State) => ({
       ...state,
-      currentPage: 0
+      currentPage: 0,
     }),
     clearDocumentDetail: (state: State) => ({
       ...state,
       documentDetail: undefined,
     }),
     getDocumentDetail: getDocumentDetailCR,
-    searchDocument: searchDocumentCR
+    searchDocument: searchDocumentCR,
   },
   extraReducers: (builder) => {
     builder.addCase(createDocument.pending, (state) => ({
@@ -207,11 +231,35 @@ const document = createSlice({
         isGetDocumentListLoading: false,
       };
     });
+    builder.addCase(getDocumentHistory.pending, (state) => ({
+      ...state,
+      isGetDocumentHistoryLoading: true,
+    }));
+    builder.addCase(getDocumentHistory.fulfilled, (state, { payload }) => ({
+      ...state,
+      isGetDocumentHistoryLoading: false,
+      documentList: payload.items,
+      total: payload?.total!,
+    }));
+    builder.addCase(getDocumentHistory.rejected, (state) => {
+      if (state.isGetDocumentHistoryLoading) return; //* Handle api abort
+      return {
+        ...state,
+        isGetDocumentHistoryLoading: false,
+      };
+    });
   },
 });
 
-export { createDocument, getDocuments, approveDocument };
+export { createDocument, getDocuments, approveDocument, getDocumentHistory };
 
-export const { onChangeDocumentPage, clearDocuments, getDocumentDetail, clearDocumentDetail, searchDocument, clearDocumentPagination } = document.actions;
+export const {
+  onChangeDocumentPage,
+  clearDocuments,
+  getDocumentDetail,
+  clearDocumentDetail,
+  searchDocument,
+  clearDocumentPagination,
+} = document.actions;
 
 export default document.reducer;

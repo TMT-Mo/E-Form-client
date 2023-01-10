@@ -1,3 +1,4 @@
+
 export interface AwaitSigningResponse {}
 
 export interface PersonalDocResponse {}
@@ -84,4 +85,32 @@ export interface ApproveDocumentArgs{
 
 export interface ApproveDocumentResponse{
   message: string;
+}
+
+export interface GetDocumentHistoryArgs extends GetDocumentsArgs{
+  userId: number
+}
+
+export interface DocumentHistoryList{
+  id: number;
+  createdAt: string;
+  updateAt: string;
+  documentName: string;
+  type: string;
+  description: string;
+  size: number;
+  status: number;
+  typeName: string;
+  departmentName: string;
+  link: string;
+  createdBy: Creator;
+  xfdfString: string;
+  version: string;
+  comment: string
+}
+export interface GetDocumentHistoryResponse{
+  items: DocumentHistoryList[];
+  total: number;
+  page: number;
+  size: number;
 }
