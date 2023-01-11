@@ -45,7 +45,7 @@ const ViewPersonalDocument: React.FC = () => {
       </div>
       <div className="flex space-x-2 items-center">
         <h4>{t ("Date modified")}:</h4>
-        <Typography className="text-white">{helpers.addHours(new Date(signer.updateAt)) ?? '---'}</Typography>
+        <Typography className="text-white">{helpers.addHours(signer.updateAt) ?? '---'}</Typography>
       </div>
     </div>
   ));
@@ -136,7 +136,7 @@ const ViewPersonalDocument: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4>{t ("Created At")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {helpers.addHours(new Date(createdAt), 7)}
+                {helpers.addHours(createdAt, 7)}
               </span>
             </div>
             <Divider className="bg-white" />

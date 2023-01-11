@@ -17,8 +17,9 @@ const getToken = (): string => {
 };
 
 // *-------------------------------------------- HANDLE TIME  --------------------------------------------
-const addHours = (date: Date, hours: number = 7): string => {
+const addHours = (date: string | null, hours: number = 7): string => {
   // 👇 Make copy with "Date" constructor.
+  if (!date) return '---'
   const dateCopy = new Date(date);
 
   dateCopy.setHours(dateCopy.getHours() + hours);

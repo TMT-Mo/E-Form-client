@@ -72,7 +72,7 @@ const ViewHistoryDocument: React.FC = () => {
         <Link to="/user">
           <ArrowBackIosIcon fontSize="small" className="fill-white" />
         </Link>
-        <span className="text-white">{t("Personal Document")}</span>
+        <span className="text-white">{t("History Document")}</span>
       </div>
       <div className="flex flex-col-reverse md:flex-row">
         <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 pb-8 md:w-80 md:pb-0">
@@ -111,7 +111,7 @@ const ViewHistoryDocument: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4>{t("Created At")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {helpers.addHours(new Date(createdAt), 7)}
+                {helpers.addHours(createdAt, 7)}
               </span>
             </div>
             <div className="flex items-center space-x-2 w-fit">

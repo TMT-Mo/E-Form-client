@@ -212,7 +212,7 @@ const ViewApproveTemplate: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4>{t("Created At")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {helpers.addHours(new Date(createdAt), 7)}
+                {helpers.addHours(createdAt, 7)}
               </span>
             </div>
             <Divider className="bg-white" />

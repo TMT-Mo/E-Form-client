@@ -134,7 +134,7 @@ const ViewTemplateHistory: React.FC = () => {
             <div className="flex items-center space-x-2">
               <h4 className="whitespace-nowrap ">{t("Created At")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {helpers.addHours(new Date(createdAt), 7)}
+                {helpers.addHours(createdAt, 7)}
               </span>
             </div>
             <div className="flex items-center space-x-2">
