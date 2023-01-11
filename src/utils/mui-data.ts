@@ -1,3 +1,4 @@
+import { DocumentHistoryActionCell } from './../components/DataTable/action-cell/documentHistory/index';
 import { renderEditEnableCell, renderEnableCell } from './../components/DataTable/isEnable-cell/index';
 import { updatedAtOnlyOperators } from "./../components/DataTable/filter/updatedAt/index";
 import { createdByOnlyOperators } from "./../components/DataTable/filter/createdBy/index";
@@ -444,7 +445,7 @@ export const historyColumns: GridColDef[] = [
   {
     field: ACTION,
     headerName: "Action",
-    renderCell: PersonalDocumentActionCell,
+    renderCell: DocumentHistoryActionCell,
     filterable: false,
     sortable: false,
     hideable: false,

@@ -24,7 +24,7 @@ interface State {
   total?: number;
   size?: number;
   currentPage: number;
-  documentDetail?: Document;
+  documentDetail?: Document | DocumentHistoryList;
   isApproveDocumentLoading: boolean;
   isGetDocumentHistoryLoading: boolean;
 }
@@ -54,7 +54,7 @@ const onChangeDocumentPageCR: CR<{ selectedPage: number }> = (
   currentPage: payload.selectedPage!,
 });
 
-const getDocumentDetailCR: CR<{ document: Document }> = (
+const getDocumentDetailCR: CR<{ document: Document | DocumentHistoryList }> = (
   state,
   { payload }
 ) => ({
