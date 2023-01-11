@@ -7,7 +7,7 @@ import { useSelector } from "../../../../hooks";
 import StatusTag from "../../../../components/StatusTag";
 import { useTranslation } from "react-i18next";
 import { helpers } from "../../../../utils";
-import { DocumentHistoryList } from "../../../../models/document";
+import { StatusDocument } from "../../../../utils/constants";
 
 const ViewHistoryDocument: React.FC = () => {
   const viewer = useRef(null);
@@ -24,7 +24,8 @@ const ViewHistoryDocument: React.FC = () => {
     typeName,
     version,
     status,
-  } = (documentDetail as DocumentHistoryList)!;
+    reason,
+  } = documentDetail!;
   const [t] = useTranslation();
   // if using a class, equivalent of componentDidMount
 
@@ -104,7 +105,7 @@ const ViewHistoryDocument: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4>{t("Created By")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {/* {createdBy.username} */}
+                {createdBy.username}
               </span>
             </div>
             <div className="flex flex-col space-y-2">
@@ -113,14 +114,22 @@ const ViewHistoryDocument: React.FC = () => {
                 {helpers.addHours(new Date(createdAt), 7)}
               </span>
             </div>
-            <div className="flex items-center space-x-1">
+            <div className="flex items-center space-x-2 w-fit">
               <h4>{t("Status")}:</h4>
               <StatusTag status={status} type="document" />
             </div>
+            {status === StatusDocument.REJECTED_DOCUMENT && (
+              <div className="flex flex-col space-y-2">
+                <h4>{t("Reason")}:</h4>
+                <span className="text-white text-base break-words w-60">
+                  {reason}
+                </span>
+              </div>
+            )}
             <div className="flex items-center space-x-1">
               <h4>{t("Version")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {version}
+                {version!}
               </span>
             </div>
             <Divider className="bg-white" />

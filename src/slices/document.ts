@@ -2,7 +2,6 @@ import {
   ApproveDocumentArgs,
   CreateDocumentArgs,
   Document,
-  DocumentHistoryList,
   GetDocumentHistoryArgs,
   GetDocumentsArgs,
 } from "./../models/document";
@@ -18,15 +17,14 @@ import { ValidationErrors } from "../models/notification";
 import { handleSuccess, handleError } from "./notification";
 interface State {
   isCreateDocumentLoading: boolean;
-  documentList: Document[] | DocumentHistoryList[];
+  documentList: Document[];
   isGetDocumentListLoading: boolean;
   searchItemValue?: string;
   total?: number;
   size?: number;
   currentPage: number;
-  documentDetail?: Document | DocumentHistoryList;
+  documentDetail?: Document;
   isApproveDocumentLoading: boolean;
-  isGetDocumentHistoryLoading: boolean;
 }
 
 const initialState: State = {
@@ -39,7 +37,6 @@ const initialState: State = {
   currentPage: 0,
   documentDetail: undefined,
   isApproveDocumentLoading: false,
-  isGetDocumentHistoryLoading: false,
 };
 
 const ACTION_TYPE = "document/";
@@ -54,7 +51,7 @@ const onChangeDocumentPageCR: CR<{ selectedPage: number }> = (
   currentPage: payload.selectedPage!,
 });
 
-const getDocumentDetailCR: CR<{ document: Document | DocumentHistoryList }> = (
+const getDocumentDetailCR: CR<{ document: Document  }> = (
   state,
   { payload }
 ) => ({
@@ -233,16 +230,16 @@ const document = createSlice({
     });
     builder.addCase(getDocumentHistory.pending, (state) => ({
       ...state,
-      isGetDocumentHistoryLoading: true,
+      isGetDocumentListLoading: true,
     }));
     builder.addCase(getDocumentHistory.fulfilled, (state, { payload }) => ({
       ...state,
-      isGetDocumentHistoryLoading: false,
+      isGetDocumentListLoading: false,
       documentList: payload.items,
       total: payload?.total!,
     }));
     builder.addCase(getDocumentHistory.rejected, (state) => {
-      if (state.isGetDocumentHistoryLoading) return; //* Handle api abort
+      if (state.isGetDocumentListLoading) return; //* Handle api abort
       return {
         ...state,
         isGetDocumentHistoryLoading: false,

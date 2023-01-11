@@ -34,7 +34,6 @@ import {
 import { GridColumnModel, Data, GetRowIdParams } from "../../models/mui-data";
 import { setFilter, setSorter } from "../../slices/filter";
 import { helpers } from "../../utils";
-import { Document, DocumentHistoryList } from "../../models/document";
 
 const {
   SYSTEM,
@@ -60,7 +59,7 @@ const DataTable: React.FC = () => {
   const { isGetTemplatesLoading, templateList } = useSelector(
     (state) => state.template
   );
-  const { isGetDocumentListLoading, documentList, isGetDocumentHistoryLoading } = useSelector(
+  const { isGetDocumentListLoading, documentList } = useSelector(
     (state) => state.document
   );
   const totalTemplate = useSelector((state) => state.template.total);
@@ -152,7 +151,7 @@ const DataTable: React.FC = () => {
         return {
           columns: awaitSigningColumns,
           loading: isGetDocumentListLoading,
-          table: documentList as Document[],
+          table: documentList,
           currentPage: currentPageDocument,
           totalPages: Math.ceil(totalDocument! / 10),
           onChangePage: (e, value) =>
@@ -173,7 +172,7 @@ const DataTable: React.FC = () => {
         return {
           columns: personalDocColumns,
           loading: isGetDocumentListLoading,
-          table: documentList as Document[],
+          table: documentList,
           currentPage: currentPageDocument,
           totalPages: Math.ceil(totalDocument! / 10),
           onChangePage: (e, value) =>
@@ -188,8 +187,8 @@ const DataTable: React.FC = () => {
       case DOCUMENT_HISTORY:
         return {
           columns: historyColumns,
-          loading: isGetDocumentHistoryLoading,
-          table: documentList as DocumentHistoryList[],
+          loading: isGetDocumentListLoading,
+          table: documentList,
           currentPage: currentPageDocument,
           totalPages: Math.ceil(totalDocument! / 10),
           onChangePage: (e, value) =>

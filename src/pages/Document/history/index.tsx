@@ -63,6 +63,7 @@ const History = () => {
       getDocumentHistoryList.abort();
     };
   }, [currentPage, dispatch, filter?.field, filter?.value, searchItemValue, sorter, userInfo?.userId]);
+  
   return (
     <div className="flex flex-col py-10 space-y-6">
       <h2>History</h2>

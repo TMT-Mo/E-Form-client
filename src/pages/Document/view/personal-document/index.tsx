@@ -29,7 +29,7 @@ const ViewPersonalDocument: React.FC = () => {
     typeName
   } = (documentDetail as Document)!;
   const [ t ] = useTranslation();
-  const signers = signatoryList.map((signer) => (
+  const signers = signatoryList!.map((signer) => (
     <div className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4">
       <div className="flex space-x-2 items-center ">
         <h4>{t ("Signer")}:</h4>

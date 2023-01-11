@@ -61,11 +61,13 @@ export interface Document {
   status: number;
   typeName: string;
   departmentName: string;
-  signatoryList: Signer[];
+  signatoryList: Signer[] | null;
   link: string;
   createdBy: Creator;
-  isLocked: boolean;
+  isLocked: boolean | null;
   xfdfString: string;
+  reason: string | null;
+  version: string | null;
 }
 
 export interface DocumentListResponse {
@@ -91,25 +93,11 @@ export interface GetDocumentHistoryArgs extends GetDocumentsArgs{
   userId: number
 }
 
-export interface DocumentHistoryList{
-  id: number;
-  createdAt: string;
-  updateAt: string;
-  documentName: string;
-  type: string;
-  description: string;
-  size: number;
-  status: number;
-  typeName: string;
-  departmentName: string;
-  link: string;
-  createdBy: Creator;
-  xfdfString: string;
-  version: string;
-  comment: string
-}
+// export interface DocumentHistory extends Document{
+//   version: string;
+// }
 export interface GetDocumentHistoryResponse{
-  items: DocumentHistoryList[];
+  items: Document[];
   total: number;
   page: number;
   size: number;
