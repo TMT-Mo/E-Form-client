@@ -34,6 +34,7 @@ import {
 import { GridColumnModel, Data, GetRowIdParams } from "../../models/mui-data";
 import { setFilter, setSorter } from "../../slices/filter";
 import { helpers } from "../../utils";
+import CustomNoRow from "../CustomNoRow";
 
 const {
   SYSTEM,
@@ -226,6 +227,9 @@ const DataTable: React.FC = () => {
         }
         hideFooterPagination
         hideFooter
+        components={{
+          NoRowsOverlay: CustomNoRow,
+        }}
       />
       {data().table.length > 0 && (
         <CustomPagination
