@@ -12,7 +12,7 @@ const clearToken = () => {
 };
 
 const getToken = (): string => {
-  const token = sessionStorage.getItem(TOKEN_NAME) as string;
+  const token = sessionStorage.getItem(TOKEN_NAME)?.replace(/(['"])/g, "") as string;
   return token;
 };
 

@@ -33,6 +33,7 @@ const request = (args: FullOptions): Promise<AxiosResponse> => {
   //   });
   // }
   const token = helpers.getToken();
+  console.log(token)
   
   return axios.request({
     url,
