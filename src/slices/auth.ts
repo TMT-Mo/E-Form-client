@@ -32,12 +32,12 @@ const initialState: State = {
   signature: undefined
 };
 
-const setUserInfoCR: CR<{ token: string}> = (
+const setUserInfoCR: CR<{ user: UserInfo}> = (
   state,
   { payload }
 ) => ({
   ...state,
-  userInfo: jwtDecode(payload.token!),
+  userInfo: payload.user!,
 });
 
 const checkAuthenticationCR: CR<{value: boolean}> = (

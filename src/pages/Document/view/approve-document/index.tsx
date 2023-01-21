@@ -181,6 +181,7 @@ const ViewApproveDocument: React.FC = () => {
           signatureTool.importSignatures([signature!]);
           await annotationManager.importAnnotations(xfdfString);
           setInitialXfdfString(annotationManager.getAnnotationsList());
+          console.log('first')
           await documentViewer.getDocument().getDocumentCompletePromise();
           documentViewer.updateView();
           annotationManager.setAnnotationDisplayAuthorMap((userId) => {
@@ -218,6 +219,13 @@ const ViewApproveDocument: React.FC = () => {
     xfdfString,
   ]);
 
+  console.log(
+    annotationList
+      ? annotationList.every((annot) => initialXfdfString?.includes(annot))
+      : true
+  );
+  console.log(annotationList)
+  console.log(initialXfdfString)
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">

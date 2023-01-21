@@ -36,6 +36,7 @@ const Layout: React.FC = () => {
   const dispatch = useDispatch();
   const { locationIndex } = useSelector((state) => state.location);
 
+
   useEffect(() => {
     !locationIndex &&
       dispatch(

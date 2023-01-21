@@ -54,7 +54,6 @@ const StatusTag = (props: Props) => {
     }
   };
 
-  console.log(status)
   const createDocumentStatus = () => {
     if (status === APPROVED_DOCUMENT) {
       return (
