@@ -11,7 +11,7 @@ import { links } from "../../utils";
 
 const Introduction = () => {
   const { t } = useTranslation();
-  
+
   return (
     <main>
       {/* Hero */}
@@ -19,13 +19,18 @@ const Introduction = () => {
         <div className="flex justify-around items-center space-x-20">
           <div className="flex flex-col space-y-8">
             <h1 className="text-5xl font-medium leading-tight xl:w-2/3">
-              {t('Process internal application way faster')}
+              {t("Process internal application way faster")}
             </h1>
             <p className="text-sm text-gray-config w-3/6">
-              {t(`We’re here to help companies handle employee’s application much faster when and where ever they need.`)}
+              {t(
+                `We’re here to help companies handle employee’s application much faster when and where ever they need.`
+              )}
             </p>
-            <Link to={links.login} className="px-16 py-3 font-semibold bg-blue-config text-white w-fit rounded-md no-underline" >
-              {t('Sign in')}
+            <Link
+              to={links.login}
+              className="px-16 py-3 font-semibold bg-blue-config text-white w-fit rounded-md no-underline"
+            >
+              {t("Sign in")}
             </Link>
           </div>
           <img alt="" src={intropic} />
@@ -36,43 +41,51 @@ const Introduction = () => {
       {/* Services */}
       <section className="flex flex-col p-20 space-y-8 items-center bg-blue-light-config">
         <h1 className="text-5xl font-medium leading-tight ">
-          {t('What we bring to the table')}
+          {t("What we bring to the table")}
         </h1>
         <p className="text-md text-gray-config">
-          {t('We will help you manage your employee’s application')}
+          {t("We will help you manage your employee’s application")}
         </p>
 
         <div className="flex justify-around w-10/12 m-auto space-x-10">
           <div className="flex flex-col items-center space-y-3 border rounded-xl p-9 text-center w-80 h-56 shadow-lg shadow-blue-200 bg-white">
             <img alt="" src={signature} className="w-10" />
-            <h2 className="font-medium">{t('Adding Signature')}</h2>
+            <h2 className="font-medium">{t("Adding Signature")}</h2>
             <p className="text-sm text-gray-config pt-4">
-              {t('User can add signature as a base64 image')}
+              {t("User can add signature as a base64 image")}
             </p>
           </div>
           <div className="flex flex-col items-center space-y-3 border rounded-xl p-9 text-center w-80 h-56 shadow-lg shadow-blue-200 bg-white">
             <img alt="" src={paper} className="w-10" />
-            <h2 className="font-medium">{t('Document Viewer')}</h2>
+            <h2 className="font-medium">{t("Document Viewer")}</h2>
             <p className="text-sm text-gray-config pt-4">
-              {t('Customize document easily like word with drag, drop, input text, etc.')}
+              {t(
+                "Customize document easily like word with drag, drop, input text, etc."
+              )}
             </p>
           </div>
           <div className="flex flex-col items-center space-y-3 border rounded-xl p-9 text-center w-80 h-56 shadow-lg shadow-blue-200 bg-white">
             <img alt="" src={clock} className="w-10" />
-            <h2 className="font-medium">{t('Save Time')}</h2>
+            <h2 className="font-medium">{t("Save Time")}</h2>
             <p className="text-sm text-gray-config pt-4">
-              {t('Save lots of time with solving employee’s applications online')}
+              {t(
+                "Save lots of time with solving employee’s applications online"
+              )}
             </p>
           </div>
         </div>
+      </section>
+
+      <section className="flex flex-col p-20 space-y-8 items-center bg-slate-300">
+        <h1 className="text-5xl font-medium leading-tight ">{t("Demo")}</h1>
       </section>
 
       {/* Footer */}
       <footer className="bg-dark-config">
         <div className="pt-20 pb-6 w-3/4 m-auto space-y-8 text-white fill-white">
           <div className="flex justify-around">
-            <img src={logo} alt="" className="self-start -translate-y-14" />
-            <div className="flex flex-col space-y-2">
+            <img src={logo} alt="" className="self-start " />
+            <div className="flex flex-col space-y-4">
               <div className="font-semibold">{t("More Information")}</div>
               <span className="hover:font-semibold cursor-pointer">
                 {t("User guide")}
@@ -84,9 +97,9 @@ const Introduction = () => {
                 {t("Github")}
               </span>
             </div>
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col space-y-3">
               <div className="font-semibold">Contact</div>
-              <div className="flex space-x-4">
+              <div className="flex space-x-4 items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -99,7 +112,7 @@ const Introduction = () => {
                   0123456789
                 </span>
               </div>
-              <div className="flex space-x-4">
+              <div className="flex space-x-4 items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -112,7 +125,7 @@ const Introduction = () => {
                   abc@gmail.com
                 </span>
               </div>
-              <div className="flex space-x-4">
+              <div className="flex space-x-4 items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
