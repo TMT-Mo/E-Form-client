@@ -8,9 +8,26 @@ import { useTranslation } from "react-i18next";
 import logo from "../../assets/logo-dark.svg";
 import { Link } from "react-router-dom";
 import { links } from "../../utils";
+import ReactPlayer from "react-player";
+import demo from "../../assets/Demo.png";
+import { Modal, Box } from "@mui/material";
+import Typography from '@mui/material/Typography';
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 const Introduction = () => {
   const { t } = useTranslation();
+  const [open, setOpen] = React.useState(false);
 
   return (
     <main>
@@ -78,6 +95,36 @@ const Introduction = () => {
 
       <section className="flex flex-col p-20 space-y-8 items-center bg-slate-300">
         <h1 className="text-5xl font-medium leading-tight ">{t("Demo")}</h1>
+        <div className="flex space-x-16 items-center">
+          <div className="flex flex-col space-y-6 justify-between w-96">
+            <Typography variant="h5" fontWeight={600}>Working with Signature</Typography>
+            <Typography variant="h6">Check out the diagram below to have a vision of this demonstration in advance.</Typography>
+            <img
+              src={demo}
+              alt=""
+              onClick={() => setOpen((prevState) => !prevState)}
+              className="h-48 hover:cursor-pointer"
+            />
+          </div>
+
+          <ReactPlayer
+            url="https://youtu.be/pxQIDHjq3a0"
+            width="600px"
+            height="300px"
+            controls={false}
+          />
+        </div>
+        <Modal
+          open={open}
+          onClose={() => setOpen(false)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          className="flex justify-center items-center"
+        >
+          <Box sx={style}>
+            <img src={demo} alt="" />
+          </Box>
+        </Modal>
       </section>
 
       {/* Footer */}
