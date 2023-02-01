@@ -58,12 +58,23 @@ const ViewCreateDocument: React.FC = () => {
       {
         path: "/webviewer/lib",
         initialDoc: link!,
-        disabledElements: ["toolbarGroup-Insert", "toolbarGroup-Forms"],
+        disabledElements: [ "toolbarGroup-Forms", 'downloadButton'],
         annotationUser: userInfo?.userId!.toString(),
       },
       viewer.current!
     ).then(async (instance) => {
       const { documentViewer, annotationManager, Annotations } = instance.Core;
+      instance.UI.setHeaderItems(function (header) {
+        header.push({
+          type: "actionButton",
+          img: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20"><path d="M19 9h-4V3H9v6H5l7 8zM4 19h16v2H4z"></path></svg>',
+          onClick: async () =>
+            await instance.UI.downloadPdf({
+              filename: templateName.replace(/.docx|.doc/g, ""),
+              includeAnnotations: false
+            }),
+        });
+      });
       documentViewer.addEventListener("documentLoaded", async () => {
         await documentViewer.getDocument().getDocumentCompletePromise();
         documentViewer.updateView();
@@ -72,14 +83,12 @@ const ViewCreateDocument: React.FC = () => {
             Annotations.FreeTextAnnotation.Intent.FreeText,
             {
               PageNumber: 1,
-              TextAlign: "center",
-              TextVerticalAlign: "center",
               TextColor: new Annotations.Color(255, 0, 0, 1),
               StrokeColor: new Annotations.Color(0, 255, 0, 0),
             }
           );
-
-          annot.setPathPoint(0, 100, 25); // Callout ending (start)
+          annot.ReadOnly = true
+          annot.setPathPoint(0, 300, 20); // Callout ending (start)
           // annot.setPathPoint(1, 425, 75);  // Callout knee
           // annot.setPathPoint(2, 300, 75);  // Callout joint
           // annot.setPathPoint(3, 100, 50);  // Top-left point
@@ -91,9 +100,6 @@ const ViewCreateDocument: React.FC = () => {
           annotationManager.addAnnotation(annot);
           annotationManager.redrawAnnotation(annot);
         });
-        // annotationManager.setPermissionCheckCallback((author, annotation) => {
-        //   const defaultPermission = annotation.Author === annotationManager.getCurrentUser();
-        // })
         annotationManager.setAnnotationDisplayAuthorMap((userId) => {
           if (userId === userInfo?.userId!.toString()) {
             return userInfo?.userName!;
@@ -111,15 +117,16 @@ const ViewCreateDocument: React.FC = () => {
             setXfdfString(annots);
 
             const checkAnnotExists = annotationManager.getAnnotationsList();
-            // console.log(checkAnnotExists);
-            checkAnnotExists.length >= 3
-              ? setEnableSend(true)
-              : setEnableSend(false);
+            // console.log(checkAnnotExists[0].elementName)
+            // checkAnnotExists.length >= 3
+            //   ? setEnableSend(true)
+            //   : setEnableSend(false);
           }
         );
+        console.log(annotationManager.getAnnotationsList())
       });
     });
-  }, [departmentName, link, typeName, userInfo?.userId, userInfo?.userName]);
+  }, [departmentName, link, templateName, typeName, userInfo?.userId, userInfo?.userName]);
 
   const onCreateTemplate = async () => {
     await dispatch(
@@ -140,8 +147,8 @@ const ViewCreateDocument: React.FC = () => {
         </Link>
         <span className="text-white">{t("Create await signing document")}</span>
       </div>
-      <div className="flex">
-        <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 w-80">
+      <div className="flex flex-col-reverse md:flex-row">
+        <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 md:w-80">
           <div className="flex flex-col space-y-8 text-white">
             <div className="flex flex-col space-y-2">
               <h4>{t("File name")}:</h4>
@@ -177,14 +184,14 @@ const ViewCreateDocument: React.FC = () => {
                 }
                 variant="outlined"
                 onClick={onCreateTemplate}
-                disabled={!enableSend}
+                disabled={false}
               >
                 {t("Send")}
               </SendBtn>
             )}
           </div>
         </div>
-        <div className="webviewer w-full" ref={viewer}></div>
+        <div className="webviewer w-full h-screen" ref={viewer}></div>
       </div>
       <AlertPopup
         anchorOrigin={{ vertical: "top", horizontal: "right" }}

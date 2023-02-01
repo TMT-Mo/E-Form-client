@@ -5,7 +5,6 @@ import {
   AddTemplateToFirebaseArgs,
   EnableTemplateArgs,
   ApproveTemplateArgs,
-  TemplateSorter,
 } from "./../models/template";
 import { templateServices } from "./../services/template";
 import {

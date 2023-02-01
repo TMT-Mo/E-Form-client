@@ -4,7 +4,8 @@ const apiHead = 'https://documentcapstone.azurewebsites.net/'
 const apiPaths = {
     auth:{
         login: `${apiHead}api/Users/login`,
-        extractToken: `${apiHead}`
+        extractToken: `${apiHead}`,
+        getSignature: `${apiHead}api/Users/getSignature`
     },
     template:{
         getTemplates: `${apiHead}api/Template/getTemplates`,
@@ -20,7 +21,9 @@ const apiPaths = {
     },
     document:{
         createDocument: `${apiHead}api/Document/create`,
-        getDocuments: `${apiHead}api/Document/getDocuments`
+        getDocuments: `${apiHead}api/Document/getDocuments`,
+        approveDocument: `${apiHead}api/Document/approveDocument`,
+        getDocumentHistory: `${apiHead}api/Document/getDocumentHistory`
     }
 }
 

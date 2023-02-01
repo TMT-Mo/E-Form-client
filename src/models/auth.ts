@@ -16,5 +16,13 @@ export interface UserInfo {
   userName:string,
   signature: string,
   idPermissions: string,
-  idDepartment: string,
+  departmentName: string,
+}
+
+export interface GetSignatureArgs{
+  userId: number
+}
+
+export interface GetSignatureResponse{
+  signature: string
 }

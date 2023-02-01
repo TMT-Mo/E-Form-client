@@ -6,12 +6,14 @@ import TopBar from "./TopBar";
 
 const Layout: React.FC = () => {
   const { innerWidth } = window;
-  
   return (
     <>
       <TopBar />
-      {innerWidth < 1280 ?  <DesktopOnly/>  : <Outlet/> }
-      <AlertPopup anchorOrigin={{vertical: "top", horizontal:"right"}} autoHideDuration={3000}/>
+      <Outlet />
+      <AlertPopup
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        autoHideDuration={3000}
+      />
     </>
   );
 };

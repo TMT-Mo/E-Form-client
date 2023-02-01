@@ -31,9 +31,11 @@ export interface FilterModel {
   field: DataTableHeader;
 }
 
+type Sort = "asc" | "desc"
+
 export interface SorterModel {
   field: DataTableHeader;
-  sort: "asc" | "desc";
+  sort: Sort;
 }
 
 export interface Data {

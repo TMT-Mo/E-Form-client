@@ -1,59 +1,32 @@
-import { Divider } from "@mui/material";
-import React, { Fragment, useEffect, useRef } from "react";
+import { Divider, Switch, Typography } from "@mui/material";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import WebViewer, { Core } from "@pdftron/webviewer";
-import AlertPopup from "../../../../components/AlertPopup";
+import WebViewer from "@pdftron/webviewer";
 import { useSelector } from "../../../../hooks";
-import { StatusTemplate, StatusTemplateTag } from "../../../../utils/constants";
 import StatusTag from "../../../../components/StatusTag";
 import { useTranslation } from "react-i18next";
-import { async } from "@firebase/util";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { helpers } from "../../../../utils";
-// const { APPROVED, NEW } = StatusTemplate;
-// const { APPROVED_TAG, REJECTED_TAG, NEW_TAG } = StatusTemplateTag;
+import { StatusDocument } from "../../../../utils/constants";
 
-const ViewTemplateHistory: React.FC = () => {
+const ViewHistoryDocument: React.FC = () => {
   const viewer = useRef(null);
-  const { templateDetail } = useSelector((state) => state.template);
+  const { documentDetail } = useSelector((state) => state.document);
+  const { userInfo } = useSelector((state) => state.auth);
   const {
     createdAt,
     createdBy,
-    departmentName,
     description,
-    templateName,
-    typeName,
-    signatoryList,
+    documentName,
+    xfdfString,
     link,
+    departmentName,
+    typeName,
+    version,
     status,
     reason,
-  } = templateDetail!;
-  const { t } = useTranslation();
-  const signers = signatoryList.map((signer, index) => (
-    <div
-      className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4"
-      key={index}
-    >
-      <div className="flex space-x-2 items-center ">
-        <h4>{t("Signer")}:</h4>
-        <span className="text-white text-base break-words">
-          {signer.username}
-        </span>
-      </div>
-      {/* <div className="flex space-x-2">
-        <h4>Department:</h4>
-        <span className="text-white text-base break-words">{templateName}</span>
-      </div> */}
-      <div className="flex space-x-2 items-center">
-        <h4>{t("Role")}:</h4>
-        <span className="text-white text-base break-words">
-          {signer.roleName}
-        </span>
-      </div>
-    </div>
-  ));
-
+  } = documentDetail!;
+  const [t] = useTranslation();
   // if using a class, equivalent of componentDidMount
 
   useEffect(() => {
@@ -61,49 +34,53 @@ const ViewTemplateHistory: React.FC = () => {
       {
         path: "/webviewer/lib",
         initialDoc: link!,
-        disabledElements: [
-          'downloadButton'
-        ],
-        filename: templateName,
+        disabledElements: ["downloadButton"],
+        isReadOnly: true,
       },
       viewer.current!
     ).then(async (instance) => {
-      const { documentViewer } = instance.Core;
-      const annotManager = documentViewer.getAnnotationManager();
-      annotManager.enableReadOnlyMode();
-
+      const { documentViewer, annotationManager } = instance.Core;
       instance.UI.setHeaderItems(function (header) {
         header.push({
           type: "actionButton",
           img: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20"><path d="M19 9h-4V3H9v6H5l7 8zM4 19h16v2H4z"></path></svg>',
           onClick: async () =>
             await instance.UI.downloadPdf({
-              filename: templateName.replace(/.docx|.doc/g, ""),
+              filename: documentName.replace(/.docx|.doc/g, ""),
+              xfdfString,
             }),
         });
       });
       documentViewer.addEventListener("documentLoaded", async () => {
         await documentViewer.getDocument().getDocumentCompletePromise();
+        await annotationManager.importAnnotations(xfdfString);
         documentViewer.updateView();
+        annotationManager.setAnnotationDisplayAuthorMap((userId) => {
+          if (userId === userInfo?.userId!.toString()) {
+            return userInfo?.userName!;
+          } else if (userId !== "System") {
+            return userId;
+          }
+          return "System";
+        });
       });
     });
-  }, [link, templateName]);
-
+  }, [documentName, link, userInfo?.userId, userInfo?.userName, xfdfString]);
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
         <Link to="/user">
           <ArrowBackIosIcon fontSize="small" className="fill-white" />
         </Link>
-        <span className="text-white">{t("View Template History")}</span>
+        <span className="text-white">{t("History Document")}</span>
       </div>
-      <div className="flex flex-col-reverse  md:flex-row">
-        <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 pb-8 space-y-8 md:w-80 md:pb-0">
+      <div className="flex flex-col-reverse md:flex-row">
+        <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 pb-8 md:w-80 md:pb-0">
           <div className="flex flex-col space-y-8 text-white">
             <div className="flex flex-col space-y-2">
               <h4>{t("File name")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {templateName}
+                {documentName}
               </span>
             </div>
 
@@ -113,13 +90,13 @@ const ViewTemplateHistory: React.FC = () => {
                 {description}
               </span>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1">
               <h4>{t("Type")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {typeName}
               </span>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1">
               <h4>{t("Department")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {departmentName}
@@ -131,19 +108,17 @@ const ViewTemplateHistory: React.FC = () => {
                 {createdBy.username}
               </span>
             </div>
-            <div className="flex items-center space-x-2">
-              <h4 className="whitespace-nowrap ">{t("Created At")}:</h4>
+            <div className="flex flex-col space-y-2">
+              <h4>{t("Created At")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {helpers.addHours(createdAt, 7)}
               </span>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 w-fit">
               <h4>{t("Status")}:</h4>
-              <span className="text-white text-base break-words w-60">
-                <StatusTag status={status} type="template" />
-              </span>
+              <StatusTag status={status} type="document" />
             </div>
-            {reason && (
+            {status === StatusDocument.REJECTED_DOCUMENT && (
               <div className="flex flex-col space-y-2">
                 <h4>{t("Reason")}:</h4>
                 <span className="text-white text-base break-words w-60">
@@ -151,21 +126,19 @@ const ViewTemplateHistory: React.FC = () => {
                 </span>
               </div>
             )}
-            <Divider className="bg-white" />
-            <div className="flex justify-center">
-              <h4>{t("Signer List")}:</h4>
+            <div className="flex items-center space-x-1">
+              <h4>{t("Version")}:</h4>
+              <span className="text-white text-base break-words w-60">
+                {version!}
+              </span>
             </div>
-            {signers}
+            <Divider className="bg-white" />
           </div>
         </div>
         <div className="webviewer w-full h-screen" ref={viewer}></div>
       </div>
-      <AlertPopup
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        autoHideDuration={3000}
-      />
     </Fragment>
   );
 };
 
-export default ViewTemplateHistory;
+export default ViewHistoryDocument;

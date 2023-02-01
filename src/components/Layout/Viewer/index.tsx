@@ -13,6 +13,7 @@ import { ViewerLocationIndex } from "../../../utils/constants";
 import ViewApproveDocument from "../../../pages/Document/view/approve-document";
 import { clearDocumentDetail } from "../../../slices/document";
 import ViewPersonalDocument from "../../../pages/Document/view/personal-document";
+import ViewHistoryDocument from "../../../pages/Document/view/history-document";
 
 const {
   ADD_TEMPLATE_INDEX,
@@ -48,7 +49,7 @@ const Viewer: React.FC = () => {
       case APPROVING_TEMPLATE_INDEX:
         return <ViewApproveTemplate />;
       case VIEW_DOCUMENT_HISTORY_INDEX:
-        return <></>;
+        return <ViewHistoryDocument/>;
       default:
         return <></>;
     }

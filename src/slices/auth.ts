@@ -1,6 +1,6 @@
 import { ValidationErrors } from './../models/notification';
 import { authServices } from "./../services/auth";
-import { UserInfo, LoginArgument} from "./../models/auth";
+import { UserInfo, LoginArgument, GetSignatureArgs} from "./../models/auth";
 import {
   CaseReducer,
   createAsyncThunk,
@@ -15,7 +15,9 @@ interface State {
   // token: string | null;
   userInfo?: UserInfo | undefined;
   isLoginLoading: boolean;
-  checkAuthenticated?: boolean | undefined;
+  checkAuthenticated?: boolean;
+  isGetSignatureLoading: boolean;
+  signature?: string
 }
 
 type CR<T> = CaseReducer<State, PayloadAction<T>>;
@@ -26,14 +28,16 @@ const initialState: State = {
   checkAuthenticated: undefined,
   userInfo: undefined,
   isLoginLoading: false,
+  isGetSignatureLoading: false,
+  signature: undefined
 };
 
-const setUserInfoCR: CR<{ token: string}> = (
+const setUserInfoCR: CR<{ user: UserInfo}> = (
   state,
   { payload }
 ) => ({
   ...state,
-  userInfo: jwtDecode(payload.token!),
+  userInfo: payload.user!,
 });
 
 const checkAuthenticationCR: CR<{value: boolean}> = (
@@ -49,6 +53,25 @@ const login = createAsyncThunk(
   async (args: LoginArgument, { dispatch }) => {
     try {
       const result = await authServices.login(args as LoginArgument);
+      return result;
+    } catch (error) {
+      const err = error as AxiosError
+      if(err.response?.data){
+        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
+      }
+      else{
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err
+    }
+  }
+);
+
+const getSignature = createAsyncThunk(
+  `${ACTION_TYPE}getSignature`,
+  async (args: GetSignatureArgs, { dispatch }) => {
+    try {
+      const result = await authServices.getSignature(args as GetSignatureArgs);
       return result;
     } catch (error) {
       const err = error as AxiosError
@@ -93,10 +116,23 @@ const auth = createSlice({
       ...state,
       isLoginLoading: false,
     }));
+    builder.addCase(getSignature.pending, (state) => ({
+      ...state,
+      isGetSignatureLoading: true,
+    }));
+    builder.addCase(getSignature.fulfilled, (state, { payload }) => ({
+      ...state,
+      isGetSignatureLoading: false,
+      signature: payload.signature
+    }));
+    builder.addCase(getSignature.rejected, (state) => ({
+      ...state,
+      isGetSignatureLoading: false,
+    }));
   },
 });
 
-export { login };
+export { login, getSignature };
 
 export const { setUserInfo, checkAuthentication} = auth.actions;
 

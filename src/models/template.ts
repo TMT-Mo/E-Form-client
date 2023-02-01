@@ -61,7 +61,7 @@ export interface TemplateArgs {
   templateName?: string;
   signatoryList?: number[];
   idTemplateType?: number;
-  // idDepartment?: number,
+  idDepartment?: number,
   description?: string;
   size?: number;
   createdBy?: number;
@@ -98,10 +98,6 @@ export interface EnableTemplateResponse {
   message: string;
 }
 
-export interface TemplateSorter {
-  field: string;
-  sort: "asc" | "desc";
-}
 
 export interface ApproveTemplateArgs {
   userId: number;

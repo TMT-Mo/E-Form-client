@@ -37,13 +37,13 @@ const SelectType = (props: GridFilterInputValueProps) => {
     setValue(e.target.value);
   };
 
-  const getUserListHandler = useCallback(() => {
-    dispatch(getUsers({ departmentId_eq: +userInfo?.idDepartment! })).unwrap();
-  }, [dispatch, userInfo?.idDepartment]);
+  // const getUserListHandler = useCallback(() => {
+  //   dispatch(getUsers({ departmentId_eq: +userInfo?.idDepartment! })).unwrap();
+  // }, [dispatch, userInfo?.idDepartment]);
 
-  useEffect(() => {
-    !userList && getUserListHandler();
-  }, [getUserListHandler, userList]);
+  // useEffect(() => {
+  //   !userList && getUserListHandler();
+  // }, [getUserListHandler, userList]);
 
   return (
     <>

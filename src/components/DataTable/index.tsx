@@ -6,9 +6,15 @@ import {
   GridSortModel,
 } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "../../hooks";
-import { DataTableHeader, LocationIndex, Permissions } from "../../utils/constants";
+import {
+  DataTableHeader,
+  DeviceType,
+  LocationIndex,
+  Permissions,
+} from "../../utils/constants";
 import {
   awaitSigningColumns,
+  historyColumns,
   newTemplatesColumns,
   personalDocColumns,
   sharedDocColumns,
@@ -21,9 +27,14 @@ import {
 } from "../../slices/template";
 import CustomPagination from "./pagination";
 import { usePermission } from "../../hooks/use-permission";
-import { clearDocumentPagination, onChangeDocumentPage } from "../../slices/document";
+import {
+  clearDocumentPagination,
+  onChangeDocumentPage,
+} from "../../slices/document";
 import { GridColumnModel, Data, GetRowIdParams } from "../../models/mui-data";
 import { setFilter, setSorter } from "../../slices/filter";
+import { helpers } from "../../utils";
+import CustomNoRow from "../CustomNoRow";
 
 const {
   SYSTEM,
@@ -38,9 +49,13 @@ const {
 } = LocationIndex;
 
 const { ENABLE_TEMPLATE } = Permissions;
+const { MOBILE, IPAD, LAPTOP } = DeviceType;
+const { checkHideColumnFromDevice, checkHideColumnFromPermission } = helpers;
 
 const DataTable: React.FC = () => {
   const dispatch = useDispatch();
+  const [columnVisibilityModel, setColumnVisibilityModel] =
+    React.useState<GridColumnVisibilityModel>();
   const { locationIndex } = useSelector((state) => state.location);
   const { isGetTemplatesLoading, templateList } = useSelector(
     (state) => state.template
@@ -60,14 +75,14 @@ const DataTable: React.FC = () => {
   const onFilterChange = React.useCallback(
     (filterModel: GridFilterModel) => {
       // Here you save the data you need from the filter model
-      
+
       const { value, columnField } = filterModel.items[0];
       if (!value) {
         dispatch(setFilter(undefined));
         return;
       }
-      dispatch(clearTemplatePagination())
-      dispatch(clearDocumentPagination())
+      dispatch(clearTemplatePagination());
+      dispatch(clearDocumentPagination());
       dispatch(setFilter({ field: columnField as DataTableHeader, value }));
     },
     [dispatch]
@@ -87,8 +102,14 @@ const DataTable: React.FC = () => {
   );
 
   const columnVisible: GridColumnModel = {
-    status: usePermission(ENABLE_TEMPLATE),
+    status: usePermission(ENABLE_TEMPLATE) && checkHideColumnFromDevice(IPAD),
     isEnable: usePermission(ENABLE_TEMPLATE),
+    type: checkHideColumnFromDevice(IPAD),
+    description: checkHideColumnFromDevice(IPAD),
+    createdAt: checkHideColumnFromDevice(IPAD),
+    updateAt: checkHideColumnFromDevice(IPAD),
+    createdBy:
+      usePermission(ENABLE_TEMPLATE) && checkHideColumnFromDevice(IPAD),
   };
 
   const data = (): Data => {
@@ -108,6 +129,7 @@ const DataTable: React.FC = () => {
           totalPages: Math.ceil(totalTemplate! / 10),
           onChangePage: (e, value) =>
             dispatch(onChangeTemplatePage({ selectedPage: --value })),
+          columnVisible,
         };
       case ACCOUNT:
         return {
@@ -117,11 +139,7 @@ const DataTable: React.FC = () => {
         };
       case TEMPLATE:
         return {
-          columns: templateColumns.map((col) =>
-            col.field === "isEnable"
-              ? { ...col, filterable: columnVisible.isEnable }
-              : col
-          ),
+          columns: templateColumns,
           loading: isGetTemplatesLoading,
           table: templateList,
           currentPage: currentPageTemplate,
@@ -149,6 +167,7 @@ const DataTable: React.FC = () => {
           totalPages: Math.ceil(totalTemplate! / 10),
           onChangePage: (e, value) =>
             dispatch(onChangeTemplatePage({ selectedPage: --value })),
+          columnVisible,
         };
       case PERSONAL:
         return {
@@ -168,9 +187,13 @@ const DataTable: React.FC = () => {
         };
       case DOCUMENT_HISTORY:
         return {
-          columns: sharedDocColumns,
-          loading: false,
-          table: templateList,
+          columns: historyColumns,
+          loading: isGetDocumentListLoading,
+          table: documentList,
+          currentPage: currentPageDocument,
+          totalPages: Math.ceil(totalDocument! / 10),
+          onChangePage: (e, value) =>
+            dispatch(onChangeDocumentPage({ selectedPage: --value })),
         };
       default:
         return { table: [] };
@@ -195,10 +218,18 @@ const DataTable: React.FC = () => {
         sortingMode="server"
         onSortModelChange={handleSortModelChange}
         columnVisibilityModel={
-          data().columnVisible as GridColumnVisibilityModel
+          columnVisibilityModel
+            ? columnVisibilityModel
+            : (data().columnVisible! as GridColumnVisibilityModel)
+        }
+        onColumnVisibilityModelChange={(newModel) =>
+          setColumnVisibilityModel(newModel)
         }
         hideFooterPagination
         hideFooter
+        components={{
+          NoRowsOverlay: CustomNoRow,
+        }}
       />
       {data().table.length > 0 && (
         <CustomPagination

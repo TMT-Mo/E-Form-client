@@ -1,3 +1,4 @@
+
 export interface AwaitSigningResponse {}
 
 export interface PersonalDocResponse {}
@@ -39,6 +40,7 @@ interface Signer {
   signature: string;
   status: number;
   roleName: string;
+  updateAt: string
 }
 
 interface Creator {
@@ -59,11 +61,13 @@ export interface Document {
   status: number;
   typeName: string;
   departmentName: string;
-  signatoryList: Signer[];
+  signatoryList: Signer[] | null;
   link: string;
   createdBy: Creator;
-  isLocked: boolean;
+  isLocked: boolean | null;
   xfdfString: string;
+  reason: string | null;
+  version: string | null;
 }
 
 export interface DocumentListResponse {
@@ -73,8 +77,28 @@ export interface DocumentListResponse {
   size: number;
 }
 
+export interface ApproveDocumentArgs{
+  userId: number,
+  documentId: number,
+  statusDocument: number,
+  comment?: string,
+  xfdfString: string
+}
 
-export interface DocumentSorter {
-  field: string;
-  sort: "asc" | "desc";
+export interface ApproveDocumentResponse{
+  message: string;
+}
+
+export interface GetDocumentHistoryArgs extends GetDocumentsArgs{
+  userId: number
+}
+
+// export interface DocumentHistory extends Document{
+//   version: string;
+// }
+export interface GetDocumentHistoryResponse{
+  items: Document[];
+  total: number;
+  page: number;
+  size: number;
 }

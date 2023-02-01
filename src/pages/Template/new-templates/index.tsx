@@ -57,7 +57,7 @@ const NewTemplates = () => {
   ]);
 
   return (
-    <div className="flex flex-col px-20 py-10 space-y-6">
+    <div className="flex flex-col py-10 space-y-6">
       <h2>{t("New Templates")}</h2>
       <div className="flex flex-col rounded-md border border-gray-400 bg-white">
         <div className="flex px-10 py-6 justify-between">

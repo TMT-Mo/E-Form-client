@@ -9,6 +9,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Box,
+  LinearProgress,
 } from "@mui/material";
 import React, {
   Fragment,
@@ -20,11 +22,15 @@ import React, {
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import WebViewer, { WebViewerInstance } from "@pdftron/webviewer";
+import WebViewer, { Core, WebViewerInstance } from "@pdftron/webviewer";
 import { LoadingButton } from "@mui/lab";
 import AlertPopup from "../../../../components/AlertPopup";
 import { useDispatch, useSelector } from "../../../../hooks";
 import { useTranslation } from "react-i18next";
+import { helpers } from "../../../../utils";
+import { approveDocument } from "../../../../slices/document";
+import { StatusDocument } from "../../../../utils/constants";
+import { getSignature } from "../../../../slices/auth";
 
 const LoadingBtn = styled(
   LoadingButton,
@@ -87,13 +93,18 @@ const RejectBtn = styled(
   },
 });
 
+const { APPROVED_DOCUMENT, REJECTED_DOCUMENT } = StatusDocument;
 const ViewApproveDocument: React.FC = () => {
   const [t] = useTranslation();
   const viewer = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { documentDetail } = useSelector((state) => state.document);
-  const { userInfo } = useSelector((state) => state.auth);
+  const { documentDetail, isApproveDocumentLoading } = useSelector(
+    (state) => state.document
+  );
+  const { userInfo, signature, isGetSignatureLoading } = useSelector(
+    (state) => state.auth
+  );
   const {
     createdAt,
     createdBy,
@@ -103,100 +114,118 @@ const ViewApproveDocument: React.FC = () => {
     link,
     departmentName,
     typeName,
+    id,
   } = documentDetail!;
   const [isAccepting, setIsAccepting] = useState<boolean>(true);
   const [reason, setReason] = useState<string | undefined>();
   const [openDialog, setOpenDialog] = useState(false);
   const [initialXfdfString, setInitialXfdfString] = useState<any[] | null>();
   const [annotationList, setAnnotationList] = useState<any[] | null>();
-
-  const [enableBtn, setEnableBtn] = useState<boolean>(false);
   const [newXfdfString, setNewXfdfString] = useState<string | undefined>();
-  const instance = useRef<WebViewerInstance>();
-  const [file, setFile] = useState<File>();
   // if using a class, equivalent of componentDidMount
 
+  const onApproveDocument = async () => {
+    await dispatch(
+      approveDocument({
+        userId: +userInfo?.userId!,
+        documentId: id,
+        xfdfString: !isAccepting ? xfdfString : newXfdfString!,
+        statusDocument: isAccepting ? APPROVED_DOCUMENT : REJECTED_DOCUMENT,
+        comment: reason,
+      })
+    ).unwrap();
+    navigate("/user");
+  };
+
   useEffect(() => {
-    WebViewer(
-      {
-        path: "/webviewer/lib",
-        initialDoc: link!,
-        disabledElements: ["toolbarGroup-Insert", "toolbarGroup-Forms"],
-        annotationUser: userInfo?.userId!.toString(),
-      },
-      viewer.current!
-    ).then(async (inst) => {
-      // instance.current = inst;
-      // inst.UI.loadDocument(link)
-      const { documentViewer, annotationManager } = inst.Core;
+    const onGetSignature = dispatch(
+      getSignature({ userId: +userInfo?.userId! })
+    );
+    onGetSignature.unwrap();
+    return () => onGetSignature.abort();
+  }, [dispatch, userInfo?.userId]);
 
-      documentViewer.addEventListener("documentLoaded", async () => {
-        await annotationManager.importAnnotations(xfdfString);
-        setInitialXfdfString(annotationManager.getAnnotationsList());
-        await documentViewer.getDocument().getDocumentCompletePromise();
-        documentViewer.updateView();
-        annotationManager.setAnnotationDisplayAuthorMap((userId) => {
-          if (userId === userInfo?.userId!.toString()) {
-            return userInfo?.userName!;
-          } else if (userId !== "System") {
-            return userId;
-          }
-          return "System";
+  useEffect(() => {
+    signature &&
+      WebViewer(
+        {
+          path: "/webviewer/lib",
+          initialDoc: link!,
+          disabledElements: [
+            "toolbarGroup-Insert",
+            "toolbarGroup-Forms",
+            "downloadButton",
+          ],
+          annotationUser: userInfo?.userId!.toString(),
+        },
+        viewer.current!
+      ).then(async (inst) => {
+        const { documentViewer, annotationManager } = inst.Core;
+        const signatureTool = documentViewer.getTool(
+          "AnnotationCreateSignature"
+        ) as Core.Tools.SignatureCreateTool;
+        inst.UI.enableFeatures([inst.UI.Feature.Initials]);
+        inst.UI.setHeaderItems(function (header) {
+          header.push({
+            type: "actionButton",
+            img: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20"><path d="M19 9h-4V3H9v6H5l7 8zM4 19h16v2H4z"></path></svg>',
+            onClick: async () =>
+              await inst.UI.downloadPdf({
+                filename: documentName.replace(/.docx|.doc/g, ""),
+                xfdfString,
+              }),
+          });
         });
-        annotationManager.addEventListener(
-          "annotationChanged",
-          async (annotations, action, { imported }) => {
-            const annots = (
-              await annotationManager.exportAnnotations({
-                useDisplayAuthor: true,
-              })
-            ).replaceAll(/\\&quot;/gi, "");
-            setNewXfdfString(annots);
 
-            const annotList = annotationManager.getAnnotationsList();
-            setAnnotationList(annotList);
+        documentViewer.addEventListener("documentLoaded", async () => {
+          signatureTool.importSignatures([signature!]);
+          await annotationManager.importAnnotations(xfdfString);
+          setInitialXfdfString(annotationManager.getAnnotationsList());
+          console.log('first')
+          await documentViewer.getDocument().getDocumentCompletePromise();
+          documentViewer.updateView();
+          annotationManager.setAnnotationDisplayAuthorMap((userId) => {
+            if (userId === userInfo?.userId!.toString()) {
+              return userInfo?.userName!;
+            } else if (userId !== "System") {
+              return userId;
+            }
+            return "System";
+          });
+          annotationManager.addEventListener(
+            "annotationChanged",
+            async (annotations, action, { imported }) => {
+              const annots = (
+                await annotationManager.exportAnnotations({
+                  useDisplayAuthor: true,
+                })
+              ).replaceAll(/\\&quot;/gi, "");
+              setNewXfdfString(annots);
 
-            // console.log(checkAnnotExists)
-          }
-        );
+              const annotList = annotationManager.getAnnotationsList();
+              setAnnotationList(annotList);
+
+              // console.log(checkAnnotExists)
+            }
+          );
+        });
       });
-    });
-  }, [link, userInfo?.userId, userInfo?.userName, xfdfString]);
+  }, [
+    documentName,
+    link,
+    signature,
+    userInfo?.userId,
+    userInfo?.userName,
+    xfdfString,
+  ]);
 
-  // useEffect(() => {
-  //   async function createFile(url: string) {
-
-  //   }
-  //   setFile(async () => await createFile(link));
-  // }, []);
-
-  const loadFile = useCallback(async () => {
-    const response = await fetch(link);
-    const data = await response.blob();
-    setFile(new File([data], documentName));
-  }, [documentName, link]);
-
-  // useEffect(() => {
-  //   loadFile();
-  // }, [link, loadFile]);
-
-  // useEffect(() => {
-  //   if (!file) return;
-  //   console.log(file);
-  //   if (instance.current) {
-  //     instance.current.UI.loadDocument(file);
-  //   }
-  // }, [file]);
-
-  // useEffect(() => {
-  //   if(!annotationList){
-  //     return
-  //   }
-  //   annotationList.every((annot) => initialXfdfString?.includes(annot)) ? setEnableBtn(true) : setEnableBtn(false)
-  //   console.log(annotationList.every((annot) => initialXfdfString?.includes(annot)))
-  // }, [annotationList, initialXfdfString]);
-  // console.log(annotationList)
-
+  console.log(
+    annotationList
+      ? annotationList.every((annot) => initialXfdfString?.includes(annot))
+      : true
+  );
+  console.log(annotationList)
+  console.log(initialXfdfString)
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
@@ -205,8 +234,13 @@ const ViewApproveDocument: React.FC = () => {
         </Link>
         <span className="text-white">{t("Approve Document")}</span>
       </div>
-      <div className="flex">
-        <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 w-80">
+      {isGetSignatureLoading && (
+        <Box sx={{ width: "100%" }}>
+          <LinearProgress />
+        </Box>
+      )}
+      <div className="flex flex-col-reverse md:flex-row">
+        <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 pb-8 md:w-80 md:pb-0">
           <div className="flex flex-col space-y-8 text-white">
             <div className="flex flex-col space-y-2">
               <h4>{t("File name")}:</h4>
@@ -242,7 +276,7 @@ const ViewApproveDocument: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4>{t("Created At")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {new Date(createdAt).toUTCString().replace("GMT", "")}
+                {helpers.addHours(createdAt, 7)}
               </span>
             </div>
             <Divider className="bg-white" />
@@ -307,7 +341,7 @@ const ViewApproveDocument: React.FC = () => {
             )}
           </div>
         </div>
-        <div className="webviewer w-full" ref={viewer}></div>
+        <div className="webviewer w-full h-screen" ref={viewer}></div>
       </div>
       <Dialog
         open={openDialog}
@@ -319,23 +353,23 @@ const ViewApproveDocument: React.FC = () => {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {isAccepting
-              ? [t("Are you sure you want to approve this template?")]
-              : [t("Are you sure you want to reject this template?")]}
+              ? [t("Are you sure you want to approve this document?")]
+              : [t("Are you sure you want to reject this document?")]}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <CancelBtn onClick={() => setOpenDialog(false)} size="small">
             {t("Cancel")}
           </CancelBtn>
-          {/* <LoadingBtn
+          <LoadingBtn
             size="small"
-            // loading={isApproveTemplateLoading}
+            loading={isApproveDocumentLoading}
             loadingIndicator={<CircularProgress color="inherit" size={16} />}
             variant="outlined"
-            onClick={onApproveTemplate}
+            onClick={onApproveDocument}
           >
             Save
-          </LoadingBtn> */}
+          </LoadingBtn>
         </DialogActions>
       </Dialog>
       <AlertPopup

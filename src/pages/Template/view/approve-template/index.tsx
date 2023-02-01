@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "../../../../hooks";
 import { approveTemplate } from "../../../../slices/template";
 import { StatusTemplate } from "../../../../utils/constants";
 import { useTranslation } from "react-i18next";
+import { helpers } from "../../../../utils";
 
 const LoadingBtn = styled(
   LoadingButton,
@@ -130,24 +131,30 @@ const ViewApproveTemplate: React.FC = () => {
         path: "/webviewer/lib",
         initialDoc: link!,
         disabledElements: [
-          // 'viewControlsButton',
-          // 'leftPanel'
-          // 'viewControlsOverlay'
-          // 'toolbarGroup-Annotate'
+          'downloadButton'
         ],
       },
       viewer.current!
     ).then(async (instance) => {
       const { documentViewer } = instance.Core;
       const annotManager = documentViewer.getAnnotationManager();
-
+      instance.UI.setHeaderItems(function (header) {
+        header.push({
+          type: "actionButton",
+          img: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20"><path d="M19 9h-4V3H9v6H5l7 8zM4 19h16v2H4z"></path></svg>',
+          onClick: async () =>
+            await instance.UI.downloadPdf({
+              filename: templateName.replace(/.docx|.doc/g, ""),
+            }),
+        });
+      });
       annotManager.enableReadOnlyMode();
       documentViewer.addEventListener("documentLoaded", async () => {
         await documentViewer.getDocument().getDocumentCompletePromise();
         documentViewer.updateView();
       });
     });
-  }, [link]);
+  }, [link, templateName]);
 
   const onApproveTemplate = async () => {
     await dispatch(
@@ -168,8 +175,8 @@ const ViewApproveTemplate: React.FC = () => {
         </Link>
         <span className="text-white">{t("Approve template")}</span>
       </div>
-      <div className="flex">
-        <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 w-80">
+      <div className="flex flex-col-reverse md:flex-row">
+        <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 pb-8 md:w-80 md:pb-0">
           <div className="flex flex-col space-y-8 text-white">
             <div className="flex flex-col space-y-2">
               <h4>{t("File name")}:</h4>
@@ -205,7 +212,7 @@ const ViewApproveTemplate: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4>{t("Created At")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {new Date(createdAt).toUTCString().replace("GMT", "")}
+                {helpers.addHours(createdAt, 7)}
               </span>
             </div>
             <Divider className="bg-white" />
@@ -267,7 +274,7 @@ const ViewApproveTemplate: React.FC = () => {
             )}
           </div>
         </div>
-        <div className="webviewer w-full" ref={viewer}></div>
+        <div className="webviewer w-full h-screen" ref={viewer}></div>
       </div>
       <Dialog
         open={openDialog}

@@ -5,7 +5,9 @@ import LanguageSelect from "../../../LanguageSelect";
 import LockPersonIcon from "@mui/icons-material/LockPerson";
 import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import MenuIcon from "@mui/icons-material/Menu";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import {
   Button,
   Divider,
@@ -20,9 +22,10 @@ import {
   Typography,
 } from "@mui/material";
 import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
-import { useAuth, useDispatch } from "../../../../hooks";
+import { useAuth, useDispatch, useSelector } from "../../../../hooks";
 import { styled } from "@mui/system";
 import { setLocation } from "../../../../slices/location";
+import { toggleSideBar } from "../../../../slices/ui-control";
 
 const StyledMenu = styled(Menu)({
   "& .MuiPaper-root": {
@@ -38,7 +41,8 @@ const StyledMenu = styled(Menu)({
 });
 
 const TopBar: React.FC = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const {isSideBarVisible} = useSelector(state => state.uiControl)
   const { logout } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -53,11 +57,12 @@ const TopBar: React.FC = () => {
   const signOutHandler = () => {
     logout();
   };
-
   return (
-    <div className="flex py-6 px-20 space-x-20 justify-between items-center bg-white">
-      <img src={hamburger} alt="logo" className="scale-75 w-fit" />
-      <div className="flex space-x-2">
+    <div className="flex py-6 px-4 justify-between items-center bg-white md:px-20">
+      <IconButton onClick={() => dispatch(toggleSideBar())}>
+        {!isSideBarVisible ? <MenuIcon fontSize="small"/> : <ArrowBackIosNewIcon fontSize="small"/>}
+      </IconButton>
+      <div className="flex -space-x-3">
         <LanguageSelect />
         <div>
           <IconButton
@@ -67,7 +72,7 @@ const TopBar: React.FC = () => {
             aria-expanded={open ? "true" : undefined}
             onClick={handleClick}
           >
-            <NotificationsIcon className="fill-blue-config" />
+            <NotificationsIcon className="fill-blue-config w-12" fontSize="small"/>
           </IconButton>
           <StyledMenu
             id="basic-menu"
@@ -86,7 +91,13 @@ const TopBar: React.FC = () => {
               "aria-labelledby": "basic-button",
             }}
           >
-            <Typography variant="h6" ml={2} fontWeight={600} mb={2} component='h1'>
+            <Typography
+              variant="h6"
+              ml={2}
+              fontWeight={600}
+              mb={2}
+              component="h1"
+            >
               Notifications
             </Typography>
             <Divider />
@@ -101,8 +112,8 @@ const TopBar: React.FC = () => {
         <PopupState variant="popover" popupId="demo-popup-popover">
           {(popupState) => (
             <div>
-              <IconButton  {...bindTrigger(popupState)}>
-                <AccountCircleIcon className="fill-blue-config"/>
+              <IconButton {...bindTrigger(popupState)}>
+                <AccountCircleIcon className="fill-blue-config w-12" fontSize="small"/>
               </IconButton>
               <Popover
                 {...bindPopover(popupState)}
@@ -121,7 +132,13 @@ const TopBar: React.FC = () => {
                       <ListItemIcon>
                         <LockPersonIcon fontSize="small" />
                       </ListItemIcon>
-                      <ListItemText onClick={() => dispatch(setLocation({locationIndex: 8}))}>Change password</ListItemText>
+                      <ListItemText
+                        onClick={() =>
+                          dispatch(setLocation({ locationIndex: 8 }))
+                        }
+                      >
+                        Change password
+                      </ListItemText>
                     </MenuItem>
                     <Divider />
                     <MenuItem onClick={signOutHandler}>
