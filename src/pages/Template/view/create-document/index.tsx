@@ -1,4 +1,4 @@
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Divider } from "@mui/material";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
@@ -45,12 +45,36 @@ const ViewCreateDocument: React.FC = () => {
     typeName,
     link,
     id,
+    signatoryList,
     isEnable,
   } = templateDetail!;
   const [xfdfString, setXfdfString] = useState<string | undefined>();
   const [enableSend, setEnableSend] = useState<boolean>(false);
   const { t } = useTranslation();
 
+  const signers = signatoryList.map((signer, index) => (
+    <div
+      className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4"
+      key={index}
+    >
+      <div className="flex space-x-2 items-center ">
+        <h4>{t("Signer")}:</h4>
+        <span className="text-white text-base break-words">
+          {signer.username}
+        </span>
+      </div>
+      <div className="flex space-x-2">
+        <h4>Department:</h4>
+        {/* <span className="text-white text-base break-words">{signer.}</span> */}
+      </div>
+      <div className="flex space-x-2 items-center">
+        <h4>{t("Role")}:</h4>
+        <span className="text-white text-base break-words">
+          {signer.roleName}
+        </span>
+      </div>
+    </div>
+  ));
   // if using a class, equivalent of componentDidMount
 
   useEffect(() => {
@@ -123,7 +147,6 @@ const ViewCreateDocument: React.FC = () => {
             //   : setEnableSend(false);
           }
         );
-        console.log(annotationManager.getAnnotationsList())
       });
     });
   }, [departmentName, link, templateName, typeName, userInfo?.userId, userInfo?.userName]);
@@ -175,6 +198,11 @@ const ViewCreateDocument: React.FC = () => {
                 {departmentName}
               </span>
             </div>
+            <Divider className="bg-white" />
+            <div className="flex justify-center">
+              <h4>{t("Signer List")}:</h4>
+            </div>
+            {signers}
             {isEnable && (
               <SendBtn
                 size="small"

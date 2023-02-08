@@ -1,21 +1,27 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase, Paper, Button } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import UploadIcon from "@mui/icons-material/Upload";
 import { styled } from "@mui/system";
 import DataTable from "../../../components/DataTable";
 import { useDispatch, useSelector } from "../../../hooks";
 import { getTemplates, searchTemplate } from "../../../slices/template";
-import { DataTableHeader, DeviceWidth, StatusTemplate } from "../../../utils/constants";
+import {
+  DataTableHeader,
+  DeviceWidth,
+  Permissions,
+  StatusTemplate,
+} from "../../../utils/constants";
 import { useTranslation } from "react-i18next";
+import { helpers } from "../../../utils";
 
 const StyledUploadBtn = styled(Button)({
   backgroundColor: "#fff",
   borderRadius: "10px",
   color: "#407AFF",
   padding: "0px 15px",
-  display: 'flex',
-  alignItems: 'center',
+  display: "flex",
+  alignItems: "center",
   height: "80%",
   ":hover": {
     backgroundColor: "#407AFF",
@@ -26,6 +32,8 @@ const StyledUploadBtn = styled(Button)({
 const { TYPE, IS_ENABLE, TYPE_TEMPLATE, DEPARTMENT, CREATED_BY } =
   DataTableHeader;
 
+const { ENABLE_TEMPLATE } = Permissions;
+
 const Template = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -33,8 +41,19 @@ const Template = () => {
   const { searchItemValue, currentPage } = useSelector(
     (state) => state.template
   );
-  const {innerWidth} = window
+  const { innerWidth } = window;
 
+  const checkEnablePermission = useCallback(
+    () => {
+      const {checkHideColumnFromPermission} = helpers
+      if(!checkHideColumnFromPermission(ENABLE_TEMPLATE)){
+        return true
+      }
+      if(filter?.field === IS_ENABLE) return (filter?.value as boolean)
+      return undefined
+    },
+    [filter?.field, filter?.value],
+  )
   useEffect(() => {
     const getTemplateList = dispatch(
       getTemplates({
@@ -49,7 +68,7 @@ const Template = () => {
             ? (filter.value as string)
             : undefined,
         isEnable_eq:
-          filter?.field === IS_ENABLE ? (filter.value as boolean) : undefined,
+          checkEnablePermission(),
         department_eq:
           filter?.field === DEPARTMENT ? (filter.value as string) : undefined,
         createdBy_eq:
@@ -101,7 +120,7 @@ const Template = () => {
               className="shadow-md"
               variant="outlined"
             >
-              <UploadIcon className="md:mr-2"/>
+              <UploadIcon className="md:mr-2" />
               {innerWidth > DeviceWidth.IPAD_WIDTH && t("Upload")}
             </StyledUploadBtn>
           </div>

@@ -55,6 +55,8 @@ const checkHideColumnFromPermission = (permission: Permissions) => {
     .map((id) => +id) : undefined;
   return permissions?.includes(permission!) ;
 };
+
+const handleFilter = ({})
 // *-------------------------------------------- HANDLE NOTIFICATIONS --------------------------------------------
 // export handleNotification =
 

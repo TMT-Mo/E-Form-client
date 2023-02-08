@@ -1,5 +1,8 @@
-import { DocumentHistoryActionCell } from './../components/DataTable/action-cell/documentHistory/index';
-import { renderEditEnableCell, renderEnableCell } from './../components/DataTable/isEnable-cell/index';
+import { DocumentHistoryActionCell } from "./../components/DataTable/action-cell/documentHistory/index";
+import {
+  renderEditEnableCell,
+  renderEnableCell,
+} from "./../components/DataTable/isEnable-cell/index";
 import { updatedAtOnlyOperators } from "./../components/DataTable/filter/updatedAt/index";
 import { createdByOnlyOperators } from "./../components/DataTable/filter/createdBy/index";
 import { PersonalDocumentActionCell } from "./../components/DataTable/action-cell/personalDocument/index";
@@ -83,15 +86,15 @@ export const templateColumns: GridColDef[] = [
     flex: 0.5,
     filterOperators: createdByOnlyOperators,
   },
-  {
-    field: STATUS,
-    headerName: "Status",
-    renderCell: StatusCell,
-    filterable: false,
-    headerAlign: "center",
-    disableColumnMenu: true,
-    hideable: checkHideColumnFromPermission(ENABLE_TEMPLATE)
-  },
+  // {
+  //   field: STATUS,
+  //   headerName: "Status",
+  //   renderCell: StatusCell,
+  //   filterable: false,
+  //   headerAlign: "center",
+  //   disableColumnMenu: true,
+  //   hideable: checkHideColumnFromPermission(ENABLE_TEMPLATE)
+  // },
   {
     field: IS_ENABLE,
     headerName: "Is Enable",
@@ -101,7 +104,8 @@ export const templateColumns: GridColDef[] = [
     align: "center",
     filterOperators: isEnableOnlyOperators,
     headerAlign: "center",
-    hideable: checkHideColumnFromPermission(ENABLE_TEMPLATE)
+    filterable: checkHideColumnFromPermission(ENABLE_TEMPLATE),
+    hideable: checkHideColumnFromPermission(ENABLE_TEMPLATE),
   },
   {
     field: ACTION,
@@ -130,7 +134,7 @@ export const templateHistoryColumns: GridColDef[] = [
     flex: 1,
     filterable: false,
     minWidth: 200,
-    hideable: false
+    hideable: false,
   },
   {
     field: DESCRIPTION,
@@ -251,7 +255,7 @@ export const awaitSigningColumns: GridColDef[] = [
     headerAlign: "center",
     renderCell: FileCell,
     align: "center",
-    hide: !checkHideColumnFromDevice(IPAD)
+    hide: !checkHideColumnFromDevice(IPAD),
   },
   {
     field: DOCUMENT_NAME,
@@ -260,7 +264,7 @@ export const awaitSigningColumns: GridColDef[] = [
     disableColumnMenu: true,
     hideable: false,
     filterable: false,
-    minWidth: 200
+    minWidth: 200,
   },
   {
     field: CREATED_AT,
@@ -270,7 +274,7 @@ export const awaitSigningColumns: GridColDef[] = [
     flex: 0.2,
     headerAlign: "center",
     filterOperators: createdAtOnlyOperators,
-    minWidth: 100
+    minWidth: 100,
   },
   {
     field: CREATED_BY,
@@ -288,7 +292,7 @@ export const awaitSigningColumns: GridColDef[] = [
     renderCell: AwaitSigningActionCell,
     filterable: false,
     sortable: false,
-    hideable: false
+    hideable: false,
   },
 ];
 
@@ -300,13 +304,13 @@ export const personalDocColumns: GridColDef[] = [
     headerAlign: "center",
     renderCell: FileCell,
     align: "center",
-    hide: !checkHideColumnFromDevice(IPAD)
+    hide: !checkHideColumnFromDevice(IPAD),
   },
   {
     field: DOCUMENT_NAME,
     headerName: "Name",
     flex: 1,
-    minWidth: 200
+    minWidth: 200,
   },
   {
     field: CREATED_AT,
@@ -317,7 +321,7 @@ export const personalDocColumns: GridColDef[] = [
     flex: 0.2,
     filterOperators: createdAtOnlyOperators,
     minWidth: 100,
-    hide: !checkHideColumnFromDevice(IPAD)
+    hide: !checkHideColumnFromDevice(IPAD),
   },
   {
     field: UPDATED_AT,
@@ -398,7 +402,7 @@ export const historyColumns: GridColDef[] = [
     disableColumnMenu: true,
     hideable: false,
     filterable: false,
-    minWidth: 200
+    minWidth: 200,
   },
   {
     field: CREATED_AT,
@@ -409,7 +413,7 @@ export const historyColumns: GridColDef[] = [
     flex: 0.2,
     filterOperators: createdAtOnlyOperators,
     minWidth: 100,
-    hide: !checkHideColumnFromDevice(IPAD)
+    hide: !checkHideColumnFromDevice(IPAD),
   },
   {
     field: UPDATED_AT,
