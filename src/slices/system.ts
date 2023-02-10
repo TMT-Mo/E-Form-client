@@ -20,6 +20,7 @@ interface State {
   isGetTemplateTypesLoading: boolean;
   templateTypeList?: GetTemplateTypeListResponse;
   isOpenTemplateTypes: boolean;
+  isGetSignerLoading: boolean
 }
 
 const initialState: State = {
@@ -31,6 +32,7 @@ const initialState: State = {
   isGetTemplateTypesLoading: false,
   templateTypeList: undefined,
   isOpenTemplateTypes: false,
+  isGetSignerLoading: false
 };
 
 type CR<T> = CaseReducer<State, PayloadAction<T>>;
@@ -95,11 +97,11 @@ const getTemplateTypeList = createAsyncThunk(
   }
 );
 
-const getUsers = createAsyncThunk(
-  `${ACTION_TYPE}getUsers`,
+const getSigner = createAsyncThunk(
+  `${ACTION_TYPE}getSigner`,
   async (args: GetUsersArgs | undefined, { dispatch }) => {
     try {
-      const result = await systemServices.getUsers(args)
+      const result = await systemServices.getSigner(args)
       return result;
     } catch (error) {
       const err = error as AxiosError;
@@ -113,6 +115,24 @@ const getUsers = createAsyncThunk(
     }
   }
 );
+// const getUsers = createAsyncThunk(
+//   `${ACTION_TYPE}getUsers`,
+//   async (args: GetUsersArgs | undefined, { dispatch }) => {
+//     try {
+//       const result = await systemServices.getUsers(args)
+//       return result;
+//     } catch (error) {
+//       const err = error as AxiosError;
+//       if(err.response?.data){
+//         dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
+//       }
+//       else{
+//         dispatch(handleError({ errorMessage: err.message }));
+//       }
+//       throw err
+//     }
+//   }
+// );
 
 const system = createSlice({
   name: "system",
@@ -136,21 +156,21 @@ const system = createSlice({
       ...state,
       isGetDepartmentsLoading: false,
     }));
-    builder.addCase(getUsers.pending, (state) => ({
+    builder.addCase(getSigner.pending, (state) => ({
       ...state,
-      isGetUserListLoading: true,
+      isGetSignerLoading: true,
     }));
     builder.addCase(
-      getUsers.fulfilled,
+      getSigner.fulfilled,
       (state, { payload }) => ({
         ...state,
-        isGetUserListLoading: false,
+        isGetSignerLoading: false,
         userList: payload!,
       })
     );
-    builder.addCase(getUsers.rejected, (state) => ({
+    builder.addCase(getSigner.rejected, (state) => ({
       ...state,
-      isGetUserListLoading: false,
+      isGetSignerLoading: false,
     }));
     builder.addCase(getTemplateTypeList.pending, (state) => ({
       ...state,
@@ -170,7 +190,8 @@ const system = createSlice({
 
 export {
   getDepartmentList,
-  getUsers,
+  // getUsers,
+  getSigner,
   getTemplateTypeList,
 };
 
