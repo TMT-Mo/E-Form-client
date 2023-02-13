@@ -115,6 +115,7 @@ const ViewApproveDocument: React.FC = () => {
     departmentName,
     typeName,
     id,
+    signatoryList
   } = documentDetail!;
   const [isAccepting, setIsAccepting] = useState<boolean>(true);
   const [reason, setReason] = useState<string | undefined>();
@@ -124,6 +125,29 @@ const ViewApproveDocument: React.FC = () => {
   const [newXfdfString, setNewXfdfString] = useState<string | undefined>();
   // if using a class, equivalent of componentDidMount
 
+  const signers = signatoryList!.map((signer, index) => (
+    <div
+      className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4"
+      key={index}
+    >
+      <div className="flex space-x-2 items-center ">
+        <h4>{t("Signer")}:</h4>
+        <span className="text-white text-base break-words">
+          {signer.username}
+        </span>
+      </div>
+      <div className="flex space-x-2">
+        <h4>Department:</h4>
+        {/* <span className="text-white text-base break-words">{signer.}</span> */}
+      </div>
+      <div className="flex space-x-2 items-center">
+        <h4>{t("Role")}:</h4>
+        <span className="text-white text-base break-words">
+          {signer.roleName}
+        </span>
+      </div>
+    </div>
+  ));
   const onApproveDocument = async () => {
     await dispatch(
       approveDocument({
@@ -218,14 +242,6 @@ const ViewApproveDocument: React.FC = () => {
     userInfo?.userName,
     xfdfString,
   ]);
-
-  console.log(
-    annotationList
-      ? annotationList.every((annot) => initialXfdfString?.includes(annot))
-      : true
-  );
-  console.log(annotationList)
-  console.log(initialXfdfString)
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
@@ -240,7 +256,7 @@ const ViewApproveDocument: React.FC = () => {
         </Box>
       )}
       <div className="flex flex-col-reverse md:flex-row">
-        <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 pb-8 md:w-80 md:pb-0">
+        <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 pb-8 md:w-80">
           <div className="flex flex-col space-y-8 text-white">
             <div className="flex flex-col space-y-2">
               <h4>{t("File name")}:</h4>
@@ -280,6 +296,10 @@ const ViewApproveDocument: React.FC = () => {
               </span>
             </div>
             <Divider className="bg-white" />
+            <div className="flex justify-center">
+              <h4>{t("Signer List")}:</h4>
+            </div>
+            {signers}
             <div className="flex items-center">
               <Switch
                 defaultChecked={isAccepting}

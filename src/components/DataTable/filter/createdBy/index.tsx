@@ -12,9 +12,8 @@ import {
   GridFilterItem,
   GridFilterInputValueProps,
 } from "@mui/x-data-grid";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "../../../../hooks";
-import { getUsers } from "../../../../slices/system";
 import { DataTableHeader } from "../../../../utils/constants";
 
 const { CREATED_BY } = DataTableHeader;

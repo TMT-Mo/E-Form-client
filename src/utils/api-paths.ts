@@ -17,7 +17,8 @@ const apiPaths = {
     system:{
         getDepartmentList: `${apiHead}api/Department/getDepartments`,
         getTemplateTypeList: `${apiHead}api/Category/getCategories`,
-        getUsers: `${apiHead}api/Users/getUsers`,
+        // getUsers: `${apiHead}api/Users/getUsers`,
+        getSigner: `${apiHead}api/Users/getSigner`
     },
     document:{
         createDocument: `${apiHead}api/Document/create`,

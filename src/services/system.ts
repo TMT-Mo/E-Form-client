@@ -7,8 +7,13 @@ const getDepartmentList = async (): Promise<DepartmentListResponse> => {
     return response.data as DepartmentListResponse
 }
 
-const getUsers = async (args: GetUsersArgs | undefined): Promise<GetUsersResponse> => {
-    const response = await httpClient.get({url: `${apiPaths.system.getUsers}`, params: args})
+// const getUsers = async (args: GetUsersArgs | undefined): Promise<GetUsersResponse> => {
+//     const response = await httpClient.get({url: `${apiPaths.system.getUsers}`, params: args})
+//     return response.data as GetUsersResponse
+// }
+
+const getSigner = async (args: GetUsersArgs | undefined): Promise<GetUsersResponse> => {
+    const response = await httpClient.get({url: `${apiPaths.system.getSigner}`, params: args})
     return response.data as GetUsersResponse
 }
 
@@ -19,6 +24,7 @@ const getTemplateTypeList = async (): Promise<GetTemplateTypeListResponse> => {
 
 export const systemServices =  {
     getDepartmentList,
-    getUsers,
-    getTemplateTypeList
+    // getUsers,
+    getTemplateTypeList,
+    getSigner
 }

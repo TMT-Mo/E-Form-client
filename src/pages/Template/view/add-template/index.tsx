@@ -33,7 +33,7 @@ import {
   toggleDepartmentList,
   getTemplateTypeList,
   toggleTemplateTypeList,
-  getUsers,
+  getSigner,
   clearUserList,
 } from "../../../../slices/system";
 import { addNewTemplate } from "../../../../slices/template";
@@ -107,7 +107,7 @@ const ViewAddTemplate: React.FC = () => {
     isGetDepartmentsLoading,
     departmentList,
     isOpenDepartmentList,
-    isGetUserListLoading,
+    isGetSignerLoading,
     userList,
     isGetTemplateTypesLoading,
     isOpenTemplateTypes,
@@ -213,7 +213,7 @@ const ViewAddTemplate: React.FC = () => {
   };
 
   const getUserListHandler = useCallback(() => {
-    dispatch(getUsers({ departmentId_eq: form.idDepartment })).unwrap();
+    dispatch(getSigner({ departmentId_eq: form.idDepartment })).unwrap();
   }, [dispatch, form.idDepartment]);
 
   useEffect(() => {
@@ -370,12 +370,12 @@ const ViewAddTemplate: React.FC = () => {
             </div>
             <div className="flex flex-col space-y-4">
               <h4>{t("Select Signer(s)")}</h4>
-              {isGetUserListLoading && (
+              {isGetSignerLoading && (
                 <div className="flex justify-center">
                   <CircularProgress />
                 </div>
               )}
-              {userList?.items && !isGetUserListLoading && (
+              {userList?.items && !isGetSignerLoading && (
                 <Autocomplete
                   multiple
                   limitTags={2}
