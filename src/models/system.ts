@@ -14,6 +14,7 @@ export interface IUser{
     roleName: string,
     status: number,
     createdAt: string,
+    updateAt: string
 }
 
 export interface GetUsersResponse{

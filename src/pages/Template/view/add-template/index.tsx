@@ -98,6 +98,7 @@ const TextFieldStyled = styled(TextField)({
 });
 
 const ViewAddTemplate: React.FC = () => {
+  const { t } = useTranslation();
   const viewer = useRef(null);
   const instance = useRef<WebViewerInstance>();
   const navigate = useNavigate();
@@ -129,23 +130,23 @@ const ViewAddTemplate: React.FC = () => {
   const [isEnableSave, setIsEnableSave] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
 
-  useEffect(() => {
-    let check = false;
-    if(!file) return 
-    Object.values(form).forEach((value) => {
-      if (!value) {
-        check = true;
-        return;
-      }
-    });
-    check ? setIsEnableSave(false) : setIsEnableSave(true);
-  }, [file, form]);
-  // Handle file upload event and update state
-  function handleChange(event: any) {
-    const newFile: File = event.target.files[0];
-    setFile(newFile);
-    setForm({ ...form, templateName: newFile.name, size: newFile.size });
-  }
+  const getDepartmentListHandler = async () => {
+    if (!departmentList) {
+      await dispatch(getDepartmentList()).unwrap();
+    }
+    dispatch(toggleDepartmentList({ isOpen: !isOpenDepartmentList }));
+  };
+
+  const getTemplateTypesHandler = async () => {
+    if (!templateTypeList) {
+      await dispatch(getTemplateTypeList()).unwrap();
+    }
+    dispatch(toggleTemplateTypeList({ isOpen: !isOpenTemplateTypes }));
+  };
+
+  const getSignerListHandler = useCallback(() => {
+    dispatch(getSigner({ departmentId_eq: form.idDepartment })).unwrap();
+  }, [dispatch, form.idDepartment]);
 
   const handleUpload = async () => {
     const storageRef = ref(storage, `/file/${file!.name}`);
@@ -162,6 +163,31 @@ const ViewAddTemplate: React.FC = () => {
     navigate("/user");
   };
 
+  const onChangeSelectedDepartment = (value: number | undefined) => {
+    if (!value) {
+      setForm({ ...form, signatoryList: undefined, idDepartment: undefined });
+      return;
+    }
+    setForm({ ...form, idDepartment: value, signatoryList: undefined });
+  };
+
+  useEffect(() => {
+    let check = false;
+    if (!file) return;
+    Object.values(form).forEach((value) => {
+      if (!value) {
+        check = true;
+        return;
+      }
+    });
+    check ? setIsEnableSave(false) : setIsEnableSave(true);
+  }, [file, form]);
+  // Handle file upload event and update state
+  function handleChange(event: any) {
+    const newFile: File = event.target.files[0];
+    setFile(newFile);
+    setForm({ ...form, templateName: newFile.name, size: newFile.size });
+  }
   // if using a class, equivalent of componentDidMount
 
   useEffect(() => {
@@ -179,8 +205,10 @@ const ViewAddTemplate: React.FC = () => {
       annotManager.enableReadOnlyMode();
       const UIEvents = inst.UI.Events;
       inst.UI.addEventListener(UIEvents.LOAD_ERROR, function (err) {
-        inst.UI.showErrorMessage('This file has been broken! Please insert another one.')
-        setFile(undefined)
+        inst.UI.showErrorMessage(
+          "This file has been broken! Please insert another one."
+        );
+        setFile(undefined);
       });
       documentViewer.addEventListener("documentLoaded", async () => {
         await documentViewer.getDocument().getDocumentCompletePromise();
@@ -198,40 +226,17 @@ const ViewAddTemplate: React.FC = () => {
     }
   }, [file]);
 
-  const getDepartmentListHandler = async () => {
-    if (!departmentList) {
-      await dispatch(getDepartmentList()).unwrap();
-    }
-    dispatch(toggleDepartmentList({ isOpen: !isOpenDepartmentList }));
-  };
 
-  const getTemplateTypesHandler = async () => {
-    if (!templateTypeList) {
-      await dispatch(getTemplateTypeList()).unwrap();
-    }
-    dispatch(toggleTemplateTypeList({ isOpen: !isOpenTemplateTypes }));
-  };
-
-  const getUserListHandler = useCallback(() => {
-    dispatch(getSigner({ departmentId_eq: form.idDepartment })).unwrap();
-  }, [dispatch, form.idDepartment]);
 
   useEffect(() => {
     if (form.idDepartment) {
-      getUserListHandler();
+      getSignerListHandler();
     } else {
       dispatch(clearUserList());
     }
-  }, [getUserListHandler, dispatch, form.idDepartment]);
+  }, [getSignerListHandler, dispatch, form.idDepartment]);
 
-  const onChangeSelectedDepartment = (value: number | undefined) => {
-    if (!value) {
-      setForm({ ...form, signatoryList: undefined, idDepartment: undefined });
-      return;
-    }
-    setForm({ ...form, idDepartment: value, signatoryList: undefined });
-  };
-  const { t } = useTranslation();
+
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">

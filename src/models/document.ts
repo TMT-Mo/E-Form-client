@@ -1,3 +1,4 @@
+import { IUser } from "./system";
 
 export interface AwaitSigningResponse {}
 
@@ -35,13 +36,13 @@ export interface GetDocumentsArgs {
   updateAt_lte?: string //* lte: Lower than equal
 }
 
-interface Signer {
-  username: string;
-  signature: string;
-  status: number;
-  roleName: string;
-  updateAt: string
-}
+// export interface Signer {
+//   username: string;
+//   signature: string;
+//   status: number;
+//   roleName: string;
+//   updateAt: string
+// }
 
 interface Creator {
   username: string;
@@ -61,7 +62,7 @@ export interface Document {
   status: number;
   typeName: string;
   departmentName: string;
-  signatoryList: Signer[] | null;
+  signatoryList: IUser[] | null;
   link: string;
   createdBy: Creator;
   isLocked: boolean | null;
