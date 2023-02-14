@@ -4,7 +4,6 @@ import {
   TextField,
   Switch,
   Typography,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -13,77 +12,15 @@ import {
 } from "@mui/material";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { styled } from "@mui/system";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer from "@pdftron/webviewer";
-import { LoadingButton } from "@mui/lab";
 import AlertPopup from "../../../../components/AlertPopup";
 import { useDispatch, useSelector } from "../../../../hooks";
 import { approveTemplate } from "../../../../slices/template";
 import { StatusTemplate } from "../../../../utils/constants";
 import { useTranslation } from "react-i18next";
 import { helpers } from "../../../../utils";
-
-const LoadingBtn = styled(
-  LoadingButton,
-  {}
-)({
-  backgroundColor: "#407AFF",
-  borderRadius: "5px",
-  color: "#fff",
-  padding: "5px",
-  textTransform: "unset",
-  // fontSize: '15px',
-  // width: 'fit-content',
-  ":hover": { backgroundColor: "#578aff" },
-  "&.MuiLoadingButton-loading": {
-    backgroundColor: "#fff",
-    borderColor: "#407AFF",
-  },
-});
-
-const CancelBtn = styled(
-  Button,
-  {}
-)({
-  backgroundColor: "#fff",
-  borderRadius: "5px",
-  color: "#407AFF",
-  padding: "5px",
-  textTransform: "unset",
-  // ":hover": { backgroundColor: "#407AFF", color: "#fff", },
-});
-
-const ApproveBtn = styled(
-  Button,
-  {}
-)({
-  backgroundColor: "#407AFF",
-  borderRadius: "5px",
-  color: "#fff",
-  paddingTop: "10px",
-  paddingBottom: "10px",
-  ":hover": { backgroundColor: "#fff", color: "#407AFF" },
-  "&.Mui-disabled": {
-    color: "#F2F2F2",
-    backgroundColor: "#6F7276",
-  },
-});
-const RejectBtn = styled(
-  Button,
-  {}
-)({
-  backgroundColor: "#ff5252",
-  borderRadius: "5px",
-  color: "#fff",
-  paddingTop: "10px",
-  paddingBottom: "10px",
-  ":hover": { backgroundColor: "#fff", color: "#407AFF" },
-  "&.Mui-disabled": {
-    color: "#F2F2F2",
-    backgroundColor: "#6F7276",
-  },
-});
+import { ApproveBtn, CancelWhiteBtn, LoadingBtn, RejectBtn } from "../../../../components/CustomStyled";
 
 const { APPROVED_TEMPLATE, REJECTED_TEMPLATE } = StatusTemplate;
 
@@ -291,9 +228,9 @@ const ViewApproveTemplate: React.FC = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <CancelBtn onClick={() => setOpenDialog(false)} size="small">
+          <CancelWhiteBtn onClick={() => setOpenDialog(false)} size="small">
             {t("Cancel")}
-          </CancelBtn>
+          </CancelWhiteBtn>
           <LoadingBtn
             size="small"
             loading={isApproveTemplateLoading}

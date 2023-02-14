@@ -5,7 +5,6 @@ import {
   TextField,
   IconButton,
   Typography,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -20,11 +19,9 @@ import React, {
   useState,
 } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { styled } from "@mui/system";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer, { WebViewerInstance } from "@pdftron/webviewer";
 import { ref } from "firebase/storage";
-import { LoadingButton } from "@mui/lab";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import AlertPopup from "../../../../components/AlertPopup";
 import { TemplateArgs } from "../../../../models/template";
@@ -40,62 +37,7 @@ import { addNewTemplate } from "../../../../slices/template";
 import { useDispatch, useSelector } from "../../../../hooks";
 import storage from "../../../../utils/firebase";
 import { useTranslation } from "react-i18next";
-
-const LoadingBtn = styled(
-  LoadingButton,
-  {}
-)({
-  backgroundColor: "#407AFF",
-  borderRadius: "5px",
-  color: "#fff",
-  padding: "5px",
-  textTransform: "unset",
-  // fontSize: '15px',
-  // width: 'fit-content',
-  ":hover": { backgroundColor: "#578aff" },
-  "&.MuiLoadingButton-loading": {
-    backgroundColor: "#fff",
-    borderColor: "#407AFF",
-  },
-});
-
-const CancelBtn = styled(
-  Button,
-  {}
-)({
-  backgroundColor: "#fff",
-  borderRadius: "5px",
-  color: "#407AFF",
-  padding: "5px",
-  textTransform: "unset",
-  // ":hover": { backgroundColor: "#407AFF", color: "#fff", },
-});
-
-const StyledBtn = styled(
-  Button,
-  {}
-)({
-  backgroundColor: "#407AFF",
-  borderRadius: "5px",
-  color: "#fff",
-  paddingTop: "10px",
-  paddingBottom: "10px",
-  ":hover": { backgroundColor: "#fff", color: "#407AFF" },
-  "&.Mui-disabled": {
-    color: "#F2F2F2",
-    backgroundColor: "#6F7276",
-  },
-});
-
-const TextFieldStyled = styled(TextField)({
-  color: "#fff",
-  input: {
-    color: "#fff",
-  },
-  "& .MuiSvgIcon-root": {
-    fill: "#fff",
-  },
-});
+import { ApproveBtn, CancelWhiteBtn, LoadingBtn, TextFieldStyled } from "../../../../components/CustomStyled";
 
 const ViewAddTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -413,13 +355,13 @@ const ViewAddTemplate: React.FC = () => {
                 />
               )}
             </div>
-            <StyledBtn
+            <ApproveBtn
               disabled={!isEnableSave}
               onClick={() => setOpenDialog(true)}
               autoFocus
             >
               {t("Save")}
-            </StyledBtn>
+            </ApproveBtn>
           </div>
         </div>
         <div className="webviewer w-full h-screen" ref={viewer}></div>
@@ -444,9 +386,9 @@ const ViewAddTemplate: React.FC = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <CancelBtn onClick={() => setOpenDialog(false)} size="small">
+          <CancelWhiteBtn onClick={() => setOpenDialog(false)} size="small">
             {t("Cancel")}
-          </CancelBtn>
+          </CancelWhiteBtn>
           <LoadingBtn
             size="small"
             loading={isAddNewTemplateLoading}

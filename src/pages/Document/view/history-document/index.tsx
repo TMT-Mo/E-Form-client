@@ -1,5 +1,5 @@
-import { Divider, Switch, Typography } from "@mui/material";
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import { Divider } from "@mui/material";
+import React, { Fragment, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer from "@pdftron/webviewer";
@@ -26,7 +26,7 @@ const ViewHistoryDocument: React.FC = () => {
     status,
     reason,
   } = documentDetail!;
-  const [t] = useTranslation();
+  const {t} = useTranslation();
   // if using a class, equivalent of componentDidMount
 
   useEffect(() => {

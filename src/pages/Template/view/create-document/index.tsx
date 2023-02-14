@@ -1,35 +1,14 @@
 import { CircularProgress, Divider } from "@mui/material";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { styled } from "@mui/system";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer from "@pdftron/webviewer";
-import { LoadingButton } from "@mui/lab";
 import AlertPopup from "../../../../components/AlertPopup";
 import { useDispatch, useSelector } from "../../../../hooks";
 import { createDocument } from "../../../../slices/document";
 import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from "uuid";
-
-const SendBtn = styled(
-  LoadingButton,
-  {}
-)({
-  backgroundColor: "#407AFF",
-  borderRadius: "5px",
-  color: "#fff",
-  paddingTop: "10px",
-  paddingBottom: "10px",
-  ":hover": { backgroundColor: "#fff", color: "#407AFF" },
-  "&.Mui-disabled": {
-    color: "#F2F2F2",
-    backgroundColor: "#6F7276",
-  },
-  "&.MuiLoadingButton-loading": {
-    backgroundColor: "#fff",
-    borderColor: "#407AFF",
-  },
-});
+import { LoadingBtn } from "../../../../components/CustomStyled";
 
 const ViewCreateDocument: React.FC = () => {
   const viewer = useRef(null);
@@ -204,7 +183,7 @@ const ViewCreateDocument: React.FC = () => {
             </div>
             {signers}
             {isEnable && (
-              <SendBtn
+              <LoadingBtn
                 size="small"
                 loading={isCreateDocumentLoading}
                 loadingIndicator={
@@ -215,7 +194,7 @@ const ViewCreateDocument: React.FC = () => {
                 disabled={false}
               >
                 {t("Send")}
-              </SendBtn>
+              </LoadingBtn>
             )}
           </div>
         </div>

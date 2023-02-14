@@ -3,7 +3,6 @@ import {
   CircularProgress,
   TextField,
   Switch,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -12,18 +11,10 @@ import {
   Box,
   LinearProgress,
 } from "@mui/material";
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { styled } from "@mui/system";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import WebViewer, { Core, WebViewerInstance } from "@pdftron/webviewer";
-import { LoadingButton } from "@mui/lab";
+import WebViewer, { Core } from "@pdftron/webviewer";
 import AlertPopup from "../../../../components/AlertPopup";
 import { useDispatch, useSelector } from "../../../../hooks";
 import { useTranslation } from "react-i18next";
@@ -31,71 +22,11 @@ import { helpers } from "../../../../utils";
 import { approveDocument } from "../../../../slices/document";
 import { StatusDocument } from "../../../../utils/constants";
 import { getSignature } from "../../../../slices/auth";
-
-const LoadingBtn = styled(
-  LoadingButton,
-  {}
-)({
-  backgroundColor: "#407AFF",
-  borderRadius: "5px",
-  color: "#fff",
-  padding: "5px",
-  textTransform: "unset",
-  // fontSize: '15px',
-  // width: 'fit-content',
-  ":hover": { backgroundColor: "#578aff" },
-  "&.MuiLoadingButton-loading": {
-    backgroundColor: "#fff",
-    borderColor: "#407AFF",
-  },
-});
-
-const CancelBtn = styled(
-  Button,
-  {}
-)({
-  backgroundColor: "#fff",
-  borderRadius: "5px",
-  color: "#407AFF",
-  padding: "5px",
-  textTransform: "unset",
-  // ":hover": { backgroundColor: "#407AFF", color: "#fff", },
-});
-
-const ApproveBtn = styled(
-  Button,
-  {}
-)({
-  backgroundColor: "#407AFF",
-  borderRadius: "5px",
-  color: "#fff",
-  paddingTop: "10px",
-  paddingBottom: "10px",
-  ":hover": { backgroundColor: "#fff", color: "#407AFF" },
-  "&.Mui-disabled": {
-    color: "#F2F2F2",
-    backgroundColor: "#6F7276",
-  },
-});
-const RejectBtn = styled(
-  Button,
-  {}
-)({
-  backgroundColor: "#ff5252",
-  borderRadius: "5px",
-  color: "#fff",
-  paddingTop: "10px",
-  paddingBottom: "10px",
-  ":hover": { backgroundColor: "#fff", color: "#407AFF" },
-  "&.Mui-disabled": {
-    color: "#F2F2F2",
-    backgroundColor: "#6F7276",
-  },
-});
+import { ApproveBtn, CancelWhiteBtn, LoadingBtn, RejectBtn } from "../../../../components/CustomStyled";
 
 const { APPROVED_DOCUMENT, REJECTED_DOCUMENT } = StatusDocument;
 const ViewApproveDocument: React.FC = () => {
-  const [t] = useTranslation();
+  const {t} = useTranslation();
   const viewer = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -115,7 +46,7 @@ const ViewApproveDocument: React.FC = () => {
     departmentName,
     typeName,
     id,
-    signatoryList
+    signatoryList,
   } = documentDetail!;
   const [isAccepting, setIsAccepting] = useState<boolean>(true);
   const [reason, setReason] = useState<string | undefined>();
@@ -205,7 +136,6 @@ const ViewApproveDocument: React.FC = () => {
           signatureTool.importSignatures([signature!]);
           await annotationManager.importAnnotations(xfdfString);
           setInitialXfdfString(annotationManager.getAnnotationsList());
-          console.log('first')
           await documentViewer.getDocument().getDocumentCompletePromise();
           documentViewer.updateView();
           annotationManager.setAnnotationDisplayAuthorMap((userId) => {
@@ -242,6 +172,12 @@ const ViewApproveDocument: React.FC = () => {
     userInfo?.userName,
     xfdfString,
   ]);
+
+  // console.log(annotationList);
+  // console.log(initialXfdfString)
+  // console.log(
+  //   annotationList?.every((annot) => initialXfdfString?.includes(annot))
+  // );
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
@@ -378,9 +314,9 @@ const ViewApproveDocument: React.FC = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <CancelBtn onClick={() => setOpenDialog(false)} size="small">
+          <CancelWhiteBtn onClick={() => setOpenDialog(false)} size="small">
             {t("Cancel")}
-          </CancelBtn>
+          </CancelWhiteBtn>
           <LoadingBtn
             size="small"
             loading={isApproveDocumentLoading}
