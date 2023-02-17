@@ -37,7 +37,23 @@ import { addNewTemplate } from "../../../../slices/template";
 import { useDispatch, useSelector } from "../../../../hooks";
 import storage from "../../../../utils/firebase";
 import { useTranslation } from "react-i18next";
-import { ApproveBtn, CancelWhiteBtn, LoadingBtn, TextFieldStyled } from "../../../../components/CustomStyled";
+import {
+  ApproveBtn,
+  CancelWhiteBtn,
+  LoadingBtn,
+  TextFieldStyled,
+} from "../../../../components/CustomStyled";
+import { IUser } from "../../../../models/system";
+
+interface Form {
+  templateName?: string;
+  signatoryList?: IUser[];
+  idTemplateType?: number;
+  idDepartment?: number,
+  description?: string;
+  size?: number;
+  createdBy?: number;
+}
 
 const ViewAddTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -58,7 +74,7 @@ const ViewAddTemplate: React.FC = () => {
   } = useSelector((state) => state.system);
   const { isAddNewTemplateLoading } = useSelector((state) => state.template);
 
-  const [form, setForm] = useState<TemplateArgs>({
+  const [form, setForm] = useState<Form>({
     templateName: undefined,
     description: undefined,
     idDepartment: undefined,
@@ -92,12 +108,11 @@ const ViewAddTemplate: React.FC = () => {
 
   const handleUpload = async () => {
     const storageRef = ref(storage, `/file/${file!.name}`);
-
     // progress can be paused and resumed. It also exposes progress updates.
     // Receives the storage reference and the file to upload.
     await dispatch(
       addNewTemplate({
-        templateInfo: form,
+        templateInfo: {...form, signatoryList: form.signatoryList!.map(signer => signer.id) },
         storageRef,
         file: file!,
       })
@@ -168,8 +183,6 @@ const ViewAddTemplate: React.FC = () => {
     }
   }, [file]);
 
-
-
   useEffect(() => {
     if (form.idDepartment) {
       getSignerListHandler();
@@ -177,7 +190,6 @@ const ViewAddTemplate: React.FC = () => {
       dispatch(clearUserList());
     }
   }, [getSignerListHandler, dispatch, form.idDepartment]);
-
 
   return (
     <Fragment>
@@ -342,7 +354,7 @@ const ViewAddTemplate: React.FC = () => {
                       ...form,
                       signatoryList:
                         value.length > 0
-                          ? value.map((item) => item.id)
+                          ? value
                           : undefined,
                     });
                   }}
@@ -355,6 +367,31 @@ const ViewAddTemplate: React.FC = () => {
                 />
               )}
             </div>
+            {form?.signatoryList?.map((signer, index) => (
+              <div
+                className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4"
+                key={index}
+              >
+                <div className="flex space-x-2 items-center ">
+                  <h4>{t("Signer")}:</h4>
+                  <span className="text-white text-base break-words">
+                    {signer.username}
+                  </span>
+                </div>
+                <div className="flex space-x-2">
+                  <h4>Department:</h4>
+                  <span className="text-white text-base break-words">
+                    {signer.departmentName}
+                  </span>
+                </div>
+                <div className="flex space-x-2 items-center">
+                  <h4>{t("Role")}:</h4>
+                  <span className="text-white text-base break-words">
+                    {signer.roleName}
+                  </span>
+                </div>
+              </div>
+            ))}
             <ApproveBtn
               disabled={!isEnableSave}
               onClick={() => setOpenDialog(true)}

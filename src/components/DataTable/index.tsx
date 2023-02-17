@@ -182,8 +182,12 @@ const DataTable: React.FC = () => {
       case SHARED:
         return {
           columns: sharedDocColumns,
-          loading: false,
-          table: templateList,
+          loading: isGetDocumentListLoading,
+          table: documentList,
+          currentPage: currentPageDocument,
+          totalPages: Math.ceil(totalDocument! / 10),
+          onChangePage: (e, value) =>
+            dispatch(onChangeDocumentPage({ selectedPage: --value })),
         };
       case DOCUMENT_HISTORY:
         return {

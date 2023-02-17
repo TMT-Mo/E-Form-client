@@ -14,6 +14,7 @@ import ViewApproveDocument from "../../../pages/Document/view/approve-document";
 import { clearDocumentDetail } from "../../../slices/document";
 import ViewPersonalDocument from "../../../pages/Document/view/personal-document";
 import ViewHistoryDocument from "../../../pages/Document/view/history-document";
+import ViewShareDocument from "../../../pages/Document/view/shared-document";
 
 const {
   ADD_TEMPLATE_INDEX,
@@ -50,6 +51,8 @@ const Viewer: React.FC = () => {
         return <ViewApproveTemplate />;
       case VIEW_DOCUMENT_HISTORY_INDEX:
         return <ViewHistoryDocument/>;
+        case VIEW_SHARED_DOCUMENT_INDEX:
+        return <ViewShareDocument/>;
       default:
         return <></>;
     }

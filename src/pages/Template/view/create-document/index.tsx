@@ -28,7 +28,6 @@ const ViewCreateDocument: React.FC = () => {
     isEnable,
   } = templateDetail!;
   const [xfdfString, setXfdfString] = useState<string | undefined>();
-  const [enableSend, setEnableSend] = useState<boolean>(false);
   const { t } = useTranslation();
 
   const signers = signatoryList.map((signer, index) => (
@@ -42,9 +41,9 @@ const ViewCreateDocument: React.FC = () => {
           {signer.username}
         </span>
       </div>
-      <div className="flex space-x-2">
+      <div className="flex space-x-2 items-center">
         <h4>Department:</h4>
-        {/* <span className="text-white text-base break-words">{signer.}</span> */}
+        <span className="text-white text-base break-words">{signer.departmentName}</span>
       </div>
       <div className="flex space-x-2 items-center">
         <h4>{t("Role")}:</h4>

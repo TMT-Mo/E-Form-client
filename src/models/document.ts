@@ -69,6 +69,7 @@ export interface Document {
   xfdfString: string;
   reason: string | null;
   version: string | null;
+  departmentId: number;
 }
 
 export interface DocumentListResponse {

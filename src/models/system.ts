@@ -15,6 +15,7 @@ export interface IUser{
     status: number,
     createdAt: string,
     updateAt: string
+    departmentName: string
 }
 
 export interface GetUsersResponse{

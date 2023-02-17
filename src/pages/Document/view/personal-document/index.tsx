@@ -39,6 +39,7 @@ const ViewPersonalDocument: React.FC = () => {
     departmentName,
     status,
     typeName,
+    departmentId
   } = (documentDetail as Document)!;
   const {t} = useTranslation();
   const [signerList, setSignerList] = useState([...signatoryList!]);
@@ -129,9 +130,9 @@ const ViewPersonalDocument: React.FC = () => {
 
   useEffect(() => {
     if (isChangingSigner && !userList) {
-      dispatch(getSigner({ departmentId_eq: 1 })).unwrap();
+      dispatch(getSigner({ departmentId_eq: departmentId })).unwrap();
     }
-  }, [dispatch, isChangingSigner, userList]);
+  }, [departmentId, dispatch, isChangingSigner, userList]);
 
   useEffect(() => {
     WebViewer(

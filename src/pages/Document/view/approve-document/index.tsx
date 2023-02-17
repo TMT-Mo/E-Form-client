@@ -10,6 +10,7 @@ import {
   DialogTitle,
   Box,
   LinearProgress,
+  Typography,
 } from "@mui/material";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -23,6 +24,7 @@ import { approveDocument } from "../../../../slices/document";
 import { StatusDocument } from "../../../../utils/constants";
 import { getSignature } from "../../../../slices/auth";
 import { ApproveBtn, CancelWhiteBtn, LoadingBtn, RejectBtn } from "../../../../components/CustomStyled";
+import StatusTag from "../../../../components/StatusTag";
 
 const { APPROVED_DOCUMENT, REJECTED_DOCUMENT } = StatusDocument;
 const ViewApproveDocument: React.FC = () => {
@@ -67,15 +69,21 @@ const ViewApproveDocument: React.FC = () => {
           {signer.username}
         </span>
       </div>
-      <div className="flex space-x-2">
+      <div className="flex space-x-2 items-center">
         <h4>Department:</h4>
-        {/* <span className="text-white text-base break-words">{signer.}</span> */}
+        <span className="text-white text-base break-words">{signer.departmentName}</span>
       </div>
       <div className="flex space-x-2 items-center">
         <h4>{t("Role")}:</h4>
         <span className="text-white text-base break-words">
           {signer.roleName}
         </span>
+      </div>
+      <div className="flex space-x-2 items-center">
+        <h4>{t("Status")}:</h4>
+        <Typography className="text-white">
+          <StatusTag status={signer.status} type="document" />
+        </Typography>
       </div>
     </div>
   ));

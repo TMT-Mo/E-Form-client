@@ -53,6 +53,10 @@ const ViewApproveTemplate: React.FC = () => {
         <h4>{t("Signer")}:</h4>
         <Typography className="text-white">{signer.username}</Typography>
       </div>
+      <div className="flex space-x-2 items-center ">
+        <h4>{t("Department")}:</h4>
+        <Typography className="text-white">{signer.departmentName}</Typography>
+      </div>
       <div className="flex space-x-2 items-center">
         <h4>{t("Role")}:</h4>
         <Typography className="text-white">{signer.roleName}</Typography>

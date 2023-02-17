@@ -79,14 +79,7 @@ const Template = () => {
     return () => {
       getTemplateList.abort();
     };
-  }, [
-    currentPage,
-    dispatch,
-    filter?.field,
-    filter?.value,
-    searchItemValue,
-    sorter,
-  ]);
+  }, [checkEnablePermission, currentPage, dispatch, filter?.field, filter?.value, searchItemValue, sorter]);
 
   return (
     <div className="flex flex-col  py-10 space-y-6">

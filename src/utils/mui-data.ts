@@ -24,6 +24,7 @@ import { IsLockedCell } from "../components/DataTable/isLocked-cell";
 import { CreatedByCell } from "../components/DataTable/createdBy-cell";
 import { createdAtOnlyOperators } from "../components/DataTable/filter/createdAt";
 import helpers from "./helpers";
+import { SharedDocumentActionCell } from "../components/DataTable/action-cell/sharedDocument";
 
 const {
   TYPE,
@@ -357,14 +358,45 @@ export const personalDocColumns: GridColDef[] = [
 ];
 
 export const sharedDocColumns: GridColDef[] = [
-  { field: "file", headerName: "File", flex: 0.5 },
   {
-    field: "name",
+    field: TYPE,
+    headerName: "File",
+    filterOperators: typeOnlyOperators,
+    headerAlign: "center",
+    renderCell: FileCell,
+    align: "center",
+    hide: !checkHideColumnFromDevice(IPAD),
+  },
+  {
+    field: DOCUMENT_NAME,
     headerName: "Name",
     flex: 1,
+    disableColumnMenu: true,
+    hideable: false,
+    filterable: false,
+    minWidth: 200,
+  },
+  {
+    field: CREATED_AT,
+    headerName: "Date Published",
+    renderCell: DateCell,
+    align: "center",
+    flex: 0.2,
+    headerAlign: "center",
+    filterOperators: createdAtOnlyOperators,
+    minWidth: 100,
   },
   // { field: "datePublished", headerName: "Date Published", flex: 1 },
-  { field: "dateModified", headerName: "Date Modified", flex: 1 },
+  {
+    field: UPDATED_AT,
+    headerName: "Date Modified",
+    renderCell: DateCell,
+    align: "center",
+    headerAlign: "center",
+    flex: 0.2,
+    minWidth: 100,
+    filterOperators: updatedAtOnlyOperators,
+  },
   {
     field: TYPE,
     headerName: "Type",
@@ -382,7 +414,11 @@ export const sharedDocColumns: GridColDef[] = [
   {
     field: ACTION,
     headerName: "Action",
-    flex: 1,
+    renderCell: SharedDocumentActionCell,
+    filterable: false,
+    sortable: false,
+    hideable: false,
+    flex: 1
   },
 ];
 
