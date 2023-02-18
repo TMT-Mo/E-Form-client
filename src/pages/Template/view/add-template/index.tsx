@@ -24,7 +24,6 @@ import WebViewer, { WebViewerInstance } from "@pdftron/webviewer";
 import { ref } from "firebase/storage";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import AlertPopup from "../../../../components/AlertPopup";
-import { TemplateArgs } from "../../../../models/template";
 import {
   getDepartmentList,
   toggleDepartmentList,

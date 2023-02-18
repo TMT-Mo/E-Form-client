@@ -5,9 +5,8 @@ import {
   Paper,
   Button,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import UploadIcon from '@mui/icons-material/Upload';
-import AddIcon from '@mui/icons-material/Add';
 import { styled } from "@mui/system";
 import DataTable from "../../../components/DataTable";
 import { getDocumentHistory } from "../../../slices/document";

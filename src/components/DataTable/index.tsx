@@ -49,8 +49,8 @@ const {
 } = LocationIndex;
 
 const { ENABLE_TEMPLATE } = Permissions;
-const { MOBILE, IPAD, LAPTOP } = DeviceType;
-const { checkHideColumnFromDevice, checkHideColumnFromPermission } = helpers;
+const { IPAD } = DeviceType;
+const { checkHideColumnFromDevice } = helpers;
 
 const DataTable: React.FC = () => {
   const dispatch = useDispatch();

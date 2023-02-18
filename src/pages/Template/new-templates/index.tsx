@@ -1,6 +1,5 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase, Paper } from "@mui/material";
-import dayjs from "dayjs";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import DataTable from "../../../components/DataTable";

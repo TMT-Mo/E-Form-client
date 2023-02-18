@@ -13,7 +13,7 @@ import {
   GridFilterInputValueProps,
 } from "@mui/x-data-grid";
 import { useState } from "react";
-import { useDispatch, useSelector } from "../../../../hooks";
+import { useSelector } from "../../../../hooks";
 import { DataTableHeader } from "../../../../utils/constants";
 
 const { CREATED_BY } = DataTableHeader;
@@ -21,8 +21,6 @@ const SelectType = (props: GridFilterInputValueProps) => {
   const { applyValue, item } = props;
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [value, setValue] = useState<any>("");
-  const dispatch = useDispatch();
-  const { userInfo } = useSelector((state) => state.auth);
   const { isGetUserListLoading, userList } = useSelector(
     (state) => state.system
   );

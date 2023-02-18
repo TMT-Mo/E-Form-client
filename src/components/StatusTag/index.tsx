@@ -14,7 +14,6 @@ const {
   APPROVED_DOCUMENT,
   NOT_YET_DOCUMENT,
   PROCESSING_DOCUMENT,
-  REJECTED_DOCUMENT,
 } = StatusDocument;
 
 const {

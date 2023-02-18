@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import { DataTableHeader } from "../../../utils/constants";
 import { DateFilter } from "../../../models/mui-data";
 
-const { TYPE, TYPE_TEMPLATE, STATUS, CREATED_AT, UPDATED_AT } = DataTableHeader;
+const { CREATED_AT, UPDATED_AT } = DataTableHeader;
 const PersonalDoc = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);

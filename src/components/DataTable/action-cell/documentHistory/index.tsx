@@ -9,7 +9,6 @@ import { ViewerLocationIndex } from "../../../../utils/constants";
 import { useDispatch } from "../../../../hooks";
 import { getDocumentDetail } from "../../../../slices/document";
 
-const { VIEW_DOCUMENT_HISTORY_INDEX } = ViewerLocationIndex;
 
 export const DocumentHistoryActionCell = (
   props: GridRenderCellParams<Date>

@@ -1,6 +1,4 @@
-import React from 'react'
 import RemoveFromQueueIcon from '@mui/icons-material/RemoveFromQueue';
-import Container from '@mui/material/Container';
 import { Box } from '@mui/material';
 const CustomNoRow = () => {
   return (

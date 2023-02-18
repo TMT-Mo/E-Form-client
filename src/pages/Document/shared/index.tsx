@@ -5,9 +5,8 @@ import {
   Paper,
   Button,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import UploadIcon from '@mui/icons-material/Upload';
-import AddIcon from '@mui/icons-material/Add';
 import { styled } from "@mui/system";
 import DataTable from "../../../components/DataTable";
 import { useTranslation } from "react-i18next";
@@ -28,6 +27,7 @@ const StyledUploadBtn = styled(Button)({
 })
 
 const SharedDoc = () => {
+  const {t} = useTranslation()
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
   const {filter, sorter} = useSelector(state => state.filter)

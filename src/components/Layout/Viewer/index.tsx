@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "../../../hooks";
 import TemplateHistory from "../../../pages/Template/template-history";
-import Template from "../../../pages/Template/template";
 import AlertPopup from "../../AlertPopup";
 // import DesktopOnly from "../DesktopOnly";
 import ViewAddTemplate from "../../../pages/Template/view/add-template";

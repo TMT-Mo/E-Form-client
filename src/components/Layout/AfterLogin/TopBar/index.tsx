@@ -1,6 +1,4 @@
 import React from "react";
-import hamburger from "../../../../assets/hamburger.svg";
-import userIcon from "../../../../assets/user.svg";
 import LanguageSelect from "../../../LanguageSelect";
 import LockPersonIcon from "@mui/icons-material/LockPerson";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -9,7 +7,6 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import {
-  Button,
   Divider,
   IconButton,
   ListItemIcon,

@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Alert from "@mui/material/Alert";
 import { useDispatch, useSelector } from "../../hooks";
-import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
+import Snackbar from "@mui/material/Snackbar";
 import { handleClose } from "../../slices/notification";
 
 interface Props {

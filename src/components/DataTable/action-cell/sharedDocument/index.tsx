@@ -9,7 +9,6 @@ import { ViewerLocationIndex } from "../../../../utils/constants";
 import { useDispatch } from "../../../../hooks";
 import { getDocumentDetail } from "../../../../slices/document";
 import ShareIcon from '@mui/icons-material/Share';
-const { VIEW_PERSONAL_DOCUMENT_INDEX } = ViewerLocationIndex;
 
 export const SharedDocumentActionCell = (
   props: GridRenderCellParams<Date>
