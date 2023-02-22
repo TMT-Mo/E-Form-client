@@ -1,8 +1,5 @@
+import { renderEditLockTemplateCell, renderLockTemplateCell } from './../components/DataTable/lockTemplate-cell/index';
 import { DocumentHistoryActionCell } from "./../components/DataTable/action-cell/documentHistory/index";
-import {
-  renderEditEnableCell,
-  renderEnableCell,
-} from "./../components/DataTable/isEnable-cell/index";
 import { updatedAtOnlyOperators } from "./../components/DataTable/filter/updatedAt/index";
 import { createdByOnlyOperators } from "./../components/DataTable/filter/createdBy/index";
 import { PersonalDocumentActionCell } from "./../components/DataTable/action-cell/personalDocument/index";
@@ -20,11 +17,11 @@ import { DataTableHeader, DeviceType, Permissions } from "./constants";
 import { TemplateActionCell } from "../components/DataTable/action-cell/template";
 import { NewTemplateActionCell } from "../components/DataTable/action-cell/newTemplate";
 import { DateCell } from "../components/DataTable/formatDate-cell";
-import { IsLockedCell } from "../components/DataTable/isLocked-cell";
 import { CreatedByCell } from "../components/DataTable/createdBy-cell";
 import { createdAtOnlyOperators } from "../components/DataTable/filter/createdAt";
 import helpers from "./helpers";
 import { SharedDocumentActionCell } from "../components/DataTable/action-cell/sharedDocument";
+import { renderEditLockDocumentCell, renderLockDocumentCell } from '../components/DataTable/lockDocument-cell';
 
 const {
   TYPE,
@@ -44,7 +41,7 @@ const {
 
 const { checkHideColumnFromDevice, checkHideColumnFromPermission } = helpers;
 const { IPAD } = DeviceType;
-const { ENABLE_TEMPLATE } = Permissions;
+const { ENABLE_TEMPLATE, LOCK_DOCUMENT } = Permissions;
 export const templateColumns: GridColDef[] = [
   {
     field: TYPE,
@@ -99,9 +96,9 @@ export const templateColumns: GridColDef[] = [
   {
     field: IS_ENABLE,
     headerName: "Is Enable",
-    renderEditCell: renderEditEnableCell,
+    renderEditCell: renderEditLockTemplateCell,
     editable: true,
-    renderCell: renderEnableCell,
+    renderCell: renderLockTemplateCell,
     align: "center",
     filterOperators: isEnableOnlyOperators,
     headerAlign: "center",
@@ -344,8 +341,14 @@ export const personalDocColumns: GridColDef[] = [
   {
     field: IS_LOCKED,
     headerName: "Is Locked",
-    renderCell: IsLockedCell,
+    renderEditCell: renderEditLockDocumentCell,
+    editable: true,
+    renderCell: renderLockDocumentCell,
     align: "center",
+    filterOperators: isEnableOnlyOperators,
+    headerAlign: "center",
+    filterable: checkHideColumnFromPermission(LOCK_DOCUMENT),
+    hideable: checkHideColumnFromPermission(LOCK_DOCUMENT),
   },
   {
     field: ACTION,

@@ -1,3 +1,4 @@
+
 import { IUser } from "./system";
 
 export interface AwaitSigningResponse {}
@@ -103,4 +104,13 @@ export interface GetDocumentHistoryResponse{
   total: number;
   page: number;
   size: number;
+}
+
+export interface LockDocumentArgs {
+  id: number;
+  isLocked: boolean;
+}
+
+export interface LockDocumentResponse{
+  message: string;
 }

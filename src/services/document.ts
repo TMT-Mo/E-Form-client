@@ -1,5 +1,5 @@
 import { apiPaths, httpClient } from '../utils';
-import { CreateDocumentArgs, CreateDocumentResponse, DocumentListResponse, GetDocumentsArgs, ApproveDocumentArgs, ApproveDocumentResponse, GetDocumentHistoryResponse, GetDocumentHistoryArgs } from './../models/document';
+import { CreateDocumentArgs, CreateDocumentResponse, DocumentListResponse, GetDocumentsArgs, ApproveDocumentArgs, ApproveDocumentResponse, GetDocumentHistoryResponse, GetDocumentHistoryArgs, LockDocumentArgs, LockDocumentResponse } from './../models/document';
 
 const createDocument = async (data: CreateDocumentArgs): Promise<CreateDocumentResponse> => {
     const response = await httpClient.post({url: apiPaths.document.createDocument, data})
@@ -21,9 +21,15 @@ const approveDocument = async (data: ApproveDocumentArgs): Promise<ApproveDocume
     return response.data as ApproveDocumentResponse
 }
 
+const lockDocument = async (data: LockDocumentArgs): Promise<LockDocumentResponse> => {
+    const response = await httpClient.patch({url: apiPaths.document.lockDocument, data})
+    return response.data as LockDocumentResponse
+}
+
 export const documentServices = {
     createDocument,
     getDocuments,
     approveDocument,
-    getDocumentHistory
+    getDocumentHistory,
+    lockDocument
 }

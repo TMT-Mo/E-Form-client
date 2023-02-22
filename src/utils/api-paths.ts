@@ -24,7 +24,8 @@ const apiPaths = {
         createDocument: `${apiHead}api/Document/create`,
         getDocuments: `${apiHead}api/Document/getDocuments`,
         approveDocument: `${apiHead}api/Document/approveDocument`,
-        getDocumentHistory: `${apiHead}api/Document/getDocumentHistory`
+        getDocumentHistory: `${apiHead}api/Document/getDocumentHistory`,
+        lockDocument : `${apiHead}api/Document/update`
     }
 }
 

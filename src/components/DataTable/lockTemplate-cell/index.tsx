@@ -21,11 +21,11 @@ const createData = (value: unknown) => {
   }
 };
 
-export const renderEnableCell = (params: GridRenderCellParams<number>) => {
+export const renderLockTemplateCell = (params: GridRenderCellParams<number>) => {
   return <>{createData(params.value)}</>;
 };
 
-export const EditIsEnableCell = (props: GridRenderEditCellParams) => {
+export const EditLockTemplateCell = (props: GridRenderEditCellParams) => {
   const dispatch = useDispatch();
   const { isEnableTemplateLoading } = useSelector(
     (state) => state.template
@@ -43,7 +43,7 @@ export const EditIsEnableCell = (props: GridRenderEditCellParams) => {
     apiRef.current.setEditCellValue({ id, field, value: newValue });
   };
 
-  const onEnableTemplate = () => {
+  const onLockTemplate = () => {
     setSelectedTemplate(rowValue.id);
     dispatch(enableTemplate({ id: rowValue.id, isEnable: !rowValue.isEnable }))
       .unwrap()
@@ -56,7 +56,7 @@ export const EditIsEnableCell = (props: GridRenderEditCellParams) => {
       {isEnableTemplateLoading && selectedTemplate === rowValue.id ? (
         <CircularProgress size={20} />
       ) : (
-        <IconButton aria-label="lock" onClick={onEnableTemplate} size="small">
+        <IconButton aria-label="lock" onClick={onLockTemplate} size="small">
           {createData(value)}
         </IconButton>
       )}
@@ -64,6 +64,6 @@ export const EditIsEnableCell = (props: GridRenderEditCellParams) => {
   );
 };
 
-export const renderEditEnableCell: GridColDef["renderCell"] = (params: any) => {
-  return <EditIsEnableCell {...params} />;
+export const renderEditLockTemplateCell: GridColDef["renderCell"] = (params: any) => {
+  return <EditLockTemplateCell {...params} />;
 };

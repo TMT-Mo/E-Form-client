@@ -87,13 +87,9 @@ const SharedDoc = () => {
               inputProps={{ "aria-label": "search google maps" }}
             />
           </Paper>
-          <div className="flex space-x-8">
-            <StyledUploadBtn size="small" className="shadow-md" variant="outlined" startIcon={<UploadIcon />}>
-              Select
-            </StyledUploadBtn>
-          </div>
         </div>
         <DataTable />
+        
       </div>
     </div>
   );

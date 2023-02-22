@@ -4,6 +4,7 @@ import {
   Document,
   GetDocumentHistoryArgs,
   GetDocumentsArgs,
+  LockDocumentArgs,
 } from "./../models/document";
 import {
   CaseReducer,
@@ -25,6 +26,7 @@ interface State {
   currentPage: number;
   documentDetail?: Document;
   isApproveDocumentLoading: boolean;
+  isLockDocumentLoading: boolean;
 }
 
 const initialState: State = {
@@ -37,6 +39,7 @@ const initialState: State = {
   currentPage: 0,
   documentDetail: undefined,
   isApproveDocumentLoading: false,
+  isLockDocumentLoading: false,
 };
 
 const ACTION_TYPE = "document/";
@@ -94,6 +97,30 @@ const approveDocument = createAsyncThunk(
   async (args: ApproveDocumentArgs, { dispatch }) => {
     try {
       const result = await documentServices.approveDocument({
+        ...args,
+      });
+      dispatch(handleSuccess({ message: result.message }));
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
+const lockDocument = createAsyncThunk(
+  `${ACTION_TYPE}lockDocument`,
+  async (args: LockDocumentArgs, { dispatch }) => {
+    try {
+      const result = await documentServices.lockDocument({
         ...args,
       });
       dispatch(handleSuccess({ message: result.message }));
@@ -211,6 +238,18 @@ const document = createSlice({
       ...state,
       isApproveDocumentLoading: false,
     }));
+    builder.addCase(lockDocument.pending, (state) => ({
+      ...state,
+      isLockDocumentLoading: true,
+    }));
+    builder.addCase(lockDocument.fulfilled, (state, { payload }) => ({
+      ...state,
+      isLockDocumentLoading: false,
+    }));
+    builder.addCase(lockDocument.rejected, (state) => ({
+      ...state,
+      isLockDocumentLoading: false,
+    }));
     builder.addCase(getDocuments.pending, (state) => ({
       ...state,
       isGetDocumentListLoading: true,
@@ -248,7 +287,7 @@ const document = createSlice({
   },
 });
 
-export { createDocument, getDocuments, approveDocument, getDocumentHistory };
+export { createDocument, getDocuments, approveDocument, getDocumentHistory, lockDocument };
 
 export const {
   onChangeDocumentPage,
