@@ -18,6 +18,7 @@ import History from "../../../pages/Document/history";
 import { clearDocuments } from "../../../slices/document";
 import { clearFilter } from "../../../slices/filter";
 import { Container } from "@mui/material";
+import { helpers } from "../../../utils";
 
 const {
   TEMPLATE,
@@ -35,16 +36,15 @@ const {
 const Layout: React.FC = () => {
   const dispatch = useDispatch();
   const { locationIndex } = useSelector((state) => state.location);
-
-
+  const location = helpers.getLocation()
+  
   useEffect(() => {
-    !locationIndex &&
       dispatch(
         setLocation({
-          locationIndex: LocationIndex.TEMPLATE,
+          locationIndex: location ? location : LocationIndex.TEMPLATE,
         })
       );
-  }, [dispatch, locationIndex]);
+  }, [dispatch, location]);
 
   useEffect(() => {
     return () => {

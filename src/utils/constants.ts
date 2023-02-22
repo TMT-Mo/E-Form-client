@@ -1,5 +1,7 @@
-export const TOKEN_NAME = "token";
-
+export enum SessionStorage {
+  LOCATION = "location",
+  TOKEN_NAME = "token"
+}
 export enum NotificationStatus {
   SUCCESS = "success",
   ERROR = "error",

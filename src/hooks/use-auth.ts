@@ -7,6 +7,7 @@ import { useCallback } from "react";
 import { checkAuthentication, setUserInfo } from "../slices/auth";
 import { helpers } from "../utils";
 import jwtDecode from "jwt-decode";
+import { setLocation } from "../slices/location";
 
 interface UseAuth {
   logout: () => void;
@@ -16,7 +17,7 @@ interface UseAuth {
 export const useAuth = (): UseAuth => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { getToken, clearToken } = helpers;
+  const { getToken, clearToken, getLocation } = helpers;
   // const auth = useSelector(state => state)
 
   const logout = useCallback((): void => {
@@ -39,9 +40,12 @@ export const useAuth = (): UseAuth => {
       logout();
       return;
     }
+    const location = getLocation()
+    // console.log(location)
+    dispatch(setLocation({locationIndex: location}))
     dispatch(setUserInfo({ user }));
     navigate("/user");
-  }, [dispatch, getToken, logout, navigate]);
+  }, [dispatch, getLocation, getToken, logout, navigate]);
 
   return {
     logout,

@@ -1,20 +1,28 @@
 import { UserInfo } from "./../models/auth";
 import jwtDecode from "jwt-decode";
-import { DeviceType, DeviceWidth, Permissions, TOKEN_NAME } from "./constants";
+import { DeviceType, DeviceWidth, Permissions, SessionStorage } from "./constants";
 
-// *-------------------------------------------- HANDLE TOKEN --------------------------------------------
+const {TOKEN_NAME, LOCATION} = SessionStorage
+
+// *-------------------------------------------- HANDLE AUTHENTICATE --------------------------------------------
 const setToken = (tokenValue: string) => {
   sessionStorage.setItem(TOKEN_NAME, JSON.stringify(tokenValue));
 };
 
 const clearToken = () => {
   sessionStorage.removeItem(TOKEN_NAME);
+  sessionStorage.removeItem(LOCATION);
 };
 
 const getToken = (): string => {
   const token = sessionStorage.getItem(TOKEN_NAME)?.replace(/(['"])/g, "") as string;
   return token;
 };
+
+const getLocation = (): number =>{
+  const location = sessionStorage.getItem(LOCATION)!
+  return +location;
+}
 
 // *-------------------------------------------- HANDLE TIME  --------------------------------------------
 const addHours = (date: string | null, hours: number = 7): string => {
@@ -67,6 +75,7 @@ const helpers = {
   addHours,
   checkHideColumnFromDevice,
   checkHideColumnFromPermission,
+  getLocation
 };
 
 export default helpers;

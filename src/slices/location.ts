@@ -13,10 +13,10 @@ const initialState: State = {
   viewerLocationIndex: undefined,
 };
 
-const setLocationCR: CR<State> = (state, { payload }) => ({
-  ...state,
-  locationIndex: payload.locationIndex,
-});
+const setLocationCR: CR<State> = (state, { payload }) => {
+  state.locationIndex = payload.locationIndex
+  sessionStorage.setItem('location', payload.locationIndex!.toString())
+};
 
 const setViewerLocationCR: CR<{viewerLocationIndex: ViewerLocationIndex}> = (state, { payload }) => ({
   ...state,
