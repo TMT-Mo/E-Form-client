@@ -9,8 +9,6 @@ import React, { useState } from "react";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { useDispatch, useSelector } from "../../../hooks";
-import { enableTemplate } from "../../../slices/template";
-import { Template } from "../../../models/template";
 import { Document } from "../../../models/document";
 import { lockDocument } from "../../../slices/document";
 import { StatusDocument } from "../../../utils/constants";

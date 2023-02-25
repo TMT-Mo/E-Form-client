@@ -1,3 +1,4 @@
+import { TranslateLanguage } from './../components/TranslateWord/index';
 import { renderEditLockTemplateCell, renderLockTemplateCell } from './../components/DataTable/lockTemplate-cell/index';
 import { DocumentHistoryActionCell } from "./../components/DataTable/action-cell/documentHistory/index";
 import { updatedAtOnlyOperators } from "./../components/DataTable/filter/updatedAt/index";
@@ -45,11 +46,12 @@ const { ENABLE_TEMPLATE, LOCK_DOCUMENT } = Permissions;
 export const templateColumns: GridColDef[] = [
   {
     field: TYPE,
-    headerName: "File",
     filterOperators: typeOnlyOperators,
+    headerName: 'File',
     headerAlign: "center",
     renderCell: FileCell,
     align: "center",
+    renderHeader: TranslateLanguage,
   },
   {
     field: TEMPLATE_NAME,
@@ -58,17 +60,20 @@ export const templateColumns: GridColDef[] = [
     minWidth: 200,
     filterable: false,
     hideable: false,
+    renderHeader: TranslateLanguage,
   },
   {
     field: DESCRIPTION,
     headerName: "Description",
     flex: 1,
     filterable: false,
+    renderHeader: TranslateLanguage,
   },
   {
     field: TYPE_TEMPLATE,
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
+    renderHeader: TranslateLanguage,
   },
   {
     field: DEPARTMENT,
@@ -76,6 +81,7 @@ export const templateColumns: GridColDef[] = [
     align: "center",
     // filterOperators: departmentOnlyOperators,
     filterable: false,
+    renderHeader: TranslateLanguage,
   },
   {
     field: CREATED_BY,
@@ -83,6 +89,7 @@ export const templateColumns: GridColDef[] = [
     renderCell: CreatedByCell,
     flex: 0.5,
     filterOperators: createdByOnlyOperators,
+    renderHeader: TranslateLanguage,
   },
   // {
   //   field: STATUS,
@@ -104,6 +111,7 @@ export const templateColumns: GridColDef[] = [
     headerAlign: "center",
     filterable: checkHideColumnFromPermission(ENABLE_TEMPLATE),
     hideable: checkHideColumnFromPermission(ENABLE_TEMPLATE),
+    renderHeader: TranslateLanguage,
   },
   {
     field: ACTION,
@@ -114,6 +122,7 @@ export const templateColumns: GridColDef[] = [
     hideable: false,
     align: "center",
     headerAlign: "center",
+    renderHeader: TranslateLanguage,
   },
 ];
 
@@ -125,6 +134,7 @@ export const templateHistoryColumns: GridColDef[] = [
     headerAlign: "center",
     renderCell: FileCell,
     align: "center",
+    renderHeader: TranslateLanguage,
   },
   {
     field: TEMPLATE_NAME,
@@ -133,22 +143,26 @@ export const templateHistoryColumns: GridColDef[] = [
     filterable: false,
     minWidth: 200,
     hideable: false,
+    renderHeader: TranslateLanguage,
   },
   {
     field: DESCRIPTION,
     headerName: "Description",
     flex: 1,
     filterable: false,
+    renderHeader: TranslateLanguage,
   },
   {
     field: TYPE_TEMPLATE,
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
+    renderHeader: TranslateLanguage,
   },
   {
     field: DEPARTMENT,
     headerName: "Department",
     align: "center",
+    renderHeader: TranslateLanguage,
   },
   {
     field: STATUS,
@@ -156,6 +170,7 @@ export const templateHistoryColumns: GridColDef[] = [
     renderCell: StatusCell,
     filterOperators: statusOnlyOperators,
     headerAlign: "center",
+    renderHeader: TranslateLanguage,
   },
   {
     field: CREATED_AT,
@@ -165,6 +180,7 @@ export const templateHistoryColumns: GridColDef[] = [
     renderCell: DateCell,
     align: "center",
     headerAlign: "center",
+    renderHeader: TranslateLanguage,
     filterOperators: createdAtOnlyOperators,
   },
   {
@@ -176,6 +192,7 @@ export const templateHistoryColumns: GridColDef[] = [
     align: "center",
     headerAlign: "center",
     filterOperators: updatedAtOnlyOperators,
+    renderHeader: TranslateLanguage,
   },
   {
     field: ACTION,
@@ -184,6 +201,7 @@ export const templateHistoryColumns: GridColDef[] = [
     renderCell: TemplateHistoryActionCell,
     sortable: false,
     hideable: false,
+    renderHeader: TranslateLanguage,
   },
 ];
 
@@ -195,6 +213,7 @@ export const newTemplatesColumns: GridColDef[] = [
     headerAlign: "center",
     renderCell: FileCell,
     align: "center",
+    renderHeader: TranslateLanguage,
   },
   {
     field: TEMPLATE_NAME,
@@ -202,22 +221,26 @@ export const newTemplatesColumns: GridColDef[] = [
     flex: 1,
     filterable: false,
     minWidth: 200,
+    renderHeader: TranslateLanguage,
   },
   {
     field: DESCRIPTION,
     headerName: "Description",
     flex: 1,
     filterable: false,
+    renderHeader: TranslateLanguage,
   },
   {
     field: TYPE_TEMPLATE,
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
+    renderHeader: TranslateLanguage,
   },
   {
     field: DEPARTMENT,
     headerName: "Department",
     align: "center",
+    renderHeader: TranslateLanguage,
   },
   {
     field: CREATED_BY,
@@ -226,6 +249,7 @@ export const newTemplatesColumns: GridColDef[] = [
     flex: 0.5,
     filterOperators: createdByOnlyOperators,
     minWidth: 200,
+    renderHeader: TranslateLanguage,
   },
   {
     field: CREATED_AT,
@@ -234,6 +258,7 @@ export const newTemplatesColumns: GridColDef[] = [
     align: "center",
     resizable: false,
     filterOperators: createdAtOnlyOperators,
+    renderHeader: TranslateLanguage,
   },
   {
     field: ACTION,
@@ -242,6 +267,7 @@ export const newTemplatesColumns: GridColDef[] = [
     filterable: false,
     sortable: false,
     hideable: false,
+    renderHeader: TranslateLanguage,
   },
 ];
 
@@ -254,6 +280,7 @@ export const awaitSigningColumns: GridColDef[] = [
     renderCell: FileCell,
     align: "center",
     hide: !checkHideColumnFromDevice(IPAD),
+    renderHeader: TranslateLanguage,
   },
   {
     field: DOCUMENT_NAME,
@@ -263,6 +290,7 @@ export const awaitSigningColumns: GridColDef[] = [
     hideable: false,
     filterable: false,
     minWidth: 200,
+    renderHeader: TranslateLanguage,
   },
   {
     field: CREATED_AT,
@@ -273,6 +301,7 @@ export const awaitSigningColumns: GridColDef[] = [
     headerAlign: "center",
     filterOperators: createdAtOnlyOperators,
     minWidth: 100,
+    renderHeader: TranslateLanguage,
   },
   {
     field: CREATED_BY,
@@ -283,6 +312,7 @@ export const awaitSigningColumns: GridColDef[] = [
     minWidth: 200,
     renderCell: CreatedByCell,
     filterOperators: createdByOnlyOperators,
+    renderHeader: TranslateLanguage,
   },
   {
     field: ACTION,
@@ -291,6 +321,7 @@ export const awaitSigningColumns: GridColDef[] = [
     filterable: false,
     sortable: false,
     hideable: false,
+    renderHeader: TranslateLanguage,
   },
 ];
 
@@ -303,12 +334,14 @@ export const personalDocColumns: GridColDef[] = [
     renderCell: FileCell,
     align: "center",
     hide: !checkHideColumnFromDevice(IPAD),
+    renderHeader: TranslateLanguage,
   },
   {
     field: DOCUMENT_NAME,
     headerName: "Name",
     flex: 1,
     minWidth: 200,
+    renderHeader: TranslateLanguage,
   },
   {
     field: CREATED_AT,
@@ -320,6 +353,7 @@ export const personalDocColumns: GridColDef[] = [
     filterOperators: createdAtOnlyOperators,
     minWidth: 100,
     hide: !checkHideColumnFromDevice(IPAD),
+    renderHeader: TranslateLanguage,
   },
   {
     field: UPDATED_AT,
@@ -330,6 +364,7 @@ export const personalDocColumns: GridColDef[] = [
     flex: 0.2,
     minWidth: 100,
     filterOperators: updatedAtOnlyOperators,
+    renderHeader: TranslateLanguage,
   },
   {
     field: STATUS,
@@ -337,6 +372,7 @@ export const personalDocColumns: GridColDef[] = [
     align: "center",
     renderCell: StatusCell,
     headerAlign: "center",
+    renderHeader: TranslateLanguage,
   },
   {
     field: IS_LOCKED,
@@ -349,6 +385,7 @@ export const personalDocColumns: GridColDef[] = [
     headerAlign: "center",
     filterable: checkHideColumnFromPermission(LOCK_DOCUMENT),
     hideable: checkHideColumnFromPermission(LOCK_DOCUMENT),
+    renderHeader: TranslateLanguage,
   },
   {
     field: ACTION,
@@ -357,6 +394,7 @@ export const personalDocColumns: GridColDef[] = [
     filterable: false,
     sortable: false,
     hideable: false,
+    renderHeader: TranslateLanguage,
   },
 ];
 
@@ -369,6 +407,7 @@ export const sharedDocColumns: GridColDef[] = [
     renderCell: FileCell,
     align: "center",
     hide: !checkHideColumnFromDevice(IPAD),
+    renderHeader: TranslateLanguage,
   },
   {
     field: DOCUMENT_NAME,
@@ -377,6 +416,7 @@ export const sharedDocColumns: GridColDef[] = [
     disableColumnMenu: true,
     hideable: false,
     filterable: false,
+    renderHeader: TranslateLanguage,
     minWidth: 200,
   },
   {
@@ -388,6 +428,7 @@ export const sharedDocColumns: GridColDef[] = [
     headerAlign: "center",
     filterOperators: createdAtOnlyOperators,
     minWidth: 100,
+    renderHeader: TranslateLanguage,
   },
   // { field: "datePublished", headerName: "Date Published", flex: 1 },
   {
@@ -399,20 +440,19 @@ export const sharedDocColumns: GridColDef[] = [
     flex: 0.2,
     minWidth: 100,
     filterOperators: updatedAtOnlyOperators,
-  },
-  {
-    field: TYPE,
-    headerName: "Type",
+    renderHeader: TranslateLanguage,
   },
   {
     field: DEPARTMENT,
     headerName: "Department",
     flex: 1,
+    renderHeader: TranslateLanguage,
   },
   {
     field: STATUS,
     headerName: "Status",
     flex: 1,
+    renderHeader: TranslateLanguage,
   },
   {
     field: ACTION,
@@ -421,6 +461,7 @@ export const sharedDocColumns: GridColDef[] = [
     filterable: false,
     sortable: false,
     hideable: false,
+    renderHeader: TranslateLanguage,
     flex: 1
   },
 ];
@@ -433,6 +474,7 @@ export const historyColumns: GridColDef[] = [
     headerAlign: "center",
     renderCell: FileCell,
     align: "center",
+    renderHeader: TranslateLanguage,
   },
   {
     field: DOCUMENT_NAME,
@@ -442,6 +484,7 @@ export const historyColumns: GridColDef[] = [
     hideable: false,
     filterable: false,
     minWidth: 200,
+    renderHeader: TranslateLanguage,
   },
   {
     field: CREATED_AT,
@@ -452,6 +495,7 @@ export const historyColumns: GridColDef[] = [
     flex: 0.2,
     filterOperators: createdAtOnlyOperators,
     minWidth: 100,
+    renderHeader: TranslateLanguage,
     hide: !checkHideColumnFromDevice(IPAD),
   },
   {
@@ -463,16 +507,19 @@ export const historyColumns: GridColDef[] = [
     flex: 0.2,
     minWidth: 100,
     filterOperators: updatedAtOnlyOperators,
+    renderHeader: TranslateLanguage,
   },
   {
     field: TYPE_TEMPLATE,
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
+    renderHeader: TranslateLanguage,
   },
   {
     field: DEPARTMENT,
     headerName: "Department",
     align: "center",
+    renderHeader: TranslateLanguage,
   },
   {
     field: STATUS,
@@ -480,10 +527,12 @@ export const historyColumns: GridColDef[] = [
     align: "center",
     renderCell: StatusCell,
     headerAlign: "center",
+    renderHeader: TranslateLanguage,
   },
   {
     field: "version",
     headerName: "Version",
+    renderHeader: TranslateLanguage,
   },
   {
     field: ACTION,
@@ -492,5 +541,6 @@ export const historyColumns: GridColDef[] = [
     filterable: false,
     sortable: false,
     hideable: false,
+    renderHeader: TranslateLanguage,
   },
 ];

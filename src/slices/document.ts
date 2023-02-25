@@ -67,6 +67,17 @@ const searchDocumentCR: CR<{ value: string }> = (state, { payload }) => ({
   searchItemValue: payload.value!,
 });
 
+const updateDocumentCR: CR<{ id: number; isLocked: boolean }> = (
+  state,
+  { payload }
+) => {
+  state.documentList.forEach(function (value, index) {
+    if (value.id === payload.id) {
+      value.isLocked = payload.isLocked;
+    }
+  });
+};
+
 const createDocument = createAsyncThunk(
   `${ACTION_TYPE}createDocument`,
   async (args: CreateDocumentArgs, { dispatch }) => {
@@ -123,6 +134,7 @@ const lockDocument = createAsyncThunk(
       const result = await documentServices.lockDocument({
         ...args,
       });
+      dispatch(updateDocument({ ...args }));
       dispatch(handleSuccess({ message: result.message }));
       return result;
     } catch (error) {
@@ -212,6 +224,7 @@ const document = createSlice({
     }),
     getDocumentDetail: getDocumentDetailCR,
     searchDocument: searchDocumentCR,
+    updateDocument: updateDocumentCR,
   },
   extraReducers: (builder) => {
     builder.addCase(createDocument.pending, (state) => ({
@@ -295,6 +308,7 @@ export const {
   getDocumentDetail,
   clearDocumentDetail,
   searchDocument,
+  updateDocument,
   clearDocumentPagination,
 } = document.actions;
 
