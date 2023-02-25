@@ -196,13 +196,13 @@ const ViewPersonalDocument: React.FC = () => {
             <div className="flex items-center space-x-1">
               <h4 className="whitespace-nowrap">{t("Type")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {typeName}
+                {t(typeName)}
               </span>
             </div>
             <div className="flex items-center space-x-1">
               <h4 className="whitespace-nowrap">{t("Department")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {departmentName}
+                {t(departmentName)}
               </span>
             </div>
             <div className="flex flex-col space-y-2">

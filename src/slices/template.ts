@@ -16,6 +16,7 @@ import {
 import { AxiosError } from "axios";
 import { ValidationErrors } from "../models/notification";
 import { handleError, handleSuccess } from "./notification";
+import { helpers } from "../utils";
 
 interface State {
   isGetTemplatesLoading: boolean;
@@ -84,20 +85,27 @@ const getTemplates = createAsyncThunk(
   `${ACTION_TYPE}getTemplates`,
   async (args: GetTemplateArgs, { dispatch }) => {
     try {
-      const result = await templateServices.getTemplates(args);
+      const result = await templateServices.getTemplates(args)
       return result;
     } catch (error) {
       const err = error as AxiosError;
-      if (err.response?.data) {
-        dispatch(
-          handleError({
-            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
-          })
-        );
-      } else {
+      if (!err.response?.data) {
         dispatch(handleError({ errorMessage: err.message }));
+        return;
       }
-      throw err;
+      const errorMessage = (err.response?.data as ValidationErrors)
+        .errorMessage;
+      if(errorMessage === 'Unauthorized'){
+        window.location = '/login' as unknown as Location
+        helpers.clearToken()
+      }
+      dispatch(
+        handleError({
+          errorMessage,
+        })
+      );
+
+      // throw err;
     }
   }
 );
@@ -198,7 +206,7 @@ const template = createSlice({
     }),
     clearTemplatePagination: (state: State) => ({
       ...state,
-      currentPage: 0
+      currentPage: 0,
     }),
     getTemplateDetail: getTemplateDetailCR,
     updateTemplate: updateTemplateCR,
@@ -219,11 +227,11 @@ const template = createSlice({
       total: payload?.total!,
     }));
     builder.addCase(getTemplates.rejected, (state) => {
-      if(state.isGetTemplatesLoading) return //* Handle api abort
+      if (state.isGetTemplatesLoading) return; //* Handle api abort
       return {
         ...state,
         isGetTemplatesLoading: false,
-      }
+      };
     });
     builder.addCase(addNewTemplate.pending, (state) => ({
       ...state,
@@ -274,7 +282,7 @@ export const {
   getTemplateDetail,
   updateTemplate,
   clearTemplateDetail,
-  clearTemplatePagination
+  clearTemplatePagination,
 } = template.actions;
 
 export default template.reducer;

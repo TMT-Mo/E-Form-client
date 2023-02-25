@@ -86,6 +86,7 @@ export enum DataTableHeader {
   CREATED_BY = "createdBy",
   DOCUMENT_NAME = "documentName",
   IS_LOCKED = "isLocked",
+  TYPE_DOCUMENT = "typeName",
 }
 
 export enum Permissions {

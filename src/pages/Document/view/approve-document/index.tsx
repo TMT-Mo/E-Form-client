@@ -71,7 +71,7 @@ const ViewApproveDocument: React.FC = () => {
       </div>
       <div className="flex space-x-2 items-center">
         <h4>Department:</h4>
-        <span className="text-white text-base break-words">{signer.departmentName}</span>
+        <span className="text-white text-base break-words">{t(signer.departmentName)}</span>
       </div>
       <div className="flex space-x-2 items-center">
         <h4>{t("Role")}:</h4>
@@ -203,14 +203,14 @@ const ViewApproveDocument: React.FC = () => {
         <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 pb-8 md:w-80">
           <div className="flex flex-col space-y-8 text-white">
             <div className="flex flex-col space-y-2">
-              <h4>{t("File name")}:</h4>
+              <h4 className="whitespace-nowrap">{t("File name")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {documentName}
               </span>
             </div>
 
             <div className="flex flex-col space-y-2">
-              <h4>{t("Description")}:</h4>
+              <h4 className="whitespace-nowrap">{t("Description")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {description}
               </span>
@@ -222,26 +222,26 @@ const ViewApproveDocument: React.FC = () => {
               </span>
             </div>
             <div className="flex items-center space-x-1">
-              <h4>{t("Department")}:</h4>
+              <h4 className="whitespace-nowrap">{t("Department")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {departmentName}
               </span>
             </div>
             <div className="flex flex-col space-y-2">
-              <h4>{t("Created By")}:</h4>
+              <h4 className="whitespace-nowrap">{t("Created By")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {createdBy.username}
               </span>
             </div>
             <div className="flex flex-col space-y-2">
-              <h4>{t("Created At")}:</h4>
+              <h4 className="whitespace-nowrap">{t("Created At")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {helpers.addHours(createdAt, 7)}
               </span>
             </div>
             <Divider className="bg-white" />
             <div className="flex justify-center">
-              <h4>{t("Signer List")}:</h4>
+              <h4 className="whitespace-nowrap">{t("Signer List")}:</h4>
             </div>
             {signers}
             <div className="flex items-center">
@@ -261,7 +261,7 @@ const ViewApproveDocument: React.FC = () => {
             </div>
             {!isAccepting ? (
               <div className="flex flex-col space-y-4">
-                <h4>{t("Reason")}:</h4>
+                <h4 className="whitespace-nowrap">{t("Reason")}:</h4>
                 <TextField
                   id="outlined-multiline-flexible"
                   sx={{

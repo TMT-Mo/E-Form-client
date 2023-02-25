@@ -3,26 +3,11 @@ import {
   IconButton,
   InputBase,
   Paper,
-  Button,
 } from "@mui/material";
 import { useEffect } from "react";
-import UploadIcon from '@mui/icons-material/Upload';
-import { styled } from "@mui/system";
 import DataTable from "../../../components/DataTable";
 import { getDocumentHistory } from "../../../slices/document";
 import { useDispatch, useSelector } from "../../../hooks";
-
-const StyledUploadBtn = styled(Button)({
-  backgroundColor: '#fff',
-  borderRadius: '10px',
-  color: '#407AFF',
-  padding: '0px 15px',
-  height: '80%',
-  ':hover':{
-    backgroundColor: '#407AFF',
-    color: '#fff'
-  }
-})
 
 const History = () => {
   const dispatch = useDispatch();
@@ -87,11 +72,6 @@ const History = () => {
               inputProps={{ "aria-label": "search google maps" }}
             />
           </Paper>
-          <div className="flex space-x-8">
-            <StyledUploadBtn size="small" className="shadow-md" variant="outlined" startIcon={<UploadIcon />}>
-              Select
-            </StyledUploadBtn>
-          </div>
         </div>
         <DataTable />
       </div>

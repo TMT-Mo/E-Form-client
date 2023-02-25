@@ -24,6 +24,8 @@ const StyledAddBtn = styled(Button)({
   color: "#fff",
   padding: "0px 15px",
   height: "80%",
+  display: 'flex',
+  alignItems: 'center',
   textDecoration: "none",
   ":hover": {
     color: "#407AFF",

@@ -78,44 +78,44 @@ const ViewHistoryDocument: React.FC = () => {
         <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 pb-8 md:w-80 md:pb-0">
           <div className="flex flex-col space-y-8 text-white">
             <div className="flex flex-col space-y-2">
-              <h4>{t("File name")}:</h4>
+              <h4 className="whitespace-nowrap">{t("File name")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {documentName}
               </span>
             </div>
 
             <div className="flex flex-col space-y-2">
-              <h4>{t("Description")}:</h4>
+              <h4 className="whitespace-nowrap">{t("Description")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {description}
               </span>
             </div>
             <div className="flex items-center space-x-1">
-              <h4>{t("Type")}:</h4>
+              <h4 className="whitespace-nowrap">{t("Type")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {typeName}
+                {t(typeName)}
               </span>
             </div>
             <div className="flex items-center space-x-1">
-              <h4>{t("Department")}:</h4>
+              <h4 className="whitespace-nowrap">{t("Department")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {departmentName}
+                {t(departmentName)}
               </span>
             </div>
             <div className="flex flex-col space-y-2">
-              <h4>{t("Created By")}:</h4>
+              <h4 className="whitespace-nowrap">{t("Created By")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {createdBy.username}
               </span>
             </div>
             <div className="flex flex-col space-y-2">
-              <h4>{t("Created At")}:</h4>
+              <h4 className="whitespace-nowrap">{t("Created At")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {helpers.addHours(createdAt, 7)}
               </span>
             </div>
             <div className="flex items-center space-x-2 w-fit">
-              <h4>{t("Status")}:</h4>
+              <h4 className="whitespace-nowrap">{t("Status")}:</h4>
               <StatusTag status={status} type="document" />
             </div>
             {status === StatusDocument.REJECTED_DOCUMENT && (
@@ -127,7 +127,7 @@ const ViewHistoryDocument: React.FC = () => {
               </div>
             )}
             <div className="flex items-center space-x-1">
-              <h4>{t("Version")}:</h4>
+              <h4 className="whitespace-nowrap">{t("Version")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {version!}
               </span>

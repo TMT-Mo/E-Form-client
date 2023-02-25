@@ -14,7 +14,7 @@ import {
 } from "../../utils/constants";
 import {
   awaitSigningColumns,
-  historyColumns,
+  historyDocColumns,
   newTemplatesColumns,
   personalDocColumns,
   sharedDocColumns,
@@ -191,7 +191,7 @@ const DataTable: React.FC = () => {
         };
       case DOCUMENT_HISTORY:
         return {
-          columns: historyColumns,
+          columns: historyDocColumns,
           loading: isGetDocumentListLoading,
           table: documentList,
           currentPage: currentPageDocument,

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   StatusDocument,
   StatusTemplate,
@@ -30,24 +31,24 @@ interface Props {
 
 const StatusTag = (props: Props) => {
   const { status, type } = props;
-  
+  const {t} = useTranslation()
   const createTemplateStatus = () => {
     if (status === APPROVED_TEMPLATE) {
       return (
-        <span className="w-full px-3 py-1 rounded-md bg-green-100 text-green-600 text-xs border-green-400 border border-solid">
-          {APPROVED_TEMPLATE_TAG}
+        <span className="w-full max-w-fit px-3 py-1 rounded-md bg-green-100 text-green-600 text-xs border-green-400 border border-solid">
+          {t(APPROVED_TEMPLATE_TAG)}
         </span>
       );
     } else if (status === NEW_TEMPLATE) {
       return (
-        <span className="w-full px-3 py-1 rounded-md bg-blue-100 text-blue-600 text-xs border-blue-400 border border-solid">
-          {NEW_TEMPLATE_TAG}
+        <span className="w-full max-w-fit px-3 py-1 rounded-md bg-blue-100 text-blue-600 text-xs border-blue-400 border border-solid">
+          {t(NEW_TEMPLATE_TAG)}
         </span>
       );
     } else {
       return (
-        <span className="w-full px-3 py-1 rounded-md bg-red-100 text-red-600 text-xs border-red-400 border border-solid">
-          {REJECTED_TEMPLATE_TAG}
+        <span className="w-full max-w-fit px-3 py-1 rounded-md bg-red-100 text-red-600 text-xs border-red-400 border border-solid">
+          {t(REJECTED_TEMPLATE_TAG)}
         </span>
       );
     }
@@ -57,25 +58,25 @@ const StatusTag = (props: Props) => {
     if (status === APPROVED_DOCUMENT) {
       return (
         <span className="w-full px-3 py-1 rounded-md bg-green-100 text-green-600 text-xs border-green-400 border border-solid">
-          {APPROVED_DOCUMENT_TAG}
+          {t(APPROVED_DOCUMENT_TAG)}
         </span>
       );
     } else if (status === PROCESSING_DOCUMENT) {
       return (
         <span className="w-full px-3 py-1 rounded-md bg-blue-100 text-blue-600 text-xs border-blue-400 border border-solid">
-          {PROCESSING_DOCUMENT_TAG}
+          {t(PROCESSING_DOCUMENT_TAG)}
         </span>
       );
     } else if (status === NOT_YET_DOCUMENT) {
       return (
         <span className="w-full px-3 py-1 rounded-md bg-slate-100 text-slate-600 text-xs border-slate-400 border border-solid">
-          {NOT_YET_DOCUMENT_TAG}
+          {t(NOT_YET_DOCUMENT_TAG)}
         </span>
       );
     } else {
       return (
         <span className="w-full px-3 py-1 rounded-md bg-red-100 text-red-600 text-xs border-red-400 border border-solid">
-          {REJECTED_DOCUMENT_TAG}
+          {t(REJECTED_DOCUMENT_TAG)}
         </span>
       );
     }

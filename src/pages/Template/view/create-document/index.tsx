@@ -42,13 +42,13 @@ const ViewCreateDocument: React.FC = () => {
         </span>
       </div>
       <div className="flex space-x-2 items-center">
-        <h4>Department:</h4>
-        <span className="text-white text-base break-words">{signer.departmentName}</span>
+        <h4>{t("Department")}:</h4>
+        <span className="text-white text-base break-words">{t(signer.departmentName)}</span>
       </div>
       <div className="flex space-x-2 items-center">
         <h4>{t("Role")}:</h4>
         <span className="text-white text-base break-words">
-          {signer.roleName}
+          {t(signer.roleName)}
         </span>
       </div>
     </div>
@@ -152,14 +152,14 @@ const ViewCreateDocument: React.FC = () => {
         <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 md:w-80">
           <div className="flex flex-col space-y-8 text-white">
             <div className="flex flex-col space-y-2">
-              <h4>{t("File name")}:</h4>
+              <h4 className="whitespace-nowrap">{t("File name")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {templateName}
               </span>
             </div>
 
             <div className="flex flex-col space-y-2">
-              <h4>{t("Description")}:</h4>
+              <h4 className="whitespace-nowrap">{t("Description")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {description}
               </span>
@@ -178,7 +178,7 @@ const ViewCreateDocument: React.FC = () => {
             </div>
             <Divider className="bg-white" />
             <div className="flex justify-center">
-              <h4>{t("Signer List")}:</h4>
+              <h4 className="whitespace-nowrap">{t("Signer List")}:</h4>
             </div>
             {signers}
             {isEnable && (

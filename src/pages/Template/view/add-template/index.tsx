@@ -262,7 +262,7 @@ const ViewAddTemplate: React.FC = () => {
                 isOptionEqualToValue={(option, value) =>
                   option.typeName === value.typeName
                 }
-                getOptionLabel={(option) => option.typeName}
+                getOptionLabel={(option) => t(option.typeName)}
                 options={templateTypeList?.items!}
                 loading={isGetTemplateTypesLoading}
                 renderInput={(params) => (
@@ -301,7 +301,7 @@ const ViewAddTemplate: React.FC = () => {
                 isOptionEqualToValue={(option, value) =>
                   option.departmentName === value.departmentName
                 }
-                getOptionLabel={(option) => option.departmentName}
+                getOptionLabel={(option) => t(option.departmentName)}
                 options={departmentList?.items!}
                 loading={isGetDepartmentsLoading}
                 renderInput={(params) => (
