@@ -23,6 +23,7 @@ import { useAuth, useDispatch, useSelector } from "../../../../hooks";
 import { styled } from "@mui/system";
 import { setLocation } from "../../../../slices/location";
 import { toggleSideBar } from "../../../../slices/ui-control";
+import { LocationIndex } from "../../../../utils/constants";
 
 const StyledMenu = styled(Menu)({
   "& .MuiPaper-root": {
@@ -131,7 +132,7 @@ const TopBar: React.FC = () => {
                       </ListItemIcon>
                       <ListItemText
                         onClick={() =>
-                          dispatch(setLocation({ locationIndex: 8 }))
+                          dispatch(setLocation({ locationIndex: LocationIndex.CHANGE_PASSWORD }))
                         }
                       >
                         Change password
