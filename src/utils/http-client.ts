@@ -1,5 +1,5 @@
 import axios, { Method, AxiosResponse, ResponseType } from "axios";
-import {helpers} from "../utils";
+import { helpers } from "../utils";
 
 interface Options {
   url: string;
@@ -14,6 +14,38 @@ interface Options {
 interface FullOptions extends Options {
   method: Method;
 }
+
+const axiosConfig = axios.create();
+axiosConfig.interceptors.request.use(
+  function (config) {
+    // Do something before request is sent
+    console.log(1, config);
+    return config;
+  },
+  function (error) {
+    // Do something with request error
+    console.log(2, error);
+    return Promise.reject(error);
+  }
+);
+
+// Add a response interceptor
+axiosConfig.interceptors.response.use(
+  function (response) {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    // console.log('first')
+    console.log(3, response);
+    return response;
+  },
+  function (error) {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    console.log(4, error);
+    return Promise.reject(error);
+  }
+);
+
 const request = (args: FullOptions): Promise<AxiosResponse> => {
   const {
     url,
@@ -24,7 +56,6 @@ const request = (args: FullOptions): Promise<AxiosResponse> => {
     data,
     // signal,
   } = args;
-  
 
   // const source = axios.CancelToken.source();
   // if (signal) {
@@ -33,8 +64,8 @@ const request = (args: FullOptions): Promise<AxiosResponse> => {
   //   });
   // }
   const token = helpers.getToken();
-  
-  return axios.request({
+
+  return axiosConfig.request({
     url,
     method,
     headers: {

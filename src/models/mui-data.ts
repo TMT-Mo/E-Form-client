@@ -1,5 +1,5 @@
 import { DataTableHeader } from './../utils/constants';
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef, GridFilterModel } from "@mui/x-data-grid";
 import { Document } from "./document";
 import { Template } from "./template";
 
@@ -46,4 +46,5 @@ export interface Data {
   totalPages?: number;
   onChangePage?: (event: React.ChangeEvent<unknown>, page: number) => void;
   columnVisible?: GridColumnModel;
+  filterModel?: GridFilterModel
 }

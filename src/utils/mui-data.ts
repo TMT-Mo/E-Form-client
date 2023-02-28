@@ -76,7 +76,7 @@ export const templateColumns: GridColDef[] = [
   {
     field: TYPE_TEMPLATE,
     headerName: "Type",
-    filterOperators: typeTemplateOnlyOperators,
+    // filterOperators: typeTemplateOnlyOperators,
     renderHeader: TranslateHeader,
     renderCell: TranslateContent
   },

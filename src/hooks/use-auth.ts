@@ -35,11 +35,11 @@ export const useAuth = (): UseAuth => {
       return;
     }
     const user = jwtDecode(token) as UserInfo;
-    if (user.exp * 1000 < Date.now()) {
-      //* Check if token has been expired
-      logout();
-      return;
-    }
+    // if (user.exp * 1000 < Date.now()) {
+    //   //* Check if token has been expired
+    //   logout();
+    //   return;
+    // }
     const location = getLocation()
     // console.log(location)
     dispatch(setLocation({locationIndex: location}))

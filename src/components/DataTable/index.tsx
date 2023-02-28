@@ -6,6 +6,7 @@ import {
   GridSortModel,
   viVN,
   enUS,
+  GridColDef,
 } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "../../hooks";
 import {
@@ -34,11 +35,10 @@ import {
   onChangeDocumentPage,
 } from "../../slices/document";
 import { GridColumnModel, Data, GetRowIdParams } from "../../models/mui-data";
-import filter, { setFilter, setSorter } from "../../slices/filter";
+import { setFilter, setSorter } from "../../slices/filter";
 import { helpers } from "../../utils";
 import CustomNoRow from "../CustomNoRow";
 import { useTranslation } from "react-i18next";
-import TextField from "@mui/material/TextField";
 
 const {
   SYSTEM,
@@ -51,6 +51,7 @@ const {
   SHARED,
   DOCUMENT_HISTORY,
 } = LocationIndex;
+
 
 const { ENABLE_TEMPLATE } = Permissions;
 const { IPAD } = DeviceType;
@@ -93,6 +94,30 @@ const DataTable: React.FC = () => {
     [dispatch]
   );
 
+  const onTranslateFilter = (
+    table: GridColDef[] | undefined
+  ): GridColDef[] | undefined => {
+    if (!table) return undefined;
+    let translatedTable: GridColDef[] = [];
+    for (let i = 0; i < table.length; i++) {
+      const currentValue = table[i];
+      let translateFilter = currentValue.filterOperators;
+      if (translateFilter) {
+        const filter = { ...translateFilter[0] };
+        translateFilter[0] = { ...filter, label: t(filter.label!) };
+      }
+      const item: GridColDef = {
+        ...currentValue,
+        headerName: t(currentValue.headerName!),
+        filterOperators: translateFilter,
+      };
+      translatedTable.push(item);
+    }
+    return translatedTable;
+  };
+
+  // console.log(templateColumns.forEach(col => console.log(col)))
+
   const handleSortModelChange = React.useCallback(
     (sortModel: GridSortModel) => {
       // Here you save the data you need from the sort model
@@ -127,7 +152,7 @@ const DataTable: React.FC = () => {
         };
       case NEW_TEMPLATE:
         return {
-          columns: newTemplatesColumns,
+          columns: onTranslateFilter(newTemplatesColumns),
           loading: isGetTemplatesLoading,
           table: templateList,
           currentPage: currentPageTemplate,
@@ -142,9 +167,9 @@ const DataTable: React.FC = () => {
           loading: false,
           table: templateList,
         };
-      case TEMPLATE:
+      case TEMPLATE:{
         return {
-          columns: templateColumns,
+          columns: onTranslateFilter(templateColumns),
           loading: isGetTemplatesLoading,
           table: templateList,
           currentPage: currentPageTemplate,
@@ -152,10 +177,12 @@ const DataTable: React.FC = () => {
           onChangePage: (e, value) =>
             dispatch(onChangeTemplatePage({ selectedPage: --value })),
           columnVisible,
-        };
+        }; 
+      }
+        
       case AWAIT_SIGNING:
         return {
-          columns: awaitSigningColumns,
+          columns: onTranslateFilter(awaitSigningColumns),
           loading: isGetDocumentListLoading,
           table: documentList,
           currentPage: currentPageDocument,
@@ -165,7 +192,7 @@ const DataTable: React.FC = () => {
         };
       case TEMPLATE_HISTORY:
         return {
-          columns: templateHistoryColumns,
+          columns: onTranslateFilter(templateHistoryColumns),
           loading: isGetTemplatesLoading,
           table: templateList,
           currentPage: currentPageTemplate,
@@ -176,7 +203,7 @@ const DataTable: React.FC = () => {
         };
       case PERSONAL:
         return {
-          columns: personalDocColumns,
+          columns: onTranslateFilter(personalDocColumns),
           loading: isGetDocumentListLoading,
           table: documentList,
           currentPage: currentPageDocument,
@@ -186,7 +213,7 @@ const DataTable: React.FC = () => {
         };
       case SHARED:
         return {
-          columns: sharedDocColumns,
+          columns: onTranslateFilter(sharedDocColumns),
           loading: isGetDocumentListLoading,
           table: documentList,
           currentPage: currentPageDocument,
@@ -196,7 +223,7 @@ const DataTable: React.FC = () => {
         };
       case DOCUMENT_HISTORY:
         return {
-          columns: historyDocColumns,
+          columns: onTranslateFilter(historyDocColumns),
           loading: isGetDocumentListLoading,
           table: documentList,
           currentPage: currentPageDocument,
@@ -224,6 +251,7 @@ const DataTable: React.FC = () => {
         getRowId={getRowId}
         onFilterModelChange={onFilterChange}
         filterMode="server"
+        // filterModel={data().filterModel!}
         sortingMode="server"
         localeText={
           (i18n.language === "vn" ? viVN : enUS).components.MuiDataGrid

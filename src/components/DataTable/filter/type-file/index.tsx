@@ -10,7 +10,7 @@ import {
   GridFilterItem,
   GridFilterInputValueProps,
 } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTableHeader } from "../../../../utils/constants";
 
@@ -30,14 +30,6 @@ const SelectType = (props: GridFilterInputValueProps) => {
   const { applyValue, item } = props;
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [value, setValue] = useState<any>("");
-
-  // useEffect(() => {
-  //   applyValue({
-  //     ...item,
-  //     value: t(item.value),
-  //     columnField: t(item.columnField)
-  //   })
-  // }, [applyValue, item, t]);
   
   const handleChange = (e: SelectChangeEvent) => {
     applyValue({

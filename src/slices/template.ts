@@ -95,10 +95,10 @@ const getTemplates = createAsyncThunk(
       }
       const errorMessage = (err.response?.data as ValidationErrors)
         .errorMessage;
-      if(errorMessage === 'Unauthorized'){
-        window.location = '/login' as unknown as Location
-        helpers.clearToken()
-      }
+      // if(errorMessage === 'Unauthorized'){
+      //   window.location = '/login' as unknown as Location
+      //   helpers.clearToken()
+      // }
       dispatch(
         handleError({
           errorMessage,
