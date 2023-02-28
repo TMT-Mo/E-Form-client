@@ -10,7 +10,8 @@ import {
   GridFilterItem,
   GridFilterInputValueProps,
 } from "@mui/x-data-grid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { DataTableHeader } from "../../../../utils/constants";
 
 interface Items {
@@ -25,10 +26,19 @@ const items: Items[] = [
 
 const { TYPE } = DataTableHeader;
 const SelectType = (props: GridFilterInputValueProps) => {
+  const { t } = useTranslation();
   const { applyValue, item } = props;
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [value, setValue] = useState<any>("");
 
+  // useEffect(() => {
+  //   applyValue({
+  //     ...item,
+  //     value: t(item.value),
+  //     columnField: t(item.columnField)
+  //   })
+  // }, [applyValue, item, t]);
+  
   const handleChange = (e: SelectChangeEvent) => {
     applyValue({
       ...item,
@@ -41,7 +51,7 @@ const SelectType = (props: GridFilterInputValueProps) => {
   return (
     <FormControl variant="standard" sx={{ minWidth: 120 }}>
       <InputLabel id="demo-simple-select-standard-label">
-        Filter value
+        {t("Filter value")}
       </InputLabel>
       <Select
         labelId="demo-simple-select-standard-label"
@@ -52,7 +62,7 @@ const SelectType = (props: GridFilterInputValueProps) => {
       >
         {items.map((item, index) => (
           <MenuItem value={item.value} key={index}>
-            {item.label}
+            {t(item.label)}
           </MenuItem>
         ))}
       </Select>
@@ -60,9 +70,11 @@ const SelectType = (props: GridFilterInputValueProps) => {
   );
 };
 
+
+
 export const typeOnlyOperators: GridFilterOperator[] = [
   {
-    label: "equal",
+    label: "Equal",
     value: "equal",
     getApplyFilterFn: (filterItem: GridFilterItem) => {
       return filterItem.value;

@@ -24,17 +24,23 @@ import { useDispatch, useSelector } from "../../../../hooks";
 import { getDocumentDetail } from "../../../../slices/document";
 import ShareIcon from "@mui/icons-material/Share";
 import { useTranslation } from "react-i18next";
-import { TextFieldStyled } from "../../../CustomStyled";
+import { ApproveBtn, CancelTransparentBtn, TextFieldStyled } from "../../../CustomStyled";
+import { styled } from "@mui/system";
 import {
   getDepartmentList,
   toggleDepartmentList,
 } from "../../../../slices/system";
+import { Department } from "../../../../models/system";
 
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
+
+const StyledDialog = styled(Dialog)({
+  width: "1024px",
+});
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -70,12 +76,12 @@ export const SharedDocumentActionCell = (props: GridRenderCellParams<Date>) => {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const {
-    isGetDepartmentsLoading,
-    departmentList,
-    isOpenDepartmentList,
-  } = useSelector((state) => state.system);
+  const { isGetDepartmentsLoading, departmentList, isOpenDepartmentList } =
+    useSelector((state) => state.system);
   const [value, setValue] = React.useState(0);
+  const [selectedDepartment, setSelectedDepartment] = useState<Department[]>(
+    []
+  );
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -91,12 +97,10 @@ export const SharedDocumentActionCell = (props: GridRenderCellParams<Date>) => {
     }
   }, [hasFocus]);
 
-  const onChangeSelectedDepartment = (value: number | undefined) => {
-    // if (!value) {
-    //   setForm({ ...form, signatoryList: undefined, idDepartment: undefined });
-    //   return;
-    // }
-    // setForm({ ...form, idDepartment: value, signatoryList: undefined });
+  const onChangeSelectedDepartment = (value: Department) => {
+    setSelectedDepartment((prevState) =>
+      [...prevState, value]
+    );
   };
 
   const getDepartmentListHandler = async () => {
@@ -130,7 +134,7 @@ export const SharedDocumentActionCell = (props: GridRenderCellParams<Date>) => {
       >
         <ShareIcon fontSize="small" />
       </IconButton>
-      <Dialog
+      <StyledDialog
         open={open}
         onClose={() => setOpen((prevState) => !prevState)}
         aria-labelledby="alert-dialog-title"
@@ -142,6 +146,7 @@ export const SharedDocumentActionCell = (props: GridRenderCellParams<Date>) => {
             value={value}
             onChange={handleChange}
             aria-label="basic tabs example"
+            // sx={}
           >
             <Tab label="Department" {...a11yProps(0)} />
             <Tab label="Position" {...a11yProps(1)} />
@@ -154,17 +159,19 @@ export const SharedDocumentActionCell = (props: GridRenderCellParams<Date>) => {
               <h4>{t("Department")}</h4>
               <Autocomplete
                 id="asynchronous-demo"
+                // multiple = {departmentList?.items ? true : false}
                 sx={{
                   width: 300,
+                  color: "#000"
                 }}
                 open={isOpenDepartmentList}
                 onOpen={getDepartmentListHandler}
                 onClose={getDepartmentListHandler}
-                onChange={(e, value) => onChangeSelectedDepartment(value?.id)}
+                onChange={(e, value) => onChangeSelectedDepartment(value!)}
                 isOptionEqualToValue={(option, value) =>
                   option.departmentName === value.departmentName
                 }
-                getOptionLabel={(option) => option.departmentName}
+                getOptionLabel={(option) => t(option.departmentName)}
                 options={departmentList?.items!}
                 loading={isGetDepartmentsLoading}
                 renderInput={(params) => (
@@ -188,15 +195,22 @@ export const SharedDocumentActionCell = (props: GridRenderCellParams<Date>) => {
                   />
                 )}
               />
+              {selectedDepartment.map((department) => (
+                <div className="flex flex-col">
+                  <div className="flex">
+                    <span>{department.departmentName}</span>
+                  </div>
+                </div>
+              ))}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setOpen((prevState) => !prevState)}>
+            <CancelTransparentBtn onClick={() => setOpen((prevState) => !prevState)}>
               Cancel
-            </Button>
-            <Button onClick={() => setOpen((prevState) => !prevState)}>
+            </CancelTransparentBtn>
+            <ApproveBtn onClick={() => setOpen((prevState) => !prevState)}>
               Save
-            </Button>
+            </ApproveBtn>
           </DialogActions>
         </TabPanel>
         <TabPanel value={value} index={1}>
@@ -205,7 +219,7 @@ export const SharedDocumentActionCell = (props: GridRenderCellParams<Date>) => {
         <TabPanel value={value} index={2}>
           Item Three
         </TabPanel>
-      </Dialog>
+      </StyledDialog>
     </div>
   );
 };

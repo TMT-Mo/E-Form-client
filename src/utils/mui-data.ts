@@ -53,6 +53,7 @@ export const templateColumns: GridColDef[] = [
     headerName: 'File',
     headerAlign: "center",
     renderCell: FileCell,
+    
     align: "center",
     renderHeader: TranslateHeader,
   },

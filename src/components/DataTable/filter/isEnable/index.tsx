@@ -1,10 +1,17 @@
-import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+} from "@mui/material";
 import {
   GridFilterOperator,
   GridFilterItem,
   GridFilterInputValueProps,
 } from "@mui/x-data-grid";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { DataTableHeader } from "../../../../utils/constants";
 
 interface Items {
@@ -12,29 +19,32 @@ interface Items {
   label: string;
 }
 const items: Items[] = [
-  { value: 'false', label: 'false' },
-  { value: 'true', label: 'true' },
+  { value: "false", label: "enable" },
+  { value: "true", label: "disable" },
 ];
 
-const { IS_ENABLE} = DataTableHeader;
+const { IS_ENABLE } = DataTableHeader;
 
 const SelectType = (props: GridFilterInputValueProps) => {
+  const { t } = useTranslation();
   const { applyValue, item } = props;
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [value, setValue] = useState<any>('');
+  const [value, setValue] = useState<any>("");
 
   const handleChange = (e: SelectChangeEvent) => {
     applyValue({
-        ...item,
-        value: e.target.value,
-        columnField: IS_ENABLE,
-      });
-      setValue(e.target.value);
-  } 
-  
+      ...item,
+      value: e.target.value,
+      columnField: IS_ENABLE,
+    });
+    setValue(e.target.value);
+  };
+
   return (
     <FormControl variant="standard" sx={{ minWidth: 120 }}>
-      <InputLabel id="demo-simple-select-standard-label">Filter value</InputLabel>
+      <InputLabel id="demo-simple-select-standard-label">
+        {t('Filter value')}
+      </InputLabel>
       <Select
         labelId="demo-simple-select-standard-label"
         id="demo-simple-select-standard"
@@ -43,7 +53,9 @@ const SelectType = (props: GridFilterInputValueProps) => {
         onChange={handleChange}
       >
         {items.map((item, index) => (
-          <MenuItem value={item.value} key={index}>{item.label}</MenuItem>
+          <MenuItem value={item.value} key={index}>
+            {t(item.label)}
+          </MenuItem>
         ))}
       </Select>
     </FormControl>

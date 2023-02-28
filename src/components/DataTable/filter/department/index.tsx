@@ -12,6 +12,7 @@ import {
     GridFilterInputValueProps,
   } from "@mui/x-data-grid";
   import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
   import { useDispatch, useSelector } from "../../../../hooks";
   import {
       getDepartmentList,
@@ -20,6 +21,7 @@ import {
   
   const {DEPARTMENT } = DataTableHeader;
   const SelectDepartment = (props: GridFilterInputValueProps) => {
+    const {t} = useTranslation()
     const { applyValue, item } = props;
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [value, setValue] = useState<any>("");
@@ -50,7 +52,7 @@ import {
         {departmentList && (
           <FormControl variant="standard" sx={{ minWidth: 120 }}>
             <InputLabel id="demo-simple-select-standard-label">
-              Filter value
+              {t('Filter value')}
             </InputLabel>
             <Select
               labelId="demo-simple-select-standard-label"
@@ -61,7 +63,7 @@ import {
             >
               {departmentList.items.map((item) => (
                 <MenuItem value={item.id} key={item.id}>
-                  {item.departmentName}
+                  {t(item.departmentName)}
                 </MenuItem>
               ))}
             </Select>

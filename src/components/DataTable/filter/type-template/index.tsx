@@ -13,6 +13,7 @@ import {
   GridFilterInputValueProps,
 } from "@mui/x-data-grid";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "../../../../hooks";
 import {
   getTemplateTypeList,
@@ -21,6 +22,7 @@ import { DataTableHeader } from "../../../../utils/constants";
 
 const {TYPE_TEMPLATE } = DataTableHeader;
 const SelectType = (props: GridFilterInputValueProps) => {
+  const {t} = useTranslation()
   const { applyValue, item } = props;
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [value, setValue] = useState<any>("");
@@ -51,7 +53,7 @@ const SelectType = (props: GridFilterInputValueProps) => {
       {templateTypeList && (
         <FormControl variant="standard" sx={{ minWidth: 120 }}>
           <InputLabel id="demo-simple-select-standard-label">
-            Filter value
+            {t('Filter value')}
           </InputLabel>
           <Select
             labelId="demo-simple-select-standard-label"
@@ -62,7 +64,7 @@ const SelectType = (props: GridFilterInputValueProps) => {
           >
             {templateTypeList.items.map((item) => (
               <MenuItem value={item.typeName} key={item.id}>
-                {item.typeName}
+                {t(item.typeName)}
               </MenuItem>
             ))}
           </Select>

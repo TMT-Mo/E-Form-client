@@ -4,6 +4,8 @@ import {
   GridColumnVisibilityModel,
   GridFilterModel,
   GridSortModel,
+  viVN,
+  enUS,
 } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "../../hooks";
 import {
@@ -32,9 +34,11 @@ import {
   onChangeDocumentPage,
 } from "../../slices/document";
 import { GridColumnModel, Data, GetRowIdParams } from "../../models/mui-data";
-import { setFilter, setSorter } from "../../slices/filter";
+import filter, { setFilter, setSorter } from "../../slices/filter";
 import { helpers } from "../../utils";
 import CustomNoRow from "../CustomNoRow";
+import { useTranslation } from "react-i18next";
+import TextField from "@mui/material/TextField";
 
 const {
   SYSTEM,
@@ -54,6 +58,7 @@ const { checkHideColumnFromDevice } = helpers;
 
 const DataTable: React.FC = () => {
   const dispatch = useDispatch();
+  const { t, i18n } = useTranslation();
   const [columnVisibilityModel, setColumnVisibilityModel] =
     React.useState<GridColumnVisibilityModel>();
   const { locationIndex } = useSelector((state) => state.location);
@@ -207,7 +212,7 @@ const DataTable: React.FC = () => {
   const getRowId = (params: GetRowIdParams) => {
     return params.id;
   };
-
+  //
   return (
     <div style={{ height: 600, width: "100%" }}>
       <DataGrid
@@ -220,6 +225,10 @@ const DataTable: React.FC = () => {
         onFilterModelChange={onFilterChange}
         filterMode="server"
         sortingMode="server"
+        localeText={
+          (i18n.language === "vn" ? viVN : enUS).components.MuiDataGrid
+            .defaultProps.localeText
+        }
         onSortModelChange={handleSortModelChange}
         columnVisibilityModel={
           columnVisibilityModel
@@ -233,6 +242,7 @@ const DataTable: React.FC = () => {
         hideFooter
         components={{
           NoRowsOverlay: CustomNoRow,
+          // FilterPanel: () => <TextField/>
         }}
       />
       {data().table.length > 0 && (

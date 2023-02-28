@@ -13,12 +13,14 @@ import {
   GridFilterInputValueProps,
 } from "@mui/x-data-grid";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "../../../../hooks";
 import { DataTableHeader } from "../../../../utils/constants";
 
 const { CREATED_BY } = DataTableHeader;
 const SelectType = (props: GridFilterInputValueProps) => {
   const { applyValue, item } = props;
+  const {t} = useTranslation()
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [value, setValue] = useState<any>("");
   const { isGetUserListLoading, userList } = useSelector(
@@ -29,7 +31,7 @@ const SelectType = (props: GridFilterInputValueProps) => {
     applyValue({
       ...item,
       value: e.target.value,
-      columnField: CREATED_BY,
+      columnField: t(CREATED_BY),
     });
     setValue(e.target.value);
   };
@@ -47,7 +49,7 @@ const SelectType = (props: GridFilterInputValueProps) => {
       {userList && (
         <FormControl variant="standard" sx={{ minWidth: 120 }}>
           <InputLabel id="demo-simple-select-standard-label">
-            Filter value
+            {t('Filter value')}
           </InputLabel>
           <Select
             labelId="demo-simple-select-standard-label"
@@ -84,11 +86,12 @@ const SelectType = (props: GridFilterInputValueProps) => {
 
 export const createdByOnlyOperators: GridFilterOperator[] = [
   {
-    label: "equal",
+    label: "Equal",
     value: "equal",
     getApplyFilterFn: (filterItem: GridFilterItem) => {
       return filterItem.value;
     },
     InputComponent: SelectType,
+
   },
 ];
