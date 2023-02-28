@@ -1,4 +1,7 @@
-import axios, { Method, AxiosResponse, ResponseType } from "axios";
+import axios, { Method, AxiosResponse, ResponseType, AxiosError } from "axios";
+import jwtDecode from "jwt-decode";
+import { UserInfo } from "../models/auth";
+import store from "../store";
 import { helpers } from "../utils";
 
 interface Options {
@@ -14,12 +17,21 @@ interface Options {
 interface FullOptions extends Options {
   method: Method;
 }
-
+// const {dispatch} = store
 const axiosConfig = axios.create();
 axiosConfig.interceptors.request.use(
   function (config) {
+    // const cancelToken = axios.CancelToken.source()
+    // cancelToken.cancel()
+    // console.log(cancelToken)
     // Do something before request is sent
-    console.log(1, config);
+    // const token = helpers.getToken()
+    // const user = jwtDecode(token) as UserInfo;
+    // if (user.exp * 1000 < Date.now()) {
+    //   //* Check if token has been expired
+    //   console.log('expired')
+    //   return;
+    // }
     return config;
   },
   function (error) {
@@ -38,10 +50,14 @@ axiosConfig.interceptors.response.use(
     console.log(3, response);
     return response;
   },
-  function (error) {
+  function (error: AxiosError) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     console.log(4, error);
+    if (error.response?.status === 401) {
+      helpers.clearToken();
+      window.location.replace("/login") 
+    }
     return Promise.reject(error);
   }
 );

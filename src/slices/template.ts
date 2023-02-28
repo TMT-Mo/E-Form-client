@@ -89,6 +89,7 @@ const getTemplates = createAsyncThunk(
       return result;
     } catch (error) {
       const err = error as AxiosError;
+      console.log(err ?? error)
       if (!err.response?.data) {
         dispatch(handleError({ errorMessage: err.message }));
         return;
