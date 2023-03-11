@@ -86,7 +86,7 @@ const SideBar: React.FC = () => {
     display: "flex",
     justifyContent: isSideBarVisible ? "flex-start" : "center",
   });
-
+  console.log(locationIndex)
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     index: number

@@ -1,5 +1,6 @@
 import {
   ApproveDocumentArgs,
+  ChangeSignerDocumentArgs,
   CreateDocumentArgs,
   Document,
   GetDocumentHistoryArgs,
@@ -27,6 +28,7 @@ interface State {
   documentDetail?: Document;
   isApproveDocumentLoading: boolean;
   isLockDocumentLoading: boolean;
+  isChangeSignerDocumentLoading: boolean;
 }
 
 const initialState: State = {
@@ -40,6 +42,7 @@ const initialState: State = {
   documentDetail: undefined,
   isApproveDocumentLoading: false,
   isLockDocumentLoading: false,
+  isChangeSignerDocumentLoading: false,
 };
 
 const ACTION_TYPE = "document/";
@@ -54,7 +57,7 @@ const onChangeDocumentPageCR: CR<{ selectedPage: number }> = (
   currentPage: payload.selectedPage!,
 });
 
-const getDocumentDetailCR: CR<{ document: Document  }> = (
+const getDocumentDetailCR: CR<{ document: Document }> = (
   state,
   { payload }
 ) => ({
@@ -135,6 +138,30 @@ const lockDocument = createAsyncThunk(
         ...args,
       });
       dispatch(updateDocument({ ...args }));
+      dispatch(handleSuccess({ message: result.message }));
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
+const changeSignerDocument = createAsyncThunk(
+  `${ACTION_TYPE}changeSignerDocument`,
+  async (args: ChangeSignerDocumentArgs, { dispatch }) => {
+    try {
+      const result = await documentServices.changeSignerDocument({
+        ...args,
+      });
       dispatch(handleSuccess({ message: result.message }));
       return result;
     } catch (error) {
@@ -263,6 +290,18 @@ const document = createSlice({
       ...state,
       isLockDocumentLoading: false,
     }));
+    builder.addCase(changeSignerDocument.pending, (state) => ({
+      ...state,
+      isChangeSignerDocumentLoading: true,
+    }));
+    builder.addCase(changeSignerDocument.fulfilled, (state, { payload }) => ({
+      ...state,
+      isChangeSignerDocumentLoading: false,
+    }));
+    builder.addCase(changeSignerDocument.rejected, (state) => ({
+      ...state,
+      isChangeSignerDocumentLoading: false,
+    }));
     builder.addCase(getDocuments.pending, (state) => ({
       ...state,
       isGetDocumentListLoading: true,
@@ -300,7 +339,14 @@ const document = createSlice({
   },
 });
 
-export { createDocument, getDocuments, approveDocument, getDocumentHistory, lockDocument };
+export {
+  createDocument,
+  getDocuments,
+  approveDocument,
+  getDocumentHistory,
+  lockDocument,
+  changeSignerDocument,
+};
 
 export const {
   onChangeDocumentPage,

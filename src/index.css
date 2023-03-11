@@ -32,11 +32,21 @@ body {
 ::-webkit-scrollbar {
   width: 10px;
 }
+
 ::-webkit-scrollbar-track {
   background: #fff;
   opacity: 0.5;
 }
+
 ::-webkit-scrollbar-thumb {
   border-radius: 25px;
   background: #dfe6e9;
+}
+
+.tools-dropdown-container{
+  display: none !important;
+}
+
+.CustomInnerLayout{
+  /* background-image: url('/src/assets/bg.jpg'); */
 }

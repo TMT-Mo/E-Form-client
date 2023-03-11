@@ -1,8 +1,9 @@
+import store from "../store/index";
 import axios, { Method, AxiosResponse, ResponseType, AxiosError } from "axios";
 import jwtDecode from "jwt-decode";
 import { UserInfo } from "../models/auth";
-import store from "../store";
 import { helpers } from "../utils";
+import { handleSuccess } from "../slices/notification";
 
 interface Options {
   url: string;
@@ -17,7 +18,6 @@ interface Options {
 interface FullOptions extends Options {
   method: Method;
 }
-// const {dispatch} = store
 const axiosConfig = axios.create();
 axiosConfig.interceptors.request.use(
   function (config) {
@@ -44,6 +44,8 @@ axiosConfig.interceptors.request.use(
 // Add a response interceptor
 axiosConfig.interceptors.response.use(
   function (response) {
+    
+    // store.dispatch(handleSuccess({ message: 'success' }))
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     // console.log('first')
@@ -56,7 +58,7 @@ axiosConfig.interceptors.response.use(
     console.log(4, error);
     if (error.response?.status === 401) {
       helpers.clearToken();
-      window.location.replace("/login") 
+      window.location.replace("/login");
     }
     return Promise.reject(error);
   }

@@ -55,7 +55,7 @@ interface Form {
 }
 
 const ViewAddTemplate: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const viewer = useRef(null);
   const instance = useRef<WebViewerInstance>();
   const navigate = useNavigate();
@@ -151,12 +151,13 @@ const ViewAddTemplate: React.FC = () => {
       {
         path: "/webviewer/lib",
         initialDoc: undefined,
-        disabledElements: ["downloadButton"],
+        disabledElements: ["downloadButton", 'languageButton'],
       },
       viewer.current!
     ).then(async (inst) => {
       instance.current = inst;
       const { documentViewer } = inst.Core;
+      inst.UI.setLanguage(i18n.language === 'vn' ? 'vi' : 'en');
       const annotManager = documentViewer.getAnnotationManager();
       annotManager.enableReadOnlyMode();
       const UIEvents = inst.UI.Events;
@@ -190,6 +191,32 @@ const ViewAddTemplate: React.FC = () => {
     }
   }, [getSignerListHandler, dispatch, form.idDepartment]);
 
+  const signers = form?.signatoryList?.map((signer, index) => (
+    <div
+      className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4"
+      key={index}
+    >
+      <div className="flex space-x-2 items-center ">
+        <h4>{t("Signer")}:</h4>
+        <span className="text-white text-base break-words">
+          {signer.username}
+        </span>
+      </div>
+      <div className="flex space-x-2 items-center">
+        <h4>Department:</h4>
+        <span className="text-white text-base break-words">
+          {signer.departmentName}
+        </span>
+      </div>
+      <div className="flex space-x-2 items-center">
+        <h4>{t("Role")}:</h4>
+        <span className="text-white text-base break-words">
+          {signer.roleName}
+        </span>
+      </div>
+    </div>
+  ))
+  
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
@@ -366,31 +393,7 @@ const ViewAddTemplate: React.FC = () => {
                 />
               )}
             </div>
-            {form?.signatoryList?.map((signer, index) => (
-              <div
-                className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4"
-                key={index}
-              >
-                <div className="flex space-x-2 items-center ">
-                  <h4>{t("Signer")}:</h4>
-                  <span className="text-white text-base break-words">
-                    {signer.username}
-                  </span>
-                </div>
-                <div className="flex space-x-2">
-                  <h4>Department:</h4>
-                  <span className="text-white text-base break-words">
-                    {signer.departmentName}
-                  </span>
-                </div>
-                <div className="flex space-x-2 items-center">
-                  <h4>{t("Role")}:</h4>
-                  <span className="text-white text-base break-words">
-                    {signer.roleName}
-                  </span>
-                </div>
-              </div>
-            ))}
+            {signers}
             <ApproveBtn
               disabled={!isEnableSave}
               onClick={() => setOpenDialog(true)}

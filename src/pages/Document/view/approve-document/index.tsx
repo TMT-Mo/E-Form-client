@@ -23,12 +23,17 @@ import { helpers } from "../../../../utils";
 import { approveDocument } from "../../../../slices/document";
 import { StatusDocument } from "../../../../utils/constants";
 import { getSignature } from "../../../../slices/auth";
-import { ApproveBtn, CancelWhiteBtn, LoadingBtn, RejectBtn } from "../../../../components/CustomStyled";
+import {
+  ApproveBtn,
+  CancelWhiteBtn,
+  LoadingBtn,
+  RejectBtn,
+} from "../../../../components/CustomStyled";
 import StatusTag from "../../../../components/StatusTag";
 
 const { APPROVED_DOCUMENT, REJECTED_DOCUMENT } = StatusDocument;
 const ViewApproveDocument: React.FC = () => {
-  const {t} = useTranslation();
+  const { t, i18n } = useTranslation();
   const viewer = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -71,7 +76,9 @@ const ViewApproveDocument: React.FC = () => {
       </div>
       <div className="flex space-x-2 items-center">
         <h4>{t("Department")}:</h4>
-        <span className="text-white text-base break-words">{t(signer.departmentName)}</span>
+        <span className="text-white text-base break-words">
+          {t(signer.departmentName)}
+        </span>
       </div>
       <div className="flex space-x-2 items-center">
         <h4>{t("Role")}:</h4>
@@ -118,16 +125,29 @@ const ViewApproveDocument: React.FC = () => {
             "toolbarGroup-Insert",
             "toolbarGroup-Forms",
             "downloadButton",
+            "styling-button",
+            "toolStylePopup",
+            'languageButton'
           ],
           annotationUser: userInfo?.userId!.toString(),
+          css: '../../../../index.css'
         },
         viewer.current!
       ).then(async (inst) => {
         const { documentViewer, annotationManager } = inst.Core;
+        inst.UI.setLanguage(i18n.language === 'vn' ? 'vi' : 'en');
         const signatureTool = documentViewer.getTool(
           "AnnotationCreateSignature"
         ) as Core.Tools.SignatureCreateTool;
+        
         inst.UI.enableFeatures([inst.UI.Feature.Initials]);
+        const iframeDoc = inst.UI.iframeWindow.document;
+        const zoomOverlay = iframeDoc.querySelector(
+          '[data-element="styling-button"]'
+        );
+
+        
+        
         inst.UI.setHeaderItems(function (header) {
           header.push({
             type: "actionButton",
@@ -142,6 +162,10 @@ const ViewApproveDocument: React.FC = () => {
 
         documentViewer.addEventListener("documentLoaded", async () => {
           signatureTool.importSignatures([signature!]);
+          const sig = signatureTool.getFullSignatureAnnotation()
+          console.log(sig)
+          // sig[0].Width = 50
+          // inst.UI.disableElements(["styling-button"]);
           await annotationManager.importAnnotations(xfdfString);
           setInitialXfdfString(annotationManager.getAnnotationsList());
           await documentViewer.getDocument().getDocumentCompletePromise();

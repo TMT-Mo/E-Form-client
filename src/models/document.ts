@@ -114,3 +114,12 @@ export interface LockDocumentArgs {
 export interface LockDocumentResponse{
   message: string;
 }
+
+export interface ChangeSignerDocumentArgs {
+  idDocument: number;
+  signatoryList: number[];
+}
+
+export interface ChangeSignerDocumentResponse{
+  message: string;
+}

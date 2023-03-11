@@ -26,7 +26,7 @@ const ViewHistoryDocument: React.FC = () => {
     status,
     reason,
   } = documentDetail!;
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
   // if using a class, equivalent of componentDidMount
 
   useEffect(() => {
@@ -34,12 +34,13 @@ const ViewHistoryDocument: React.FC = () => {
       {
         path: "/webviewer/lib",
         initialDoc: link!,
-        disabledElements: ["downloadButton"],
+        disabledElements: ["downloadButton", 'languageButton'],
         isReadOnly: true,
       },
       viewer.current!
     ).then(async (instance) => {
       const { documentViewer, annotationManager } = instance.Core;
+      instance.UI.setLanguage(i18n.language === 'vn' ? 'vi' : 'en');
       instance.UI.setHeaderItems(function (header) {
         header.push({
           type: "actionButton",

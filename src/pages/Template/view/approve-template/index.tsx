@@ -46,7 +46,7 @@ const ViewApproveTemplate: React.FC = () => {
   const [isAccepting, setIsAccepting] = useState<boolean>(true);
   const [reason, setReason] = useState<string | undefined>();
   const [openDialog, setOpenDialog] = useState(false);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const signers = signatoryList.map((signer) => (
     <div className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4">
       <div className="flex space-x-2 items-center ">
@@ -72,12 +72,14 @@ const ViewApproveTemplate: React.FC = () => {
         path: "/webviewer/lib",
         initialDoc: link!,
         disabledElements: [
-          'downloadButton'
+          'downloadButton',
+          'languageButton'
         ],
       },
       viewer.current!
     ).then(async (instance) => {
       const { documentViewer } = instance.Core;
+      instance.UI.setLanguage(i18n.language === 'vn' ? 'vi' : 'en');
       const annotManager = documentViewer.getAnnotationManager();
       instance.UI.setHeaderItems(function (header) {
         header.push({

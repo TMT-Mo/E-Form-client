@@ -26,7 +26,7 @@ const ViewTemplateHistory: React.FC = () => {
     status,
     reason,
   } = templateDetail!;
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const signers = signatoryList.map((signer, index) => (
     <div
       className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4"
@@ -59,13 +59,15 @@ const ViewTemplateHistory: React.FC = () => {
         path: "/webviewer/lib",
         initialDoc: link!,
         disabledElements: [
-          'downloadButton'
+          'downloadButton',
+          'languageButton'
         ],
         filename: templateName,
       },
       viewer.current!
     ).then(async (instance) => {
       const { documentViewer } = instance.Core;
+      instance.UI.setLanguage(i18n.language === 'vn' ? 'vi' : 'en');
       const annotManager = documentViewer.getAnnotationManager();
       annotManager.enableReadOnlyMode();
 

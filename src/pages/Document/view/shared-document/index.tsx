@@ -15,7 +15,7 @@ import {
 import StatusTag from "../../../../components/StatusTag";
   
   const ViewShareDocument: React.FC = () => {
-    const {t} = useTranslation();
+    const {t, i18n} = useTranslation();
     const viewer = useRef(null);
     const { documentDetail } = useSelector(
       (state) => state.document
@@ -75,12 +75,14 @@ import StatusTag from "../../../../components/StatusTag";
               "toolbarGroup-Insert",
               "toolbarGroup-Forms",
               "downloadButton",
+              'languageButton'
             ],
             annotationUser: userInfo?.userId!.toString(),
           },
           viewer.current!
         ).then(async (inst) => {
           const { documentViewer, annotationManager } = inst.Core;
+          inst.UI.setLanguage(i18n.language === 'vn' ? 'vi' : 'en');
           const signatureTool = documentViewer.getTool(
             "AnnotationCreateSignature"
           ) as Core.Tools.SignatureCreateTool;

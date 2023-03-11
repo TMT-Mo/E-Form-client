@@ -1,6 +1,6 @@
-import { CircularProgress, Divider, Typography } from "@mui/material";
+import { CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Typography } from "@mui/material";
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer from "@pdftron/webviewer";
 import { useDispatch, useSelector } from "../../../../hooks";
@@ -9,24 +9,29 @@ import { helpers } from "../../../../utils";
 import { Document } from "../../../../models/document";
 import { StatusDocument } from "../../../../utils/constants";
 import { IUser } from "../../../../models/system";
-import { getSigner } from "../../../../slices/system";
+import { clearUserList, getSigner } from "../../../../slices/system";
 import {
   CancelTransparentBtn,
+  CancelWhiteBtn,
   LoadingBtn,
 } from "../../../../components/CustomStyled";
 import ChangeSigner from "./ChangeSigner";
 import StatusTag from "../../../../components/StatusTag";
+import { changeSignerDocument } from "../../../../slices/document";
 
 const ViewPersonalDocument: React.FC = () => {
   const viewer = useRef(null);
   const dispatch = useDispatch();
-  const { documentDetail } = useSelector((state) => state.document);
+  const navigate = useNavigate()
+  const { documentDetail, isChangeSignerDocumentLoading } = useSelector((state) => state.document);
   const { userInfo } = useSelector((state) => state.auth);
   const { userList } = useSelector((state) => state.system);
   const [isChangingSigner, setIsChangingSigner] = useState(false);
   const [isOpenSignerList, setIsOpenSignerList] = useState(false);
   const [indexOpenSigner, setIndexOpenSigner] = useState<null | number>(null);
+  const [openDialog, setOpenDialog] = useState(false);
   const {
+    id,
     createdAt,
     createdBy,
     description,
@@ -40,7 +45,7 @@ const ViewPersonalDocument: React.FC = () => {
     typeName,
     departmentId,
   } = (documentDetail as Document)!;
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [signerList, setSignerList] = useState([...signatoryList!]);
 
   const onOpenSignerList = (index?: number) => {
@@ -61,70 +66,19 @@ const ViewPersonalDocument: React.FC = () => {
     setIsChangingSigner(false);
     setSignerList([...signatoryList!]);
   };
-  //   <div className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4 min-w-fit">
-  //     <div className="flex space-x-2 items-center ">
-  //       <h4>{t("Signer")}:</h4>
-  //       <Typography className="text-white">{signer.username}</Typography>
-  //     </div>
-  //     <div className="flex space-x-2 items-center">
-  //       <h4>{t("Role")}:</h4>
-  //       <Typography className="text-white">{signer.roleName}</Typography>
-  //     </div>
-  //     <div className="flex space-x-2 items-center">
-  //       <h4>{t("Status")}:</h4>
-  //       <Typography className="text-white">
-  //         <StatusTag status={signer.status} type="document" />
-  //       </Typography>
-  //     </div>
-  //     <div className="flex space-x-2 items-center">
-  //       <h4>{t("Date modified")}:</h4>
-  //       <Typography className="text-white">
-  //         {helpers.addHours(signer.updateAt) ?? "---"}
-  //       </Typography>
-  //     </div>
-  //     {signer.status === StatusDocument.PROCESSING_DOCUMENT &&
-  //       isChangingSigner && (
-  //         <Autocomplete
-  //           id="asynchronous-demo"
-  //           sx={{
-  //             width: 300,
-  //           }}
-  //           open={isOpenSignerList && indexOpenSigner === index}
-  //           onOpen={() => onOpenSignerList(index)}
-  //           onClose={() => setIsOpenSignerList(false)}
-  //           onChange={(e, value) => onChangeSigner(value!, index)}
-  //           disableClearable
-  //           // isOptionEqualToValue={(option, value) =>
-  //           //   option.username === value.username
-  //           // }
-  //           getOptionLabel={(option) => option.username}
-  //           options={filterUser()}
-  //           loading={isGetSignerLoading}
-  //           renderInput={(params) => (
-  //             <TextFieldStyled
-  //               {...params}
-  //               sx={{
-  //                 border: "1px solid #fff",
-  //                 borderRadius: "5px",
-  //               }}
-  //               InputProps={{
-  //                 ...params.InputProps,
-  //                 endAdornment: (
-  //                   <React.Fragment>
-  //                     {isGetSignerLoading ? (
-  //                       <CircularProgress color="primary" size={20} />
-  //                     ) : null}
-  //                     {params.InputProps.endAdornment}
-  //                   </React.Fragment>
-  //                 ),
-  //               }}
-  //             />
-  //           )}
-  //         />
-  //       )}
-  //   </div>
-  // ));
-  // if using a class, equivalent of componentDidMount
+
+  const handleChangeSigner = async () => {
+    // const storageRef = ref(storage, `/file/${file!.name}`);
+    // progress can be paused and resumed. It also exposes progress updates.
+    // Receives the storage reference and the file to upload.
+    await dispatch(
+      changeSignerDocument({
+        idDocument: id,
+        signatoryList: signerList.map(signer => signer.id)
+      })
+    ).unwrap();
+    navigate("/user");
+  };
 
   useEffect(() => {
     if (isChangingSigner && !userList) {
@@ -137,12 +91,13 @@ const ViewPersonalDocument: React.FC = () => {
       {
         path: "/webviewer/lib",
         initialDoc: link!,
-        disabledElements: ["downloadButton"],
+        disabledElements: ["downloadButton", 'languageButton'],
         isReadOnly: true,
       },
       viewer.current!
     ).then(async (instance) => {
       const { documentViewer, annotationManager } = instance.Core;
+      instance.UI.setLanguage(i18n.language === 'vn' ? 'vi' : 'en');
       instance.UI.setHeaderItems(function (header) {
         header.push({
           type: "actionButton",
@@ -169,6 +124,14 @@ const ViewPersonalDocument: React.FC = () => {
       });
     });
   }, [documentName, link, userInfo?.userId, userInfo?.userName, xfdfString]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearUserList())
+    }
+  }, [dispatch])
+  
+  
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
@@ -273,7 +236,7 @@ const ViewPersonalDocument: React.FC = () => {
                     <CircularProgress color="inherit" size={16} />
                   }
                   variant="outlined"
-                  // onClick={() => setIsChangingSigner((prevState) => !prevState)}
+                  onClick={() => setOpenDialog(true)}
                 >
                   Save
                 </LoadingBtn>
@@ -281,6 +244,35 @@ const ViewPersonalDocument: React.FC = () => {
             )}
           </div>
         </div>
+        <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {t("Are you sure you want to save this form ?")}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {t("Are you sure you want to change signer list?")}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <CancelWhiteBtn onClick={() => setOpenDialog(false)} size="small">
+            {t("Cancel")}
+          </CancelWhiteBtn>
+          <LoadingBtn
+            size="small"
+            loading={isChangeSignerDocumentLoading}
+            loadingIndicator={<CircularProgress color="inherit" size={16} />}
+            variant="outlined"
+            onClick={handleChangeSigner}
+          >
+            {t("Save")}
+          </LoadingBtn>
+        </DialogActions>
+      </Dialog>
         <div className="webviewer w-full h-screen" ref={viewer}></div>
       </div>
     </Fragment>

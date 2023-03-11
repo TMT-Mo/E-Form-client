@@ -146,9 +146,9 @@ const DataTable: React.FC = () => {
     switch (locationIndex) {
       case SYSTEM:
         return {
-          columns: templateColumns,
+          columns: [],
           loading: false,
-          table: templateList,
+          table: [],
         };
       case NEW_TEMPLATE:
         return {
@@ -163,9 +163,9 @@ const DataTable: React.FC = () => {
         };
       case ACCOUNT:
         return {
-          columns: templateColumns,
+          columns: [],
           loading: false,
-          table: templateList,
+          table: [],
         };
       case TEMPLATE:{
         return {

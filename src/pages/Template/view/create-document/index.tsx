@@ -28,7 +28,7 @@ const ViewCreateDocument: React.FC = () => {
     isEnable,
   } = templateDetail!;
   const [xfdfString, setXfdfString] = useState<string | undefined>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const signers = signatoryList.map((signer, index) => (
     <div
@@ -60,12 +60,13 @@ const ViewCreateDocument: React.FC = () => {
       {
         path: "/webviewer/lib",
         initialDoc: link!,
-        disabledElements: [ "toolbarGroup-Forms", 'downloadButton'],
+        disabledElements: [ "toolbarGroup-Forms", 'downloadButton', 'languageButton'],
         annotationUser: userInfo?.userId!.toString(),
       },
       viewer.current!
     ).then(async (instance) => {
       const { documentViewer, annotationManager, Annotations } = instance.Core;
+      instance.UI.setLanguage(i18n.language === 'vn' ? 'vi' : 'en');
       instance.UI.setHeaderItems(function (header) {
         header.push({
           type: "actionButton",

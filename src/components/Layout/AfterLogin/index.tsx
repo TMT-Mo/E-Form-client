@@ -19,6 +19,8 @@ import { clearDocuments } from "../../../slices/document";
 import { clearFilter } from "../../../slices/filter";
 import { Container } from "@mui/material";
 import { helpers } from "../../../utils";
+import { System } from "../../../pages/System";
+import { Account } from "../../../pages/Account";
 
 const {
   TEMPLATE,
@@ -36,14 +38,15 @@ const {
 const Layout: React.FC = () => {
   const dispatch = useDispatch();
   const { locationIndex } = useSelector((state) => state.location);
-  const location = helpers.getLocation()
-  
+  const location = helpers.getLocation();
+
   useEffect(() => {
-      dispatch(
-        setLocation({
-          locationIndex: location ? location : LocationIndex.TEMPLATE,
-        })
-      );
+    dispatch(
+      setLocation({
+        locationIndex:
+          location !== undefined ? location : LocationIndex.TEMPLATE,
+      })
+    );
   }, [dispatch, location]);
 
   useEffect(() => {
@@ -57,11 +60,11 @@ const Layout: React.FC = () => {
   const switchTab = () => {
     switch (locationIndex) {
       case SYSTEM:
-        return <></>;
+        return <System />;
       case NEW_TEMPLATE:
         return <NewTemplates />;
       case ACCOUNT:
-        return <></>;
+        return <Account />;
       case TEMPLATE:
         return <Template />;
       case TEMPLATE_HISTORY:
@@ -80,14 +83,14 @@ const Layout: React.FC = () => {
         return <></>;
     }
   };
-
+//
   return (
-    <div className="flex bg-blue-light-config">
+    <div className="flex bg-blue-light-config CustomInnerLayout">
       <SideBar />
       <div className="w-full">
         <TopBar />
         {/* <Outlet /> */}
-        <Container maxWidth='xl'>{switchTab()}</Container>
+        <Container maxWidth="xl">{switchTab()}</Container>
         {/* {switchTab()} */}
         {/* <TemplateManagement/> */}
       </div>
@@ -98,5 +101,6 @@ const Layout: React.FC = () => {
     </div>
   );
 };
+
 
 export default Layout;
