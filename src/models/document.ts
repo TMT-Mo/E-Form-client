@@ -1,13 +1,4 @@
-
-import { IUser } from "./system";
-
-export interface AwaitSigningResponse {}
-
-export interface PersonalDocResponse {}
-
-export interface SharedDocResponse {}
-
-export interface HistoryResponse {}
+import { IUser, Department } from "./system";
 
 export interface CreateDocumentArgs {
   idTemplate: number;
@@ -32,9 +23,9 @@ export interface GetDocumentsArgs {
   documentName_contains?: string;
   signatoryList_contains?: number;
   createdAt_gte?: string; //* gte: Greater than equal
-  createdAt_lte?: string //* lte: Lower than equal
+  createdAt_lte?: string; //* lte: Lower than equal
   updateAt_gte?: string; //* gte: Greater than equal
-  updateAt_lte?: string //* lte: Lower than equal
+  updateAt_lte?: string; //* lte: Lower than equal
 }
 
 // export interface Signer {
@@ -80,26 +71,26 @@ export interface DocumentListResponse {
   size: number;
 }
 
-export interface ApproveDocumentArgs{
-  userId: number,
-  documentId: number,
-  statusDocument: number,
-  comment?: string,
-  xfdfString: string
+export interface ApproveDocumentArgs {
+  userId: number;
+  documentId: number;
+  statusDocument: number;
+  comment?: string;
+  xfdfString: string;
 }
 
-export interface ApproveDocumentResponse{
+export interface ApproveDocumentResponse {
   message: string;
 }
 
-export interface GetDocumentHistoryArgs extends GetDocumentsArgs{
-  userId: number
+export interface GetDocumentHistoryArgs extends GetDocumentsArgs {
+  userId: number;
 }
 
 // export interface DocumentHistory extends Document{
 //   version: string;
 // }
-export interface GetDocumentHistoryResponse{
+export interface GetDocumentHistoryResponse {
   items: Document[];
   total: number;
   page: number;
@@ -111,7 +102,7 @@ export interface LockDocumentArgs {
   isLocked: boolean;
 }
 
-export interface LockDocumentResponse{
+export interface LockDocumentResponse {
   message: string;
 }
 
@@ -120,6 +111,62 @@ export interface ChangeSignerDocumentArgs {
   signatoryList: number[];
 }
 
-export interface ChangeSignerDocumentResponse{
+export interface ChangeSignerDocumentResponse {
   message: string;
+}
+
+export interface ShareDepartmentsArgs {
+  idDocument: number;
+  departmentIdList: number[];
+}
+export interface ShareDepartmentsResponse {
+  message: string;
+}
+export interface ShareUsersArgs {
+  idDocument: number;
+  userIdList: number[];
+}
+export interface ShareUsersResponse {
+  message: string;
+}
+
+export interface SharedUser {
+  id: number;
+  createdAt: string;
+  updateAt: string;
+  username: string;
+  signature: null | string;
+  roleName: null | string;
+  departmentName: null | string;
+}
+
+export interface GetSharedUsersArgs {
+  idDocument: number;
+}
+export interface GetSharedUsersResponse {
+  items: [
+    {
+      documentId: number;
+      users: SharedUser[];
+      status: number;
+    }
+  ];
+  total: number;
+  page: number;
+  size: number;
+}
+export interface GetSharedDepartmentsArgs {
+  idDocument: number;
+}
+export interface GetSharedDepartmentsResponse {
+  items: [
+    {
+      documentId: number;
+      departments: Department[];
+      status: number;
+    }
+  ];
+  total: number;
+  page: number;
+  size: number;
 }

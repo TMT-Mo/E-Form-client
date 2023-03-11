@@ -26,7 +26,11 @@ const apiPaths = {
         approveDocument: `${apiHead}api/Document/approveDocument`,
         getDocumentHistory: `${apiHead}api/Document/getDocumentHistory`,
         lockDocument : `${apiHead}api/Document/update`,
-        changeSigner : `${apiHead}api/Document/changeSigner`
+        changeSigner : `${apiHead}api/Document/changeSigner`,
+        shareDepartments: `${apiHead}api/Document/shareDocument`,
+        shareUsers: `${apiHead}api/Document/shareDocument`,
+        getSharedDepartments: `${apiHead}api/Document/getDepartmentsByshareDocument`,
+        getShareUsers: `${apiHead}api/Document/getUsersByshareDocument`,
     }
 }
 

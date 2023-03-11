@@ -5,7 +5,7 @@ import { renderEditLockTemplateCell, renderLockTemplateCell } from './../compone
 import { DocumentHistoryActionCell } from "./../components/DataTable/action-cell/documentHistory/index";
 import { updatedAtOnlyOperators } from "./../components/DataTable/filter/updatedAt/index";
 import { createdByOnlyOperators } from "./../components/DataTable/filter/createdBy/index";
-import { PersonalDocumentActionCell } from "./../components/DataTable/action-cell/personalDocument/index";
+import { PersonalDocumentActionCell } from "./../components/DataTable/action-cell/personalDocument";
 import { AwaitSigningActionCell } from "./../components/DataTable/action-cell/awaitSigning/index";
 import { TemplateHistoryActionCell } from "./../components/DataTable/action-cell/templateHistory/index";
 import { statusOnlyOperators } from "./../components/DataTable/filter/status/index";

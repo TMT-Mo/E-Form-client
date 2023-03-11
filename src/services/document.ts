@@ -12,6 +12,14 @@ import {
   LockDocumentResponse,
   ChangeSignerDocumentArgs,
   ChangeSignerDocumentResponse,
+  ShareDepartmentsArgs,
+  ShareDepartmentsResponse,
+  ShareUsersArgs,
+  ShareUsersResponse,
+  GetSharedDepartmentsArgs,
+  GetSharedDepartmentsResponse,
+  GetSharedUsersArgs,
+  GetSharedUsersResponse,
 } from "./../models/document";
 
 const createDocument = async (
@@ -64,6 +72,43 @@ const lockDocument = async (
   return response.data as LockDocumentResponse;
 };
 
+const shareDepartments = async (
+  data: ShareDepartmentsArgs
+): Promise<ShareDepartmentsResponse> => {
+  const response = await httpClient.post({
+    url: apiPaths.document.shareDepartments,
+    data,
+  });
+  return response.data as ShareDepartmentsResponse;
+};
+const shareUsers = async (
+  data: ShareUsersArgs
+): Promise<ShareUsersResponse> => {
+  const response = await httpClient.post({
+    url: apiPaths.document.shareUsers,
+    data,
+  });
+  return response.data as ShareUsersResponse;
+};
+const getSharedDepartments = async (
+  data: GetSharedDepartmentsArgs
+): Promise<GetSharedDepartmentsResponse> => {
+  const response = await httpClient.post({
+    url: apiPaths.document.getSharedDepartments,
+    data,
+  });
+  return response.data as GetSharedDepartmentsResponse;
+};
+const getSharedUsers = async (
+  data: GetSharedUsersArgs
+): Promise<GetSharedUsersResponse> => {
+  const response = await httpClient.post({
+    url: apiPaths.document.getShareUsers,
+    data,
+  });
+  return response.data as GetSharedUsersResponse;
+};
+
 const changeSignerDocument = async (
   data: ChangeSignerDocumentArgs
 ): Promise<ChangeSignerDocumentResponse> => {
@@ -81,4 +126,8 @@ export const documentServices = {
   getDocumentHistory,
   lockDocument,
   changeSignerDocument,
+  shareDepartments,
+  shareUsers,
+  getSharedDepartments,
+  getSharedUsers
 };

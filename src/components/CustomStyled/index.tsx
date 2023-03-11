@@ -50,6 +50,7 @@ export const LoadingBtn = styled(
     backgroundColor: "#fff",
     borderColor: "#407AFF",
   },
+  
 });
 
 export const ApproveBtn = styled(
