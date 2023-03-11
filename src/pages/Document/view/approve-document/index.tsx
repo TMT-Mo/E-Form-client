@@ -24,9 +24,8 @@ import { approveDocument } from "../../../../slices/document";
 import { StatusDocument } from "../../../../utils/constants";
 import { getSignature } from "../../../../slices/auth";
 import {
-  ApproveBtn,
-  CancelWhiteBtn,
-  LoadingBtn,
+  WhiteBtn,
+  SaveLoadingBtn,
   RejectBtn,
 } from "../../../../components/CustomStyled";
 import StatusTag from "../../../../components/StatusTag";
@@ -142,9 +141,9 @@ const ViewApproveDocument: React.FC = () => {
         
         inst.UI.enableFeatures([inst.UI.Feature.Initials]);
         const iframeDoc = inst.UI.iframeWindow.document;
-        const zoomOverlay = iframeDoc.querySelector(
-          '[data-element="styling-button"]'
-        );
+        // const zoomOverlay = iframeDoc.querySelector(
+        //   '[data-element="styling-button"]'
+        // );
 
         
         
@@ -203,6 +202,7 @@ const ViewApproveDocument: React.FC = () => {
     userInfo?.userId,
     userInfo?.userName,
     xfdfString,
+    i18n.language
   ]);
 
   // console.log(annotationList);
@@ -312,7 +312,7 @@ const ViewApproveDocument: React.FC = () => {
                 </RejectBtn>
               </div>
             ) : (
-              <ApproveBtn
+              <SaveLoadingBtn
                 size="small"
                 variant="outlined"
                 onClick={() => setOpenDialog(true)}
@@ -325,7 +325,7 @@ const ViewApproveDocument: React.FC = () => {
                 }
               >
                 {t("Approve")}
-              </ApproveBtn>
+              </SaveLoadingBtn>
             )}
           </div>
         </div>
@@ -346,10 +346,10 @@ const ViewApproveDocument: React.FC = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <CancelWhiteBtn onClick={() => setOpenDialog(false)} size="small">
+          <WhiteBtn onClick={() => setOpenDialog(false)} size="small">
             {t("Cancel")}
-          </CancelWhiteBtn>
-          <LoadingBtn
+          </WhiteBtn>
+          <SaveLoadingBtn
             size="small"
             loading={isApproveDocumentLoading}
             loadingIndicator={<CircularProgress color="inherit" size={16} />}
@@ -357,7 +357,7 @@ const ViewApproveDocument: React.FC = () => {
             onClick={onApproveDocument}
           >
             Save
-          </LoadingBtn>
+          </SaveLoadingBtn>
         </DialogActions>
       </Dialog>
       <AlertPopup

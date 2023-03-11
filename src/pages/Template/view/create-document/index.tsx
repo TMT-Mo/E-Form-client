@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "../../../../hooks";
 import { createDocument } from "../../../../slices/document";
 import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from "uuid";
-import { LoadingBtn } from "../../../../components/CustomStyled";
+import { SaveLoadingBtn } from "../../../../components/CustomStyled";
 
 const ViewCreateDocument: React.FC = () => {
   const viewer = useRef(null);
@@ -119,7 +119,7 @@ const ViewCreateDocument: React.FC = () => {
             ).replaceAll(/\\&quot;/gi, "");
             setXfdfString(annots);
 
-            const checkAnnotExists = annotationManager.getAnnotationsList();
+            // const checkAnnotExists = annotationManager.getAnnotationsList();
             // console.log(checkAnnotExists[0].elementName)
             // checkAnnotExists.length >= 3
             //   ? setEnableSend(true)
@@ -128,7 +128,7 @@ const ViewCreateDocument: React.FC = () => {
         );
       });
     });
-  }, [departmentName, link, templateName, typeName, userInfo?.userId, userInfo?.userName]);
+  }, [departmentName, link, templateName, typeName, userInfo?.userId, userInfo?.userName, i18n.language]);
 
   const onCreateTemplate = async () => {
     await dispatch(
@@ -183,7 +183,7 @@ const ViewCreateDocument: React.FC = () => {
             </div>
             {signers}
             {isEnable && (
-              <LoadingBtn
+              <SaveLoadingBtn
                 size="small"
                 loading={isCreateDocumentLoading}
                 loadingIndicator={
@@ -194,7 +194,7 @@ const ViewCreateDocument: React.FC = () => {
                 disabled={false}
               >
                 {t("Send")}
-              </LoadingBtn>
+              </SaveLoadingBtn>
             )}
           </div>
         </div>

@@ -20,7 +20,7 @@ import { approveTemplate } from "../../../../slices/template";
 import { StatusTemplate } from "../../../../utils/constants";
 import { useTranslation } from "react-i18next";
 import { helpers } from "../../../../utils";
-import { ApproveBtn, CancelWhiteBtn, LoadingBtn, RejectBtn } from "../../../../components/CustomStyled";
+import { WhiteBtn, SaveLoadingBtn, RejectBtn } from "../../../../components/CustomStyled";
 
 const { APPROVED_TEMPLATE, REJECTED_TEMPLATE } = StatusTemplate;
 
@@ -97,7 +97,7 @@ const ViewApproveTemplate: React.FC = () => {
         documentViewer.updateView();
       });
     });
-  }, [link, templateName]);
+  }, [link, templateName, i18n.language]);
 
   const onApproveTemplate = async () => {
     await dispatch(
@@ -207,13 +207,13 @@ const ViewApproveTemplate: React.FC = () => {
                 </RejectBtn>
               </div>
             ) : (
-              <ApproveBtn
+              <SaveLoadingBtn
                 size="small"
                 variant="outlined"
                 onClick={() => setOpenDialog(true)}
               >
                 {t("Approve")}
-              </ApproveBtn>
+              </SaveLoadingBtn>
             )}
           </div>
         </div>
@@ -234,10 +234,10 @@ const ViewApproveTemplate: React.FC = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <CancelWhiteBtn onClick={() => setOpenDialog(false)} size="small">
+          <WhiteBtn onClick={() => setOpenDialog(false)} size="small">
             {t("Cancel")}
-          </CancelWhiteBtn>
-          <LoadingBtn
+          </WhiteBtn>
+          <SaveLoadingBtn
             size="small"
             loading={isApproveTemplateLoading}
             loadingIndicator={<CircularProgress color="inherit" size={16} />}
@@ -245,7 +245,7 @@ const ViewApproveTemplate: React.FC = () => {
             onClick={onApproveTemplate}
           >
             {t("Save")}
-          </LoadingBtn>
+          </SaveLoadingBtn>
         </DialogActions>
       </Dialog>
       <AlertPopup

@@ -1,4 +1,13 @@
-import { CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Typography } from "@mui/material";
+import {
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  Typography,
+} from "@mui/material";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -11,9 +20,9 @@ import { StatusDocument } from "../../../../utils/constants";
 import { IUser } from "../../../../models/system";
 import { clearUserList, getSigner } from "../../../../slices/system";
 import {
-  CancelTransparentBtn,
-  CancelWhiteBtn,
-  LoadingBtn,
+  TransparentBtn,
+  WhiteBtn,
+  SaveLoadingBtn,
 } from "../../../../components/CustomStyled";
 import ChangeSigner from "./ChangeSigner";
 import StatusTag from "../../../../components/StatusTag";
@@ -22,8 +31,10 @@ import { changeSignerDocument } from "../../../../slices/document";
 const ViewPersonalDocument: React.FC = () => {
   const viewer = useRef(null);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  const { documentDetail, isChangeSignerDocumentLoading } = useSelector((state) => state.document);
+  const navigate = useNavigate();
+  const { documentDetail, isChangeSignerDocumentLoading } = useSelector(
+    (state) => state.document
+  );
   const { userInfo } = useSelector((state) => state.auth);
   const { userList } = useSelector((state) => state.system);
   const [isChangingSigner, setIsChangingSigner] = useState(false);
@@ -74,7 +85,7 @@ const ViewPersonalDocument: React.FC = () => {
     await dispatch(
       changeSignerDocument({
         idDocument: id,
-        signatoryList: signerList.map(signer => signer.id)
+        signatoryList: signerList.map((signer) => signer.id),
       })
     ).unwrap();
     navigate("/user");
@@ -91,13 +102,13 @@ const ViewPersonalDocument: React.FC = () => {
       {
         path: "/webviewer/lib",
         initialDoc: link!,
-        disabledElements: ["downloadButton", 'languageButton'],
+        disabledElements: ["downloadButton", "languageButton"],
         isReadOnly: true,
       },
       viewer.current!
     ).then(async (instance) => {
       const { documentViewer, annotationManager } = instance.Core;
-      instance.UI.setLanguage(i18n.language === 'vn' ? 'vi' : 'en');
+      instance.UI.setLanguage(i18n.language === "vn" ? "vi" : "en");
       instance.UI.setHeaderItems(function (header) {
         header.push({
           type: "actionButton",
@@ -123,15 +134,21 @@ const ViewPersonalDocument: React.FC = () => {
         });
       });
     });
-  }, [documentName, link, userInfo?.userId, userInfo?.userName, xfdfString]);
+  }, [
+    documentName,
+    link,
+    userInfo?.userId,
+    userInfo?.userName,
+    xfdfString,
+    i18n,
+  ]);
 
   useEffect(() => {
     return () => {
-      dispatch(clearUserList())
-    }
-  }, [dispatch])
-  
-  
+      dispatch(clearUserList());
+    };
+  }, [dispatch]);
+
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
@@ -208,7 +225,7 @@ const ViewPersonalDocument: React.FC = () => {
             />
             {status === StatusDocument.PROCESSING_DOCUMENT &&
               !isChangingSigner && (
-                <LoadingBtn
+                <SaveLoadingBtn
                   size="small"
                   // loading={isApproveDocumentLoading}
                   loadingIndicator={
@@ -218,18 +235,18 @@ const ViewPersonalDocument: React.FC = () => {
                   onClick={() => setIsChangingSigner((prevState) => !prevState)}
                 >
                   Change Signer
-                </LoadingBtn>
+                </SaveLoadingBtn>
               )}
             {isChangingSigner && (
               <div className="flex justify-center space-x-10">
-                <CancelTransparentBtn
+                <TransparentBtn
                   size="small"
                   variant="outlined"
                   onClick={onCancelChangeSigner}
                 >
                   Cancel
-                </CancelTransparentBtn>
-                <LoadingBtn
+                </TransparentBtn>
+                <SaveLoadingBtn
                   size="small"
                   // loading={isApproveDocumentLoading}
                   loadingIndicator={
@@ -239,40 +256,40 @@ const ViewPersonalDocument: React.FC = () => {
                   onClick={() => setOpenDialog(true)}
                 >
                   Save
-                </LoadingBtn>
+                </SaveLoadingBtn>
               </div>
             )}
           </div>
         </div>
         <Dialog
-        open={openDialog}
-        onClose={() => setOpenDialog(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {t("Are you sure you want to save this form ?")}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {t("Are you sure you want to change signer list?")}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <CancelWhiteBtn onClick={() => setOpenDialog(false)} size="small">
-            {t("Cancel")}
-          </CancelWhiteBtn>
-          <LoadingBtn
-            size="small"
-            loading={isChangeSignerDocumentLoading}
-            loadingIndicator={<CircularProgress color="inherit" size={16} />}
-            variant="outlined"
-            onClick={handleChangeSigner}
-          >
-            {t("Save")}
-          </LoadingBtn>
-        </DialogActions>
-      </Dialog>
+          open={openDialog}
+          onClose={() => setOpenDialog(false)}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {t("Are you sure you want to save this form ?")}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {t("Are you sure you want to change signer list?")}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <WhiteBtn onClick={() => setOpenDialog(false)} size="small">
+              {t("Cancel")}
+            </WhiteBtn>
+            <SaveLoadingBtn
+              size="small"
+              loading={isChangeSignerDocumentLoading}
+              loadingIndicator={<CircularProgress color="inherit" size={16} />}
+              variant="outlined"
+              onClick={handleChangeSigner}
+            >
+              {t("Save")}
+            </SaveLoadingBtn>
+          </DialogActions>
+        </Dialog>
         <div className="webviewer w-full h-screen" ref={viewer}></div>
       </div>
     </Fragment>

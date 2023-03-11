@@ -1,11 +1,5 @@
-import SearchIcon from "@mui/icons-material/Search";
-import { IconButton, InputBase, Paper, Button, TextField } from "@mui/material";
-import React from "react";
-import UploadIcon from "@mui/icons-material/Upload";
-import AddIcon from "@mui/icons-material/Add";
-import { styled } from "@mui/system";
-import DataTable from "../../components/DataTable";
-import { ApproveBtn } from "../../components/CustomStyled";
+import { TextField } from "@mui/material";
+import { SaveLoadingBtn } from "../../components/CustomStyled";
 
 const ChangePassword = () => {
   return (
@@ -32,7 +26,7 @@ const ChangePassword = () => {
             variant="standard"
           />
 
-          <ApproveBtn>Save</ApproveBtn>
+          <SaveLoadingBtn>Save</SaveLoadingBtn>
           <span className="text-gray-500 italic">
             *Lưu ý: Sau khi đổi mật khẩu, bạn phải đăng nhập lại vào hệ thống!
           </span>

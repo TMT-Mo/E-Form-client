@@ -86,7 +86,7 @@ const ViewTemplateHistory: React.FC = () => {
         documentViewer.updateView();
       });
     });
-  }, [link, templateName]);
+  }, [link, templateName, i18n.language]);
 
   return (
     <Fragment>

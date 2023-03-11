@@ -37,9 +37,8 @@ import { useDispatch, useSelector } from "../../../../hooks";
 import storage from "../../../../utils/firebase";
 import { useTranslation } from "react-i18next";
 import {
-  ApproveBtn,
-  CancelWhiteBtn,
-  LoadingBtn,
+  WhiteBtn,
+  SaveLoadingBtn,
   TextFieldStyled,
 } from "../../../../components/CustomStyled";
 import { IUser } from "../../../../models/system";
@@ -172,7 +171,7 @@ const ViewAddTemplate: React.FC = () => {
         documentViewer.updateView();
       });
     });
-  }, []);
+  }, [i18n.language]);
 
   useEffect(() => {
     if (!file) {
@@ -394,13 +393,13 @@ const ViewAddTemplate: React.FC = () => {
               )}
             </div>
             {signers}
-            <ApproveBtn
+            <SaveLoadingBtn
               disabled={!isEnableSave}
               onClick={() => setOpenDialog(true)}
               autoFocus
             >
               {t("Save")}
-            </ApproveBtn>
+            </SaveLoadingBtn>
           </div>
         </div>
         <div className="webviewer w-full h-screen" ref={viewer}></div>
@@ -425,10 +424,10 @@ const ViewAddTemplate: React.FC = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <CancelWhiteBtn onClick={() => setOpenDialog(false)} size="small">
+          <WhiteBtn onClick={() => setOpenDialog(false)} size="small">
             {t("Cancel")}
-          </CancelWhiteBtn>
-          <LoadingBtn
+          </WhiteBtn>
+          <SaveLoadingBtn
             size="small"
             loading={isAddNewTemplateLoading}
             loadingIndicator={<CircularProgress color="inherit" size={16} />}
@@ -436,7 +435,7 @@ const ViewAddTemplate: React.FC = () => {
             onClick={handleUpload}
           >
             {t("Save")}
-          </LoadingBtn>
+          </SaveLoadingBtn>
         </DialogActions>
       </Dialog>
     </Fragment>

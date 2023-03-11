@@ -1,7 +1,6 @@
 import {
   Autocomplete,
   Box,
-  Button,
   CircularProgress,
   Dialog,
   DialogActions,
@@ -24,7 +23,7 @@ import { useDispatch, useSelector } from "../../../../hooks";
 import { getDocumentDetail } from "../../../../slices/document";
 import ShareIcon from "@mui/icons-material/Share";
 import { useTranslation } from "react-i18next";
-import { ApproveBtn, CancelTransparentBtn, TextFieldStyled } from "../../../CustomStyled";
+import { WhiteBtn, SaveLoadingBtn, TextFieldStyled } from "../../../CustomStyled";
 import { styled } from "@mui/system";
 import {
   getDepartmentList,
@@ -207,12 +206,12 @@ export const PersonalDocumentActionCell = (props: GridRenderCellParams<Date>) =>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <CancelTransparentBtn onClick={() => setOpen((prevState) => !prevState)}>
+            <WhiteBtn onClick={() => setOpen((prevState) => !prevState)}>
               Cancel
-            </CancelTransparentBtn>
-            <ApproveBtn onClick={() => setOpen((prevState) => !prevState)}>
+            </WhiteBtn>
+            <SaveLoadingBtn onClick={() => setOpen((prevState) => !prevState)}>
               Save
-            </ApproveBtn>
+            </SaveLoadingBtn>
           </DialogActions>
         </TabPanel>
         <TabPanel value={value} index={1}>

@@ -2,7 +2,7 @@ import { styled } from "@mui/system";
 import { Button, TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
-export const CancelTransparentBtn = styled(
+export const TransparentBtn = styled(
   Button,
   {}
 )({
@@ -14,7 +14,7 @@ export const CancelTransparentBtn = styled(
   ":hover": { backgroundColor: "#fff", color: "#000" },
 });
 
-export const CancelWhiteBtn = styled(
+export const WhiteBtn = styled(
   Button,
   {}
 )({
@@ -36,7 +36,7 @@ export const TextFieldStyled = styled(TextField)({
   },
 });
 
-export const LoadingBtn = styled(
+export const SaveLoadingBtn = styled(
   LoadingButton,
   {}
 )({
@@ -50,28 +50,12 @@ export const LoadingBtn = styled(
     backgroundColor: "#fff",
     borderColor: "#407AFF",
   },
-  
-});
-
-export const ApproveBtn = styled(
-  Button,
-  {}
-)({
-  backgroundColor: "#407AFF",
-  borderRadius: "5px",
-  color: "#fff",
-  paddingTop: "10px",
-  paddingBottom: "10px",
-  ":hover": {
-    backgroundColor: "#fff",
-    color: "#407AFF",
-    borderColor: "#407AFF",
-  },
   "&.Mui-disabled": {
     color: "#F2F2F2",
     backgroundColor: "#6F7276",
   },
 });
+
 export const RejectBtn = styled(
   Button,
   {}
