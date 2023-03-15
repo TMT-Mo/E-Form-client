@@ -2,7 +2,7 @@ import React from "react";
 import Alert from "@mui/material/Alert";
 import { useDispatch, useSelector } from "../../hooks";
 import Snackbar from "@mui/material/Snackbar";
-import { handleClose } from "../../slices/notification";
+import { handleClose } from "../../slices/alert";
 
 interface Props {
   anchorOrigin: {
@@ -15,7 +15,7 @@ interface Props {
 const AlertPopup: React.FC<Props> = ({ anchorOrigin, autoHideDuration }) => {
   const dispatch = useDispatch();
   const { status, message, errorMessage, isOpen } = useSelector(
-    (state) => state.notification
+    (state) => state.alert
   );
 
   const onCloseHandler = () => {

@@ -1,5 +1,5 @@
 import { styled } from "@mui/system";
-import { Button, TextField } from "@mui/material";
+import { Button, Menu, TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 export const TransparentBtn = styled(
@@ -69,5 +69,18 @@ export const RejectBtn = styled(
   "&.Mui-disabled": {
     color: "#F2F2F2",
     backgroundColor: "#6F7276",
+  },
+});
+
+export const StyledMenu = styled(Menu)({
+  "& .MuiPaper-root": {
+    padding: "20px 0",
+  },
+  "& .MuiMenu-list": {
+    width: "300px",
+  },
+  "& .MuiMenuItem-root": {
+    marginTop: "10px",
+    // borderBottom: '1px solid #000'
   },
 });

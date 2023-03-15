@@ -21,7 +21,7 @@ import { Container } from "@mui/material";
 import { helpers } from "../../../utils";
 import { System } from "../../../pages/System";
 import { Account } from "../../../pages/Account";
-import { SignalR } from "../../../signalR";
+import { SignalR } from "../../../signalR/signalR";
 
 const {
   TEMPLATE,

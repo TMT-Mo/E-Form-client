@@ -7,8 +7,8 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-import { ValidationErrors } from "../models/notification";
-import { handleError } from "./notification";
+import { ValidationErrors } from "../models/alert";
+import { handleError } from "./alert";
 import { GetTemplateTypeListResponse } from "../models/template";
 
 interface State {

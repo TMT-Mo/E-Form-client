@@ -1,4 +1,4 @@
-import { ValidationErrors } from './../models/notification';
+import { ValidationErrors } from './../models/alert';
 import { authServices } from "./../services/auth";
 import { UserInfo, LoginArgument, GetSignatureArgs, ChangePasswordArgument} from "./../models/auth";
 import {
@@ -9,7 +9,7 @@ import {
 } from "@reduxjs/toolkit";
 import jwtDecode from "jwt-decode";
 import { AxiosError } from "axios";
-import { handleError, handleSuccess } from "./notification";
+import { handleError, handleSuccess } from "./alert";
 
 interface State {
   // token: string | null;

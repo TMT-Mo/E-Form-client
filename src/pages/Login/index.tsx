@@ -4,8 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import intropic from "../../assets/intropic.svg";
 import { useDispatch, useSelector } from "../../hooks";
 import { login } from "../../slices/auth";
-// import { handleError, handleSuccess } from "../../slices/notification";
-// import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
 import {
   CircularProgress,
   FormControl,

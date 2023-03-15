@@ -7,7 +7,6 @@ const apiPaths = {
         changePassword: `${apiHead}api/Users/changePassword`,
         extractToken: `${apiHead}`,
         getSignature: `${apiHead}api/Users/getSignature`,
-        
     },
     template:{
         getTemplates: `${apiHead}api/Template/getTemplates`,
@@ -33,6 +32,10 @@ const apiPaths = {
         shareUsers: `${apiHead}api/Document/shareDocument`,
         getSharedDepartments: `${apiHead}api/Document/getDepartmentsByshareDocument`,
         getShareUsers: `${apiHead}api/Document/getUsersByshareDocument`,
+    },
+    notification:{
+        getNotificationList: `${apiHead}api/notification/getNotificationList`,
+        checkNotification: `${apiHead}api/notification/checkNotification`,
     }
 }
 

@@ -14,8 +14,8 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-import { ValidationErrors } from "../models/notification";
-import { handleError, handleSuccess } from "./notification";
+import { ValidationErrors } from "../models/alert";
+import { handleError, handleSuccess } from "./alert";
 
 interface State {
   isGetTemplatesLoading: boolean;

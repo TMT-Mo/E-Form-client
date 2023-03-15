@@ -3,7 +3,7 @@ import axios, { Method, AxiosResponse, ResponseType, AxiosError } from "axios";
 import jwtDecode from "jwt-decode";
 import { UserInfo } from "../models/auth";
 import { helpers } from "../utils";
-import { handleSuccess } from "../slices/notification";
+import { handleSuccess } from "../slices/alert";
 
 interface Options {
   url: string;

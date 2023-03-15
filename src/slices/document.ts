@@ -22,8 +22,8 @@ import {
 } from "@reduxjs/toolkit";
 import { documentServices } from "../services/document";
 import { AxiosError } from "axios";
-import { ValidationErrors } from "../models/notification";
-import { handleSuccess, handleError } from "./notification";
+import { ValidationErrors } from "../models/alert";
+import { handleSuccess, handleError } from "./alert";
 interface State {
   isCreateDocumentLoading: boolean;
   documentList: Document[];

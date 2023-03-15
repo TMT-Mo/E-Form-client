@@ -1,7 +1,6 @@
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "../hooks";
-import { handleSuccess } from "../slices/notification";
 
 export const SignalR = () => {
   const [connection, setConnection] = useState<null | HubConnection>(null);

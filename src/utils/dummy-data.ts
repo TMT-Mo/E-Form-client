@@ -1,7 +1,10 @@
+import { Notification } from "../models/notification";
+
 interface User {
   username: string;
   id: number;
 }
+
 export const DummyUserList: User[] = [
   {
     username: "tu@gmail.com",
@@ -34,5 +37,32 @@ export const DummyUserList: User[] = [
   {
     username: "admin@gmail.com",
     id: 8,
+  },
+];
+
+export const DummyNotificationList: Notification[] = [
+  {
+    title: "Noti 1",
+    description: "Some stupid descriptions you have ever seen :( .",
+    id: 1,
+    isChecked: false
+  },
+  {
+    title: "Noti 2",
+    description: "Some stupid descriptions you have ever seen :( .",
+    id: 2,
+    isChecked: false
+  },
+  {
+    title: "Noti 3",
+    description: "Some stupid descriptions you have ever seen :( .",
+    id: 3,
+    isChecked: false
+  },
+  {
+    title: "Noti 4",
+    description: "Some stupid descriptions you have ever seen :( .",
+    id: 4,
+    isChecked: false
   },
 ];

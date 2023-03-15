@@ -11,32 +11,19 @@ import {
   IconButton,
   ListItemIcon,
   ListItemText,
-  Menu,
   MenuItem,
   MenuList,
   Paper,
   Popover,
-  Typography,
 } from "@mui/material";
 import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
 import { useAuth, useDispatch, useSelector } from "../../../../hooks";
-import { styled } from "@mui/system";
 import { setLocation } from "../../../../slices/location";
 import { toggleSideBar } from "../../../../slices/ui-control";
 import { LocationIndex } from "../../../../utils/constants";
+import { Notification } from "./notification";
 
-const StyledMenu = styled(Menu)({
-  "& .MuiPaper-root": {
-    padding: "20px 0",
-  },
-  "& .MuiMenu-list": {
-    width: "300px",
-  },
-  "& .MuiMenuItem-root": {
-    marginTop: "10px",
-    // borderBottom: '1px solid #000'
-  },
-});
+
 
 const TopBar: React.FC = () => {
   const dispatch = useDispatch();
@@ -72,40 +59,7 @@ const TopBar: React.FC = () => {
           >
             <NotificationsIcon className="fill-blue-config w-12" fontSize="small"/>
           </IconButton>
-          <StyledMenu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          >
-            <Typography
-              variant="h6"
-              ml={2}
-              fontWeight={600}
-              mb={2}
-              component="h1"
-            >
-              Notifications
-            </Typography>
-            <Divider />
-            <MenuItem onClick={handleClose}>Notification 1</MenuItem>
-            <Divider />
-            <MenuItem onClick={handleClose}>Notification 2</MenuItem>
-            <Divider />
-            <MenuItem onClick={handleClose}>Notification 3</MenuItem>
-            <Divider />
-          </StyledMenu>
+          <Notification anchorEl={anchorEl} open={open} handleClose={handleClose}/>
         </div>
         <PopupState variant="popover" popupId="demo-popup-popover">
           {(popupState) => (

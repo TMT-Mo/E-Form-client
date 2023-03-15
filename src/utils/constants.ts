@@ -2,7 +2,7 @@ export enum SessionStorage {
   LOCATION = "location",
   TOKEN_NAME = "token"
 }
-export enum NotificationStatus {
+export enum AlertStatus {
   SUCCESS = "success",
   ERROR = "error",
 }
