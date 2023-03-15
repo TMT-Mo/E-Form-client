@@ -11,10 +11,10 @@ const LanguageSelect: React.FC = () => {
 
   const handleDisplayFlag = (value: string) => {
     if(value.includes('en')){
-      return <US title="US" style={{width: '17px', height: '17px'}}/>
+      return <US title="US" style={{width: '25px', height: '25px'}}/>
     }
     else{
-      return <VN title="VN" style={{width: '17px', height: '17px'}}/>
+      return <VN title="VN" style={{width: '25px', height: '25px'}}/>
     }
   }
 

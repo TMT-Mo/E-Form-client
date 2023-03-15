@@ -1,5 +1,9 @@
 import { systemServices } from "./../services/system";
-import { DepartmentListResponse, GetUsersArgs, GetUsersResponse } from "./../models/system";
+import {
+  DepartmentListResponse,
+  GetUsersArgs,
+  GetUsersResponse,
+} from "./../models/system";
 import {
   CaseReducer,
   createAsyncThunk,
@@ -12,6 +16,10 @@ import { handleError } from "./alert";
 import { GetTemplateTypeListResponse } from "../models/template";
 
 interface State {
+  total?: number;
+  size?: number;
+  searchItemValue?: string;
+  currentPage: number;
   isGetDepartmentsLoading: boolean;
   isOpenDepartmentList: boolean;
   departmentList?: DepartmentListResponse;
@@ -20,10 +28,14 @@ interface State {
   isGetTemplateTypesLoading: boolean;
   templateTypeList?: GetTemplateTypeListResponse;
   isOpenTemplateTypes: boolean;
-  isGetSignerLoading: boolean
+  isGetSignerLoading: boolean;
 }
 
 const initialState: State = {
+  total: undefined,
+  size: 10,
+  currentPage: 0,
+  searchItemValue: undefined,
   isGetDepartmentsLoading: false,
   departmentList: undefined,
   isOpenDepartmentList: false,
@@ -32,7 +44,7 @@ const initialState: State = {
   isGetTemplateTypesLoading: false,
   templateTypeList: undefined,
   isOpenTemplateTypes: false,
-  isGetSignerLoading: false
+  isGetSignerLoading: false,
 };
 
 type CR<T> = CaseReducer<State, PayloadAction<T>>;
@@ -54,9 +66,28 @@ const toggleTemplateTypeListCR: CR<{ isOpen: boolean }> = (
   ...state,
   isOpenTemplateTypes: payload.isOpen,
 });
-const clearUserListCR = (state:State) => ({
+
+const clearUserListCR = (state: State) => ({
   ...state,
   userList: undefined,
+  searchItemValue: undefined,
+  filter: undefined,
+  total: undefined,
+  size: 10,
+  currentPage: 0,
+});
+
+const onChangeAccountPageCR: CR<{ selectedPage: number }> = (
+  state,
+  { payload }
+) => ({
+  ...state,
+  currentPage: payload.selectedPage!,
+});
+
+const searchAccountCR: CR<{ value: string }> = (state, { payload }) => ({
+  ...state,
+  searchItemValue: payload.value!,
 });
 
 const getDepartmentList = createAsyncThunk(
@@ -67,13 +98,16 @@ const getDepartmentList = createAsyncThunk(
       return result;
     } catch (error) {
       const err = error as AxiosError;
-      if(err.response?.data){
-        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
-      }
-      else{
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
         dispatch(handleError({ errorMessage: err.message }));
       }
-      throw err
+      throw err;
     }
   }
 );
@@ -86,13 +120,16 @@ const getTemplateTypeList = createAsyncThunk(
       return result;
     } catch (error) {
       const err = error as AxiosError;
-      if(err.response?.data){
-        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
-      }
-      else{
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
         dispatch(handleError({ errorMessage: err.message }));
       }
-      throw err
+      throw err;
     }
   }
 );
@@ -101,35 +138,41 @@ const getSigner = createAsyncThunk(
   `${ACTION_TYPE}getSigner`,
   async (args: GetUsersArgs | undefined, { dispatch }) => {
     try {
-      const result = await systemServices.getSigner(args)
+      const result = await systemServices.getSigner(args);
       return result;
     } catch (error) {
       const err = error as AxiosError;
-      if(err.response?.data){
-        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
-      }
-      else{
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
         dispatch(handleError({ errorMessage: err.message }));
       }
-      throw err
+      throw err;
     }
   }
 );
 const getUserList = createAsyncThunk(
   `${ACTION_TYPE}getUserList`,
-  async (_, { dispatch }) => {
+  async (args: GetUsersArgs, { dispatch }) => {
     try {
-      const result = await systemServices.getUserList()
+      const result = await systemServices.getUserList(args);
       return result;
     } catch (error) {
       const err = error as AxiosError;
-      if(err.response?.data){
-        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
-      }
-      else{
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
         dispatch(handleError({ errorMessage: err.message }));
       }
-      throw err
+      throw err;
     }
   }
 );
@@ -140,7 +183,9 @@ const system = createSlice({
   reducers: {
     toggleDepartmentList: toggleDepartmentListCR,
     toggleTemplateTypeList: toggleTemplateTypeListCR,
-    clearUserList: clearUserListCR
+    clearUserList: clearUserListCR,
+    onChangeAccountPage: onChangeAccountPageCR,
+    searchAccount: searchAccountCR
   },
   extraReducers: (builder) => {
     builder.addCase(getDepartmentList.pending, (state) => ({
@@ -160,14 +205,11 @@ const system = createSlice({
       ...state,
       isGetSignerLoading: true,
     }));
-    builder.addCase(
-      getSigner.fulfilled,
-      (state, { payload }) => ({
-        ...state,
-        isGetSignerLoading: false,
-        userList: payload!,
-      })
-    );
+    builder.addCase(getSigner.fulfilled, (state, { payload }) => ({
+      ...state,
+      isGetSignerLoading: false,
+      userList: payload!,
+    }));
     builder.addCase(getSigner.rejected, (state) => ({
       ...state,
       isGetSignerLoading: false,
@@ -176,14 +218,11 @@ const system = createSlice({
       ...state,
       isGetUserListLoading: true,
     }));
-    builder.addCase(
-      getUserList.fulfilled,
-      (state, { payload }) => ({
-        ...state,
-        isGetUserListLoading: false,
-        userList: payload
-      })
-    );
+    builder.addCase(getUserList.fulfilled, (state, { payload }) => ({
+      ...state,
+      isGetUserListLoading: false,
+      userList: payload,
+    }));
     builder.addCase(getUserList.rejected, (state) => ({
       ...state,
       isGetUserListLoading: false,
@@ -204,12 +243,13 @@ const system = createSlice({
   },
 });
 
-export {
-  getDepartmentList,
-  getUserList,
-  getSigner,
-  getTemplateTypeList,
-};
+export { getDepartmentList, getUserList, getSigner, getTemplateTypeList };
 
-export const { toggleDepartmentList, toggleTemplateTypeList, clearUserList } = system.actions;
+export const {
+  toggleDepartmentList,
+  toggleTemplateTypeList,
+  clearUserList,
+  onChangeAccountPage,
+  searchAccount
+} = system.actions;
 export default system.reducer;

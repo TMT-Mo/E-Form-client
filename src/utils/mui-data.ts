@@ -41,6 +41,9 @@ const {
   UPDATED_AT,
   DOCUMENT_NAME,
   IS_LOCKED,
+  ID_USER,
+  ROLE_NAME,
+  USERNAME
 } = DataTableHeader;
 
 const { checkHideColumnFromDevice, checkHideColumnFromPermission } = helpers;
@@ -562,6 +565,55 @@ export const historyDocColumns: GridColDef[] = [
     field: ACTION,
     headerName: "Action",
     renderCell: DocumentHistoryActionCell,
+    filterable: false,
+    sortable: false,
+    hideable: false,
+    renderHeader: TranslateHeader,
+  },
+];
+
+export const accountColumns: GridColDef[] = [
+  {
+    field: ID_USER,
+    headerName: "Id",
+    headerAlign: "center",
+    align: "center",
+    renderHeader: TranslateHeader,
+  },
+  {
+    field: USERNAME,
+    headerName: "Username",
+    flex: 1,
+    renderHeader: TranslateHeader,
+  },
+  {
+    field: ROLE_NAME,
+    headerName: "Role name",
+    align: "center",
+    headerAlign: "center",
+    flex: 0.3,
+    renderHeader: TranslateHeader,
+  },
+  {
+    field: DEPARTMENT,
+    headerName: "Department",
+    align: "center",
+    headerAlign: "center",
+    flex: 0.3,
+    minWidth: 100,
+    renderHeader: TranslateHeader,
+  },
+  {
+    field: STATUS,
+    headerName: "Status",
+    align: "center",
+    renderCell: StatusCell,
+    headerAlign: "center",
+    renderHeader: TranslateHeader,
+  },
+  {
+    field: ACTION,
+    headerName: "Action",
     filterable: false,
     sortable: false,
     hideable: false,

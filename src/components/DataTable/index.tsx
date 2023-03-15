@@ -16,6 +16,7 @@ import {
   Permissions,
 } from "../../utils/constants";
 import {
+  accountColumns,
   awaitSigningColumns,
   historyDocColumns,
   newTemplatesColumns,
@@ -39,6 +40,8 @@ import { setFilter, setSorter } from "../../slices/filter";
 import { helpers } from "../../utils";
 import CustomNoRow from "../CustomNoRow";
 import { useTranslation } from "react-i18next";
+import { onChangeAccountPage } from "../../slices/system";
+import { DummyUserList } from "../../utils/dummy-data";
 
 const {
   SYSTEM,
@@ -51,7 +54,6 @@ const {
   SHARED,
   DOCUMENT_HISTORY,
 } = LocationIndex;
-
 
 const { ENABLE_TEMPLATE } = Permissions;
 const { IPAD } = DeviceType;
@@ -66,6 +68,9 @@ const DataTable: React.FC = () => {
   const { isGetTemplatesLoading, templateList } = useSelector(
     (state) => state.template
   );
+  const { isGetUserListLoading, userList } = useSelector(
+    (state) => state.system
+  );
   const { isGetDocumentListLoading, documentList } = useSelector(
     (state) => state.document
   );
@@ -77,6 +82,8 @@ const DataTable: React.FC = () => {
   const currentPageDocument = useSelector(
     (state) => state.document.currentPage
   );
+  const totalAccount = useSelector((state) => state.system.total);
+  const currentPageAccount = useSelector((state) => state.system.currentPage);
 
   const onFilterChange = React.useCallback(
     (filterModel: GridFilterModel) => {
@@ -141,7 +148,8 @@ const DataTable: React.FC = () => {
     createdBy:
       usePermission(ENABLE_TEMPLATE) && checkHideColumnFromDevice(IPAD),
   };
-
+  console.log(userList);
+  
   const data = (): Data => {
     switch (locationIndex) {
       case SYSTEM:
@@ -163,11 +171,16 @@ const DataTable: React.FC = () => {
         };
       case ACCOUNT:
         return {
-          columns: [],
-          loading: false,
-          table: [],
+          columns: onTranslateFilter(accountColumns),
+          loading: isGetUserListLoading,
+          table: DummyUserList,
+          currentPage: currentPageAccount,
+          totalPages: Math.ceil(totalAccount! / 10),
+          onChangePage: (e, value) =>
+            dispatch(onChangeAccountPage({ selectedPage: --value })),
+          columnVisible,
         };
-      case TEMPLATE:{
+      case TEMPLATE: {
         return {
           columns: onTranslateFilter(templateColumns),
           loading: isGetTemplatesLoading,
@@ -177,9 +190,9 @@ const DataTable: React.FC = () => {
           onChangePage: (e, value) =>
             dispatch(onChangeTemplatePage({ selectedPage: --value })),
           columnVisible,
-        }; 
+        };
       }
-        
+
       case AWAIT_SIGNING:
         return {
           columns: onTranslateFilter(awaitSigningColumns),

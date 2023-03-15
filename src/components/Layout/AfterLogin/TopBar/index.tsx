@@ -75,14 +75,11 @@ const TopBar: React.FC = () => {
       <div className="flex space-x-5">
         <LanguageSelect />
         <div>
-          <IconButton
-            id="basic-button"
-            onClick={handleClick}
-          >
-            <Badge badgeContent={badge} color="info">
+          <IconButton id="basic-button" onClick={handleClick}>
+            <Badge variant="dot" color="error">
               <NotificationsIcon
                 className="fill-blue-config"
-                fontSize="small"
+                fontSize="medium"
               />
             </Badge>
           </IconButton>
@@ -98,7 +95,7 @@ const TopBar: React.FC = () => {
               <IconButton {...bindTrigger(popupState)}>
                 <AccountCircleIcon
                   className="fill-blue-config"
-                  fontSize="small"
+                  fontSize="medium"
                 />
               </IconButton>
               <Popover

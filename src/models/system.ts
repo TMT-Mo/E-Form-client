@@ -27,7 +27,20 @@ export interface GetUsersResponse{
 
 export interface GetUsersArgs{
     departmentId_eq?: number,
-    id_eq?: number
+    id_eq?: number,
+    _page?: number;
+  _size?: number;
+  _sort?: string;
+  status_eq?: number;
+  createdBy_eq?: number;
+  type_eq?: string;
+  typeName_eq?: string;
+  department_eq?: string;
+  isLocked_eq?: boolean;
+  createdAt_gte?: string; //* gte: Greater than equal
+  createdAt_lte?: string; //* lte: Lower than equal
+  updateAt_gte?: string; //* gte: Greater than equal
+  updateAt_lte?: string; //* lte: Lower than equal
 }
 
 export interface IFile{
