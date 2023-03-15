@@ -1,6 +1,7 @@
 import { styled } from "@mui/system";
 import { Button, Menu, TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import MenuItem from "@mui/material/MenuItem";
 
 export const TransparentBtn = styled(
   Button,
@@ -83,4 +84,11 @@ export const StyledMenu = styled(Menu)({
     marginTop: "10px",
     // borderBottom: '1px solid #000'
   },
+});
+
+export const MenuNotification = styled(MenuItem)({
+  display: 'flex',
+  flexDirection: 'column',
+  lineHeight: '40px',
+  width: '300px'
 });

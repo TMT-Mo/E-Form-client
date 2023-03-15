@@ -8,24 +8,16 @@ import {
   Typography,
   IconButton,
 } from "@mui/material";
-import { t } from "i18next";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "../../../../../hooks";
-import { Department } from "../../../../../models/system";
 import {
   changeSharedUser,
   clearSharedInfo,
-  getSharedDepartment,
   getSharedUser,
-  shareDepartment,
   shareUsers,
 } from "../../../../../slices/document";
 import ClearIcon from "@mui/icons-material/Clear";
-import {
-  getDepartmentList,
-  toggleDepartmentList,
-} from "../../../../../slices/system";
 import {
   TextFieldStyled,
   WhiteBtn,
@@ -69,7 +61,7 @@ function TabPanel(props: TabPanelProps) {
 const UserTab = (props: Props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { isGetUserListLoading, userList, isOpenDepartmentList } = useSelector(
+  const { isGetUserListLoading, userList } = useSelector(
     (state) => state.system
   );
   const { isGetSharedUserLoading, sharedUser, isShareUserLoading } =

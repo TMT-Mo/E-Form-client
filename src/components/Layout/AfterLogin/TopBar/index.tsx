@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LanguageSelect from "../../../LanguageSelect";
 import LockPersonIcon from "@mui/icons-material/LockPerson";
 import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import {
   Divider,
   IconButton,
@@ -22,15 +22,18 @@ import { setLocation } from "../../../../slices/location";
 import { toggleSideBar } from "../../../../slices/ui-control";
 import { LocationIndex } from "../../../../utils/constants";
 import { Notification } from "./notification";
-
-
+import { getNotification } from "../../../../slices/notification";
+import Badge from "@mui/material/Badge";
 
 const TopBar: React.FC = () => {
   const dispatch = useDispatch();
-  const {isSideBarVisible} = useSelector(state => state.uiControl)
+  const { isSideBarVisible } = useSelector((state) => state.uiControl);
   const { logout } = useAuth();
+  const { userInfo } = useSelector((state) => state.auth);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const [badge, setBadge] = useState<number>();
+  const { notificationList } = useSelector((state) => state.notification);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -42,30 +45,61 @@ const TopBar: React.FC = () => {
   const signOutHandler = () => {
     logout();
   };
+
+  useEffect(() => {
+    const handleNotification = dispatch(
+      getNotification({ userId: userInfo?.userId! })
+    );
+    handleNotification.unwrap();
+
+    return () => handleNotification.abort();
+  }, [dispatch, userInfo?.userId]);
+
+  useEffect(() => {
+    if (!notificationList) return;
+    const badgeNumber = notificationList.filter(
+      (notification) => notification.isChecked === false
+    );
+    setBadge(badgeNumber.length);
+  }, [notificationList]);
+
   return (
     <div className="flex py-6 px-4 justify-between items-center bg-white md:px-20">
       <IconButton onClick={() => dispatch(toggleSideBar())}>
-        {!isSideBarVisible ? <MenuIcon fontSize="small"/> : <ArrowBackIosNewIcon fontSize="small"/>}
+        {!isSideBarVisible ? (
+          <MenuIcon fontSize="small" />
+        ) : (
+          <ArrowBackIosNewIcon fontSize="small" />
+        )}
       </IconButton>
-      <div className="flex -space-x-3">
+      <div className="flex space-x-5">
         <LanguageSelect />
         <div>
           <IconButton
             id="basic-button"
-            aria-controls={open ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
             onClick={handleClick}
           >
-            <NotificationsIcon className="fill-blue-config w-12" fontSize="small"/>
+            <Badge badgeContent={badge} color="info">
+              <NotificationsIcon
+                className="fill-blue-config"
+                fontSize="small"
+              />
+            </Badge>
           </IconButton>
-          <Notification anchorEl={anchorEl} open={open} handleClose={handleClose}/>
+          <Notification
+            anchorEl={anchorEl}
+            open={open}
+            handleClose={handleClose}
+          />
         </div>
         <PopupState variant="popover" popupId="demo-popup-popover">
           {(popupState) => (
             <div>
               <IconButton {...bindTrigger(popupState)}>
-                <AccountCircleIcon className="fill-blue-config w-12" fontSize="small"/>
+                <AccountCircleIcon
+                  className="fill-blue-config"
+                  fontSize="small"
+                />
               </IconButton>
               <Popover
                 {...bindPopover(popupState)}
@@ -86,7 +120,11 @@ const TopBar: React.FC = () => {
                       </ListItemIcon>
                       <ListItemText
                         onClick={() =>
-                          dispatch(setLocation({ locationIndex: LocationIndex.CHANGE_PASSWORD }))
+                          dispatch(
+                            setLocation({
+                              locationIndex: LocationIndex.CHANGE_PASSWORD,
+                            })
+                          )
                         }
                       >
                         Change password

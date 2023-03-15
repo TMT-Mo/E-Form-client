@@ -1,11 +1,8 @@
 import { Typography, Divider, MenuItem, CircularProgress } from "@mui/material";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "../../../../../hooks";
-import {
-  checkNotification,
-  getNotification,
-} from "../../../../../slices/notification";
-import { StyledMenu } from "../../../../CustomStyled";
+import { checkNotification } from "../../../../../slices/notification";
+import { MenuNotification, StyledMenu } from "../../../../CustomStyled";
 
 interface Props {
   open: boolean;
@@ -16,26 +13,19 @@ interface Props {
 export const Notification = (props: Props) => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
-  const { notificationList, isGetNotification } = useSelector((state) => state.notification);
+  const { notificationList, isGetNotification } = useSelector(
+    (state) => state.notification
+  );
   const { open, anchorEl, handleClose } = props;
 
   useEffect(() => {
-    const handleNotification = dispatch(
-      getNotification({ userId: userInfo?.userId! })
-    );
-    handleNotification.unwrap();
-
-    return () => handleNotification.abort();
-  }, [dispatch, userInfo?.userId]);
-
-  useEffect(() => {
-    notificationList &&
+    if (open && notificationList)
       dispatch(
         checkNotification({
           notificationId: notificationList.map((noti) => noti.id),
         })
       ).unwrap();
-  }, [dispatch, notificationList]);
+  }, [dispatch, notificationList, open]);
 
   return (
     <StyledMenu
@@ -59,13 +49,17 @@ export const Notification = (props: Props) => {
         Notifications
       </Typography>
       <Divider />
-      {isGetNotification && <CircularProgress/>}
-      {notificationList && notificationList.map((notification) => (
-        <>
-          <MenuItem onClick={handleClose} key={notification.id}>{notification.title}</MenuItem>
-          <Divider />
-        </>
-      ))}
+      {isGetNotification && <CircularProgress />}
+      {notificationList &&
+        notificationList.map((notification) => (
+          <>
+            <MenuNotification onClick={handleClose} key={notification.id}>
+                <span className="font-bold text-xl">{notification.title}</span>
+                <p>{notification.description}</p>
+                <Divider />
+            </MenuNotification>
+          </>
+        ))}
     </StyledMenu>
   );
 };
