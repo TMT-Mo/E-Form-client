@@ -21,6 +21,7 @@ import { Container } from "@mui/material";
 import { helpers } from "../../../utils";
 import { System } from "../../../pages/System";
 import { Account } from "../../../pages/Account";
+import { SignalR } from "../../../signalR";
 
 const {
   TEMPLATE,
@@ -98,6 +99,7 @@ const Layout: React.FC = () => {
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         autoHideDuration={3000}
       />
+      <SignalR/>
     </div>
   );
 };
