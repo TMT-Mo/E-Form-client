@@ -13,6 +13,8 @@ export const SignalR = () => {
       .withAutomaticReconnect()
       .build();
 
+      console.log('first')
+
     setConnection(connect);
   }, []);
 
