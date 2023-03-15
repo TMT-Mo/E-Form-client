@@ -9,7 +9,7 @@ export const SignalR = () => {
 
   useEffect(() => {
     const connect = new HubConnectionBuilder()
-      .withUrl("https://localhost:51130/hubs/notifications")
+      .withUrl("https://localhost:40672/hubs/notifications")
       .withAutomaticReconnect()
       .build();
 
@@ -23,6 +23,7 @@ export const SignalR = () => {
       connection
         .start()
         .then(() => {
+          console.log('Connected!');
           connection.on("ReceiveMessage", (message) => {
             // dispatch(handleSuccess({message: 'Connected'}))
             console.log(message);

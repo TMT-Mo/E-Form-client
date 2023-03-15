@@ -74,7 +74,7 @@ const TopBar: React.FC = () => {
       </IconButton>
       <div className="flex space-x-5">
         <LanguageSelect />
-        <div>
+        {/* <div>
           <IconButton id="basic-button" onClick={handleClick}>
             <Badge variant="dot" color="error">
               <NotificationsIcon
@@ -88,7 +88,7 @@ const TopBar: React.FC = () => {
             open={open}
             handleClose={handleClose}
           />
-        </div>
+        </div> */}
         <PopupState variant="popover" popupId="demo-popup-popover">
           {(popupState) => (
             <div>
