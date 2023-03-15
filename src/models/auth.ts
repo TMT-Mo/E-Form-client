@@ -7,6 +7,16 @@ export interface LoginArgument {
   password: string | undefined;
 }
 
+export interface ChangePasswordResponse {
+  message: string;
+}
+
+export interface ChangePasswordArgument {
+  idUser: number;
+  password: string;
+  newPassword: string;
+}
+
 export interface UserInfo {
   userId: number;
   roleName: string;
@@ -26,3 +36,6 @@ export interface GetSignatureArgs{
 export interface GetSignatureResponse{
   signature: string
 }
+
+
+

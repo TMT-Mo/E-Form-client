@@ -78,6 +78,7 @@ import StatusTag from "../../../../components/StatusTag";
               'languageButton'
             ],
             annotationUser: userInfo?.userId!.toString(),
+            isReadOnly: true,
           },
           viewer.current!
         ).then(async (inst) => {
@@ -87,17 +88,6 @@ import StatusTag from "../../../../components/StatusTag";
             "AnnotationCreateSignature"
           ) as Core.Tools.SignatureCreateTool;
           inst.UI.enableFeatures([inst.UI.Feature.Initials]);
-          inst.UI.setHeaderItems(function (header) {
-            header.push({
-              type: "actionButton",
-              img: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20"><path d="M19 9h-4V3H9v6H5l7 8zM4 19h16v2H4z"></path></svg>',
-              onClick: async () =>
-                await inst.UI.downloadPdf({
-                  filename: documentName.replace(/.docx|.doc/g, ""),
-                  xfdfString,
-                }),
-            });
-          });
   
           documentViewer.addEventListener("documentLoaded", async () => {
             signatureTool.importSignatures([signature!]);
@@ -114,21 +104,14 @@ import StatusTag from "../../../../components/StatusTag";
             });
           });
         });
-    }, [
-      documentName,
-      link,
-      signature,
-      userInfo?.userId,
-      userInfo?.userName,
-      xfdfString,
-    ]);
+    }, [documentName, i18n.language, link, signature, userInfo?.userId, userInfo?.userName, xfdfString]);
     return (
       <Fragment>
         <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
           <Link to="/user">
             <ArrowBackIosIcon fontSize="small" className="fill-white" />
           </Link>
-          <span className="text-white">{t("Approve Document")}</span>
+          <span className="text-white">{t("Shared Document")}</span>
         </div>
         {isGetSignatureLoading && (
           <Box sx={{ width: "100%" }}>

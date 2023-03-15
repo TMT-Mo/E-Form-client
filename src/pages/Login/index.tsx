@@ -1,4 +1,3 @@
-import { LoadingButton } from "@mui/lab";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,33 +15,13 @@ import {
   OutlinedInput,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import { styled } from "@mui/system";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
+import { SaveLoadingBtn } from "../../components/CustomStyled";
 
 interface State {
   password: string;
   showPassword: boolean;
 }
-
-const LoadingBtn = styled(
-  LoadingButton,
-  {}
-)({
-  backgroundColor: "#407AFF",
-  borderRadius: "5px",
-  color: "#fff",
-  paddingTop: "10px",
-  paddingBottom: "10px",
-  ":hover": { backgroundColor: "#fff", color: "#407AFF" },
-  "&.Mui-disabled": {
-    color: "#F2F2F2",
-    backgroundColor: "#6F7276",
-  },
-  "&.MuiLoadingButton-loading": {
-    backgroundColor: "#fff",
-    borderColor: "#407AFF",
-  },
-});
 
 const Login = () => {
   const { t } = useTranslation();
@@ -140,7 +119,7 @@ const Login = () => {
                 />
               </FormControl>
             </div>
-            <LoadingBtn
+            <SaveLoadingBtn
               size="small"
               loading={isLoginLoading}
               loadingIndicator={<CircularProgress color="inherit" size={16} />}
@@ -149,7 +128,7 @@ const Login = () => {
               disabled={!(values.password && username)}
             >
               {t("Sign in")}
-            </LoadingBtn>
+            </SaveLoadingBtn>
           </div>
         </form>
       </div>

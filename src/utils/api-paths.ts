@@ -4,8 +4,10 @@ const apiHead = 'https://documentcapstone.azurewebsites.net/'
 const apiPaths = {
     auth:{
         login: `${apiHead}api/Users/login`,
+        changePassword: `${apiHead}api/Users/changePassword`,
         extractToken: `${apiHead}`,
-        getSignature: `${apiHead}api/Users/getSignature`
+        getSignature: `${apiHead}api/Users/getSignature`,
+        
     },
     template:{
         getTemplates: `${apiHead}api/Template/getTemplates`,
@@ -17,7 +19,7 @@ const apiPaths = {
     system:{
         getDepartmentList: `${apiHead}api/Department/getDepartments`,
         getTemplateTypeList: `${apiHead}api/Category/getCategories`,
-        // getUsers: `${apiHead}api/Users/getUsers`,
+        getUserList: `${apiHead}api/Users/getUserList`,
         getSigner: `${apiHead}api/Users/getSigner`
     },
     document:{

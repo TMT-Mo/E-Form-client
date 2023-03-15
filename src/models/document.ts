@@ -28,14 +28,6 @@ export interface GetDocumentsArgs {
   updateAt_lte?: string; //* lte: Lower than equal
 }
 
-// export interface Signer {
-//   username: string;
-//   signature: string;
-//   status: number;
-//   roleName: string;
-//   updateAt: string
-// }
-
 interface Creator {
   username: string;
   signature: string;
@@ -87,10 +79,17 @@ export interface GetDocumentHistoryArgs extends GetDocumentsArgs {
   userId: number;
 }
 
-// export interface DocumentHistory extends Document{
-//   version: string;
-// }
 export interface GetDocumentHistoryResponse {
+  items: Document[];
+  total: number;
+  page: number;
+  size: number;
+}
+
+export interface GetSharedDocumentArgs extends GetDocumentsArgs {
+  IdUserShared_contains: number;
+}
+export interface GetSharedDocumentResponse {
   items: Document[];
   total: number;
   page: number;

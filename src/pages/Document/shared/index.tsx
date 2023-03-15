@@ -3,28 +3,14 @@ import {
   IconButton,
   InputBase,
   Paper,
-  Button,
 } from "@mui/material";
 import { useEffect } from "react";
-import UploadIcon from '@mui/icons-material/Upload';
-import { styled } from "@mui/system";
 import DataTable from "../../../components/DataTable";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "../../../hooks";
-import { getDocuments } from "../../../slices/document";
+import { getDocuments, getSharedDocument } from "../../../slices/document";
 
 
-const StyledUploadBtn = styled(Button)({
-  backgroundColor: '#fff',
-  borderRadius: '10px',
-  color: '#407AFF',
-  padding: '0px 15px',
-  height: '80%',
-  ':hover':{
-    backgroundColor: '#407AFF',
-    color: '#fff'
-  }
-})
 
 const SharedDoc = () => {
   const {t} = useTranslation()
@@ -37,12 +23,12 @@ const SharedDoc = () => {
 
   useEffect(() => {
     const getDocumentList = dispatch(
-      getDocuments({
+      getSharedDocument({
         documentName_contains: searchItemValue || undefined,
         _page: currentPage,
         _size: 10,
         _sort: sorter ? `${sorter?.field}:${sorter?.sort}` : undefined,
-        signatoryList_contains: userInfo?.userId,
+        IdUserShared_contains: userInfo?.userId!,
         // type_eq: filter?.field === TYPE ? (filter.value as string) : undefined,
         // createdBy_eq:
         //   filter?.field === CREATED_BY ? (filter.value as number) : undefined,

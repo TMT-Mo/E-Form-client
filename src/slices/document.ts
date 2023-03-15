@@ -1,3 +1,4 @@
+import { Department } from "./../models/system";
 import {
   ApproveDocumentArgs,
   ChangeSignerDocumentArgs,
@@ -5,7 +6,13 @@ import {
   Document,
   GetDocumentHistoryArgs,
   GetDocumentsArgs,
+  GetSharedDepartmentsArgs,
+  GetSharedDocumentArgs,
+  GetSharedUsersArgs,
   LockDocumentArgs,
+  ShareDepartmentsArgs,
+  SharedUser,
+  ShareUsersArgs,
 } from "./../models/document";
 import {
   CaseReducer,
@@ -26,14 +33,22 @@ interface State {
   size?: number;
   currentPage: number;
   documentDetail?: Document;
+  sharedDepartment: Department[];
+  sharedUser: SharedUser[];
   isApproveDocumentLoading: boolean;
   isLockDocumentLoading: boolean;
+  isGetSharedDepartmentLoading: boolean;
+  isGetSharedUserLoading: boolean;
+  isGetSharedDocumentLoading: boolean;
+  isShareDepartmentLoading: boolean;
+  isShareUserLoading: boolean;
   isChangeSignerDocumentLoading: boolean;
 }
 
 const initialState: State = {
   isCreateDocumentLoading: false,
   documentList: [],
+  sharedDepartment: [],
   isGetDocumentListLoading: false,
   searchItemValue: undefined,
   total: undefined,
@@ -43,6 +58,12 @@ const initialState: State = {
   isApproveDocumentLoading: false,
   isLockDocumentLoading: false,
   isChangeSignerDocumentLoading: false,
+  isGetSharedDepartmentLoading: false,
+  isShareDepartmentLoading: false,
+  isShareUserLoading: false,
+  isGetSharedUserLoading: false,
+  isGetSharedDocumentLoading: false,
+  sharedUser: []
 };
 
 const ACTION_TYPE = "document/";
@@ -80,6 +101,20 @@ const updateDocumentCR: CR<{ id: number; isLocked: boolean }> = (
     }
   });
 };
+const changeSharedDepartmentCR: CR<{ departments: Department[] }> = (
+  state,
+  { payload }
+) => ({
+  ...state,
+  sharedDepartment: payload.departments
+})
+const changeSharedUserCR: CR<{ users: SharedUser[] }> = (
+  state,
+  { payload }
+) => ({
+  ...state,
+  sharedUser: payload.users
+})
 
 const createDocument = createAsyncThunk(
   `${ACTION_TYPE}createDocument`,
@@ -155,6 +190,54 @@ const lockDocument = createAsyncThunk(
     }
   }
 );
+const shareDepartment = createAsyncThunk(
+  `${ACTION_TYPE}shareDepartment`,
+  async (args: ShareDepartmentsArgs, { dispatch }) => {
+    try {
+      const result = await documentServices.shareDepartments({
+        ...args,
+      });
+      dispatch(handleSuccess({ message: result.message }));
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
+const shareUsers = createAsyncThunk(
+  `${ACTION_TYPE}shareUsers`,
+  async (args: ShareUsersArgs, { dispatch }) => {
+    try {
+      const result = await documentServices.shareUsers({
+        ...args,
+      });
+      dispatch(handleSuccess({ message: result.message }));
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
 const changeSignerDocument = createAsyncThunk(
   `${ACTION_TYPE}changeSignerDocument`,
   async (args: ChangeSignerDocumentArgs, { dispatch }) => {
@@ -163,6 +246,52 @@ const changeSignerDocument = createAsyncThunk(
         ...args,
       });
       dispatch(handleSuccess({ message: result.message }));
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
+const getSharedDepartment = createAsyncThunk(
+  `${ACTION_TYPE}getSharedDepartment`,
+  async (args: GetSharedDepartmentsArgs, { dispatch }) => {
+    try {
+      const result = await documentServices.getSharedDepartments({
+        ...args,
+      });
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
+const getSharedUser = createAsyncThunk(
+  `${ACTION_TYPE}getSharedUser`,
+  async (args: GetSharedUsersArgs, { dispatch }) => {
+    try {
+      const result = await documentServices.getSharedUsers({
+        ...args,
+      });
       return result;
     } catch (error) {
       const err = error as AxiosError;
@@ -203,11 +332,35 @@ const getDocuments = createAsyncThunk(
     }
   }
 );
+
 const getDocumentHistory = createAsyncThunk(
   `${ACTION_TYPE}getDocumentHistory`,
   async (args: GetDocumentHistoryArgs, { dispatch }) => {
     try {
       const result = await documentServices.getDocumentHistory({
+        ...args,
+      });
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
+const getSharedDocument = createAsyncThunk(
+  `${ACTION_TYPE}getSharedDocument`,
+  async (args: GetSharedDocumentArgs, { dispatch }) => {
+    try {
+      const result = await documentServices.getSharedDocument({
         ...args,
       });
       return result;
@@ -252,6 +405,13 @@ const document = createSlice({
     getDocumentDetail: getDocumentDetailCR,
     searchDocument: searchDocumentCR,
     updateDocument: updateDocumentCR,
+    clearSharedInfo: (state: State) => ({
+      ...state,
+      sharedDepartment: [],
+      SharedUser: [],
+    }),
+    changeSharedDepartment: changeSharedDepartmentCR,
+    changeSharedUser: changeSharedUserCR,
   },
   extraReducers: (builder) => {
     builder.addCase(createDocument.pending, (state) => ({
@@ -290,6 +450,30 @@ const document = createSlice({
       ...state,
       isLockDocumentLoading: false,
     }));
+    builder.addCase(shareDepartment.pending, (state) => ({
+      ...state,
+      isShareDepartmentLoading: true,
+    }));
+    builder.addCase(shareDepartment.fulfilled, (state, { payload }) => ({
+      ...state,
+      isShareDepartmentLoading: false,
+    }));
+    builder.addCase(shareDepartment.rejected, (state) => ({
+      ...state,
+      isShareDepartmentLoading: false,
+    }));
+    builder.addCase(shareUsers.pending, (state) => ({
+      ...state,
+      isShareUserLoading: true,
+    }));
+    builder.addCase(shareUsers.fulfilled, (state, { payload }) => ({
+      ...state,
+      isShareUserLoading: false,
+    }));
+    builder.addCase(shareUsers.rejected, (state) => ({
+      ...state,
+      isShareUserLoading: false,
+    }));
     builder.addCase(changeSignerDocument.pending, (state) => ({
       ...state,
       isChangeSignerDocumentLoading: true,
@@ -302,6 +486,32 @@ const document = createSlice({
       ...state,
       isChangeSignerDocumentLoading: false,
     }));
+    builder.addCase(getSharedUser.pending, (state) => ({
+      ...state,
+      isGetSharedUserLoading: true,
+    }));
+    builder.addCase(getSharedUser.fulfilled, (state, { payload }) => ({
+      ...state,
+      isGetSharedUserLoading: false,
+      sharedUser: payload.items[0].users,
+    }));
+    builder.addCase(getSharedUser.rejected, (state) => ({
+      ...state,
+      isGetSharedUserLoading: false,
+    }));
+    builder.addCase(getSharedDepartment.pending, (state) => ({
+      ...state,
+      isGetSharedDepartmentLoading: true,
+    }));
+    builder.addCase(getSharedDepartment.fulfilled, (state, { payload }) => ({
+      ...state,
+      isGetSharedDepartmentLoading: false,
+      sharedDepartment: payload.items[0].departments,
+    }));
+    builder.addCase(getSharedDepartment.rejected, (state) => ({
+      ...state,
+      isGetSharedDepartmentLoading: false,
+    }));
     builder.addCase(getDocuments.pending, (state) => ({
       ...state,
       isGetDocumentListLoading: true,
@@ -313,6 +523,23 @@ const document = createSlice({
       total: payload?.total!,
     }));
     builder.addCase(getDocuments.rejected, (state) => {
+      if (state.isGetDocumentListLoading) return; //* Handle api abort
+      return {
+        ...state,
+        isGetDocumentListLoading: false,
+      };
+    });
+    builder.addCase(getSharedDocument.pending, (state) => ({
+      ...state,
+      isGetDocumentListLoading: true,
+    }));
+    builder.addCase(getSharedDocument.fulfilled, (state, { payload }) => ({
+      ...state,
+      isGetDocumentListLoading: false,
+      documentList: payload.items,
+      total: payload?.total!,
+    }));
+    builder.addCase(getSharedDocument.rejected, (state) => {
       if (state.isGetDocumentListLoading) return; //* Handle api abort
       return {
         ...state,
@@ -346,6 +573,11 @@ export {
   getDocumentHistory,
   lockDocument,
   changeSignerDocument,
+  getSharedDepartment,
+  getSharedDocument,
+  shareDepartment,
+  getSharedUser,
+  shareUsers
 };
 
 export const {
@@ -356,6 +588,9 @@ export const {
   searchDocument,
   updateDocument,
   clearDocumentPagination,
+  clearSharedInfo,
+  changeSharedDepartment,
+  changeSharedUser
 } = document.actions;
 
 export default document.reducer;

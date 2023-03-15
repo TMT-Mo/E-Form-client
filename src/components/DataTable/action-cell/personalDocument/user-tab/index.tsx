@@ -14,10 +14,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "../../../../../hooks";
 import { Department } from "../../../../../models/system";
 import {
-  changeSharedDepartment,
+  changeSharedUser,
   clearSharedInfo,
   getSharedDepartment,
+  getSharedUser,
   shareDepartment,
+  shareUsers,
 } from "../../../../../slices/document";
 import ClearIcon from "@mui/icons-material/Clear";
 import {
@@ -29,6 +31,7 @@ import {
   WhiteBtn,
   SaveLoadingBtn,
 } from "../../../../CustomStyled";
+import { SharedUser } from "../../../../../models/document";
 
 interface Props {
   onOpen: () => void;
@@ -63,79 +66,57 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-const DepartmentTab = (props: Props) => {
+const UserTab = (props: Props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { isGetDepartmentsLoading, departmentList, isOpenDepartmentList } =
-    useSelector((state) => state.system);
-  const {
-    isGetSharedDepartmentLoading,
-    sharedDepartment,
-    isShareDepartmentLoading,
-  } = useSelector((state) => state.document);
+  const { isGetUserListLoading, userList, isOpenDepartmentList } = useSelector(
+    (state) => state.system
+  );
+  const { isGetSharedUserLoading, sharedUser, isShareUserLoading } =
+    useSelector((state) => state.document);
   const { onOpen, value, idDocument } = props;
 
-  const getDepartmentListHandler = async () => {
-    if (!departmentList) {
-      await dispatch(getDepartmentList()).unwrap();
-    }
-    dispatch(toggleDepartmentList({ isOpen: !isOpenDepartmentList }));
-  };
-
-  const onAddSelectedDepartment = (value: Department | undefined) => {
+  const onAddSelectedUser = (value: SharedUser | undefined) => {
     if (!value) {
-      dispatch(changeSharedDepartment({ departments: [] }));
+      dispatch(changeSharedUser({ users: [] }));
       return;
     }
     const { departmentName } = value;
-    if (sharedDepartment?.length === 0) {
+    if (sharedUser?.length === 0) {
       // setSelectedDepartment((prevState) => [...prevState!, value]);
-      dispatch(
-        changeSharedDepartment({ departments: [...sharedDepartment, value] })
-      );
+      dispatch(changeSharedUser({ users: [...sharedUser, value] }));
       return;
     }
-    if (
-      departmentName === "All" ||
-      sharedDepartment[0].departmentName === "All"
-    ) {
+    if (departmentName === "All" || sharedUser[0].departmentName === "All") {
       // setSelectedDepartment([value]);
-      dispatch(changeSharedDepartment({ departments: [value] }));
+      dispatch(changeSharedUser({ users: [value] }));
       return;
     }
     // setSelectedDepartment((prevState) => [...prevState!, value]);
-    dispatch(
-      changeSharedDepartment({ departments: [...sharedDepartment, value] })
-    );
+    dispatch(changeSharedUser({ users: [...sharedUser, value] }));
     return value;
   };
 
-  const onChangeSelectedDepartment = (index: number) => {
+  const onChangeSelectedUser = (index: number) => {
     dispatch(
-      changeSharedDepartment({
-        departments: sharedDepartment?.filter(
-          (d) => d !== sharedDepartment[index]
-        ),
+      changeSharedUser({
+        users: sharedUser?.filter((u) => u !== sharedUser[index]),
       })
     );
   };
 
   const onShareDepartment = async () => {
     await dispatch(
-      shareDepartment({
-        idDocument,
-        departmentIdList: sharedDepartment.map((department) => department.id),
-      })
+      shareUsers({ idDocument, userIdList: sharedUser.map((user) => user.id) })
     ).unwrap();
-    onOpen()
   };
 
-  const filterDepartment = (): Department[] => {
-    let newUserList: Department[] = [];
+  const filterUser = (): SharedUser[] => {
+    let newUserList: SharedUser[] = [];
     let checkExisted;
-    departmentList?.items!.forEach((u) => {
+    userList?.items!.forEach((u) => {
       checkExisted = false;
-      sharedDepartment.forEach((value, index) => {
+      sharedUser.forEach((value, index) => {
         if (u.departmentName === value.departmentName) {
           checkExisted = true;
         }
@@ -146,10 +127,11 @@ const DepartmentTab = (props: Props) => {
   };
 
   useEffect(() => {
-    const getSharedDepartments = dispatch(getSharedDepartment({ idDocument }));
-    getSharedDepartments.unwrap();
+    const getSharedUsers = dispatch(getSharedUser({ idDocument }));
+    getSharedUsers.unwrap();
+    // const getUserList = dispatch(ge)
 
-    return () => getSharedDepartments.abort();
+    return () => getSharedUsers.abort();
   }, [dispatch, idDocument]);
 
   useEffect(() => {
@@ -159,10 +141,10 @@ const DepartmentTab = (props: Props) => {
   }, [dispatch]);
   //
   return (
-    <TabPanel value={value} index={0}>
+    <TabPanel value={value} index={1}>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          <h4>{t("Department list")}</h4>
+          <h4>{t("User list")}</h4>
           <Autocomplete
             id="asynchronous-demo"
             // multiple = {departmentList?.items ? true : false}
@@ -170,16 +152,16 @@ const DepartmentTab = (props: Props) => {
               width: 300,
               color: "#000",
             }}
-            open={isOpenDepartmentList}
-            onOpen={getDepartmentListHandler}
-            onClose={getDepartmentListHandler}
-            onChange={(e, value) => onAddSelectedDepartment(value!)}
+            // open={isOpenDepartmentList}
+            // onOpen={getDepartmentListHandler}
+            // onClose={getDepartmentListHandler}
+            onChange={(e, value) => onAddSelectedUser(value!)}
             isOptionEqualToValue={(option, value) =>
               option.departmentName === value.departmentName
             }
-            getOptionLabel={(option) => t(option.departmentName)}
-            options={filterDepartment()}
-            loading={isGetDepartmentsLoading}
+            getOptionLabel={(option) => t(option.username)}
+            options={filterUser()}
+            loading={isGetUserListLoading}
             renderInput={(params) => (
               <TextFieldStyled
                 {...params}
@@ -191,7 +173,7 @@ const DepartmentTab = (props: Props) => {
                   ...params.InputProps,
                   endAdornment: (
                     <React.Fragment>
-                      {isGetDepartmentsLoading ? (
+                      {isGetUserListLoading ? (
                         <CircularProgress color="primary" size={20} />
                       ) : null}
                       {params.InputProps.endAdornment}
@@ -201,13 +183,14 @@ const DepartmentTab = (props: Props) => {
               />
             )}
           />
-          {isGetSharedDepartmentLoading && (
+          {isGetSharedUserLoading && (
             <div
-              style={{
-                width: "300px",
-                display: "flex",
-                justifyContent: "center",
-              }}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "300px",
+              alignItems: 'center'
+            }}
             >
               <CircularProgress />
             </div>
@@ -216,20 +199,19 @@ const DepartmentTab = (props: Props) => {
             className="flex flex-col border border-slate-500 rounded-md"
             style={{ width: "300px" }}
           >
-            {!isGetSharedDepartmentLoading &&
-              sharedDepartment.map((department, index) => (
+            {!isGetSharedUserLoading &&
+              sharedUser.map((user, index) => (
                 <div
                   style={{
                     display: "flex",
-                    justifyContent: "space-between",
+                    justifyContent: "between",
                     width: "300px",
-                    alignItems: 'center'
                   }}
-                  key={department.id}
+                  key={user.id}
                 >
-                  <span>{department.departmentName}</span>
+                  <span>{user.username}</span>
                   <IconButton
-                    onClick={() => onChangeSelectedDepartment(index)}
+                    onClick={() => onChangeSelectedUser(index)}
                     size="small"
                   >
                     <ClearIcon />
@@ -242,7 +224,7 @@ const DepartmentTab = (props: Props) => {
       <DialogActions>
         <WhiteBtn onClick={() => onOpen()}>Cancel</WhiteBtn>
         <SaveLoadingBtn
-          loading={isShareDepartmentLoading}
+          loading={isShareUserLoading}
           onClick={onShareDepartment}
         >
           Save
@@ -252,4 +234,4 @@ const DepartmentTab = (props: Props) => {
   );
 };
 
-export default DepartmentTab;
+export default UserTab;

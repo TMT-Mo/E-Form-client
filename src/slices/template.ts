@@ -16,7 +16,6 @@ import {
 import { AxiosError } from "axios";
 import { ValidationErrors } from "../models/notification";
 import { handleError, handleSuccess } from "./notification";
-import { helpers } from "../utils";
 
 interface State {
   isGetTemplatesLoading: boolean;

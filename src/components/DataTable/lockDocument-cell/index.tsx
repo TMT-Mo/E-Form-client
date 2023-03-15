@@ -15,8 +15,6 @@ import { StatusDocument } from "../../../utils/constants";
 
 const createData = (value: unknown) => {
   const result = value as boolean;
-  console.log(result);
-  // if(res)
   if (result) {
     return <LockIcon className="fill-red-400" />;
   } else {

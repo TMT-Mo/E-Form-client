@@ -115,24 +115,24 @@ const getSigner = createAsyncThunk(
     }
   }
 );
-// const getUsers = createAsyncThunk(
-//   `${ACTION_TYPE}getUsers`,
-//   async (args: GetUsersArgs | undefined, { dispatch }) => {
-//     try {
-//       const result = await systemServices.getUsers(args)
-//       return result;
-//     } catch (error) {
-//       const err = error as AxiosError;
-//       if(err.response?.data){
-//         dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
-//       }
-//       else{
-//         dispatch(handleError({ errorMessage: err.message }));
-//       }
-//       throw err
-//     }
-//   }
-// );
+const getUserList = createAsyncThunk(
+  `${ACTION_TYPE}getUserList`,
+  async (_, { dispatch }) => {
+    try {
+      const result = await systemServices.getUserList()
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if(err.response?.data){
+        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
+      }
+      else{
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err
+    }
+  }
+);
 
 const system = createSlice({
   name: "system",
@@ -172,6 +172,22 @@ const system = createSlice({
       ...state,
       isGetSignerLoading: false,
     }));
+    builder.addCase(getUserList.pending, (state) => ({
+      ...state,
+      isGetUserListLoading: true,
+    }));
+    builder.addCase(
+      getUserList.fulfilled,
+      (state, { payload }) => ({
+        ...state,
+        isGetUserListLoading: false,
+        userList: payload
+      })
+    );
+    builder.addCase(getUserList.rejected, (state) => ({
+      ...state,
+      isGetUserListLoading: false,
+    }));
     builder.addCase(getTemplateTypeList.pending, (state) => ({
       ...state,
       isGetTemplateTypesLoading: true,
@@ -190,7 +206,7 @@ const system = createSlice({
 
 export {
   getDepartmentList,
-  // getUsers,
+  getUserList,
   getSigner,
   getTemplateTypeList,
 };

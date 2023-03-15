@@ -20,6 +20,8 @@ import {
   GetSharedDepartmentsResponse,
   GetSharedUsersArgs,
   GetSharedUsersResponse,
+  GetSharedDocumentArgs,
+  GetSharedDocumentResponse,
 } from "./../models/document";
 
 const createDocument = async (
@@ -50,6 +52,16 @@ const getDocumentHistory = async (
     data,
   });
   return response.data as GetDocumentHistoryResponse;
+};
+
+const getSharedDocument = async (
+  params: GetSharedDocumentArgs
+  ): Promise<GetSharedDocumentResponse> => {
+  const response = await httpClient.get({
+    url: apiPaths.document.getDocuments,
+    params,
+  });
+  return response.data as GetSharedDocumentResponse;
 };
 
 const approveDocument = async (
@@ -124,6 +136,7 @@ export const documentServices = {
   getDocuments,
   approveDocument,
   getDocumentHistory,
+  getSharedDocument,
   lockDocument,
   changeSignerDocument,
   shareDepartments,

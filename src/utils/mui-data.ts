@@ -463,6 +463,7 @@ export const sharedDocColumns: GridColDef[] = [
     renderCell: TranslateContent,
     headerName: "Department",
     headerAlign: 'center',
+    align: 'center',
     flex: .5,
     renderHeader: TranslateHeader,
   },

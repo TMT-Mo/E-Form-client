@@ -1,6 +1,6 @@
 import { ValidationErrors } from './../models/notification';
 import { authServices } from "./../services/auth";
-import { UserInfo, LoginArgument, GetSignatureArgs} from "./../models/auth";
+import { UserInfo, LoginArgument, GetSignatureArgs, ChangePasswordArgument} from "./../models/auth";
 import {
   CaseReducer,
   createAsyncThunk,
@@ -9,7 +9,7 @@ import {
 } from "@reduxjs/toolkit";
 import jwtDecode from "jwt-decode";
 import { AxiosError } from "axios";
-import { handleError } from "./notification";
+import { handleError, handleSuccess } from "./notification";
 
 interface State {
   // token: string | null;
@@ -17,7 +17,8 @@ interface State {
   isLoginLoading: boolean;
   checkAuthenticated?: boolean;
   isGetSignatureLoading: boolean;
-  signature?: string
+  signature?: string;
+  isChangePasswordLoading: boolean;
 }
 
 type CR<T> = CaseReducer<State, PayloadAction<T>>;
@@ -29,7 +30,8 @@ const initialState: State = {
   userInfo: undefined,
   isLoginLoading: false,
   isGetSignatureLoading: false,
-  signature: undefined
+  signature: undefined,
+  isChangePasswordLoading: false,
 };
 
 const setUserInfoCR: CR<{ user: UserInfo}> = (
@@ -53,6 +55,26 @@ const login = createAsyncThunk(
   async (args: LoginArgument, { dispatch }) => {
     try {
       const result = await authServices.login(args as LoginArgument);
+      return result;
+    } catch (error) {
+      const err = error as AxiosError
+      if(err.response?.data){
+        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
+      }
+      else{
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err
+    }
+  }
+);
+
+const changePassword = createAsyncThunk(
+  `${ACTION_TYPE}changePassword`,
+  async (args: ChangePasswordArgument, { dispatch }) => {
+    try {
+      const result = await authServices.changePassword(args);
+      dispatch(handleSuccess({ message: result.message }));
       return result;
     } catch (error) {
       const err = error as AxiosError
@@ -112,9 +134,17 @@ const auth = createSlice({
         userInfo: undefined
       }
     });
-    builder.addCase(login.rejected, (state) => ({
+    builder.addCase(changePassword.pending, (state) => ({
       ...state,
-      isLoginLoading: false,
+      isChangePasswordLoading: true,
+    }));
+    builder.addCase(changePassword.fulfilled, (state, { payload }) => ({
+      ...state,
+      isChangePasswordLoading: true,
+    }));
+    builder.addCase(changePassword.rejected, (state) => ({
+      ...state,
+      isChangePasswordLoading: false,
     }));
     builder.addCase(getSignature.pending, (state) => ({
       ...state,
@@ -132,7 +162,7 @@ const auth = createSlice({
   },
 });
 
-export { login, getSignature };
+export { login, getSignature, changePassword};
 
 export const { setUserInfo, checkAuthentication} = auth.actions;
 
