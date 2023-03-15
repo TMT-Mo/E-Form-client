@@ -9,7 +9,7 @@ export const SignalR = () => {
 
   useEffect(() => {
     const connect = new HubConnectionBuilder()
-      .withUrl("https://localhost:40672/hubs/notifications")
+      .withUrl("https://documentcapstone.azurewebsites.net/hubs/notifications")
       .withAutomaticReconnect()
       .build();
 
