@@ -1,19 +1,29 @@
-import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
+import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch } from "../hooks";
+import { useDispatch, useSelector } from "../hooks";
+import { handleSuccess } from "../slices/alert";
+import { apiPaths } from "../utils";
 
 export const SignalR = () => {
   const [connection, setConnection] = useState<null | HubConnection>(null);
-  const [inputText, setInputText] = useState("");
+  const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const [inputText, setInputText] = useState("");
+
+  const sendMessage = useCallback(async () => {
+    console.log("Im in");
+    try {
+      await connection!.invoke("SendMessage");
+    } catch (error) {
+      console.log(error);
+    }
+  }, [connection]);
 
   useEffect(() => {
     const connect = new HubConnectionBuilder()
-      .withUrl("https://documentcapstone.azurewebsites.net/hubs/notifications")
+      .withUrl(apiPaths.signalR.test)
       .withAutomaticReconnect()
       .build();
-
-      console.log('first')
 
     setConnection(connect);
   }, []);
@@ -23,26 +33,28 @@ export const SignalR = () => {
       connection
         .start()
         .then(() => {
-          console.log('Connected!');
+          console.log(connection?.state);
+          console.log(connection.connectionId)
           connection.on("ReceiveMessage", (message) => {
-            // dispatch(handleSuccess({message: 'Connected'}))
-            console.log(message);
+            console.log(message)
+            // if (message === +userInfo?.userId!) {
+            //   dispatch(handleSuccess({message: 'Hello World!'}))
+            // }
           });
+
+          connection.onclose((e) => { });
         })
         .catch((error) => console.log(error));
     }
-  }, [connection, dispatch]);
+  }, [connection, dispatch, sendMessage, userInfo?.userId]);
 
-  const sendMessage = useCallback(
-    async () => {
-        if (connection) await connection.send("SendMessage", 'Hi');
-      },
-    [connection],
-  )
-  
   useEffect(() => {
-    sendMessage()
-  }, [sendMessage]);
+    connection?.state === "Connected" && sendMessage();
+  }, [connection?.state, sendMessage]);
 
-  return <></>;
+  return (
+    <>
+      <button onClick={() => sendMessage()}>test</button>
+    </>
+  );
 };

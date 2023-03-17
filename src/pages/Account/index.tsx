@@ -2,20 +2,20 @@ import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase, Paper } from "@mui/material";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { StyledAddBtn } from "../../components/CustomStyled";
 import DataTable from "../../components/DataTable";
 import { useDispatch, useSelector } from "../../hooks";
 import { DateFilter } from "../../models/mui-data";
 import { getUserList, searchAccount } from "../../slices/system";
-import { DataTableHeader } from "../../utils/constants";
+import { DataTableHeader, DeviceWidth } from "../../utils/constants";
+import AddIcon from "@mui/icons-material/Add";
 
-const { TYPE, CREATED_AT,CREATED_BY } = DataTableHeader;
+const { TYPE, CREATED_AT, CREATED_BY } = DataTableHeader;
 export const Account = () => {
   const dispatch = useDispatch();
   // const { userInfo } = useSelector((state) => state.auth);
-  const {filter, sorter} = useSelector(state => state.filter)
-  const { searchItemValue, currentPage} = useSelector(
-    (state) => state.system
-  );
+  const { filter, sorter } = useSelector((state) => state.filter);
+  const { searchItemValue, currentPage } = useSelector((state) => state.system);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -42,9 +42,15 @@ export const Account = () => {
     return () => {
       getUser.abort();
     };
-  }, [currentPage, dispatch, filter?.field, filter?.value, searchItemValue, sorter]);
+  }, [
+    currentPage,
+    dispatch,
+    filter?.field,
+    filter?.value,
+    searchItemValue,
+    sorter,
+  ]);
 
-  
   return (
     <div className="flex flex-col py-10 space-y-6">
       <h2>{t("Account Management")}</h2>
@@ -65,17 +71,20 @@ export const Account = () => {
             </IconButton>
             <InputBase
               sx={{ ml: 1, flex: 1 }}
-              placeholder={t("Search Document")}
+              placeholder={t("Search Account")}
               inputProps={{ "aria-label": "search google maps" }}
               onChange={(e) =>
                 dispatch(searchAccount({ value: e.target.value }))
               }
             />
           </Paper>
+        <div className="flex"><StyledAddBtn variant="outlined" size="small" >
+          <AddIcon className="md:mr-2" />
+          {t("Add New")}
+        </StyledAddBtn></div>
         </div>
         <DataTable />
       </div>
     </div>
   );
 };
-

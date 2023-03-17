@@ -86,6 +86,20 @@ export const StyledMenu = styled(Menu)({
   },
 });
 
+export const StyledAddBtn = styled(Button)({
+  backgroundColor: "#407AFF",
+  borderRadius: "10px",
+  color: "#fff",
+  padding: "0px 15px",
+  height: "80%",
+  display: 'flex',
+  alignItems: 'center',
+  textDecoration: "none",
+  ":hover": {
+    color: "#407AFF",
+  },
+});
+
 export const MenuNotification = styled(MenuItem)({
   display: 'flex',
   flexDirection: 'column',

@@ -18,7 +18,7 @@ const apiPaths = {
     system:{
         getDepartmentList: `${apiHead}api/Department/getDepartments`,
         getTemplateTypeList: `${apiHead}api/Category/getCategories`,
-        getUserList: `${apiHead}api/Users/getUserList`,
+        getUserList: `${apiHead}api/Users/getSigner`,
         getSigner: `${apiHead}api/Users/getSigner`
     },
     document:{
@@ -36,6 +36,10 @@ const apiPaths = {
     notification:{
         getNotificationList: `${apiHead}api/notification/getNotificationList`,
         checkNotification: `${apiHead}api/notification/checkNotification`,
+    },
+    signalR:{
+        hubURL: `${apiHead}hubs/notifications`,
+        test : `https://localhost:44356/hubs/notifications`
     }
 }
 

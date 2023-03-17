@@ -5,6 +5,7 @@ export enum SessionStorage {
 export enum AlertStatus {
   SUCCESS = "success",
   ERROR = "error",
+  INFO = "info"
 }
 
 export enum ResponseStatus {

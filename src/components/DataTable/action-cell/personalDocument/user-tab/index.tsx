@@ -106,7 +106,7 @@ const UserTab = (props: Props) => {
   const filterUser = (): SharedUser[] => {
     let newUserList: SharedUser[] = [];
     let checkExisted;
-    userList?.items!.forEach((u) => {
+    userList.forEach((u) => {
       checkExisted = false;
       sharedUser.forEach((value, index) => {
         if (u.departmentName === value.departmentName) {

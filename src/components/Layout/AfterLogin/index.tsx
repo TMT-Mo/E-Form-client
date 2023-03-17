@@ -22,6 +22,7 @@ import { helpers } from "../../../utils";
 import { System } from "../../../pages/System";
 import { Account } from "../../../pages/Account";
 import { SignalR } from "../../../signalR/signalR";
+import { clearUserList } from "../../../slices/system";
 
 const {
   TEMPLATE,
@@ -54,6 +55,7 @@ const Layout: React.FC = () => {
     return () => {
       dispatch(clearDocuments());
       dispatch(clearTemplates());
+      dispatch(clearUserList())
       dispatch(clearFilter());
     };
   }, [dispatch]);

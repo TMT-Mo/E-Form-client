@@ -31,7 +31,7 @@ const ChangeSigner: React.FC<Props> = ({
   const filterUser = (): IUser[] => {
     let newUserList: IUser[] = [];
     let checkExisted;
-    userList?.items!.forEach((u) => {
+    userList.forEach((u) => {
       checkExisted = false;
       signerList.forEach((value, index) => {
         if (u.username === value.username) {

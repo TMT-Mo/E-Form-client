@@ -17,20 +17,9 @@ import {
 import { RequiredPermission } from "../../../components/RequiredPermission";
 import { useTranslation } from "react-i18next";
 import { DateFilter } from "../../../models/mui-data";
+import { StyledAddBtn } from "../../../components/CustomStyled";
 
-const StyledAddBtn = styled(Button)({
-  backgroundColor: "#407AFF",
-  borderRadius: "10px",
-  color: "#fff",
-  padding: "0px 15px",
-  height: "80%",
-  display: 'flex',
-  alignItems: 'center',
-  textDecoration: "none",
-  ":hover": {
-    color: "#407AFF",
-  },
-});
+
 
 const { ADD_TEMPLATE } = Permissions;
 

@@ -43,7 +43,7 @@ export interface SorterModel {
 export interface Data {
   columns?: GridColDef[];
   loading?: boolean;
-  table: Template[] | Document[] | User[];
+  table: Template[] | Document[] | IUser[];
   currentPage?: number;
   totalPages?: number;
   onChangePage?: (event: React.ChangeEvent<unknown>, page: number) => void;

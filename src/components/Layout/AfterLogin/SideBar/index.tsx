@@ -36,6 +36,7 @@ import { clearDocuments } from "../../../../slices/document";
 import { clearFilter } from "../../../../slices/filter";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { toggleSideBar } from "../../../../slices/ui-control";
+import { clearUserList } from "../../../../slices/system";
 
 const StyledListBtn = styled(ListItemButton)({
   borderRadius: "5px",
@@ -100,6 +101,7 @@ const SideBar: React.FC = () => {
       dispatch(clearTemplates());
       dispatch(clearDocuments());
       dispatch(clearFilter());
+      dispatch(clearUserList())
     }
   };
   

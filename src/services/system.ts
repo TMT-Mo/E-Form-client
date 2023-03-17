@@ -9,10 +9,10 @@ const getDepartmentList = async (): Promise<DepartmentListResponse> => {
 }
 
 const getUserList = async (arg: GetUsersArgs): Promise<GetUsersResponse> => {
-    // const response = await httpClient.get({url: apiPaths.system.getUserList})
-    // return response.data as GetUsersResponse
-    const response = DummyUserList
-    return response as unknown as GetUsersResponse
+    const response = await httpClient.get({url: apiPaths.system.getUserList})
+    return response.data as GetUsersResponse
+    // const response = DummyUserList
+    // return response as unknown as GetUsersResponse
   }
 
 const getSigner = async (args: GetUsersArgs | undefined): Promise<GetUsersResponse> => {

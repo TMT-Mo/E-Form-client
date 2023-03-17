@@ -3,6 +3,7 @@ import Alert from "@mui/material/Alert";
 import { useDispatch, useSelector } from "../../hooks";
 import Snackbar from "@mui/material/Snackbar";
 import { handleClose } from "../../slices/alert";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   anchorOrigin: {
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const AlertPopup: React.FC<Props> = ({ anchorOrigin, autoHideDuration }) => {
+  const {t} = useTranslation()
   const dispatch = useDispatch();
   const { status, message, errorMessage, isOpen } = useSelector(
     (state) => state.alert
@@ -25,12 +27,12 @@ const AlertPopup: React.FC<Props> = ({ anchorOrigin, autoHideDuration }) => {
   return (
     <Snackbar
       open={isOpen}
-      autoHideDuration={autoHideDuration ?? 2000}
+      autoHideDuration={5000}
       onClose={onCloseHandler}
       anchorOrigin={anchorOrigin ?? { vertical: "bottom", horizontal: "right" }}
     >
-      <Alert severity={status} sx={{ width: "100%" }}>
-        {message ?? errorMessage}
+      <Alert severity={status} sx={{ width: "100%" }} variant="outlined">
+        {t(message ?? errorMessage!)}
       </Alert>
     </Snackbar>
   );

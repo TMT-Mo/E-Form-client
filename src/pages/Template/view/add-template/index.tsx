@@ -359,7 +359,7 @@ const ViewAddTemplate: React.FC = () => {
                   <CircularProgress />
                 </div>
               )}
-              {userList?.items && !isGetSignerLoading && (
+              {userList && !isGetSignerLoading && (
                 <Autocomplete
                   multiple
                   limitTags={2}
@@ -372,7 +372,7 @@ const ViewAddTemplate: React.FC = () => {
                     },
                   }}
                   id="multiple-limit-tags"
-                  options={userList?.items!}
+                  options={userList}
                   getOptionLabel={(option) => option.username}
                   onChange={(e, value) => {
                     setForm({

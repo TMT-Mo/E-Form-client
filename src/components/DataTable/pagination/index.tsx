@@ -8,7 +8,7 @@ interface State {
 }
 
 const CustomPagination: React.FC<State> = ({totalPages, currentPage, onChangePage}) => {
-
+  console.log(totalPages)
   return (
     <Pagination
       count={totalPages}

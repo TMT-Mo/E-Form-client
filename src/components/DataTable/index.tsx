@@ -40,7 +40,7 @@ import { setFilter, setSorter } from "../../slices/filter";
 import { helpers } from "../../utils";
 import CustomNoRow from "../CustomNoRow";
 import { useTranslation } from "react-i18next";
-import { onChangeAccountPage } from "../../slices/system";
+import { clearAccountPagination, clearUserList, onChangeAccountPage } from "../../slices/system";
 import { DummyUserList } from "../../utils/dummy-data";
 
 const {
@@ -96,6 +96,7 @@ const DataTable: React.FC = () => {
       }
       dispatch(clearTemplatePagination());
       dispatch(clearDocumentPagination());
+      dispatch(clearAccountPagination())
       dispatch(setFilter({ field: columnField as DataTableHeader, value }));
     },
     [dispatch]
@@ -148,7 +149,6 @@ const DataTable: React.FC = () => {
     createdBy:
       usePermission(ENABLE_TEMPLATE) && checkHideColumnFromDevice(IPAD),
   };
-  console.log(userList);
   
   const data = (): Data => {
     switch (locationIndex) {
@@ -173,7 +173,7 @@ const DataTable: React.FC = () => {
         return {
           columns: onTranslateFilter(accountColumns),
           loading: isGetUserListLoading,
-          table: DummyUserList,
+          table: userList,
           currentPage: currentPageAccount,
           totalPages: Math.ceil(totalAccount! / 10),
           onChangePage: (e, value) =>
@@ -252,7 +252,8 @@ const DataTable: React.FC = () => {
   const getRowId = (params: GetRowIdParams) => {
     return params.id;
   };
-  //
+  
+  console.log(isNaN(data().table.length))
   return (
     <div style={{ height: 600, width: "100%" }}>
       <DataGrid

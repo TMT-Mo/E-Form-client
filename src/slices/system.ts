@@ -2,7 +2,7 @@ import { systemServices } from "./../services/system";
 import {
   DepartmentListResponse,
   GetUsersArgs,
-  GetUsersResponse,
+  IUser
 } from "./../models/system";
 import {
   CaseReducer,
@@ -24,7 +24,7 @@ interface State {
   isOpenDepartmentList: boolean;
   departmentList?: DepartmentListResponse;
   isGetUserListLoading: boolean;
-  userList?: GetUsersResponse;
+  userList: IUser[];
   isGetTemplateTypesLoading: boolean;
   templateTypeList?: GetTemplateTypeListResponse;
   isOpenTemplateTypes: boolean;
@@ -40,7 +40,7 @@ const initialState: State = {
   departmentList: undefined,
   isOpenDepartmentList: false,
   isGetUserListLoading: false,
-  userList: undefined,
+  userList: [],
   isGetTemplateTypesLoading: false,
   templateTypeList: undefined,
   isOpenTemplateTypes: false,
@@ -65,16 +65,6 @@ const toggleTemplateTypeListCR: CR<{ isOpen: boolean }> = (
 ) => ({
   ...state,
   isOpenTemplateTypes: payload.isOpen,
-});
-
-const clearUserListCR = (state: State) => ({
-  ...state,
-  userList: undefined,
-  searchItemValue: undefined,
-  filter: undefined,
-  total: undefined,
-  size: 10,
-  currentPage: 0,
 });
 
 const onChangeAccountPageCR: CR<{ selectedPage: number }> = (
@@ -183,7 +173,19 @@ const system = createSlice({
   reducers: {
     toggleDepartmentList: toggleDepartmentListCR,
     toggleTemplateTypeList: toggleTemplateTypeListCR,
-    clearUserList: clearUserListCR,
+    clearUserList: (state: State) => ({
+      ...state,
+      userList: [],
+      searchItemValue: undefined,
+      filter: undefined,
+      total: undefined,
+      size: 10,
+      currentPage: 0,
+    }),
+    clearAccountPagination: (state: State) => ({
+      ...state,
+      currentPage: 0,
+    }),
     onChangeAccountPage: onChangeAccountPageCR,
     searchAccount: searchAccountCR
   },
@@ -208,7 +210,7 @@ const system = createSlice({
     builder.addCase(getSigner.fulfilled, (state, { payload }) => ({
       ...state,
       isGetSignerLoading: false,
-      userList: payload!,
+      userList: payload.items,
     }));
     builder.addCase(getSigner.rejected, (state) => ({
       ...state,
@@ -221,7 +223,8 @@ const system = createSlice({
     builder.addCase(getUserList.fulfilled, (state, { payload }) => ({
       ...state,
       isGetUserListLoading: false,
-      userList: payload,
+      userList: payload.items,
+      total: payload?.total!,
     }));
     builder.addCase(getUserList.rejected, (state) => ({
       ...state,
@@ -250,6 +253,7 @@ export const {
   toggleTemplateTypeList,
   clearUserList,
   onChangeAccountPage,
-  searchAccount
+  searchAccount,
+  clearAccountPagination
 } = system.actions;
 export default system.reducer;

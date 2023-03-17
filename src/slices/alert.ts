@@ -26,6 +26,13 @@ const handleErrorCR: CR<{ errorMessage: string | undefined }> = (state, { payloa
   isOpen: true,
 });
 
+const handleInfoCR: CR<{ message: string | undefined }> = (state, { payload }) => ({
+  ...state,
+  status: AlertStatus.INFO,
+  message: payload.message,
+  isOpen: true,
+});
+
 
 
 const alert = createSlice({
@@ -41,6 +48,7 @@ const alert = createSlice({
       errorMessage: undefined,
     }),
     handleError: handleErrorCR,
+    handleInfo: handleInfoCR
   },
 });
 

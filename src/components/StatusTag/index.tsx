@@ -35,19 +35,19 @@ const StatusTag = (props: Props) => {
   const createTemplateStatus = () => {
     if (status === APPROVED_TEMPLATE) {
       return (
-        <span className="w-full max-w-fit px-3 py-1 rounded-md bg-green-100 text-green-600 text-xs border-green-400 border border-solid">
+        <span className="w-14 px-3 py-1 rounded-md bg-green-100 text-green-600 text-xs border-green-400 border border-solid">
           {t(APPROVED_TEMPLATE_TAG)}
         </span>
       );
     } else if (status === NEW_TEMPLATE) {
       return (
-        <span className="w-full max-w-fit px-3 py-1 rounded-md bg-blue-100 text-blue-600 text-xs border-blue-400 border border-solid">
+        <span className="w-14 px-3 py-1 rounded-md bg-blue-100 text-blue-600 text-xs border-blue-400 border border-solid">
           {t(NEW_TEMPLATE_TAG)}
         </span>
       );
     } else {
       return (
-        <span className="w-full max-w-fit px-3 py-1 rounded-md bg-red-100 text-red-600 text-xs border-red-400 border border-solid">
+        <span className="w-14 px-3 py-1 rounded-md bg-red-100 text-red-600 text-xs border-red-400 border border-solid">
           {t(REJECTED_TEMPLATE_TAG)}
         </span>
       );

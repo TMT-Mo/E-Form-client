@@ -36,14 +36,6 @@ const SelectType = (props: GridFilterInputValueProps) => {
     setValue(e.target.value);
   };
 
-  // const getUserListHandler = useCallback(() => {
-  //   dispatch(getUsers({ departmentId_eq: +userInfo?.idDepartment! })).unwrap();
-  // }, [dispatch, userInfo?.idDepartment]);
-
-  // useEffect(() => {
-  //   !userList && getUserListHandler();
-  // }, [getUserListHandler, userList]);
-
   return (
     <>
       {userList && (
@@ -58,7 +50,7 @@ const SelectType = (props: GridFilterInputValueProps) => {
             value={value}
             onChange={handleChange}
           >
-            {userList.items.map((item) => (
+            {userList.map((item) => (
               <MenuItem value={item.id} key={item.id}>
                 {item.username}
               </MenuItem>
