@@ -31,7 +31,7 @@ const AlertPopup: React.FC<Props> = ({ anchorOrigin, autoHideDuration }) => {
       onClose={onCloseHandler}
       anchorOrigin={anchorOrigin ?? { vertical: "bottom", horizontal: "right" }}
     >
-      <Alert severity={status} sx={{ width: "100%" }} variant="outlined">
+      <Alert severity={status} sx={{ width: "100%", backgroundColor:'#fff' }} variant="outlined">
         {t(message ?? errorMessage!)}
       </Alert>
     </Snackbar>

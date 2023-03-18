@@ -27,6 +27,7 @@ export enum LocationIndex {
   SHARED = 7,
   DOCUMENT_HISTORY = 8,
   CHANGE_PASSWORD = 9,
+  ADD_ACCOUNT = 10,
 }
 
 export enum ViewerLocationIndex {

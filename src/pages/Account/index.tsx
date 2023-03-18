@@ -7,8 +7,9 @@ import DataTable from "../../components/DataTable";
 import { useDispatch, useSelector } from "../../hooks";
 import { DateFilter } from "../../models/mui-data";
 import { getUserList, searchAccount } from "../../slices/system";
-import { DataTableHeader, DeviceWidth } from "../../utils/constants";
+import { DataTableHeader, DeviceWidth, LocationIndex } from "../../utils/constants";
 import AddIcon from "@mui/icons-material/Add";
+import { setLocation } from "../../slices/location";
 
 const { TYPE, CREATED_AT, CREATED_BY } = DataTableHeader;
 export const Account = () => {
@@ -78,10 +79,22 @@ export const Account = () => {
               }
             />
           </Paper>
-        <div className="flex"><StyledAddBtn variant="outlined" size="small" >
-          <AddIcon className="md:mr-2" />
-          {t("Add New")}
-        </StyledAddBtn></div>
+          <div className="flex">
+            <StyledAddBtn
+              variant="outlined"
+              size="small"
+              onClick={() =>
+                dispatch(
+                  setLocation({
+                    locationIndex: LocationIndex.ADD_ACCOUNT,
+                  })
+                )
+              }
+            >
+              <AddIcon className="md:mr-2" />
+              {t("Add New")}
+            </StyledAddBtn>
+          </div>
         </div>
         <DataTable />
       </div>

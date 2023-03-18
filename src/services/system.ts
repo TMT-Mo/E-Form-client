@@ -1,6 +1,6 @@
 import { GetTemplateTypeListResponse } from './../models/template';
 import { httpClient, apiPaths } from '../utils';
-import { DepartmentListResponse, GetUsersResponse, GetUsersArgs } from './../models/system';
+import { DepartmentListResponse, GetUsersResponse, GetUsersArgs, CreateAccountArgs, CreateAccountResponse, GetPermissionListResponse } from './../models/system';
 import { DummyUserList } from '../utils/dummy-data';
 
 const getDepartmentList = async (): Promise<DepartmentListResponse> => {
@@ -20,14 +20,26 @@ const getSigner = async (args: GetUsersArgs | undefined): Promise<GetUsersRespon
     return response.data as GetUsersResponse
 }
 
+const createAccount = async (data: CreateAccountArgs): Promise<CreateAccountResponse> => {
+    const response = await httpClient.get({url: `${apiPaths.system.createAccount}`, data})
+    return response.data as CreateAccountResponse
+}
+
 const getTemplateTypeList = async (): Promise<GetTemplateTypeListResponse> => {
     const response = await httpClient.get({url: `${apiPaths.system.getTemplateTypeList}`})
     return response.data as GetTemplateTypeListResponse
+}
+
+const getPermissionList = async (): Promise<GetPermissionListResponse> => {
+    const response = await httpClient.get({url: `${apiPaths.system.getPermissionList}`})
+    return response.data as GetPermissionListResponse
 }
 
 export const systemServices =  {
     getDepartmentList,
     getUserList,
     getTemplateTypeList,
-    getSigner
+    getSigner,
+    createAccount,
+    getPermissionList
 }

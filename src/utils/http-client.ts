@@ -58,7 +58,7 @@ axiosConfig.interceptors.response.use(
     console.log(4, error);
     if (error.response?.status === 401) {
       helpers.clearToken();
-      window.location.replace("/login");
+      !window.location.toString().includes('login') && window.location.replace("/login");
     }
     return Promise.reject(error);
   }

@@ -19,7 +19,10 @@ const apiPaths = {
         getDepartmentList: `${apiHead}api/Department/getDepartments`,
         getTemplateTypeList: `${apiHead}api/Category/getCategories`,
         getUserList: `${apiHead}api/Users/getSigner`,
-        getSigner: `${apiHead}api/Users/getSigner`
+        getSigner: `${apiHead}api/Users/getSigner`,
+        createAccount: `${apiHead}api/System/createAccount`,
+        getPermissionList: `${apiHead}api/System/getPermissionList`,
+        getRoleList: `${apiHead}api/System/getRoleList`,
     },
     document:{
         createDocument: `${apiHead}api/Document/create`,

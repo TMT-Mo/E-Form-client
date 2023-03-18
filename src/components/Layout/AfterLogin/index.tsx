@@ -23,6 +23,7 @@ import { System } from "../../../pages/System";
 import { Account } from "../../../pages/Account";
 import { SignalR } from "../../../signalR/signalR";
 import { clearUserList } from "../../../slices/system";
+import { AddAccount } from "../../../pages/Account/add-account";
 
 const {
   TEMPLATE,
@@ -35,6 +36,7 @@ const {
   CHANGE_PASSWORD,
   DOCUMENT_HISTORY,
   TEMPLATE_HISTORY,
+  ADD_ACCOUNT
 } = LocationIndex;
 
 const Layout: React.FC = () => {
@@ -68,6 +70,8 @@ const Layout: React.FC = () => {
         return <NewTemplates />;
       case ACCOUNT:
         return <Account />;
+      case ADD_ACCOUNT:
+        return <AddAccount />;
       case TEMPLATE:
         return <Template />;
       case TEMPLATE_HISTORY:

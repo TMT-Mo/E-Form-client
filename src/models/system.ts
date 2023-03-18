@@ -1,3 +1,4 @@
+
 export interface Department{
     id: number,
     departmentName: string
@@ -49,6 +50,25 @@ export interface IFile{
     type: string,
 }
 
-// export interface PermissionList{
+export interface CreateAccountArgs{
+    username: string,
+    password: string,
+    idPermissions: number[],
+    idDepartment: number,
+    idRole: number,
+    signature: string,
+}
 
-// }
+export interface CreateAccountResponse{
+    message: string
+}
+
+export interface GetPermissionListArgs{}
+
+export interface Permission{
+    id: number;
+    name: string;
+}
+export interface GetPermissionListResponse{
+    permissionList: Permission[]
+}

@@ -1,8 +1,10 @@
 import { systemServices } from "./../services/system";
 import {
+  CreateAccountArgs,
   DepartmentListResponse,
   GetUsersArgs,
-  IUser
+  IUser,
+  Permission
 } from "./../models/system";
 import {
   CaseReducer,
@@ -12,7 +14,7 @@ import {
 } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { ValidationErrors } from "../models/alert";
-import { handleError } from "./alert";
+import { handleError, handleSuccess } from "./alert";
 import { GetTemplateTypeListResponse } from "../models/template";
 
 interface State {
@@ -25,10 +27,13 @@ interface State {
   departmentList?: DepartmentListResponse;
   isGetUserListLoading: boolean;
   userList: IUser[];
+  permissionList: Permission[];
   isGetTemplateTypesLoading: boolean;
   templateTypeList?: GetTemplateTypeListResponse;
   isOpenTemplateTypes: boolean;
   isGetSignerLoading: boolean;
+  isCreateAccountLoading: boolean;
+  isGetPermissionLoading: boolean;
 }
 
 const initialState: State = {
@@ -41,10 +46,13 @@ const initialState: State = {
   isOpenDepartmentList: false,
   isGetUserListLoading: false,
   userList: [],
+  permissionList: [],
+  isGetPermissionLoading: false,
   isGetTemplateTypesLoading: false,
   templateTypeList: undefined,
   isOpenTemplateTypes: false,
   isGetSignerLoading: false,
+  isCreateAccountLoading: false,
 };
 
 type CR<T> = CaseReducer<State, PayloadAction<T>>;
@@ -145,11 +153,56 @@ const getSigner = createAsyncThunk(
     }
   }
 );
+
 const getUserList = createAsyncThunk(
   `${ACTION_TYPE}getUserList`,
   async (args: GetUsersArgs, { dispatch }) => {
     try {
       const result = await systemServices.getUserList(args);
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
+const getPermissionList = createAsyncThunk(
+  `${ACTION_TYPE}getPermissionList`,
+  async (_, { dispatch }) => {
+    try {
+      const result = await systemServices.getPermissionList();
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
+
+const createAccount = createAsyncThunk(
+  `${ACTION_TYPE}createAccount`,
+  async (args: CreateAccountArgs, { dispatch }) => {
+    try {
+      const result = await systemServices.createAccount(args);
+      dispatch(handleSuccess({message: result.message}))
       return result;
     } catch (error) {
       const err = error as AxiosError;
@@ -243,10 +296,35 @@ const system = createSlice({
       ...state,
       isGetTemplateTypesLoading: false,
     }));
+    builder.addCase(getPermissionList.pending, (state) => ({
+      ...state,
+      isGetPermissionLoading: true,
+    }));
+    builder.addCase(getPermissionList.fulfilled, (state, { payload }) => ({
+      ...state,
+      isGetPermissionLoading: false,
+      permissionList: payload.permissionList,
+    }));
+    builder.addCase(getPermissionList.rejected, (state) => ({
+      ...state,
+      isGetPermissionLoading: false,
+    }));
+    builder.addCase(createAccount.pending, (state) => ({
+      ...state,
+      isCreateAccountLoading: true,
+    }));
+    builder.addCase(createAccount.fulfilled, (state, { payload }) => ({
+      ...state,
+      isCreateAccountLoading: false,
+    }));
+    builder.addCase(createAccount.rejected, (state) => ({
+      ...state,
+      isCreateAccountLoading: false,
+    }));
   },
 });
 
-export { getDepartmentList, getUserList, getSigner, getTemplateTypeList };
+export { getDepartmentList, getUserList, getSigner, getTemplateTypeList, createAccount, getPermissionList };
 
 export const {
   toggleDepartmentList,
@@ -254,6 +332,6 @@ export const {
   clearUserList,
   onChangeAccountPage,
   searchAccount,
-  clearAccountPagination
+  clearAccountPagination,
 } = system.actions;
 export default system.reducer;

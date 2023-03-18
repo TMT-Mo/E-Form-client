@@ -134,6 +134,10 @@ const auth = createSlice({
         userInfo: undefined
       }
     });
+    builder.addCase(login.rejected, (state) => ({
+      ...state,
+      isLoginLoading: false,
+    }));
     builder.addCase(changePassword.pending, (state) => ({
       ...state,
       isChangePasswordLoading: true,

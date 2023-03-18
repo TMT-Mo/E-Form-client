@@ -47,13 +47,13 @@ export const SaveLoadingBtn = styled(
   padding: "5px",
   textTransform: "unset",
   ":hover": { backgroundColor: "#578aff" },
-  "&.MuiLoadingButton-loading": {
-    backgroundColor: "#fff",
-    borderColor: "#407AFF",
-  },
   "&.Mui-disabled": {
     color: "#F2F2F2",
     backgroundColor: "#6F7276",
+  },
+  "&.MuiLoadingButton-loading": {
+    backgroundColor: "#fff",
+    borderColor: "#407AFF",
   },
 });
 

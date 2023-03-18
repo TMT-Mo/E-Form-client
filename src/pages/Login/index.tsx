@@ -11,9 +11,11 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
+  styled,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
 import { SaveLoadingBtn } from "../../components/CustomStyled";
 
 interface State {
@@ -120,7 +122,7 @@ const Login = () => {
             <SaveLoadingBtn
               size="small"
               loading={isLoginLoading}
-              loadingIndicator={<CircularProgress color="inherit" size={16} />}
+              loadingIndicator={<CircularProgress color="primary" size={16} />}
               variant="outlined"
               onClick={onLoginHandler}
               disabled={!(values.password && username)}
