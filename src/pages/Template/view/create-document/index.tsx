@@ -119,11 +119,6 @@ const ViewCreateDocument: React.FC = () => {
             ).replaceAll(/\\&quot;/gi, "");
             setXfdfString(annots);
 
-            // const checkAnnotExists = annotationManager.getAnnotationsList();
-            // console.log(checkAnnotExists[0].elementName)
-            // checkAnnotExists.length >= 3
-            //   ? setEnableSend(true)
-            //   : setEnableSend(false);
           }
         );
       });

@@ -1,10 +1,11 @@
 import { systemServices } from "./../services/system";
 import {
   CreateAccountArgs,
+  Department,
   DepartmentListResponse,
   GetUsersArgs,
   IUser,
-  Permission
+  Permission,
 } from "./../models/system";
 import {
   CaseReducer,
@@ -24,7 +25,7 @@ interface State {
   currentPage: number;
   isGetDepartmentsLoading: boolean;
   isOpenDepartmentList: boolean;
-  departmentList?: DepartmentListResponse;
+  departmentList: Department[];
   isGetUserListLoading: boolean;
   userList: IUser[];
   permissionList: Permission[];
@@ -42,7 +43,7 @@ const initialState: State = {
   currentPage: 0,
   searchItemValue: undefined,
   isGetDepartmentsLoading: false,
-  departmentList: undefined,
+  departmentList: [],
   isOpenDepartmentList: false,
   isGetUserListLoading: false,
   userList: [],
@@ -202,7 +203,7 @@ const createAccount = createAsyncThunk(
   async (args: CreateAccountArgs, { dispatch }) => {
     try {
       const result = await systemServices.createAccount(args);
-      dispatch(handleSuccess({message: result.message}))
+      dispatch(handleSuccess({ message: result.message }));
       return result;
     } catch (error) {
       const err = error as AxiosError;
@@ -240,7 +241,7 @@ const system = createSlice({
       currentPage: 0,
     }),
     onChangeAccountPage: onChangeAccountPageCR,
-    searchAccount: searchAccountCR
+    searchAccount: searchAccountCR,
   },
   extraReducers: (builder) => {
     builder.addCase(getDepartmentList.pending, (state) => ({
@@ -250,7 +251,7 @@ const system = createSlice({
     builder.addCase(getDepartmentList.fulfilled, (state, { payload }) => ({
       ...state,
       isGetDepartmentsLoading: false,
-      departmentList: payload!,
+      departmentList: payload.items!,
     }));
     builder.addCase(getDepartmentList.rejected, (state) => ({
       ...state,
@@ -324,7 +325,14 @@ const system = createSlice({
   },
 });
 
-export { getDepartmentList, getUserList, getSigner, getTemplateTypeList, createAccount, getPermissionList };
+export {
+  getDepartmentList,
+  getUserList,
+  getSigner,
+  getTemplateTypeList,
+  createAccount,
+  getPermissionList,
+};
 
 export const {
   toggleDepartmentList,

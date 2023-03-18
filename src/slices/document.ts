@@ -101,20 +101,6 @@ const updateDocumentCR: CR<{ id: number; isLocked: boolean }> = (
     }
   });
 };
-const changeSharedDepartmentCR: CR<{ departments: Department[] }> = (
-  state,
-  { payload }
-) => ({
-  ...state,
-  sharedDepartment: payload.departments
-})
-const changeSharedUserCR: CR<{ users: SharedUser[] }> = (
-  state,
-  { payload }
-) => ({
-  ...state,
-  sharedUser: payload.users
-})
 
 const createDocument = createAsyncThunk(
   `${ACTION_TYPE}createDocument`,
@@ -410,8 +396,7 @@ const document = createSlice({
       sharedDepartment: [],
       SharedUser: [],
     }),
-    changeSharedDepartment: changeSharedDepartmentCR,
-    changeSharedUser: changeSharedUserCR,
+    
   },
   extraReducers: (builder) => {
     builder.addCase(createDocument.pending, (state) => ({
@@ -589,8 +574,6 @@ export const {
   updateDocument,
   clearDocumentPagination,
   clearSharedInfo,
-  changeSharedDepartment,
-  changeSharedUser
 } = document.actions;
 
 export default document.reducer;

@@ -162,7 +162,6 @@ const ViewApproveDocument: React.FC = () => {
         documentViewer.addEventListener("documentLoaded", async () => {
           signatureTool.importSignatures([signature!]);
           const sig = signatureTool.getFullSignatureAnnotation()
-          console.log(sig)
           // sig[0].Width = 50
           // inst.UI.disableElements(["styling-button"]);
           await annotationManager.importAnnotations(xfdfString);
@@ -204,12 +203,6 @@ const ViewApproveDocument: React.FC = () => {
     xfdfString,
     i18n.language
   ]);
-
-  // console.log(annotationList);
-  // console.log(initialXfdfString)
-  // console.log(
-  //   annotationList?.every((annot) => initialXfdfString?.includes(annot))
-  // );
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">

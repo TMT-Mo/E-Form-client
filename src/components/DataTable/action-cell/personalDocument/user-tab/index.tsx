@@ -8,11 +8,10 @@ import {
   Typography,
   IconButton,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "../../../../../hooks";
 import {
-  changeSharedUser,
   clearSharedInfo,
   getSharedUser,
   shareUsers,
@@ -24,6 +23,8 @@ import {
   SaveLoadingBtn,
 } from "../../../../CustomStyled";
 import { SharedUser } from "../../../../../models/document";
+import { clearUserList, getUserList } from "../../../../../slices/system";
+import Stack from "@mui/material/Stack";
 
 interface Props {
   onOpen: () => void;
@@ -67,56 +68,20 @@ const UserTab = (props: Props) => {
   const { isGetSharedUserLoading, sharedUser, isShareUserLoading } =
     useSelector((state) => state.document);
   const { onOpen, value, idDocument } = props;
+  const [selectedUser, setSelectedUser] = useState<SharedUser[]>([])
 
-  const onAddSelectedUser = (value: SharedUser | undefined) => {
-    if (!value) {
-      dispatch(changeSharedUser({ users: [] }));
-      return;
-    }
-    const { departmentName } = value;
-    if (sharedUser?.length === 0) {
-      // setSelectedDepartment((prevState) => [...prevState!, value]);
-      dispatch(changeSharedUser({ users: [...sharedUser, value] }));
-      return;
-    }
-    if (departmentName === "All" || sharedUser[0].departmentName === "All") {
-      // setSelectedDepartment([value]);
-      dispatch(changeSharedUser({ users: [value] }));
-      return;
-    }
-    // setSelectedDepartment((prevState) => [...prevState!, value]);
-    dispatch(changeSharedUser({ users: [...sharedUser, value] }));
-    return value;
+  const onAddSelectedUser = (value: SharedUser[]) => {
+    setSelectedUser(value)
   };
 
-  const onChangeSelectedUser = (index: number) => {
-    dispatch(
-      changeSharedUser({
-        users: sharedUser?.filter((u) => u !== sharedUser[index]),
-      })
-    );
-  };
 
-  const onShareDepartment = async () => {
+  const onShareUser = async () => {
     await dispatch(
-      shareUsers({ idDocument, userIdList: sharedUser.map((user) => user.id) })
+      shareUsers({ idDocument, userIdList: selectedUser.map((user) => user.id) })
     ).unwrap();
+    onOpen();
   };
 
-  const filterUser = (): SharedUser[] => {
-    let newUserList: SharedUser[] = [];
-    let checkExisted;
-    userList.forEach((u) => {
-      checkExisted = false;
-      sharedUser.forEach((value, index) => {
-        if (u.departmentName === value.departmentName) {
-          checkExisted = true;
-        }
-      });
-      !checkExisted && newUserList.push(u);
-    });
-    return newUserList;
-  };
 
   useEffect(() => {
     const getSharedUsers = dispatch(getSharedUser({ idDocument }));
@@ -127,8 +92,16 @@ const UserTab = (props: Props) => {
   }, [dispatch, idDocument]);
 
   useEffect(() => {
+    const getUsers = dispatch(getUserList({}));
+    getUsers.unwrap();
+
+    return () => getUsers.abort();
+  }, [dispatch]);
+
+  useEffect(() => {
     return () => {
       dispatch(clearSharedInfo());
+      dispatch(clearUserList());
     };
   }, [dispatch]);
   //
@@ -136,23 +109,24 @@ const UserTab = (props: Props) => {
     <TabPanel value={value} index={1}>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          <h4>{t("User list")}</h4>
-          <Autocomplete
-            id="asynchronous-demo"
-            // multiple = {departmentList?.items ? true : false}
+          <Stack
+            spacing={3}
             sx={{
               width: 300,
               color: "#000",
             }}
-            // open={isOpenDepartmentList}
-            // onOpen={getDepartmentListHandler}
-            // onClose={getDepartmentListHandler}
+          >
+            <h4>{t("Share User")}</h4>
+          <Autocomplete
+            id="asynchronous-demo"
+            multiple
             onChange={(e, value) => onAddSelectedUser(value!)}
             isOptionEqualToValue={(option, value) =>
-              option.departmentName === value.departmentName
+              option.username === value.username
             }
             getOptionLabel={(option) => t(option.username)}
-            options={filterUser()}
+            options={userList}
+            value={selectedUser}
             loading={isGetUserListLoading}
             renderInput={(params) => (
               <TextFieldStyled
@@ -161,6 +135,7 @@ const UserTab = (props: Props) => {
                   border: "1px solid #fff",
                   borderRadius: "5px",
                 }}
+                label="To:"
                 InputProps={{
                   ...params.InputProps,
                   endAdornment: (
@@ -175,50 +150,38 @@ const UserTab = (props: Props) => {
               />
             )}
           />
-          {isGetSharedUserLoading && (
-            <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "300px",
-              alignItems: 'center'
-            }}
-            >
-              <CircularProgress />
-            </div>
-          )}
-          <div
-            className="flex flex-col border border-slate-500 rounded-md"
-            style={{ width: "300px" }}
-          >
-            {!isGetSharedUserLoading &&
-              sharedUser.map((user, index) => (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "between",
-                    width: "300px",
-                  }}
-                  key={user.id}
-                >
-                  <span>{user.username}</span>
-                  <IconButton
-                    onClick={() => onChangeSelectedUser(index)}
-                    size="small"
-                  >
-                    <ClearIcon />
-                  </IconButton>
-                </div>
-              ))}
-          </div>
+          <Autocomplete
+            multiple
+            options={sharedUser.map(user => user.username)}
+            value={sharedUser.map(user => user.username)}
+            limitTags={2}
+            readOnly
+            loading={isGetSharedUserLoading}
+            renderInput={(params) => (
+              <TextFieldStyled
+                {...params}
+                label="Current Sharing:"
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <React.Fragment>
+                      {isGetSharedUserLoading ? (
+                        <CircularProgress color="inherit" size={20} />
+                      ) : null}
+                      {params.InputProps.endAdornment}
+                    </React.Fragment>
+                  ),
+                }}
+              />
+            )}
+          />
+          </Stack>
+          
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <WhiteBtn onClick={() => onOpen()}>Cancel</WhiteBtn>
-        <SaveLoadingBtn
-          loading={isShareUserLoading}
-          onClick={onShareDepartment}
-        >
+        <SaveLoadingBtn loading={isShareUserLoading} onClick={onShareUser}>
           Save
         </SaveLoadingBtn>
       </DialogActions>

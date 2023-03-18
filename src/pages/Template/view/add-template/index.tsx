@@ -328,7 +328,7 @@ const ViewAddTemplate: React.FC = () => {
                   option.departmentName === value.departmentName
                 }
                 getOptionLabel={(option) => t(option.departmentName)}
-                options={departmentList?.items!}
+                options={departmentList}
                 loading={isGetDepartmentsLoading}
                 renderInput={(params) => (
                   <TextFieldStyled

@@ -6,6 +6,7 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { Link } from "react-router-dom";
 import { setViewerLocation } from "../../../../slices/location";
 import {
+  ShareTabIndex,
   StatusDocument,
   ViewerLocationIndex,
 } from "../../../../utils/constants";
@@ -41,8 +42,7 @@ export const PersonalDocumentActionCell = (
   const dispatch = useDispatch();
   const [value, setValue] = React.useState(0);
   const { id, status } = row as Document;
-  console.log(row);
-
+  const {DEPARTMENT, USER} = ShareTabIndex
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -56,6 +56,26 @@ export const PersonalDocumentActionCell = (
       rippleRef.current.stop({} as any);
     }
   }, [hasFocus]);
+
+  const createTab = () => {
+    switch (value) {
+      case DEPARTMENT:
+        return <DepartmentTab
+        onOpen={() => setOpen((prevState) => !prevState)}
+        value={value}
+        idDocument={id}
+      />
+    
+      default:
+        return <UserTab
+        onOpen={() => setOpen((prevState) => !prevState)}
+        value={value}
+        idDocument={id}
+      />
+    }
+  }
+
+  // * Clear data
 
   return (
     <div>
@@ -77,13 +97,13 @@ export const PersonalDocumentActionCell = (
       </IconButton>
       {(status === StatusDocument.APPROVED_DOCUMENT ||
         status === StatusDocument.REJECTED_DOCUMENT) && (
-          <IconButton
-            aria-label="delete"
-            onClick={() => setOpen((prevState) => !prevState)}
-          >
-            <ShareIcon fontSize="small" />
-          </IconButton>
-        )}
+        <IconButton
+          aria-label="delete"
+          onClick={() => setOpen((prevState) => !prevState)}
+        >
+          <ShareIcon fontSize="small" />
+        </IconButton>
+      )}
       <StyledDialog
         open={open}
         onClose={() => setOpen((prevState) => !prevState)}
@@ -98,25 +118,16 @@ export const PersonalDocumentActionCell = (
             aria-label="basic tabs example"
             // sx={}
           >
-            <Tab label="Department" {...a11yProps(0)} />
-            <Tab label="User" {...a11yProps(1)} />
+            <Tab label="Department" {...a11yProps(DEPARTMENT)} />
+            <Tab label="User" {...a11yProps(USER)} />
             {/* <Tab label="User" {...a11yProps(2)} /> */}
           </Tabs>
         </Box>
 
         {/* Department Tab */}
 
-        {/*  */}
-        <DepartmentTab
-          onOpen={() => setOpen((prevState) => !prevState)}
-          value={value}
-          idDocument={id}
-        />
-        <UserTab
-          onOpen={() => setOpen((prevState) => !prevState)}
-          value={value}
-          idDocument={id}
-        />
+        {createTab()}
+        
       </StyledDialog>
     </div>
   );

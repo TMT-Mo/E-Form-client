@@ -253,7 +253,6 @@ const DataTable: React.FC = () => {
     return params.id;
   };
   
-  console.log(isNaN(data().table.length))
   return (
     <div style={{ height: 600, width: "100%" }}>
       <DataGrid

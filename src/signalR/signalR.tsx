@@ -54,7 +54,7 @@ export const SignalR = () => {
 
   return (
     <>
-      <button onClick={() => sendMessage()}>test</button>
+      {/* <button onClick={() => sendMessage()}>test</button> */}
     </>
   );
 };

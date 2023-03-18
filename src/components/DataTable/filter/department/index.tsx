@@ -61,7 +61,7 @@ import { useTranslation } from "react-i18next";
               value={value}
               onChange={handleChange}
             >
-              {departmentList.items.map((item) => (
+              {departmentList.map((item) => (
                 <MenuItem value={item.id} key={item.id}>
                   {t(item.departmentName)}
                 </MenuItem>

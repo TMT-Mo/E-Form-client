@@ -6,29 +6,25 @@ import {
   DialogActions,
   Box,
   Typography,
-  IconButton,
 } from "@mui/material";
-import { t } from "i18next";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "../../../../../hooks";
 import { Department } from "../../../../../models/system";
 import {
-  changeSharedDepartment,
   clearSharedInfo,
   getSharedDepartment,
   shareDepartment,
 } from "../../../../../slices/document";
-import ClearIcon from "@mui/icons-material/Clear";
 import {
   getDepartmentList,
-  toggleDepartmentList,
 } from "../../../../../slices/system";
 import {
   TextFieldStyled,
   WhiteBtn,
   SaveLoadingBtn,
 } from "../../../../CustomStyled";
+import { Stack } from "@mui/material";
 
 interface Props {
   onOpen: () => void;
@@ -66,84 +62,55 @@ function TabPanel(props: TabPanelProps) {
 const DepartmentTab = (props: Props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { isGetDepartmentsLoading, departmentList, isOpenDepartmentList } =
+  const { isGetDepartmentsLoading, departmentList } =
     useSelector((state) => state.system);
   const {
     isGetSharedDepartmentLoading,
     sharedDepartment,
     isShareDepartmentLoading,
   } = useSelector((state) => state.document);
+  const [selectedDepartment, setSelectedDepartment] = useState<Department[]>(
+    []
+  );
   const { onOpen, value, idDocument } = props;
 
-  const getDepartmentListHandler = async () => {
-    if (!departmentList) {
-      await dispatch(getDepartmentList()).unwrap();
-    }
-    dispatch(toggleDepartmentList({ isOpen: !isOpenDepartmentList }));
-  };
-
-  const onAddSelectedDepartment = (value: Department | undefined) => {
-    if (!value) {
-      dispatch(changeSharedDepartment({ departments: [] }));
-      return;
-    }
-    const { departmentName } = value;
-    if (sharedDepartment?.length === 0) {
-      // setSelectedDepartment((prevState) => [...prevState!, value]);
-      dispatch(
-        changeSharedDepartment({ departments: [...sharedDepartment, value] })
+  const onAddSelectedDepartment = (value: Department[]) => {
+    if (
+      selectedDepartment.find(
+        (department) => department.departmentName === "All"
+      )
+    ) {
+      setSelectedDepartment(
+        value.filter((department) => department.departmentName !== "All")
       );
       return;
     }
-    if (
-      departmentName === "All" ||
-      sharedDepartment[0].departmentName === "All"
-    ) {
-      // setSelectedDepartment([value]);
-      dispatch(changeSharedDepartment({ departments: [value] }));
+    if (value.find((department) => department.departmentName === "All")) {
+      setSelectedDepartment(
+        value.filter((department) => department.departmentName === "All")
+      );
       return;
     }
-    // setSelectedDepartment((prevState) => [...prevState!, value]);
-    dispatch(
-      changeSharedDepartment({ departments: [...sharedDepartment, value] })
-    );
-    return value;
+    setSelectedDepartment(value);
   };
 
-  const onChangeSelectedDepartment = (index: number) => {
-    dispatch(
-      changeSharedDepartment({
-        departments: sharedDepartment?.filter(
-          (d) => d !== sharedDepartment[index]
-        ),
-      })
-    );
-  };
 
   const onShareDepartment = async () => {
     await dispatch(
       shareDepartment({
         idDocument,
-        departmentIdList: sharedDepartment.map((department) => department.id),
+        departmentIdList: selectedDepartment.map((department) => department.id),
       })
     ).unwrap();
-    onOpen()
+    onOpen();
   };
 
-  const filterDepartment = (): Department[] => {
-    let newUserList: Department[] = [];
-    let checkExisted;
-    departmentList?.items!.forEach((u) => {
-      checkExisted = false;
-      sharedDepartment.forEach((value, index) => {
-        if (u.departmentName === value.departmentName) {
-          checkExisted = true;
-        }
-      });
-      !checkExisted && newUserList.push(u);
-    });
-    return newUserList;
-  };
+  useEffect(() => {
+    const getDepartment = dispatch(getDepartmentList());
+    getDepartment.unwrap();
+
+    return () => getDepartment.abort();
+  }, [dispatch]);
 
   useEffect(() => {
     const getSharedDepartments = dispatch(getSharedDepartment({ idDocument }));
@@ -157,42 +124,69 @@ const DepartmentTab = (props: Props) => {
       dispatch(clearSharedInfo());
     };
   }, [dispatch]);
-  //
+
   return (
     <TabPanel value={value} index={0}>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          <h4>{t("Department list")}</h4>
-          <Autocomplete
-            id="asynchronous-demo"
-            // multiple = {departmentList?.items ? true : false}
-            sx={{
+          <Stack spacing={3} sx={{
               width: 300,
               color: "#000",
-            }}
-            open={isOpenDepartmentList}
-            onOpen={getDepartmentListHandler}
-            onClose={getDepartmentListHandler}
+            }}>
+          <h4>{t("Share Department")}</h4>
+          <Autocomplete
+            id="asynchronous-demo"
+            multiple
+            
             onChange={(e, value) => onAddSelectedDepartment(value!)}
             isOptionEqualToValue={(option, value) =>
               option.departmentName === value.departmentName
             }
             getOptionLabel={(option) => t(option.departmentName)}
-            options={filterDepartment()}
+            options={departmentList}
             loading={isGetDepartmentsLoading}
+            value={selectedDepartment}
+            limitTags={2}
             renderInput={(params) => (
               <TextFieldStyled
                 {...params}
+                label="To:"
                 sx={{
                   border: "1px solid #fff",
                   borderRadius: "5px",
                 }}
                 InputProps={{
                   ...params.InputProps,
-                  endAdornment: (
+                  startAdornment: (
                     <React.Fragment>
                       {isGetDepartmentsLoading ? (
                         <CircularProgress color="primary" size={20} />
+                      ) : null}
+                      {params.InputProps.startAdornment}
+                    </React.Fragment>
+                  ),
+                }}
+              />
+            )}
+          />
+          
+          <Autocomplete
+            multiple
+            options={sharedDepartment.map(department => department.departmentName)}
+            value={sharedDepartment.map(department => department.departmentName)}
+            limitTags={2}
+            readOnly
+            loading={isGetSharedDepartmentLoading}
+            renderInput={(params) => (
+              <TextFieldStyled
+                {...params}
+                label="Current Sharing:"
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <React.Fragment>
+                      {isGetSharedDepartmentLoading ? (
+                        <CircularProgress color="inherit" size={20} />
                       ) : null}
                       {params.InputProps.endAdornment}
                     </React.Fragment>
@@ -201,42 +195,7 @@ const DepartmentTab = (props: Props) => {
               />
             )}
           />
-          {isGetSharedDepartmentLoading && (
-            <div
-              style={{
-                width: "300px",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <CircularProgress />
-            </div>
-          )}
-          <div
-            className="flex flex-col border border-slate-500 rounded-md"
-            style={{ width: "300px" }}
-          >
-            {!isGetSharedDepartmentLoading &&
-              sharedDepartment.map((department, index) => (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    width: "300px",
-                    alignItems: 'center'
-                  }}
-                  key={department.id}
-                >
-                  <span>{department.departmentName}</span>
-                  <IconButton
-                    onClick={() => onChangeSelectedDepartment(index)}
-                    size="small"
-                  >
-                    <ClearIcon />
-                  </IconButton>
-                </div>
-              ))}
-          </div>
+          </Stack>
         </DialogContentText>
       </DialogContent>
       <DialogActions>

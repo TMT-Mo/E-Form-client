@@ -141,3 +141,8 @@ export enum DeviceWidth {
   IPAD_WIDTH = 768,
   LAPTOP_WIDTH = 1440,
 }
+
+export enum ShareTabIndex{
+  DEPARTMENT = 0,
+  USER = 1
+}

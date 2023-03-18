@@ -443,7 +443,7 @@ export const sharedDocColumns: GridColDef[] = [
     headerName: "Date Published",
     renderCell: DateCell,
     align: "center",
-    flex: 0.3,
+    flex: 0.5,
     headerAlign: "center",
     filterOperators: createdAtOnlyOperators,
     minWidth: 100,
@@ -456,7 +456,7 @@ export const sharedDocColumns: GridColDef[] = [
     renderCell: DateCell,
     align: "center",
     headerAlign: "center",
-    flex: 0.3,
+    flex: 0.5,
     minWidth: 100,
     filterOperators: updatedAtOnlyOperators,
     renderHeader: TranslateHeader,
@@ -473,7 +473,9 @@ export const sharedDocColumns: GridColDef[] = [
   {
     field: STATUS,
     headerName: "Status",
-    flex: 1,
+    align: "center",
+    renderCell: StatusCell,
+    headerAlign: "center",
     renderHeader: TranslateHeader,
   },
   {
@@ -484,7 +486,6 @@ export const sharedDocColumns: GridColDef[] = [
     sortable: false,
     hideable: false,
     renderHeader: TranslateHeader,
-    flex: 1
   },
 ];
 
