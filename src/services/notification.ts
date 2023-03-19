@@ -10,13 +10,13 @@ import {
 const getNotificationList = async (
   args: GetNotificationArgs
 ): Promise<GetNotificationResponse> => {
-//   const response = await httpClient.post({
-//     url: apiPaths.notification.getNotificationList,
-//     params: args,
-//   });
-// return response.data as GetNotificationResponse;
-const response: GetNotificationResponse = {notificationList: DummyNotificationList}
-return response
+  const response = await httpClient.post({
+    url: apiPaths.notification.getNotificationList,
+    data: args,
+  });
+return response.data as GetNotificationResponse;
+// const response: GetNotificationResponse = {notificationList: DummyNotificationList}
+// return response
 };
 
 const checkNotification = async (

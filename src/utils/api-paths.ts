@@ -37,7 +37,7 @@ const apiPaths = {
         getShareUsers: `${apiHead}api/Document/getUsersByshareDocument`,
     },
     notification:{
-        getNotificationList: `${apiHead}api/notification/getNotificationList`,
+        getNotificationList: `${apiHead}api/Users/getNotificationByUser`,
         checkNotification: `${apiHead}api/notification/checkNotification`,
     },
     signalR:{

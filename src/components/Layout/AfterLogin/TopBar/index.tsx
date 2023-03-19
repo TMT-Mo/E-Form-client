@@ -47,8 +47,9 @@ const TopBar: React.FC = () => {
   };
 
   useEffect(() => {
+    if (!userInfo?.userId) return;
     const handleNotification = dispatch(
-      getNotification({ userId: userInfo?.userId! })
+      getNotification({ userId: +userInfo?.userId })
     );
     handleNotification.unwrap();
 
@@ -74,21 +75,12 @@ const TopBar: React.FC = () => {
       </IconButton>
       <div className="flex space-x-5">
         <LanguageSelect />
-        {/* <div>
-          <IconButton id="basic-button" onClick={handleClick}>
-            <Badge variant="dot" color="error">
-              <NotificationsIcon
-                className="fill-blue-config"
-                fontSize="medium"
-              />
-            </Badge>
-          </IconButton>
-          <Notification
-            anchorEl={anchorEl}
-            open={open}
-            handleClose={handleClose}
-          />
-        </div> */}
+        <IconButton id="basic-button" onClick={handleClick}>
+          <Badge variant="dot" color="error">
+            <NotificationsIcon className="fill-blue-config" fontSize="medium" />
+          </Badge>
+        </IconButton>
+
         <PopupState variant="popover" popupId="demo-popup-popover">
           {(popupState) => (
             <div>
@@ -140,6 +132,11 @@ const TopBar: React.FC = () => {
             </div>
           )}
         </PopupState>
+        <Notification
+          anchorEl={anchorEl}
+          open={open}
+          handleClose={handleClose}
+        />
       </div>
     </div>
   );

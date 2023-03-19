@@ -75,10 +75,11 @@ export const RejectBtn = styled(
 
 export const StyledMenu = styled(Menu)({
   "& .MuiPaper-root": {
-    padding: "20px 0",
+    padding: "20px 0px",
   },
   "& .MuiMenu-list": {
-    width: "300px",
+    width: "350px",
+    minHeight: '150px'
   },
   "& .MuiMenuItem-root": {
     marginTop: "10px",
@@ -92,9 +93,7 @@ export const StyledAddBtn = styled(Button)({
   color: "#fff",
   padding: "0px 15px",
   height: "80%",
-  display: "flex",
   alignItems: "center",
-  textDecoration: "none",
   ":hover": {
     color: "#407AFF",
   },
@@ -102,21 +101,6 @@ export const StyledAddBtn = styled(Button)({
 
 export const MenuNotification = styled(MenuItem)({
   display: "flex",
-  flexDirection: "column",
-  lineHeight: "40px",
-  width: "300px",
+  alignItems: 'center'
 });
 
-export const CustomAutoComplete = styled(Autocomplete)({
-  border: "1px solid #fff",
-  borderRadius: "5px",
-  "& .MuiAutocomplete-clearIndicator": {
-    backgroundColor: "#000",
-    fill: "#EBEBEB",
-  },
-  "& .MuiAutocomplete-popupIndicator": {
-    backgroundColor: "#EBEBEB",
-    fill: "#EBEBEB",
-  },
-
-});

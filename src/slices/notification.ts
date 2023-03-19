@@ -17,7 +17,7 @@ import { handleError } from "./alert";
 interface State {
   isGetNotification: boolean;
   isCheckNotification: boolean;
-  notificationList?: Notification[];
+  notificationList: Notification[];
 }
 
 type CR<T> = CaseReducer<State, PayloadAction<T>>;
@@ -86,7 +86,7 @@ const notification = createSlice({
     builder.addCase(getNotification.fulfilled, (state, { payload }) => ({
       ...state,
       isGetNotification: false,
-      notificationList: payload.notificationList,
+      notificationList: payload as Notification[],
     }));
     builder.addCase(getNotification.rejected, (state) => ({
       ...state,

@@ -6,7 +6,6 @@ import {
   DialogActions,
   Box,
   Typography,
-  IconButton,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -16,17 +15,14 @@ import {
   getSharedUser,
   shareUsers,
 } from "../../../../../slices/document";
-import ClearIcon from "@mui/icons-material/Clear";
 import {
   TextFieldStyled,
   WhiteBtn,
   SaveLoadingBtn,
-  CustomAutoComplete,
 } from "../../../../CustomStyled";
 import { SharedUser } from "../../../../../models/document";
 import { clearUserList, getUserList } from "../../../../../slices/system";
 import Stack from "@mui/material/Stack";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 interface Props {
   onOpen: () => void;
   value: number;

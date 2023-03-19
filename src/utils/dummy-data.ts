@@ -73,24 +73,28 @@ export const DummyNotificationList: Notification[] = [
     title: "Noti 1",
     description: "Some stupid descriptions you have ever seen :( .",
     id: 1,
-    isChecked: false
+    isChecked: false,
+    createdAt: 'abc'
   },
   {
     title: "Noti 2",
     description: "Some stupid descriptions you have ever seen :( .",
     id: 2,
-    isChecked: false
+    isChecked: false,
+    createdAt: 'abc'
   },
   {
     title: "Noti 3",
     description: "Some stupid descriptions you have ever seen :( .",
     id: 3,
-    isChecked: true
+    isChecked: true,
+    createdAt: 'abc'
   },
   {
     title: "Noti 4",
     description: "Some stupid descriptions you have ever seen :( .",
     id: 4,
-    isChecked: true
+    isChecked: true,
+    createdAt: 'abc'
   },
 ];

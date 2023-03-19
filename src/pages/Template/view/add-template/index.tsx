@@ -356,7 +356,7 @@ const ViewAddTemplate: React.FC = () => {
                   <CircularProgress />
                 </div>
               )}
-              {userList && !isGetSignerLoading && (
+              {form.idDepartment && !isGetSignerLoading && (
                 <Autocomplete
                   multiple
                   limitTags={2}

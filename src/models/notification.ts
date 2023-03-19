@@ -3,6 +3,7 @@ export interface Notification{
     title: string,
     description: string,
     isChecked: boolean,
+    createdAt: string,
 }
 
 export interface GetNotificationArgs{
@@ -10,7 +11,7 @@ export interface GetNotificationArgs{
 }
 
 export interface GetNotificationResponse{
-    notificationList: Notification[]
+
 }
 export interface CheckNotificationArgs{
     notificationId: number[]
