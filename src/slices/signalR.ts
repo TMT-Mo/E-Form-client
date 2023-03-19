@@ -2,7 +2,7 @@ import { HubConnection } from '@microsoft/signalr';
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface State {
-    connection?: HubConnection;
+    connection: HubConnection | null;
   }
   
   type CR<T> = CaseReducer<State, PayloadAction<T>>;
@@ -10,7 +10,7 @@ interface State {
 //   const ACTION_TYPE = "notification/";
   
   const initialState: State = {
-    connection: undefined
+    connection: null
   };
 
   const setHubConnectionCR: CR<{ incomingConnection: HubConnection }> = (state, { payload }) => ({
@@ -25,3 +25,5 @@ const signalR = createSlice({
 })
 
 export const {setHubConnection} = signalR.actions
+
+export default signalR.reducer 

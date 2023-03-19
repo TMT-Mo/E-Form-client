@@ -1,10 +1,24 @@
-interface Notification{
+
+interface NotificationResponse {
+    id: number,
     title: string,
-    description: string
+    description: string,
+    isChecked: boolean,
+    createdAt: string,
 }
 
-export interface sendSignalRArgs{
-    userId: number[],
-    notification: Notification,
-    departmentId: number[]
+interface Notification{
+    title?: string,
+    description: string,
+    isChecked: boolean
+}
+export interface sendSignalNotificationArgs{
+    userIds?: number[],
+    notify: Notification,
+    departmentId?: number[]
+}
+
+export interface receiveSignalNotification{
+    userIds: number[],
+    notify: NotificationResponse,
 }

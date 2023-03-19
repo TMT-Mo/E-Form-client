@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "../../../../../hooks";
+import { useDispatch, useSelector, useSignalR } from "../../../../../hooks";
 import { Department } from "../../../../../models/system";
 import {
   clearSharedInfo,
@@ -23,6 +23,7 @@ import {
   SaveLoadingBtn,
 } from "../../../../CustomStyled";
 import { Stack } from "@mui/material";
+import { userInfo } from "os";
 
 interface Props {
   onOpen: () => void;
@@ -60,6 +61,7 @@ function TabPanel(props: TabPanelProps) {
 const DepartmentTab = (props: Props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const {userInfo} = useSelector(state => state.auth)
   const { isGetDepartmentsLoading, departmentList } = useSelector(
     (state) => state.system
   );
@@ -72,6 +74,7 @@ const DepartmentTab = (props: Props) => {
     []
   );
   const { onOpen, value, idDocument } = props;
+  const {sendSignalNotification} = useSignalR()
 
   const onAddSelectedDepartment = (value: Department[]) => {
     if (
@@ -100,6 +103,10 @@ const DepartmentTab = (props: Props) => {
         departmentIdList: selectedDepartment.map((department) => department.id),
       })
     ).unwrap();
+    sendSignalNotification({departmentId: selectedDepartment.map(d => d.id), notify:{
+      isChecked: false,
+      description: `You has been shared to view a document by ${userInfo?.userName}!`
+    }})
     onOpen();
   };
 

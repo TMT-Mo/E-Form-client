@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer from "@pdftron/webviewer";
 import AlertPopup from "../../../../components/AlertPopup";
-import { useDispatch, useSelector } from "../../../../hooks";
+import { useDispatch, useSelector, useSignalR } from "../../../../hooks";
 import { createDocument } from "../../../../slices/document";
 import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from "uuid";
@@ -17,6 +17,7 @@ const ViewCreateDocument: React.FC = () => {
   const { templateDetail } = useSelector((state) => state.template);
   const { isCreateDocumentLoading } = useSelector((state) => state.document);
   const { userInfo } = useSelector((state) => state.auth);
+  const {sendSignalNotification} = useSignalR()
   const {
     departmentName,
     description,
@@ -125,7 +126,7 @@ const ViewCreateDocument: React.FC = () => {
     });
   }, [departmentName, link, templateName, typeName, userInfo?.userId, userInfo?.userName, i18n.language]);
 
-  const onCreateTemplate = async () => {
+  const onCreateDocument = async () => {
     await dispatch(
       createDocument({
         createdBy: +userInfo?.userId!,
@@ -133,6 +134,10 @@ const ViewCreateDocument: React.FC = () => {
         xfdfString: xfdfString!,
       })
     ).unwrap();
+    sendSignalNotification({userIds: [signatoryList[0].id], notify:{
+      isChecked: false,
+      description: `You have a new document waiting for an approval!`
+    }})
     navigate("/user");
   };
 
@@ -185,7 +190,7 @@ const ViewCreateDocument: React.FC = () => {
                   <CircularProgress color="inherit" size={16} />
                 }
                 variant="outlined"
-                onClick={onCreateTemplate}
+                onClick={onCreateDocument}
                 disabled={false}
               >
                 {t("Send")}

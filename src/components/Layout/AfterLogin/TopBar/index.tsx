@@ -33,7 +33,7 @@ const TopBar: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [badge, setBadge] = useState<number>();
-  const { notificationList } = useSelector((state) => state.notification);
+  const { notificationList, hasNewNotification } = useSelector((state) => state.notification);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -76,7 +76,7 @@ const TopBar: React.FC = () => {
       <div className="flex space-x-5">
         <LanguageSelect />
         <IconButton id="basic-button" onClick={handleClick}>
-          <Badge variant="dot" color="error">
+          <Badge variant="dot" color="error" invisible={!hasNewNotification}>
             <NotificationsIcon className="fill-blue-config" fontSize="medium" />
           </Badge>
         </IconButton>

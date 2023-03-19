@@ -52,6 +52,6 @@ const alert = createSlice({
   },
 });
 
-export const { handleSuccess, handleError, handleClose } = alert.actions;
+export const { handleSuccess, handleError, handleClose, handleInfo } = alert.actions;
 
 export default alert.reducer;

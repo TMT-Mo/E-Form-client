@@ -29,6 +29,8 @@ export interface GetDocumentsArgs {
 }
 
 interface Creator {
+  id: number;
+  departmentName: string;
   username: string;
   signature: string;
   status: number;

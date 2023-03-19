@@ -46,7 +46,7 @@ const AwaitSigning = () => {
     };
   }, [currentPage, dispatch, filter?.field, filter?.value, searchItemValue, sorter, userInfo?.userId]);
 
-  
+  console.count()
   return (
     <div className="flex flex-col py-10 space-y-6">
       <h2>{t("Await Signing")}</h2>

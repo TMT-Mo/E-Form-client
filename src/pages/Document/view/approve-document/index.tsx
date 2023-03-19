@@ -17,7 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer, { Core } from "@pdftron/webviewer";
 import AlertPopup from "../../../../components/AlertPopup";
-import { useDispatch, useSelector } from "../../../../hooks";
+import { useDispatch, useSelector, useSignalR } from "../../../../hooks";
 import { useTranslation } from "react-i18next";
 import { helpers } from "../../../../utils";
 import { approveDocument } from "../../../../slices/document";
@@ -42,6 +42,7 @@ const ViewApproveDocument: React.FC = () => {
   const { userInfo, signature, isGetSignatureLoading } = useSelector(
     (state) => state.auth
   );
+  const { sendSignalNotification } = useSignalR();
   const {
     createdAt,
     createdBy,
@@ -103,6 +104,32 @@ const ViewApproveDocument: React.FC = () => {
         comment: reason,
       })
     ).unwrap();
+    if (isAccepting) {
+      const newSignerList = signatoryList?.filter(
+        (signer) => signer.id !== +userInfo?.userId!
+      )!;
+      const nextSigner = newSignerList.find(
+        (signer) => signer.status === StatusDocument.PROCESSING_DOCUMENT
+      );
+      console.log(nextSigner);
+      nextSigner &&
+        sendSignalNotification({
+          userIds: [nextSigner?.id],
+          notify: {
+            isChecked: false,
+            description: `You have a new document waiting for an approval!`,
+          },
+        });
+    }
+    if(+userInfo?.userId! === signatoryList?.pop()?.id){
+      sendSignalNotification({
+        userIds: [createdBy.id],
+        notify: {
+          isChecked: false,
+          description: `${documentName} has been ${isAccepting ? 'accepted' : 'rejected'}!`,
+        },
+      });
+    }
     navigate("/user");
   };
 
@@ -126,27 +153,25 @@ const ViewApproveDocument: React.FC = () => {
             "downloadButton",
             "styling-button",
             "toolStylePopup",
-            'languageButton'
+            "languageButton",
           ],
           annotationUser: userInfo?.userId!.toString(),
-          css: '../../../../index.css'
+          css: "../../../../index.css",
         },
         viewer.current!
       ).then(async (inst) => {
         const { documentViewer, annotationManager } = inst.Core;
-        inst.UI.setLanguage(i18n.language === 'vn' ? 'vi' : 'en');
+        inst.UI.setLanguage(i18n.language === "vn" ? "vi" : "en");
         const signatureTool = documentViewer.getTool(
           "AnnotationCreateSignature"
         ) as Core.Tools.SignatureCreateTool;
-        
+
         inst.UI.enableFeatures([inst.UI.Feature.Initials]);
         const iframeDoc = inst.UI.iframeWindow.document;
         // const zoomOverlay = iframeDoc.querySelector(
         //   '[data-element="styling-button"]'
         // );
 
-        
-        
         inst.UI.setHeaderItems(function (header) {
           header.push({
             type: "actionButton",
@@ -161,7 +186,7 @@ const ViewApproveDocument: React.FC = () => {
 
         documentViewer.addEventListener("documentLoaded", async () => {
           signatureTool.importSignatures([signature!]);
-          const sig = signatureTool.getFullSignatureAnnotation()
+          const sig = signatureTool.getFullSignatureAnnotation();
           // sig[0].Width = 50
           // inst.UI.disableElements(["styling-button"]);
           await annotationManager.importAnnotations(xfdfString);
@@ -201,7 +226,7 @@ const ViewApproveDocument: React.FC = () => {
     userInfo?.userId,
     userInfo?.userName,
     xfdfString,
-    i18n.language
+    i18n.language,
   ]);
   return (
     <Fragment>

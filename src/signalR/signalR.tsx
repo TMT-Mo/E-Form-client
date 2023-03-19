@@ -1,60 +1,50 @@
-import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
-import React, { useCallback, useEffect, useState } from "react";
+import {
+  HubConnectionBuilder,
+} from "@microsoft/signalr";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "../hooks";
-import { handleSuccess } from "../slices/alert";
+import { handleInfo } from "../slices/alert";
+import { getNewNotification, getNotification } from "../slices/notification";
+import { setHubConnection } from "../slices/signalR";
 import { apiPaths } from "../utils";
+import { SignalRMethod } from "./signalR-constant";
+import { receiveSignalNotification } from "./signalR-model";
 
 export const SignalR = () => {
-  const [connection, setConnection] = useState<null | HubConnection>(null);
   const { userInfo } = useSelector((state) => state.auth);
+  const { connection } = useSelector((state) => state.signalR);
   const dispatch = useDispatch();
-  const [inputText, setInputText] = useState("");
-
-  const sendMessage = useCallback(async () => {
-    console.log("Im in");
-    try {
-      await connection!.invoke("SendMessage");
-    } catch (error) {
-      console.log(error);
-    }
-  }, [connection]);
+  const { receiveNotification } = SignalRMethod;
 
   useEffect(() => {
     const connect = new HubConnectionBuilder()
-      .withUrl(apiPaths.signalR.test)
+      .withUrl(apiPaths.signalR.hubURL)
       .withAutomaticReconnect()
       .build();
 
-    setConnection(connect);
-  }, []);
+    dispatch(setHubConnection({ incomingConnection: connect }));
+  }, [dispatch]);
 
   useEffect(() => {
     if (connection) {
       connection
         .start()
         .then(() => {
-          console.log(connection?.state);
-          console.log(connection.connectionId)
-          connection.on("ReceiveMessage", (message) => {
-            console.log(message)
-            // if (message === +userInfo?.userId!) {
-            //   dispatch(handleSuccess({message: 'Hello World!'}))
-            // }
+          console.log(connection.state)
+          connection.on(receiveNotification, async (response: receiveSignalNotification) => {
+            console.log(response);
+            if (response.userIds.includes(+userInfo?.userId!)) {
+              dispatch(handleInfo({message: response.notify.description}))
+              dispatch(getNewNotification({hasNewNotification: true}))
+              await dispatch(getNotification({userId: +userInfo?.userId!})).unwrap()
+            }
           });
 
-          connection.onclose((e) => { });
+          connection.onclose((e) => {});
         })
         .catch((error) => console.log(error));
     }
-  }, [connection, dispatch, sendMessage, userInfo?.userId]);
+  }, [connection, dispatch, receiveNotification, userInfo?.userId]);
 
-  useEffect(() => {
-    connection?.state === "Connected" && sendMessage();
-  }, [connection?.state, sendMessage]);
-
-  return (
-    <>
-      {/* <button onClick={() => sendMessage()}>test</button> */}
-    </>
-  );
+  return <></>;
 };

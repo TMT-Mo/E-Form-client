@@ -45,7 +45,7 @@ export const useAuth = (): UseAuth => {
     dispatch(setLocation({locationIndex: location}))
     dispatch(setUserInfo({ user }));
     navigate("/user");
-  }, [dispatch, getLocation, getToken, logout, navigate]);
+  }, [dispatch, getLocation, getToken, navigate]);
 
   return {
     logout,

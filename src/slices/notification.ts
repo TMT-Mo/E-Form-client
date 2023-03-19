@@ -18,6 +18,7 @@ interface State {
   isGetNotification: boolean;
   isCheckNotification: boolean;
   notificationList: Notification[];
+  hasNewNotification: boolean;
 }
 
 type CR<T> = CaseReducer<State, PayloadAction<T>>;
@@ -28,13 +29,25 @@ const initialState: State = {
   isGetNotification: false,
   isCheckNotification: false,
   notificationList: [],
+  hasNewNotification: false
 };
+
+const getNewNotificationCR: CR<{ hasNewNotification: boolean }> = (
+  state,
+  { payload }
+) => ({
+  ...state,
+  hasNewNotification: payload.hasNewNotification,
+});
 
 const getNotification = createAsyncThunk(
   `${ACTION_TYPE}getNotification`,
   async (args: GetNotificationArgs, { dispatch }) => {
     try {
-      const result = await notificationServices.getNotificationList(args);
+      const result = await notificationServices.getNotificationList(args) as Notification[];
+      if(result.find(value => value.isChecked === false)){
+        dispatch(getNewNotification({hasNewNotification: true}))
+      }
       return result;
     } catch (error) {
       const err = error as AxiosError;
@@ -77,7 +90,9 @@ const checkNotification = createAsyncThunk(
 const notification = createSlice({
   name: "notification",
   initialState,
-  reducers: {},
+  reducers: {
+    getNewNotification: getNewNotificationCR
+  },
   extraReducers: (builder) => {
     builder.addCase(getNotification.pending, (state) => ({
       ...state,
@@ -86,7 +101,7 @@ const notification = createSlice({
     builder.addCase(getNotification.fulfilled, (state, { payload }) => ({
       ...state,
       isGetNotification: false,
-      notificationList: payload as Notification[],
+      notificationList: payload,
     }));
     builder.addCase(getNotification.rejected, (state) => ({
       ...state,
@@ -109,6 +124,6 @@ const notification = createSlice({
 
 export { getNotification, checkNotification };
 
-export const {} = notification.actions;
+export const {getNewNotification} = notification.actions;
 
 export default notification.reducer;

@@ -15,7 +15,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer from "@pdftron/webviewer";
 import AlertPopup from "../../../../components/AlertPopup";
-import { useDispatch, useSelector } from "../../../../hooks";
+import { useDispatch, useSelector, useSignalR } from "../../../../hooks";
 import { approveTemplate } from "../../../../slices/template";
 import { StatusTemplate } from "../../../../utils/constants";
 import { useTranslation } from "react-i18next";
@@ -31,6 +31,7 @@ const ViewApproveTemplate: React.FC = () => {
   const { isApproveTemplateLoading, templateDetail } = useSelector(
     (state) => state.template
   );
+  const {sendSignalNotification} = useSignalR()
   const { userInfo } = useSelector((state) => state.auth);
   const {
     createdAt,
@@ -108,6 +109,13 @@ const ViewApproveTemplate: React.FC = () => {
         reason: `${!isAccepting ? reason : undefined}`,
       })
     ).unwrap();
+    sendSignalNotification({
+      userIds: [createdBy.id],
+      notify: {
+        isChecked: false,
+        description: `${templateName} has been ${isAccepting ? 'accepted':'rejected'} by ${userInfo?.userId!}!`,
+      },
+    });
     navigate("/user");
   };
   return (

@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "../../../../../hooks";
+import { useDispatch, useSelector, useSignalR } from "../../../../../hooks";
 import {
   clearSharedInfo,
   getSharedUser,
@@ -64,8 +64,10 @@ const UserTab = (props: Props) => {
   );
   const { isGetSharedUserLoading, sharedUser, isShareUserLoading } =
     useSelector((state) => state.document);
+    const {userInfo} = useSelector(state => state.auth)
   const { onOpen, value, idDocument } = props;
   const [selectedUser, setSelectedUser] = useState<SharedUser[]>([]);
+  const {sendSignalNotification} = useSignalR()
 
   const onAddSelectedUser = (value: SharedUser[]) => {
     setSelectedUser(value);
@@ -78,6 +80,10 @@ const UserTab = (props: Props) => {
         userIdList: selectedUser.map((user) => user.id),
       })
     ).unwrap();
+    sendSignalNotification({userIds: selectedUser.map(u => u.id), notify:{
+      isChecked: false,
+      description: `You has been shared to view a document by ${userInfo?.userName}!`
+    }})
     onOpen();
   };
 

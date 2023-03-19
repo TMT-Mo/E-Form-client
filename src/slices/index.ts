@@ -8,6 +8,7 @@ import document from './document';
 import filter from "./filter";
 import uiControl from "./ui-control";
 import notification from "./notification";
+import signalR from './signalR'
 
 export default {
   auth,
@@ -18,5 +19,6 @@ export default {
   system,
   document,
   filter,
-  uiControl
+  uiControl,
+  signalR
 };
