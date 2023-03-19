@@ -86,13 +86,6 @@ const ViewAddTemplate: React.FC = () => {
   const [isEnableSave, setIsEnableSave] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
 
-  const getDepartmentListHandler = async () => {
-    if (!departmentList) {
-      await dispatch(getDepartmentList()).unwrap();
-    }
-    dispatch(toggleDepartmentList({ isOpen: !isOpenDepartmentList }));
-  };
-
   const getTemplateTypesHandler = async () => {
     if (!templateTypeList) {
       await dispatch(getTemplateTypeList()).unwrap();
@@ -181,6 +174,13 @@ const ViewAddTemplate: React.FC = () => {
       instance.current.UI.loadDocument(file);
     }
   }, [file]);
+
+  useEffect(() => {
+    const getDepartment = dispatch(getDepartmentList());
+    getDepartment.unwrap();
+
+    return () => getDepartment.abort();
+  }, [dispatch]);
 
   useEffect(() => {
     if (form.idDepartment) {
@@ -320,9 +320,6 @@ const ViewAddTemplate: React.FC = () => {
                 sx={{
                   width: 300,
                 }}
-                open={isOpenDepartmentList}
-                onOpen={getDepartmentListHandler}
-                onClose={getDepartmentListHandler}
                 onChange={(e, value) => onChangeSelectedDepartment(value?.id)}
                 isOptionEqualToValue={(option, value) =>
                   option.departmentName === value.departmentName

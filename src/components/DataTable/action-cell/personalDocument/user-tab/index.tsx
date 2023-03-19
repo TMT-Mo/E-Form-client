@@ -21,11 +21,12 @@ import {
   TextFieldStyled,
   WhiteBtn,
   SaveLoadingBtn,
+  CustomAutoComplete,
 } from "../../../../CustomStyled";
 import { SharedUser } from "../../../../../models/document";
 import { clearUserList, getUserList } from "../../../../../slices/system";
 import Stack from "@mui/material/Stack";
-
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 interface Props {
   onOpen: () => void;
   value: number;
@@ -68,20 +69,21 @@ const UserTab = (props: Props) => {
   const { isGetSharedUserLoading, sharedUser, isShareUserLoading } =
     useSelector((state) => state.document);
   const { onOpen, value, idDocument } = props;
-  const [selectedUser, setSelectedUser] = useState<SharedUser[]>([])
+  const [selectedUser, setSelectedUser] = useState<SharedUser[]>([]);
 
   const onAddSelectedUser = (value: SharedUser[]) => {
-    setSelectedUser(value)
+    setSelectedUser(value);
   };
-
 
   const onShareUser = async () => {
     await dispatch(
-      shareUsers({ idDocument, userIdList: selectedUser.map((user) => user.id) })
+      shareUsers({
+        idDocument,
+        userIdList: selectedUser.map((user) => user.id),
+      })
     ).unwrap();
     onOpen();
   };
-
 
   useEffect(() => {
     const getSharedUsers = dispatch(getSharedUser({ idDocument }));
@@ -110,81 +112,98 @@ const UserTab = (props: Props) => {
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
           <Stack
-            spacing={3}
+            spacing={2}
             sx={{
-              width: 300,
+              width: '100%',
               color: "#000",
             }}
           >
             <h4>{t("Share User")}</h4>
-          <Autocomplete
-            id="asynchronous-demo"
-            multiple
-            onChange={(e, value) => onAddSelectedUser(value!)}
-            isOptionEqualToValue={(option, value) =>
-              option.username === value.username
-            }
-            getOptionLabel={(option) => t(option.username)}
-            options={userList}
-            value={selectedUser}
-            loading={isGetUserListLoading}
-            renderInput={(params) => (
-              <TextFieldStyled
-                {...params}
-                sx={{
-                  border: "1px solid #fff",
-                  borderRadius: "5px",
-                }}
-                label="To:"
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <React.Fragment>
-                      {isGetUserListLoading ? (
-                        <CircularProgress color="primary" size={20} />
-                      ) : null}
-                      {params.InputProps.endAdornment}
-                    </React.Fragment>
-                  ),
-                }}
-              />
-            )}
-          />
-          <Autocomplete
-            multiple
-            options={sharedUser.map(user => user.username)}
-            value={sharedUser.map(user => user.username)}
-            limitTags={2}
-            readOnly
-            loading={isGetSharedUserLoading}
-            renderInput={(params) => (
-              <TextFieldStyled
-                {...params}
-                label="Current Sharing:"
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <React.Fragment>
-                      {isGetSharedUserLoading ? (
-                        <CircularProgress color="inherit" size={20} />
-                      ) : null}
-                      {params.InputProps.endAdornment}
-                    </React.Fragment>
-                  ),
-                }}
-              />
-            )}
-          />
+            <Autocomplete
+              id="asynchronous-demo"
+              multiple
+              onChange={(e, value) => onAddSelectedUser(value!)}
+              isOptionEqualToValue={(option, value) =>
+                option.username === value.username
+              }
+              getOptionLabel={(option) => t(option.username)}
+              options={userList}
+              value={selectedUser}
+              loading={isGetUserListLoading}
+              limitTags={2}
+              sx={{
+                ".MuiAutocomplete-clearIndicator": {
+                  backgroundColor: "#000",
+                  scale: '75%'
+                },
+                ".MuiAutocomplete-popupIndicator": {
+                  backgroundColor: "#DBEAFE",
+                  scale: '75%'
+                },
+                ".MuiAutocomplete-popupIndicatorOpen":{
+                  backgroundColor: "#2563EB",
+                  scale: '75%'
+                },
+                "& .MuiChip-deleteIcon": {
+                  fill: "#000",
+                },
+              }}
+              renderInput={(params) => (
+                <TextFieldStyled
+                  {...params}
+                  label="To:"
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <React.Fragment>
+                        {isGetUserListLoading ? (
+                          <CircularProgress color="primary" size={20} />
+                        ) : null}
+                        {params.InputProps.endAdornment}
+                      </React.Fragment>
+                    ),
+                  }}
+                />
+              )}
+            />
+            <Autocomplete
+              multiple
+              options={sharedUser.map((user) => user.username)}
+              value={sharedUser.map((user) => user.username)}
+              limitTags={2}
+              readOnly
+              loading={isGetSharedUserLoading}
+              renderInput={(params) => (
+                <TextFieldStyled
+                  {...params}
+                  label="Current Sharing:"
+                  variant="standard"
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <React.Fragment>
+                        {isGetSharedUserLoading ? (
+                          <CircularProgress color="inherit" size={20} />
+                        ) : null}
+                        {params.InputProps.endAdornment}
+                      </React.Fragment>
+                    ),
+                  }}
+                />
+              )}
+            />
+            <DialogActions>
+              <WhiteBtn onClick={() => onOpen()}>Cancel</WhiteBtn>
+              <SaveLoadingBtn
+                loading={isShareUserLoading}
+                onClick={onShareUser}
+              >
+                Save
+              </SaveLoadingBtn>
+            </DialogActions>
           </Stack>
-          
         </DialogContentText>
       </DialogContent>
-      <DialogActions>
-        <WhiteBtn onClick={() => onOpen()}>Cancel</WhiteBtn>
-        <SaveLoadingBtn loading={isShareUserLoading} onClick={onShareUser}>
-          Save
-        </SaveLoadingBtn>
-      </DialogActions>
     </TabPanel>
   );
 };

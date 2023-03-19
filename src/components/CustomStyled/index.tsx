@@ -1,5 +1,5 @@
 import { styled } from "@mui/system";
-import { Button, Menu, TextField } from "@mui/material";
+import { Autocomplete, Button, Menu, TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import MenuItem from "@mui/material/MenuItem";
 
@@ -92,8 +92,8 @@ export const StyledAddBtn = styled(Button)({
   color: "#fff",
   padding: "0px 15px",
   height: "80%",
-  display: 'flex',
-  alignItems: 'center',
+  display: "flex",
+  alignItems: "center",
   textDecoration: "none",
   ":hover": {
     color: "#407AFF",
@@ -101,8 +101,22 @@ export const StyledAddBtn = styled(Button)({
 });
 
 export const MenuNotification = styled(MenuItem)({
-  display: 'flex',
-  flexDirection: 'column',
-  lineHeight: '40px',
-  width: '300px'
+  display: "flex",
+  flexDirection: "column",
+  lineHeight: "40px",
+  width: "300px",
+});
+
+export const CustomAutoComplete = styled(Autocomplete)({
+  border: "1px solid #fff",
+  borderRadius: "5px",
+  "& .MuiAutocomplete-clearIndicator": {
+    backgroundColor: "#000",
+    fill: "#EBEBEB",
+  },
+  "& .MuiAutocomplete-popupIndicator": {
+    backgroundColor: "#EBEBEB",
+    fill: "#EBEBEB",
+  },
+
 });

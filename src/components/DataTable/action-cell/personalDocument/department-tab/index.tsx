@@ -16,9 +16,7 @@ import {
   getSharedDepartment,
   shareDepartment,
 } from "../../../../../slices/document";
-import {
-  getDepartmentList,
-} from "../../../../../slices/system";
+import { getDepartmentList } from "../../../../../slices/system";
 import {
   TextFieldStyled,
   WhiteBtn,
@@ -62,8 +60,9 @@ function TabPanel(props: TabPanelProps) {
 const DepartmentTab = (props: Props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { isGetDepartmentsLoading, departmentList } =
-    useSelector((state) => state.system);
+  const { isGetDepartmentsLoading, departmentList } = useSelector(
+    (state) => state.system
+  );
   const {
     isGetSharedDepartmentLoading,
     sharedDepartment,
@@ -93,7 +92,6 @@ const DepartmentTab = (props: Props) => {
     }
     setSelectedDepartment(value);
   };
-
 
   const onShareDepartment = async () => {
     await dispatch(
@@ -129,84 +127,108 @@ const DepartmentTab = (props: Props) => {
     <TabPanel value={value} index={0}>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          <Stack spacing={3} sx={{
-              width: 300,
+          <Stack
+            spacing={2}
+            sx={{
+              width: "100%",
               color: "#000",
-            }}>
-          <h4>{t("Share Department")}</h4>
-          <Autocomplete
-            id="asynchronous-demo"
-            multiple
-            
-            onChange={(e, value) => onAddSelectedDepartment(value!)}
-            isOptionEqualToValue={(option, value) =>
-              option.departmentName === value.departmentName
-            }
-            getOptionLabel={(option) => t(option.departmentName)}
-            options={departmentList}
-            loading={isGetDepartmentsLoading}
-            value={selectedDepartment}
-            limitTags={2}
-            renderInput={(params) => (
-              <TextFieldStyled
-                {...params}
-                label="To:"
-                sx={{
-                  border: "1px solid #fff",
-                  borderRadius: "5px",
-                }}
-                InputProps={{
-                  ...params.InputProps,
-                  startAdornment: (
-                    <React.Fragment>
-                      {isGetDepartmentsLoading ? (
-                        <CircularProgress color="primary" size={20} />
-                      ) : null}
-                      {params.InputProps.startAdornment}
-                    </React.Fragment>
-                  ),
-                }}
-              />
-            )}
-          />
-          
-          <Autocomplete
-            multiple
-            options={sharedDepartment.map(department => department.departmentName)}
-            value={sharedDepartment.map(department => department.departmentName)}
-            limitTags={2}
-            readOnly
-            loading={isGetSharedDepartmentLoading}
-            renderInput={(params) => (
-              <TextFieldStyled
-                {...params}
-                label="Current Sharing:"
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <React.Fragment>
-                      {isGetSharedDepartmentLoading ? (
-                        <CircularProgress color="inherit" size={20} />
-                      ) : null}
-                      {params.InputProps.endAdornment}
-                    </React.Fragment>
-                  ),
-                }}
-              />
-            )}
-          />
+            }}
+          >
+            <h4>{t("Share Department")}</h4>
+            <Autocomplete
+              id="asynchronous-demo"
+              multiple
+              onChange={(e, value) => onAddSelectedDepartment(value!)}
+              isOptionEqualToValue={(option, value) =>
+                option.departmentName === value.departmentName
+              }
+              getOptionLabel={(option) => t(option.departmentName)}
+              options={departmentList}
+              loading={isGetDepartmentsLoading}
+              value={selectedDepartment}
+              limitTags={2}
+              sx={{
+                ".MuiAutocomplete-clearIndicator": {
+                  backgroundColor: "#000",
+                  scale: "75%",
+                },
+                ".MuiAutocomplete-popupIndicator": {
+                  backgroundColor: "#DBEAFE",
+                  scale: "75%",
+                },
+                ".MuiAutocomplete-popupIndicatorOpen": {
+                  backgroundColor: "#2563EB",
+                  scale: "75%",
+                },
+                "& .MuiChip-deleteIcon": {
+                  fill: "#000",
+                },
+              }}
+              renderInput={(params) => (
+                <TextFieldStyled
+                  {...params}
+                  label="To:"
+                  sx={{
+                    border: "1px solid #fff",
+                    borderRadius: "5px",
+                  }}
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (
+                      <React.Fragment>
+                        {isGetDepartmentsLoading ? (
+                          <CircularProgress color="primary" size={20} />
+                        ) : null}
+                        {params.InputProps.startAdornment}
+                      </React.Fragment>
+                    ),
+                  }}
+                />
+              )}
+            />
+
+            <Autocomplete
+              multiple
+              options={sharedDepartment.map(
+                (department) => department.departmentName
+              )}
+              value={sharedDepartment.map(
+                (department) => department.departmentName
+              )}
+              limitTags={2}
+              readOnly
+              loading={isGetSharedDepartmentLoading}
+              renderInput={(params) => (
+                <TextFieldStyled
+                  {...params}
+                  label="Current Sharing:"
+                  variant="standard"
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <React.Fragment>
+                        {isGetSharedDepartmentLoading ? (
+                          <CircularProgress color="inherit" size={20} />
+                        ) : null}
+                        {params.InputProps.endAdornment}
+                      </React.Fragment>
+                    ),
+                  }}
+                />
+              )}
+            />
+            <DialogActions>
+              <WhiteBtn onClick={() => onOpen()}>Cancel</WhiteBtn>
+              <SaveLoadingBtn
+                loading={isShareDepartmentLoading}
+                onClick={onShareDepartment}
+              >
+                Save
+              </SaveLoadingBtn>
+            </DialogActions>
           </Stack>
         </DialogContentText>
       </DialogContent>
-      <DialogActions>
-        <WhiteBtn onClick={() => onOpen()}>Cancel</WhiteBtn>
-        <SaveLoadingBtn
-          loading={isShareDepartmentLoading}
-          onClick={onShareDepartment}
-        >
-          Save
-        </SaveLoadingBtn>
-      </DialogActions>
     </TabPanel>
   );
 };
