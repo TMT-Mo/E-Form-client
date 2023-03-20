@@ -16,7 +16,7 @@ import { handleError } from "./alert";
 
 interface State {
   isGetNotification: boolean;
-  isCheckNotification: boolean;
+  isCheckNotificationLoading: boolean;
   notificationList: Notification[];
   hasNewNotification: boolean;
 }
@@ -27,9 +27,9 @@ const ACTION_TYPE = "notification/";
 
 const initialState: State = {
   isGetNotification: false,
-  isCheckNotification: false,
+  isCheckNotificationLoading: false,
   notificationList: [],
-  hasNewNotification: false
+  hasNewNotification: false,
 };
 
 const getNewNotificationCR: CR<{ hasNewNotification: boolean }> = (
@@ -44,9 +44,11 @@ const getNotification = createAsyncThunk(
   `${ACTION_TYPE}getNotification`,
   async (args: GetNotificationArgs, { dispatch }) => {
     try {
-      const result = await notificationServices.getNotificationList(args) as Notification[];
-      if(result.find(value => value.isChecked === false)){
-        dispatch(getNewNotification({hasNewNotification: true}))
+      const result = (await notificationServices.getNotificationList(
+        args
+      )) as Notification[];
+      if (result.find((value) => value.isChecked === false)) {
+        dispatch(getNewNotification({ hasNewNotification: true }));
       }
       return result;
     } catch (error) {
@@ -70,6 +72,7 @@ const checkNotification = createAsyncThunk(
   async (args: CheckNotificationArgs, { dispatch }) => {
     try {
       const result = await notificationServices.checkNotification(args);
+      dispatch(getNewNotification({ hasNewNotification: false }));
       return result;
     } catch (error) {
       const err = error as AxiosError;
@@ -91,7 +94,7 @@ const notification = createSlice({
   name: "notification",
   initialState,
   reducers: {
-    getNewNotification: getNewNotificationCR
+    getNewNotification: getNewNotificationCR,
   },
   extraReducers: (builder) => {
     builder.addCase(getNotification.pending, (state) => ({
@@ -109,21 +112,21 @@ const notification = createSlice({
     }));
     builder.addCase(checkNotification.pending, (state) => ({
       ...state,
-      isCheckNotification: true,
+      isCheckNotificationLoading: true,
     }));
     builder.addCase(checkNotification.fulfilled, (state, { payload }) => ({
       ...state,
-      isCheckNotification: false,
+      isCheckNotificationLoading: false,
     }));
     builder.addCase(checkNotification.rejected, (state) => ({
       ...state,
-      isCheckNotification: false,
+      isCheckNotificationLoading: false,
     }));
   },
 });
 
 export { getNotification, checkNotification };
 
-export const {getNewNotification} = notification.actions;
+export const { getNewNotification } = notification.actions;
 
 export default notification.reducer;

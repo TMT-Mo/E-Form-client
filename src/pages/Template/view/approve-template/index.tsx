@@ -48,6 +48,7 @@ const ViewApproveTemplate: React.FC = () => {
   const [reason, setReason] = useState<string | undefined>();
   const [openDialog, setOpenDialog] = useState(false);
   const { t, i18n } = useTranslation();
+
   const signers = signatoryList.map((signer) => (
     <div className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4">
       <div className="flex space-x-2 items-center ">
@@ -113,7 +114,7 @@ const ViewApproveTemplate: React.FC = () => {
       userIds: [createdBy.id],
       notify: {
         isChecked: false,
-        description: `${templateName} has been ${isAccepting ? 'accepted':'rejected'} by ${userInfo?.userId!}!`,
+        description: `${templateName} has been ${isAccepting ? 'accepted':'rejected'} by ${userInfo?.userName}!`,
       },
     });
     navigate("/user");
@@ -170,6 +171,7 @@ const ViewApproveTemplate: React.FC = () => {
             <div className="flex justify-center">
               <h4 className="whitespace-nowrap">{t("Signer List")}:</h4>
             </div>
+
             {signers}
             <div className="flex items-center">
               <Switch

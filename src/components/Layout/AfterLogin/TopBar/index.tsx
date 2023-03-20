@@ -22,7 +22,7 @@ import { setLocation } from "../../../../slices/location";
 import { toggleSideBar } from "../../../../slices/ui-control";
 import { LocationIndex } from "../../../../utils/constants";
 import { Notification } from "./notification";
-import { getNotification } from "../../../../slices/notification";
+import { checkNotification, getNotification } from "../../../../slices/notification";
 import Badge from "@mui/material/Badge";
 
 const TopBar: React.FC = () => {
@@ -33,13 +33,20 @@ const TopBar: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [badge, setBadge] = useState<number>();
-  const { notificationList, hasNewNotification } = useSelector((state) => state.notification);
+  const { notificationList, hasNewNotification } = useSelector(
+    (state) => state.notification
+  );
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+    dispatch(
+      checkNotification({
+        notificationId: notificationList.map((noti) => noti.id),
+      })
+    ).unwrap();
   };
 
   const signOutHandler = () => {

@@ -79,7 +79,8 @@ export const StyledMenu = styled(Menu)({
   },
   "& .MuiMenu-list": {
     width: "350px",
-    minHeight: '150px'
+    minHeight: '150px',
+    maxHeight: '300px'
   },
   "& .MuiMenuItem-root": {
     marginTop: "10px",

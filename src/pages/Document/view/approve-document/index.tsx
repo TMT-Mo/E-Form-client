@@ -111,7 +111,6 @@ const ViewApproveDocument: React.FC = () => {
       const nextSigner = newSignerList.find(
         (signer) => signer.status === StatusDocument.PROCESSING_DOCUMENT
       );
-      console.log(nextSigner);
       nextSigner &&
         sendSignalNotification({
           userIds: [nextSigner?.id],
@@ -121,12 +120,12 @@ const ViewApproveDocument: React.FC = () => {
           },
         });
     }
-    if(+userInfo?.userId! === signatoryList?.pop()?.id){
+    if(+userInfo?.userId! === signatoryList?.[signatoryList.length-1].id){
       sendSignalNotification({
         userIds: [createdBy.id],
         notify: {
           isChecked: false,
-          description: `${documentName} has been ${isAccepting ? 'accepted' : 'rejected'}!`,
+          description: `${documentName} has been ${isAccepting ? 'approved' : 'rejected'}!`,
         },
       });
     }

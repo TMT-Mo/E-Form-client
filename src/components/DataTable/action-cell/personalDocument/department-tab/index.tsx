@@ -103,7 +103,7 @@ const DepartmentTab = (props: Props) => {
         departmentIdList: selectedDepartment.map((department) => department.id),
       })
     ).unwrap();
-    sendSignalNotification({departmentId: selectedDepartment.map(d => d.id), notify:{
+    sendSignalNotification({departmentIds: selectedDepartment.map(d => d.id), notify:{
       isChecked: false,
       description: `You has been shared to view a document by ${userInfo?.userName}!`
     }})

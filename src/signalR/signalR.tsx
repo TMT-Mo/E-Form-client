@@ -1,6 +1,4 @@
-import {
-  HubConnectionBuilder,
-} from "@microsoft/signalr";
+import { HubConnectionBuilder } from "@microsoft/signalr";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "../hooks";
 import { handleInfo } from "../slices/alert";
@@ -30,21 +28,35 @@ export const SignalR = () => {
       connection
         .start()
         .then(() => {
-          console.log(connection.state)
-          connection.on(receiveNotification, async (response: receiveSignalNotification) => {
-            console.log(response);
-            if (response.userIds.includes(+userInfo?.userId!)) {
-              dispatch(handleInfo({message: response.notify.description}))
-              dispatch(getNewNotification({hasNewNotification: true}))
-              await dispatch(getNotification({userId: +userInfo?.userId!})).unwrap()
+          console.log(connection.state);
+          connection.on(
+            receiveNotification,
+            async (response: receiveSignalNotification) => {
+              console.log(response);
+              if (
+                response.userIds?.includes(+userInfo?.userId!) ||
+                response.departmentNames?.includes(userInfo?.departmentName!)
+              ) {
+                dispatch(handleInfo({ message: response.notify.description }));
+                dispatch(getNewNotification({ hasNewNotification: true }));
+                await dispatch(
+                  getNotification({ userId: +userInfo?.userId! })
+                ).unwrap();
+              }
             }
-          });
+          );
 
-          connection.onclose((e) => {});
+          connection.onclose(async (e) => {});
         })
         .catch((error) => console.log(error));
     }
-  }, [connection, dispatch, receiveNotification, userInfo?.userId]);
+  }, [
+    connection,
+    dispatch,
+    receiveNotification,
+    userInfo?.departmentName,
+    userInfo?.userId,
+  ]);
 
   return <></>;
 };

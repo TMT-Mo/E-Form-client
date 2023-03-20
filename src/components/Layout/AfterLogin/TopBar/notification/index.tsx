@@ -4,17 +4,14 @@ import {
   Divider,
   MenuItem,
   CircularProgress,
-  ListItem,
   Stack,
   Box,
 } from "@mui/material";
-import ListItemText from "@mui/material/ListItemText";
-import Menu from "@mui/material/Menu";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "../../../../../hooks";
-import { checkNotification } from "../../../../../slices/notification";
+import { useSelector } from "../../../../../hooks";
 import { MenuNotification, StyledMenu } from "../../../../CustomStyled";
 import CircleIcon from "@mui/icons-material/Circle";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
+
 interface Props {
   open: boolean;
   handleClose: () => void;
@@ -28,11 +25,9 @@ export const BoxCustom = styled(Box)({
 });
 
 export const Notification = (props: Props) => {
-  const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
-  const { notificationList, isGetNotification } = useSelector(
-    (state) => state.notification
-  );
+  const { notificationList, isGetNotification, isCheckNotificationLoading } =
+    useSelector((state) => state.notification);
   const { open, anchorEl, handleClose } = props;
 
   // useEffect(() => {
@@ -59,14 +54,38 @@ export const Notification = (props: Props) => {
         horizontal: "right",
       }}
     >
-      <Typography variant="h6" mb={2} ml={2} fontWeight={600} component="h1">
-        Notifications
-      </Typography>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        px={3}
+        pb={2}
+      >
+        <Typography variant="h6" fontWeight={600} component="h1">
+          Notifications
+        </Typography>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Typography fontWeight={600} component="h1" color="#407AFF">
+            Mark read all
+          </Typography>
+          {isCheckNotificationLoading ? (
+            <CircularProgress sx={{ fill: "#407AFF", scale: "75%" }} />
+          ) : (
+            <DoneAllIcon sx={{ fill: "#407AFF", scale: "75%" }} />
+          )}
+        </Stack>
+      </Stack>
       <Divider />
-      {isGetNotification && <MenuItem sx={{height: '100%', width:'100%', margin: 'auto'}}><CircularProgress /></MenuItem>}
+      {isGetNotification && (
+        <MenuItem sx={{ height: "100%", width: "100%", margin: "auto" }}>
+          <CircularProgress />
+        </MenuItem>
+      )}
       {notificationList.length === 0 && !isGetNotification && (
-        <MenuNotification >
-          <Typography sx={{ width:'100%', textAlign:'center'}}>Empty</Typography>
+        <MenuNotification>
+          <Typography sx={{ width: "100%", textAlign: "center" }}>
+            Empty
+          </Typography>
         </MenuNotification>
       )}
       {notificationList &&
