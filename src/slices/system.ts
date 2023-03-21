@@ -2,10 +2,10 @@ import { systemServices } from "./../services/system";
 import {
   CreateAccountArgs,
   Department,
-  DepartmentListResponse,
   GetUsersArgs,
   IUser,
   Permission,
+  Role,
 } from "./../models/system";
 import {
   CaseReducer,
@@ -16,25 +16,27 @@ import {
 import { AxiosError } from "axios";
 import { ValidationErrors } from "../models/alert";
 import { handleError, handleSuccess } from "./alert";
-import { GetTemplateTypeListResponse } from "../models/template";
+import { TemplateType } from "../models/template";
 
 interface State {
   total?: number;
   size?: number;
   searchItemValue?: string;
   currentPage: number;
-  isGetDepartmentsLoading: boolean;
-  isOpenDepartmentList: boolean;
   departmentList: Department[];
-  isGetUserListLoading: boolean;
   userList: IUser[];
   permissionList: Permission[];
+  templateTypeList: TemplateType[];
+  roleList: Role[]
+  isGetDepartmentsLoading: boolean;
+  isOpenDepartmentList: boolean;
+  isGetUserListLoading: boolean;
   isGetTemplateTypesLoading: boolean;
-  templateTypeList?: GetTemplateTypeListResponse;
   isOpenTemplateTypes: boolean;
   isGetSignerLoading: boolean;
   isCreateAccountLoading: boolean;
   isGetPermissionLoading: boolean;
+  isGetRoleLoading: boolean;
 }
 
 const initialState: State = {
@@ -42,18 +44,20 @@ const initialState: State = {
   size: 10,
   currentPage: 0,
   searchItemValue: undefined,
-  isGetDepartmentsLoading: false,
+  templateTypeList: [],
   departmentList: [],
-  isOpenDepartmentList: false,
-  isGetUserListLoading: false,
   userList: [],
   permissionList: [],
+  roleList: [],
+  isGetDepartmentsLoading: false,
+  isOpenDepartmentList: false,
+  isGetUserListLoading: false,
   isGetPermissionLoading: false,
   isGetTemplateTypesLoading: false,
-  templateTypeList: undefined,
   isOpenTemplateTypes: false,
   isGetSignerLoading: false,
   isCreateAccountLoading: false,
+  isGetRoleLoading: false
 };
 
 type CR<T> = CaseReducer<State, PayloadAction<T>>;
@@ -198,6 +202,28 @@ const getPermissionList = createAsyncThunk(
   }
 );
 
+const getRoleList = createAsyncThunk(
+  `${ACTION_TYPE}getRoleList`,
+  async (_, { dispatch }) => {
+    try {
+      const result = await systemServices.getRoleList();
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
+
 const createAccount = createAsyncThunk(
   `${ACTION_TYPE}createAccount`,
   async (args: CreateAccountArgs, { dispatch }) => {
@@ -291,7 +317,7 @@ const system = createSlice({
     builder.addCase(getTemplateTypeList.fulfilled, (state, { payload }) => ({
       ...state,
       isGetTemplateTypesLoading: false,
-      templateTypeList: payload!,
+      templateTypeList: payload.items,
     }));
     builder.addCase(getTemplateTypeList.rejected, (state) => ({
       ...state,
@@ -309,6 +335,19 @@ const system = createSlice({
     builder.addCase(getPermissionList.rejected, (state) => ({
       ...state,
       isGetPermissionLoading: false,
+    }));
+    builder.addCase(getRoleList.pending, (state) => ({
+      ...state,
+      isGetRoleLoading: true,
+    }));
+    builder.addCase(getRoleList.fulfilled, (state, { payload }) => ({
+      ...state,
+      isGetRoleLoading: false,
+      roleList: payload.roleList,
+    }));
+    builder.addCase(getRoleList.rejected, (state) => ({
+      ...state,
+      isGetRoleLoading: false,
     }));
     builder.addCase(createAccount.pending, (state) => ({
       ...state,

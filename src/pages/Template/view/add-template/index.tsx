@@ -289,7 +289,7 @@ const ViewAddTemplate: React.FC = () => {
                   option.typeName === value.typeName
                 }
                 getOptionLabel={(option) => t(option.typeName)}
-                options={templateTypeList?.items!}
+                options={templateTypeList}
                 loading={isGetTemplateTypesLoading}
                 renderInput={(params) => (
                   <TextFieldStyled

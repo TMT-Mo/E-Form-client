@@ -23,7 +23,6 @@ import {
   SaveLoadingBtn,
 } from "../../../../CustomStyled";
 import { Stack } from "@mui/material";
-import { userInfo } from "os";
 
 interface Props {
   onOpen: () => void;

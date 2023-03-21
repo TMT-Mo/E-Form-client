@@ -49,13 +49,17 @@ export interface IFile {
   type: string;
 }
 
+export interface Account {
+  username?: string;
+  password?: string;
+  idPermissions?: number[];
+  idDepartment?: number;
+  idRole?: number;
+  signature?: string;
+}
+
 export interface CreateAccountArgs {
-  username: string;
-  password: string;
-  idPermissions: number[];
-  idDepartment: number;
-  idRole: number;
-  signature: string;
+  account: Account;
 }
 
 export interface CreateAccountResponse {
@@ -66,7 +70,20 @@ export interface GetPermissionListArgs {}
 
 export interface Permission {
   id: number;
-  name: string;
+  permissionName: string;
+}
+
+export interface Role {
+  id: number;
+  roleName: string;
+}
+
+export interface GetRoleListArgs {
+  idDepartment: number;
+}
+
+export interface GetRoleListResponse {
+  roleList: Role[];
 }
 export interface GetPermissionListResponse {
   permissionList: Permission[];

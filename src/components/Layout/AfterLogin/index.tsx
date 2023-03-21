@@ -23,7 +23,7 @@ import { System } from "../../../pages/System";
 import { Account } from "../../../pages/Account";
 import { SignalR } from "../../../signalR/signalR";
 import { clearUserList } from "../../../slices/system";
-import { AddAccount } from "../../../pages/Account/add-account";
+import { CreateAccount } from "../../../pages/Account/create-account";
 
 const {
   TEMPLATE,
@@ -71,7 +71,7 @@ const Layout: React.FC = () => {
       case ACCOUNT:
         return <Account />;
       case ADD_ACCOUNT:
-        return <AddAccount />;
+        return <CreateAccount />;
       case TEMPLATE:
         return <Template />;
       case TEMPLATE_HISTORY:

@@ -1,6 +1,6 @@
 import { GetTemplateTypeListResponse } from './../models/template';
 import { httpClient, apiPaths } from '../utils';
-import { DepartmentListResponse, GetUsersResponse, GetUsersArgs, CreateAccountArgs, CreateAccountResponse, GetPermissionListResponse } from './../models/system';
+import { DepartmentListResponse, GetUsersResponse, GetUsersArgs, CreateAccountArgs, CreateAccountResponse, GetPermissionListResponse, GetRoleListResponse } from './../models/system';
 import { DummyUserList } from '../utils/dummy-data';
 
 const getDepartmentList = async (): Promise<DepartmentListResponse> => {
@@ -35,11 +35,17 @@ const getPermissionList = async (): Promise<GetPermissionListResponse> => {
     return response.data as GetPermissionListResponse
 }
 
+const getRoleList = async (): Promise<GetRoleListResponse> => {
+    const response = await httpClient.get({url: `${apiPaths.system.getRoleList}`})
+    return response.data as GetRoleListResponse
+}
+
 export const systemServices =  {
     getDepartmentList,
     getUserList,
     getTemplateTypeList,
     getSigner,
     createAccount,
-    getPermissionList
+    getPermissionList,
+    getRoleList
 }
