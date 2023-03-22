@@ -11,15 +11,34 @@ import {
   CircularProgress,
   IconButton,
   Typography,
+  Chip,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { SaveLoadingBtn, TextFieldStyled } from "../../../components/CustomStyled";
+import {
+  SaveLoadingBtn,
+  TextFieldStyled,
+} from "../../../components/CustomStyled";
 import { useDispatch, useSelector } from "../../../hooks";
 import { handleError } from "../../../slices/alert";
 import Resizer from "react-image-file-resizer";
 import { createAccount, getDepartmentList } from "../../../slices/system";
-import { Account } from "../../../models/system";
+import { Account, Permission } from "../../../models/system";
+import {
+  DummyPermissions,
+  FixedDummyPermissions,
+} from "../../../utils/dummy-data";
+import { Permissions } from "../../../utils/constants";
+
+interface AccountState {
+  username?: string;
+  password?: string;
+  permissions: Permission[];
+  idDepartment?: number;
+  idRole?: number;
+  signature?: string;
+  isEnable: boolean;
+}
 
 export const CreateAccount = () => {
   const { t } = useTranslation();
@@ -31,17 +50,18 @@ export const CreateAccount = () => {
     departmentList,
     roleList,
     permissionList,
-    isCreateAccountLoading
+    isCreateAccountLoading,
   } = useSelector((state) => state.system);
-  const [account, setAccount] = useState<Account>({
+  const [account, setAccount] = useState<AccountState>({
     username: undefined,
     password: undefined,
     idDepartment: undefined,
-    idPermissions: undefined,
+    permissions: [...FixedDummyPermissions],
     idRole: undefined,
     signature: undefined,
+    isEnable: true,
   });
-  const [isDisabledSave, setIsDisabledSave] = useState(false)
+  const [isDisabledSave, setIsDisabledSave] = useState(false);
 
   const resizeFile = (file: File) =>
     new Promise((resolve) => {
@@ -77,11 +97,22 @@ export const CreateAccount = () => {
     });
   };
 
-  const onCreateAccount =  () => {
-    const createNewAccount = dispatch(createAccount({account}))
-    createNewAccount.unwrap()
+  const onCreateAccount = () => {
+    const createNewAccount = dispatch(createAccount({ account: {...account, idPermissions: account.permissions.map(p => p.id)} }));
+    createNewAccount.unwrap();
+    return () => createNewAccount.abort();
+  };
 
-    return () => createNewAccount.abort()
+  const onChangeSelectedPermissions = (value: Permission[]) => {
+    setAccount({
+      ...account,
+      permissions: [
+        ...FixedDummyPermissions,
+        ...value.filter(
+          (option) => FixedDummyPermissions.indexOf(option) === -1
+        ),
+      ],
+    })
   }
 
   useEffect(() => {
@@ -92,7 +123,7 @@ export const CreateAccount = () => {
       }
     });
     check ? setIsDisabledSave(true) : setIsDisabledSave(false);
-  }, [account])
+  }, [account]);
 
   useEffect(() => {
     const getDepartment = dispatch(getDepartmentList());
@@ -100,14 +131,16 @@ export const CreateAccount = () => {
 
     return () => getDepartment.abort();
   }, [dispatch]);
-  
+
   return (
     <div className="flex flex-col py-10 space-y-6">
       <h2>{t("Add Account")}</h2>
       <div className="flex flex-col rounded-md border border-gray-400 bg-white m-auto p-10">
-        <Box minWidth='500px'>
+        <Box minWidth="500px" maxWidth="500px">
           <Stack spacing={3}>
-            <Typography component='h1' fontSize='2rem'>Create account</Typography>
+            <Typography component="h1" fontSize="2rem">
+              Create account
+            </Typography>
             <FormControl>
               <InputLabel htmlFor="component-outlined">Name</InputLabel>
               <OutlinedInput
@@ -130,7 +163,9 @@ export const CreateAccount = () => {
             {/* Department */}
             <Autocomplete
               id="asynchronous-demo"
-              onChange={(e, value) => setAccount({...account, idDepartment: value?.id})}
+              onChange={(e, value) =>
+                setAccount({ ...account, idDepartment: value?.id })
+              }
               isOptionEqualToValue={(option, value) =>
                 option.departmentName === value.departmentName
               }
@@ -150,7 +185,6 @@ export const CreateAccount = () => {
                   backgroundColor: "#2563EB",
                   scale: "75%",
                 },
-                
               }}
               renderInput={(params) => (
                 <TextFieldStyled
@@ -175,7 +209,9 @@ export const CreateAccount = () => {
             {/* Role */}
             <Autocomplete
               id="asynchronous-demo"
-              onChange={(e, value) => setAccount({...account, idRole: value?.id})}
+              onChange={(e, value) =>
+                setAccount({ ...account, idRole: value?.id })
+              }
               isOptionEqualToValue={(option, value) =>
                 option.roleName === value.roleName
               }
@@ -209,7 +245,7 @@ export const CreateAccount = () => {
                     ...params.InputProps,
                     startAdornment: (
                       <React.Fragment>
-                        {isGetDepartmentsLoading ? (
+                        {isGetRoleLoading ? (
                           <CircularProgress color="primary" size={20} />
                         ) : null}
                         {params.InputProps.startAdornment}
@@ -224,13 +260,25 @@ export const CreateAccount = () => {
             <Autocomplete
               id="asynchronous-demo"
               multiple
-              onChange={(e, value) => setAccount({...account, idPermissions: value.map(p => p.id)})}
+              onChange={(e, value) =>
+                onChangeSelectedPermissions(value)
+              }
               isOptionEqualToValue={(option, value) =>
                 option.permissionName === value.permissionName
               }
               getOptionLabel={(option) => t(option.permissionName)}
-              options={permissionList}
+              options={DummyPermissions}
               loading={isGetPermissionLoading}
+              value={account.permissions}
+              renderTags={(tagValue, getTagProps) =>
+                tagValue.map((option, index) => (
+                  <Chip
+                    label={option.permissionName}
+                    {...getTagProps({ index })}
+                    disabled={FixedDummyPermissions.indexOf(option) !== -1}
+                  />
+                ))
+              }
               limitTags={2}
               sx={{
                 ".MuiAutocomplete-clearIndicator": {
@@ -261,7 +309,7 @@ export const CreateAccount = () => {
                     ...params.InputProps,
                     startAdornment: (
                       <React.Fragment>
-                        {isGetDepartmentsLoading ? (
+                        {isGetPermissionLoading ? (
                           <CircularProgress color="primary" size={20} />
                         ) : null}
                         {params.InputProps.startAdornment}
@@ -271,7 +319,12 @@ export const CreateAccount = () => {
                 />
               )}
             />
-            <Stack direction="row" justifyContent='start' alignItems='center' minHeight='150px'>
+            <Stack
+              direction="row"
+              justifyContent="start"
+              alignItems="center"
+              minHeight="150px"
+            >
               <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -287,7 +340,13 @@ export const CreateAccount = () => {
               </IconButton>
               {account.signature && <img src={account.signature} alt=""></img>}
             </Stack>
-            <SaveLoadingBtn loading={isCreateAccountLoading} disabled={isDisabledSave} onClick={onCreateAccount}>Save</SaveLoadingBtn>
+            <SaveLoadingBtn
+              loading={isCreateAccountLoading}
+              disabled={isDisabledSave}
+              onClick={onCreateAccount}
+            >
+              Save
+            </SaveLoadingBtn>
           </Stack>
         </Box>
       </div>

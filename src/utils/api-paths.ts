@@ -21,6 +21,7 @@ const apiPaths = {
         getUserList: `${apiHead}api/Users/getSigner`,
         getSigner: `${apiHead}api/Users/getSigner`,
         createAccount: `${apiHead}api/System/createAccount`,
+        editAccount: `${apiHead}api/System/editAccount`,
         getPermissionList: `${apiHead}api/System/getPermissionList`,
         getRoleList: `${apiHead}api/System/getRoleList`,
     },

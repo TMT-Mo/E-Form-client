@@ -141,6 +141,61 @@ export const DummyPermissions: Permission[] = [
     id: 6,
     permissionName: 'CREATE_PERSONAL_DOCUMENT'
   },
+  {
+    id: 7,
+    permissionName: 'VIEW_NEW_TEMPLATE'
+  },
+  {
+    id: 8,
+    permissionName: 'APPROVE_TEMPLATE'
+  },
+  {
+    id: 9,
+    permissionName: 'VIEW_AWAIT_SIGNING_DOCUMENT'
+  },
+  {
+    id: 10,
+    permissionName: 'APPROVE_DOCUMENT'
+  },
+  {
+    id: 11,
+    permissionName: 'VIEW_PERSONAL_DOCUMENT'
+  },
+  {
+    id: 12,
+    permissionName: 'LOCK_DOCUMENT'
+  },
+  {
+    id: 13,
+    permissionName: 'GROUP_VIEWER'
+  },
+  {
+    id: 14,
+    permissionName: 'VIEW_SHARED_DOCUMENT'
+  },
+  {
+    id: 15,
+    permissionName: 'VIEW_DOCUMENT_HISTORY'
+  },
+]
+
+export const FixedDummyPermissions: Permission[] = [
+  {
+    id: 3,
+    permissionName: 'VIEW_TEMPLATE_MANAGEMENT'
+  },
+  {
+    id: 5,
+    permissionName: 'CREATE_DOCUMENT'
+  },
+  {
+    id: 11,
+    permissionName: 'VIEW_PERSONAL_DOCUMENT'
+  },
+  {
+    id: 14,
+    permissionName: 'VIEW_SHARED_DOCUMENT'
+  },
 ]
 
 export const DummyRoles: Role[] = [

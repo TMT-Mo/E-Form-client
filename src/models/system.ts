@@ -52,10 +52,11 @@ export interface IFile {
 export interface Account {
   username?: string;
   password?: string;
-  idPermissions?: number[];
+  idPermissions: number[];
   idDepartment?: number;
   idRole?: number;
   signature?: string;
+  isEnable: boolean;
 }
 
 export interface CreateAccountArgs {
@@ -63,6 +64,13 @@ export interface CreateAccountArgs {
 }
 
 export interface CreateAccountResponse {
+  message: string;
+}
+export interface EditAccountArgs {
+  account: Account;
+}
+
+export interface EditAccountResponse {
   message: string;
 }
 
@@ -88,3 +96,4 @@ export interface GetRoleListResponse {
 export interface GetPermissionListResponse {
   permissionList: Permission[];
 }
+

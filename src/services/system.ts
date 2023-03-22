@@ -1,6 +1,6 @@
 import { GetTemplateTypeListResponse } from './../models/template';
 import { httpClient, apiPaths } from '../utils';
-import { DepartmentListResponse, GetUsersResponse, GetUsersArgs, CreateAccountArgs, CreateAccountResponse, GetPermissionListResponse, GetRoleListResponse } from './../models/system';
+import { DepartmentListResponse, GetUsersResponse, GetUsersArgs, CreateAccountArgs, CreateAccountResponse, GetPermissionListResponse, GetRoleListResponse, EditAccountArgs, EditAccountResponse } from './../models/system';
 import { DummyUserList } from '../utils/dummy-data';
 
 const getDepartmentList = async (): Promise<DepartmentListResponse> => {
@@ -21,8 +21,13 @@ const getSigner = async (args: GetUsersArgs | undefined): Promise<GetUsersRespon
 }
 
 const createAccount = async (data: CreateAccountArgs): Promise<CreateAccountResponse> => {
-    const response = await httpClient.get({url: `${apiPaths.system.createAccount}`, data})
+    const response = await httpClient.post({url: `${apiPaths.system.createAccount}`, data})
     return response.data as CreateAccountResponse
+}
+
+const editAccount = async (data: EditAccountArgs): Promise<EditAccountResponse> => {
+    const response = await httpClient.patch({url: `${apiPaths.system.editAccount}`, data})
+    return response.data as  EditAccountResponse
 }
 
 const getTemplateTypeList = async (): Promise<GetTemplateTypeListResponse> => {
@@ -47,5 +52,6 @@ export const systemServices =  {
     getSigner,
     createAccount,
     getPermissionList,
-    getRoleList
+    getRoleList,
+    editAccount
 }

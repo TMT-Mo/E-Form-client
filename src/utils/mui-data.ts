@@ -25,6 +25,7 @@ import { createdAtOnlyOperators } from "../components/DataTable/filter/createdAt
 import helpers from "./helpers";
 import { SharedDocumentActionCell } from "../components/DataTable/action-cell/sharedDocument";
 import { renderEditLockDocumentCell, renderLockDocumentCell } from '../components/DataTable/lockDocument-cell';
+import { AccountManagementActionCell } from '../components/DataTable/action-cell/accountManagement';
 
 const {
   TYPE,
@@ -617,6 +618,7 @@ export const accountColumns: GridColDef[] = [
     headerName: "Action",
     filterable: false,
     sortable: false,
+    renderCell: AccountManagementActionCell,
     hideable: false,
     renderHeader: TranslateHeader,
   },

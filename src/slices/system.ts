@@ -2,6 +2,7 @@ import { systemServices } from "./../services/system";
 import {
   CreateAccountArgs,
   Department,
+  EditAccountArgs,
   GetUsersArgs,
   IUser,
   Permission,
@@ -27,7 +28,8 @@ interface State {
   userList: IUser[];
   permissionList: Permission[];
   templateTypeList: TemplateType[];
-  roleList: Role[]
+  roleList: Role[];
+  accountDetail?: IUser;
   isGetDepartmentsLoading: boolean;
   isOpenDepartmentList: boolean;
   isGetUserListLoading: boolean;
@@ -37,6 +39,7 @@ interface State {
   isCreateAccountLoading: boolean;
   isGetPermissionLoading: boolean;
   isGetRoleLoading: boolean;
+  isEditAccountLoading: boolean;
 }
 
 const initialState: State = {
@@ -49,6 +52,7 @@ const initialState: State = {
   userList: [],
   permissionList: [],
   roleList: [],
+  accountDetail: undefined, 
   isGetDepartmentsLoading: false,
   isOpenDepartmentList: false,
   isGetUserListLoading: false,
@@ -57,7 +61,8 @@ const initialState: State = {
   isOpenTemplateTypes: false,
   isGetSignerLoading: false,
   isCreateAccountLoading: false,
-  isGetRoleLoading: false
+  isGetRoleLoading: false,
+  isEditAccountLoading: false
 };
 
 type CR<T> = CaseReducer<State, PayloadAction<T>>;
@@ -91,6 +96,11 @@ const onChangeAccountPageCR: CR<{ selectedPage: number }> = (
 const searchAccountCR: CR<{ value: string }> = (state, { payload }) => ({
   ...state,
   searchItemValue: payload.value!,
+});
+
+const getAccountDetailCR: CR<{ account: IUser }> = (state, { payload }) => ({
+  ...state,
+  accountDetail: payload.account,
 });
 
 const getDepartmentList = createAsyncThunk(
@@ -247,6 +257,29 @@ const createAccount = createAsyncThunk(
   }
 );
 
+const editAccount = createAsyncThunk(
+  `${ACTION_TYPE}editAccount`,
+  async (args: EditAccountArgs, { dispatch }) => {
+    try {
+      const result = await systemServices.editAccount(args);
+      dispatch(handleSuccess({ message: result.message }));
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
+
 const system = createSlice({
   name: "system",
   initialState,
@@ -268,6 +301,7 @@ const system = createSlice({
     }),
     onChangeAccountPage: onChangeAccountPageCR,
     searchAccount: searchAccountCR,
+    getAccountDetail: getAccountDetailCR
   },
   extraReducers: (builder) => {
     builder.addCase(getDepartmentList.pending, (state) => ({
@@ -361,6 +395,18 @@ const system = createSlice({
       ...state,
       isCreateAccountLoading: false,
     }));
+    builder.addCase(editAccount.pending, (state) => ({
+      ...state,
+      isEditAccountLoading: true,
+    }));
+    builder.addCase(editAccount.fulfilled, (state, { payload }) => ({
+      ...state,
+      isEditAccountLoading: false,
+    }));
+    builder.addCase(editAccount.rejected, (state) => ({
+      ...state,
+      isEditAccountLoading: false,
+    }));
   },
 });
 
@@ -371,6 +417,7 @@ export {
   getTemplateTypeList,
   createAccount,
   getPermissionList,
+  editAccount
 };
 
 export const {
@@ -380,5 +427,6 @@ export const {
   onChangeAccountPage,
   searchAccount,
   clearAccountPagination,
+  getAccountDetail
 } = system.actions;
 export default system.reducer;
