@@ -1,8 +1,12 @@
 import { systemServices } from "./../services/system";
 import {
   CreateAccountArgs,
+  CreateDepartmentArgs,
+  CreateRoleArgs,
   Department,
   EditAccountArgs,
+  EditDepartmentArgs,
+  EditRoleArgs,
   GetUsersArgs,
   IUser,
   Permission,
@@ -36,10 +40,14 @@ interface State {
   isGetTemplateTypesLoading: boolean;
   isOpenTemplateTypes: boolean;
   isGetSignerLoading: boolean;
-  isCreateAccountLoading: boolean;
   isGetPermissionLoading: boolean;
   isGetRoleLoading: boolean;
+  isCreateAccountLoading: boolean;
   isEditAccountLoading: boolean;
+  isCreateRoleLoading: boolean;
+  isEditRoleLoading: boolean;
+  isCreateDepartmentLoading: boolean;
+  isEditDepartmentLoading: boolean;
 }
 
 const initialState: State = {
@@ -52,7 +60,7 @@ const initialState: State = {
   userList: [],
   permissionList: [],
   roleList: [],
-  accountDetail: undefined, 
+  accountDetail: undefined,
   isGetDepartmentsLoading: false,
   isOpenDepartmentList: false,
   isGetUserListLoading: false,
@@ -62,7 +70,11 @@ const initialState: State = {
   isGetSignerLoading: false,
   isCreateAccountLoading: false,
   isGetRoleLoading: false,
-  isEditAccountLoading: false
+  isEditAccountLoading: false,
+  isCreateRoleLoading: false,
+  isEditRoleLoading: false,
+  isCreateDepartmentLoading: false,
+  isEditDepartmentLoading: false,
 };
 
 type CR<T> = CaseReducer<State, PayloadAction<T>>;
@@ -279,6 +291,96 @@ const editAccount = createAsyncThunk(
     }
   }
 );
+const createDepartment = createAsyncThunk(
+  `${ACTION_TYPE}createDepartment`,
+  async (args: CreateDepartmentArgs, { dispatch }) => {
+    try {
+      const result = await systemServices.createDepartment(args);
+      dispatch(handleSuccess({ message: result.message }));
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
+
+const editDepartment = createAsyncThunk(
+  `${ACTION_TYPE}editDepartment`,
+  async (args: EditDepartmentArgs, { dispatch }) => {
+    try {
+      const result = await systemServices.editDepartment(args);
+      dispatch(handleSuccess({ message: result.message }));
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
+const createRole = createAsyncThunk(
+  `${ACTION_TYPE}createRole`,
+  async (args: CreateRoleArgs, { dispatch }) => {
+    try {
+      const result = await systemServices.createRole(args);
+      dispatch(handleSuccess({ message: result.message }));
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
+
+const editRole = createAsyncThunk(
+  `${ACTION_TYPE}editRole`,
+  async (args: EditRoleArgs, { dispatch }) => {
+    try {
+      const result = await systemServices.editRole(args);
+      dispatch(handleSuccess({ message: result.message }));
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
 
 const system = createSlice({
   name: "system",
@@ -290,10 +392,13 @@ const system = createSlice({
       ...state,
       userList: [],
       searchItemValue: undefined,
-      filter: undefined,
       total: undefined,
       size: 10,
       currentPage: 0,
+    }),
+    clearAccountDetail: (state: State) => ({
+      ...state,
+      accountDetail: undefined,
     }),
     clearAccountPagination: (state: State) => ({
       ...state,
@@ -301,7 +406,7 @@ const system = createSlice({
     }),
     onChangeAccountPage: onChangeAccountPageCR,
     searchAccount: searchAccountCR,
-    getAccountDetail: getAccountDetailCR
+    getAccountDetail: getAccountDetailCR,
   },
   extraReducers: (builder) => {
     builder.addCase(getDepartmentList.pending, (state) => ({
@@ -407,6 +512,54 @@ const system = createSlice({
       ...state,
       isEditAccountLoading: false,
     }));
+    builder.addCase(createDepartment.pending, (state) => ({
+      ...state,
+      isCreateDepartmentLoading: true,
+    }));
+    builder.addCase(createDepartment.fulfilled, (state, { payload }) => ({
+      ...state,
+      isCreateDepartmentLoading: false,
+    }));
+    builder.addCase(createDepartment.rejected, (state) => ({
+      ...state,
+      isCreateDepartmentLoading: false,
+    }));
+    builder.addCase(editDepartment.pending, (state) => ({
+      ...state,
+      isEditDepartmentLoading: true,
+    }));
+    builder.addCase(editDepartment.fulfilled, (state, { payload }) => ({
+      ...state,
+      isEditDepartmentLoading: false,
+    }));
+    builder.addCase(editDepartment.rejected, (state) => ({
+      ...state,
+      isEditDepartmentLoading: false,
+    }));
+    builder.addCase(createRole.pending, (state) => ({
+      ...state,
+      isCreateRoleLoading: true,
+    }));
+    builder.addCase(createRole.fulfilled, (state, { payload }) => ({
+      ...state,
+      isCreateRoleLoading: false,
+    }));
+    builder.addCase(createRole.rejected, (state) => ({
+      ...state,
+      isCreateRoleLoading: false,
+    }));
+    builder.addCase(editRole.pending, (state) => ({
+      ...state,
+      isEditRoleLoading: true,
+    }));
+    builder.addCase(editRole.fulfilled, (state, { payload }) => ({
+      ...state,
+      isEditRoleLoading: false,
+    }));
+    builder.addCase(editRole.rejected, (state) => ({
+      ...state,
+      isEditRoleLoading: false,
+    }));
   },
 });
 
@@ -417,7 +570,11 @@ export {
   getTemplateTypeList,
   createAccount,
   getPermissionList,
-  editAccount
+  editAccount,
+  editDepartment,
+  editRole,
+  createRole,
+  createDepartment
 };
 
 export const {
@@ -427,6 +584,7 @@ export const {
   onChangeAccountPage,
   searchAccount,
   clearAccountPagination,
-  getAccountDetail
+  getAccountDetail,
+  clearAccountDetail,
 } = system.actions;
 export default system.reducer;

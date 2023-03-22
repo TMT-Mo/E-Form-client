@@ -33,7 +33,7 @@ import {
   clearUserList,
 } from "../../../../slices/system";
 import { addNewTemplate } from "../../../../slices/template";
-import { useDispatch, useSelector } from "../../../../hooks";
+import { useDispatch, useSelector, useSignalR } from "../../../../hooks";
 import storage from "../../../../utils/firebase";
 import { useTranslation } from "react-i18next";
 import {
@@ -60,6 +60,7 @@ const ViewAddTemplate: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
+  const {sendSignalNotificationByPermission} = useSignalR()
   const {
     isGetDepartmentsLoading,
     departmentList,
@@ -101,13 +102,20 @@ const ViewAddTemplate: React.FC = () => {
     const storageRef = ref(storage, `/file/${file!.name}`);
     // progress can be paused and resumed. It also exposes progress updates.
     // Receives the storage reference and the file to upload.
-    await dispatch(
-      addNewTemplate({
-        templateInfo: {...form, signatoryList: form.signatoryList!.map(signer => signer.id) },
-        storageRef,
-        file: file!,
-      })
-    ).unwrap();
+    // await dispatch(
+    //   addNewTemplate({
+    //     templateInfo: {...form, signatoryList: form.signatoryList!.map(signer => signer.id) },
+    //     storageRef,
+    //     file: file!,
+    //   })
+    // ).unwrap();
+    sendSignalNotificationByPermission({
+      departmentIds: [form.idDepartment!],
+      notify: {
+        isChecked: false,
+        description: `You got a new template waiting for approval from ${userInfo?.userName}!`,
+      },
+    });
     navigate("/user");
   };
 
@@ -179,6 +187,8 @@ const ViewAddTemplate: React.FC = () => {
     const getDepartment = dispatch(getDepartmentList());
     getDepartment.unwrap();
 
+    const getTemplateType = dispatch(getTemplateTypeList());
+    getTemplateType.unwrap()
     return () => getDepartment.abort();
   }, [dispatch]);
 

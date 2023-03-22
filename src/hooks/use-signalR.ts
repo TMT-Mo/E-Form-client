@@ -1,12 +1,13 @@
 import { SignalRMethod } from "./../signalR/signalR-constant";
 
 import React, { useCallback } from "react";
-import { sendSignalNotificationArgs } from "../signalR/signalR-model";
+import { sendSignalNotificationArgs, sendSignalNotificationByPermissionArgs } from "../signalR/signalR-model";
 import { useDispatch } from "./use-dispatch";
 import { useSelector } from "./use-selector";
 
 interface UseSignalR {
   sendSignalNotification: (args: sendSignalNotificationArgs) => void;
+  sendSignalNotificationByPermission: (args: sendSignalNotificationByPermissionArgs) => void;
 }
 
 export const useSignalR = (): UseSignalR => {
@@ -25,7 +26,19 @@ export const useSignalR = (): UseSignalR => {
     [connection]
   );
 
+  const sendSignalNotificationByPermission = useCallback(
+    async (args: sendSignalNotificationByPermissionArgs) => {
+      try {
+        await connection!.invoke(SignalRMethod.sendNotificationByPermission, args);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [connection]
+  );
+
   return {
     sendSignalNotification,
+    sendSignalNotificationByPermission
   };
 };

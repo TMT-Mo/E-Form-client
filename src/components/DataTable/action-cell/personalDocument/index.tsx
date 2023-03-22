@@ -10,12 +10,11 @@ import {
   StatusDocument,
   ViewerLocationIndex,
 } from "../../../../utils/constants";
-import { useDispatch, useSelector } from "../../../../hooks";
+import { useDispatch } from "../../../../hooks";
 import { getDocumentDetail } from "../../../../slices/document";
 import ShareIcon from "@mui/icons-material/Share";
 import { useTranslation } from "react-i18next";
 import { styled } from "@mui/system";
-import { Department } from "../../../../models/system";
 import DepartmentTab from "./department-tab";
 import { Document } from "../../../../models/document";
 import UserTab from "./user-tab";

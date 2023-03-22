@@ -56,7 +56,7 @@ export interface Account {
   idDepartment?: number;
   idRole?: number;
   signature?: string;
-  isEnable: boolean;
+  status?: number
 }
 
 export interface CreateAccountArgs {
@@ -96,4 +96,32 @@ export interface GetRoleListResponse {
 export interface GetPermissionListResponse {
   permissionList: Permission[];
 }
+export interface CreateRoleArgs {
+  roleName: string
+}
+export interface CreateRoleResponse {
+  message: string
+}
+export interface EditRoleArgs {
+  roleName: string,
+  roleId: number
+}
+export interface EditRoleResponse {
+  message: string
+}
+export interface CreateDepartmentArgs {
+  departmentName: string
+}
+export interface CreateDepartmentResponse {
+  message: string
+}
+export interface EditDepartmentArgs {
+  departmentName: string,
+  departmentId: number
+}
+export interface EditDepartmentResponse {
+  message: string
+}
+
+
 

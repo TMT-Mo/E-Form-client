@@ -37,7 +37,7 @@ interface AccountState {
   idDepartment?: number;
   idRole?: number;
   signature?: string;
-  isEnable: boolean;
+  status: number
 }
 
 export const CreateAccount = () => {
@@ -52,6 +52,7 @@ export const CreateAccount = () => {
     permissionList,
     isCreateAccountLoading,
   } = useSelector((state) => state.system);
+  const {userInfo} = useSelector(state => state.auth)
   const [account, setAccount] = useState<AccountState>({
     username: undefined,
     password: undefined,
@@ -59,9 +60,15 @@ export const CreateAccount = () => {
     permissions: [...FixedDummyPermissions],
     idRole: undefined,
     signature: undefined,
-    isEnable: true,
+    status: 1
   });
   const [isDisabledSave, setIsDisabledSave] = useState(false);
+  const currentPermissionList = ():Permission[] => {
+    const list: Permission[] = []
+    const currentPermissions = userInfo?.idPermissions.split(',')!
+    currentPermissions.forEach(p => list.push(DummyPermissions!.find(value => value.id === +p)!)!)
+    return list
+  }
 
   const resizeFile = (file: File) =>
     new Promise((resolve) => {
@@ -134,7 +141,7 @@ export const CreateAccount = () => {
 
   return (
     <div className="flex flex-col py-10 space-y-6">
-      <h2>{t("Add Account")}</h2>
+      <h2>{t("Create Account")}</h2>
       <div className="flex flex-col rounded-md border border-gray-400 bg-white m-auto p-10">
         <Box minWidth="500px" maxWidth="500px">
           <Stack spacing={3}>

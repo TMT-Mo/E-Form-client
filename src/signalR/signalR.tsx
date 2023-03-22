@@ -6,13 +6,13 @@ import { getNewNotification, getNotification } from "../slices/notification";
 import { setHubConnection } from "../slices/signalR";
 import { apiPaths } from "../utils";
 import { SignalRMethod } from "./signalR-constant";
-import { receiveSignalNotification } from "./signalR-model";
+import { receiveSignalNotification, receiveSignalNotificationByPermission } from "./signalR-model";
 
 export const SignalR = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const { connection } = useSelector((state) => state.signalR);
   const dispatch = useDispatch();
-  const { receiveNotification } = SignalRMethod;
+  const { receiveNotification, receiveNotificationByPermission } = SignalRMethod;
 
   useEffect(() => {
     const connect = new HubConnectionBuilder()
@@ -29,10 +29,30 @@ export const SignalR = () => {
         .start()
         .then(() => {
           console.log(connection.state);
+
+          // * ReceiveMessage
           connection.on(
             receiveNotification,
             async (response: receiveSignalNotification) => {
-              console.log(response);
+              // console.log(response);
+              if (
+                response.userIds?.includes(+userInfo?.userId!) ||
+                response.departmentNames?.includes(userInfo?.departmentName!)
+              ) {
+                dispatch(handleInfo({ message: response.notify.description }));
+                dispatch(getNewNotification({ hasNewNotification: true }));
+                await dispatch(
+                  getNotification({ userId: +userInfo?.userId! })
+                ).unwrap();
+              }
+            }
+          );
+
+          // * ReceiveMessageByPermission
+          connection.on(
+            receiveNotificationByPermission,
+            async (response: receiveSignalNotificationByPermission) => {
+              console.log("By Permission",response);
               if (
                 response.userIds?.includes(+userInfo?.userId!) ||
                 response.departmentNames?.includes(userInfo?.departmentName!)
@@ -50,13 +70,7 @@ export const SignalR = () => {
         })
         .catch((error) => console.log(error));
     }
-  }, [
-    connection,
-    dispatch,
-    receiveNotification,
-    userInfo?.departmentName,
-    userInfo?.userId,
-  ]);
+  }, [connection, dispatch, receiveNotification, receiveNotificationByPermission, userInfo?.departmentName, userInfo?.userId]);
 
   return <></>;
 };

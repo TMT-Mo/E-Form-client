@@ -146,3 +146,12 @@ export enum ShareTabIndex{
   DEPARTMENT = 0,
   USER = 1
 }
+
+export enum AccountStatus{
+  ENABLE = 1,
+  DISABLE = 2
+}
+export enum AccountStatusTag{
+  ENABLE = 'Enable',
+  DISABLE = 'Disable'
+}

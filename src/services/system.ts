@@ -1,6 +1,6 @@
 import { GetTemplateTypeListResponse } from './../models/template';
 import { httpClient, apiPaths } from '../utils';
-import { DepartmentListResponse, GetUsersResponse, GetUsersArgs, CreateAccountArgs, CreateAccountResponse, GetPermissionListResponse, GetRoleListResponse, EditAccountArgs, EditAccountResponse } from './../models/system';
+import { DepartmentListResponse, GetUsersResponse, GetUsersArgs, CreateAccountArgs, CreateAccountResponse, GetPermissionListResponse, GetRoleListResponse, EditAccountArgs, EditAccountResponse, CreateDepartmentArgs, CreateDepartmentResponse, CreateRoleArgs, CreateRoleResponse, EditDepartmentArgs, EditDepartmentResponse, EditRoleArgs, EditRoleResponse } from './../models/system';
 import { DummyUserList } from '../utils/dummy-data';
 
 const getDepartmentList = async (): Promise<DepartmentListResponse> => {
@@ -30,6 +30,26 @@ const editAccount = async (data: EditAccountArgs): Promise<EditAccountResponse> 
     return response.data as  EditAccountResponse
 }
 
+const createRole = async (data: CreateRoleArgs): Promise<CreateRoleResponse> => {
+    const response = await httpClient.post({url: `${apiPaths.system.createRole}`, data})
+    return response.data as CreateRoleResponse
+}
+
+const editRole = async (data: EditRoleArgs): Promise<EditRoleResponse> => {
+    const response = await httpClient.patch({url: `${apiPaths.system.editRole}`, data})
+    return response.data as  EditRoleResponse
+}
+
+const createDepartment = async (data: CreateDepartmentArgs): Promise<CreateDepartmentResponse> => {
+    const response = await httpClient.post({url: `${apiPaths.system.createDepartment}`, data})
+    return response.data as CreateDepartmentResponse
+}
+
+const editDepartment = async (data: EditDepartmentArgs): Promise<EditDepartmentResponse> => {
+    const response = await httpClient.patch({url: `${apiPaths.system.editDepartment}`, data})
+    return response.data as  EditDepartmentResponse
+}
+
 const getTemplateTypeList = async (): Promise<GetTemplateTypeListResponse> => {
     const response = await httpClient.get({url: `${apiPaths.system.getTemplateTypeList}`})
     return response.data as GetTemplateTypeListResponse
@@ -53,5 +73,9 @@ export const systemServices =  {
     createAccount,
     getPermissionList,
     getRoleList,
-    editAccount
+    editAccount,
+    createDepartment,
+    createRole,
+    editDepartment,
+    editRole
 }

@@ -1,6 +1,8 @@
 export enum SignalRMethod{
     receiveNotification = 'ReceiveMessage',
-    sendNotification = 'SendMessage'
+    sendNotification = 'SendMessage',
+    receiveNotificationByPermission = 'ReceiveMessageByPermission',
+    sendNotificationByPermission = 'SendMessageByPermission'
 }
 
 export enum SignalRState{
