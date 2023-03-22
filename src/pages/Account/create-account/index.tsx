@@ -37,7 +37,7 @@ interface AccountState {
   idDepartment?: number;
   idRole?: number;
   signature?: string;
-  status: number
+  status: number;
 }
 
 export const CreateAccount = () => {
@@ -52,7 +52,7 @@ export const CreateAccount = () => {
     permissionList,
     isCreateAccountLoading,
   } = useSelector((state) => state.system);
-  const {userInfo} = useSelector(state => state.auth)
+  const { userInfo } = useSelector((state) => state.auth);
   const [account, setAccount] = useState<AccountState>({
     username: undefined,
     password: undefined,
@@ -60,30 +60,39 @@ export const CreateAccount = () => {
     permissions: [...FixedDummyPermissions],
     idRole: undefined,
     signature: undefined,
-    status: 1
+    status: 1,
   });
   const [isDisabledSave, setIsDisabledSave] = useState(false);
-  const currentPermissionList = ():Permission[] => {
-    const list: Permission[] = []
-    const currentPermissions = userInfo?.idPermissions.split(',')!
-    currentPermissions.forEach(p => list.push(DummyPermissions!.find(value => value.id === +p)!)!)
-    return list
-  }
+  const currentPermissionList = (): Permission[] => {
+    const list: Permission[] = [];
+    const currentPermissions = userInfo?.idPermissions.split(",")!;
+    currentPermissions.forEach(
+      (p) => list.push(DummyPermissions!.find((value) => value.id === +p)!)!
+    );
+    return list;
+  };
 
   const resizeFile = (file: File) =>
     new Promise((resolve) => {
+      const maxWidth = 130;
+      const minWidth = 130;
+      const minHeight = 100;
+      const maxHeight = 100;
+
       const fileName = file.name.slice(file.name.lastIndexOf(".") + 1);
       Resizer.imageFileResizer(
         file,
-        300,
-        300,
+        maxWidth,
+        maxHeight,
         fileName,
         100,
         0,
         (uri) => {
           resolve(uri);
         },
-        "base64"
+        "base64",
+        minWidth,
+        minHeight
       );
     });
 
@@ -105,7 +114,14 @@ export const CreateAccount = () => {
   };
 
   const onCreateAccount = () => {
-    const createNewAccount = dispatch(createAccount({ account: {...account, idPermissions: account.permissions.map(p => p.id)} }));
+    const createNewAccount = dispatch(
+      createAccount({
+        account: {
+          ...account,
+          idPermissions: account.permissions.map((p) => p.id),
+        },
+      })
+    );
     createNewAccount.unwrap();
     return () => createNewAccount.abort();
   };
@@ -119,8 +135,8 @@ export const CreateAccount = () => {
           (option) => FixedDummyPermissions.indexOf(option) === -1
         ),
       ],
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     let check = false;
@@ -267,9 +283,7 @@ export const CreateAccount = () => {
             <Autocomplete
               id="asynchronous-demo"
               multiple
-              onChange={(e, value) =>
-                onChangeSelectedPermissions(value)
-              }
+              onChange={(e, value) => onChangeSelectedPermissions(value)}
               isOptionEqualToValue={(option, value) =>
                 option.permissionName === value.permissionName
               }

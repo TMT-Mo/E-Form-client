@@ -574,7 +574,8 @@ export {
   editDepartment,
   editRole,
   createRole,
-  createDepartment
+  createDepartment,
+  getRoleList
 };
 
 export const {
