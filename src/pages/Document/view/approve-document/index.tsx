@@ -287,7 +287,7 @@ const ViewApproveDocument: React.FC = () => {
             {signers}
             <div className="flex items-center">
               <Switch
-                defaultChecked={isAccepting}
+                checked={isAccepting}
                 onClick={() => setIsAccepting((prevState) => !prevState)}
                 sx={{
                   "& .MuiSwitch-track": {

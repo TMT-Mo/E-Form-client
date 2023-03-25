@@ -107,7 +107,7 @@ const Template = () => {
               }
             />
           </Paper>
-          <div className="flex items-center space-x-2 border border-blue-400">
+          {/* <div className="flex items-center space-x-2 border border-blue-400">
             <StyledUploadBtn
               size="small"
               className="shadow-md"
@@ -116,7 +116,7 @@ const Template = () => {
               <UploadIcon className="md:mr-2" />
               {innerWidth > DeviceWidth.IPAD_WIDTH && t("Upload")}
             </StyledUploadBtn>
-          </div>
+          </div> */}
         </div>
         <DataTable />
       </div>

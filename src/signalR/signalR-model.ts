@@ -10,6 +10,7 @@ interface Notification {
   title?: string;
   description: string;
   isChecked: boolean;
+  
 }
 export interface sendSignalNotificationArgs {
   userIds?: number[];

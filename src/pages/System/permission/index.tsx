@@ -77,7 +77,7 @@ export const PermissionSystem = () => {
                 Permission List
               </Typography>
               {DummyPermissions.map((permission) => (
-                <TextField value={permission.permissionName} disabled />
+                <TextField key={permission.id} value={permission.permissionName} disabled />
               ))}
               <DialogActions>
                 <WhiteBtn

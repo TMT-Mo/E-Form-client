@@ -18,7 +18,7 @@ export const useSignalR = (): UseSignalR => {
   const sendSignalNotification = useCallback(
     async (args: sendSignalNotificationArgs) => {
       try {
-        await connection!.invoke(SignalRMethod.sendNotification, args);
+        await connection!.invoke(SignalRMethod.sendNotification, args, true);
       } catch (error) {
         console.log(error);
       }

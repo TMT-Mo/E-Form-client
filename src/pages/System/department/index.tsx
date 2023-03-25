@@ -10,7 +10,7 @@ import {
 import React, { useState } from "react";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
-import { useSelector } from "../../../hooks";
+import { useDispatch, useSelector } from "../../../hooks";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Dialog, DialogContent, DialogActions } from "@mui/material";
 import { t } from "i18next";
@@ -21,6 +21,8 @@ import {
 } from "../../../components/CustomStyled";
 import { Department } from "../../../models/system";
 import { useTranslation } from "react-i18next";
+import { editDepartment } from "../../../slices/system";
+import ListAltIcon from '@mui/icons-material/ListAlt';
 
 const CustomBox = styled(Box)({
   padding: "20px 40px",
@@ -31,14 +33,20 @@ const CustomBox = styled(Box)({
 });
 
 export const DepartmentSystem = () => {
-  const { isGetDepartmentsLoading, departmentList } = useSelector(
-    (state) => state.system
-  );
+  const dispatch = useDispatch();
+  const { isGetDepartmentsLoading, departmentList, isEditDepartmentLoading } =
+    useSelector((state) => state.system);
   const [modifyDepartment, setModifyDepartment] = useState<Department>();
   const [newDepartment, setNewDepartment] = useState<string>();
   const [isAddingDepartment, setIsAddingDepartment] = useState(false);
   const [isEditingDepartment, setIsEditingDepartment] = useState(false);
+  const [isViewingDepartment, setIsViewingDepartment] = useState(false);
   const { t } = useTranslation();
+
+  const onEditDepartment = () => {
+    const { departmentName, id } = modifyDepartment!;
+    dispatch(editDepartment({ departmentId: id, departmentName }));
+  };
   return (
     <>
       <CustomBox>
@@ -79,6 +87,16 @@ export const DepartmentSystem = () => {
               >
                 <DriveFileRenameOutlineIcon />
               </IconButton>
+              <IconButton
+                onClick={() =>
+                  setIsViewingDepartment((prevState) => !prevState)
+                }
+                type="button"
+                sx={{ p: "10px" }}
+                aria-label="search"
+              >
+                <ListAltIcon />
+              </IconButton>
             </Stack>
           </Stack>
         )}
@@ -87,6 +105,9 @@ export const DepartmentSystem = () => {
         <DialogContent>
           <Box minWidth="500px">
             <Stack spacing={3}>
+            <Typography variant="h5" component="h1" alignSelf="center">
+                Edit Department
+              </Typography>
               <Autocomplete
                 id="asynchronous-demo"
                 onChange={(e, value) => setModifyDepartment(value!)}
@@ -171,8 +192,11 @@ export const DepartmentSystem = () => {
         <DialogContent>
           <Box minWidth="500px">
             <Stack spacing={3}>
+            <Typography variant="h5" component="h1" alignSelf="center">
+                Add Department
+              </Typography>
               <Stack spacing={1}>
-                <Typography>Add department</Typography>
+                <Typography>Input department</Typography>
                 <TextField
                   fullWidth
                   value={newDepartment}
@@ -188,15 +212,38 @@ export const DepartmentSystem = () => {
                 </WhiteBtn>
                 <SaveLoadingBtn
                   size="small"
-                  // loading={isApproveTemplateLoading}
+                  loading={isEditDepartmentLoading}
                   loadingIndicator={
                     <CircularProgress color="inherit" size={16} />
                   }
                   variant="outlined"
-                  // onClick={onApproveTemplate}
+                  onClick={onEditDepartment}
+                  disabled={!modifyDepartment}
                 >
                   {t("Save")}
                 </SaveLoadingBtn>
+              </DialogActions>
+            </Stack>
+          </Box>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={isViewingDepartment}>
+        <DialogContent>
+          <Box minWidth="500px">
+            <Stack spacing={2}>
+              <Typography variant="h5" component="h1" alignSelf="center">
+                Department List
+              </Typography>
+              {departmentList!.map((department) => (
+                <TextField key={department.id} value={department.departmentName} disabled />
+              ))}
+              <DialogActions>
+                <WhiteBtn
+                  onClick={() => setIsViewingDepartment(false)}
+                  size="small"
+                >
+                  {t("Cancel")}
+                </WhiteBtn>
               </DialogActions>
             </Stack>
           </Box>

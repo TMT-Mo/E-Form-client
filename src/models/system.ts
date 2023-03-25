@@ -76,22 +76,25 @@ export interface EditAccountResponse {
 
 export interface GetPermissionListArgs {}
 
-export interface Permission {
-  id: number;
-  permissionName: string;
+
+
+
+
+export interface GetRoleListArgs {
+  idDepartment: number;
 }
 
 export interface Role {
   id: number;
   roleName: string;
 }
-
-export interface GetRoleListArgs {
-  idDepartment: number;
-}
-
 export interface GetRoleListResponse {
   roleList: Role[];
+}
+
+export interface Permission {
+  id: number;
+  permissionName: string;
 }
 export interface GetPermissionListResponse {
   permissionList: Permission[];

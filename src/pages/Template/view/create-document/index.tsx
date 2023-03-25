@@ -17,7 +17,7 @@ const ViewCreateDocument: React.FC = () => {
   const { templateDetail } = useSelector((state) => state.template);
   const { isCreateDocumentLoading } = useSelector((state) => state.document);
   const { userInfo } = useSelector((state) => state.auth);
-  const {sendSignalNotification} = useSignalR()
+  const { sendSignalNotification } = useSignalR();
   const {
     departmentName,
     description,
@@ -44,7 +44,9 @@ const ViewCreateDocument: React.FC = () => {
       </div>
       <div className="flex space-x-2 items-center">
         <h4>{t("Department")}:</h4>
-        <span className="text-white text-base break-words">{t(signer.departmentName)}</span>
+        <span className="text-white text-base break-words">
+          {t(signer.departmentName)}
+        </span>
       </div>
       <div className="flex space-x-2 items-center">
         <h4>{t("Role")}:</h4>
@@ -61,13 +63,17 @@ const ViewCreateDocument: React.FC = () => {
       {
         path: "/webviewer/lib",
         initialDoc: link!,
-        disabledElements: [ "toolbarGroup-Forms", 'downloadButton', 'languageButton'],
+        disabledElements: [
+          "toolbarGroup-Forms",
+          "downloadButton",
+          "languageButton",
+        ],
         annotationUser: userInfo?.userId!.toString(),
       },
       viewer.current!
     ).then(async (instance) => {
       const { documentViewer, annotationManager, Annotations } = instance.Core;
-      instance.UI.setLanguage(i18n.language === 'vn' ? 'vi' : 'en');
+      instance.UI.setLanguage(i18n.language === "vn" ? "vi" : "en");
       instance.UI.setHeaderItems(function (header) {
         header.push({
           type: "actionButton",
@@ -75,7 +81,7 @@ const ViewCreateDocument: React.FC = () => {
           onClick: async () =>
             await instance.UI.downloadPdf({
               filename: templateName.replace(/.docx|.doc/g, ""),
-              includeAnnotations: false
+              includeAnnotations: false,
             }),
         });
       });
@@ -91,7 +97,7 @@ const ViewCreateDocument: React.FC = () => {
               StrokeColor: new Annotations.Color(0, 255, 0, 0),
             }
           );
-          annot.ReadOnly = true
+          annot.ReadOnly = true;
           annot.setPathPoint(0, 300, 20); // Callout ending (start)
           // annot.setPathPoint(1, 425, 75);  // Callout knee
           // annot.setPathPoint(2, 300, 75);  // Callout joint
@@ -119,25 +125,34 @@ const ViewCreateDocument: React.FC = () => {
               })
             ).replaceAll(/\\&quot;/gi, "");
             setXfdfString(annots);
-
           }
         );
       });
     });
-  }, [departmentName, link, templateName, typeName, userInfo?.userId, userInfo?.userName, i18n.language]);
+  }, [
+    departmentName,
+    link,
+    templateName,
+    typeName,
+    userInfo?.userId,
+    userInfo?.userName,
+    i18n.language,
+  ]);
 
   const onCreateDocument = async () => {
-    await dispatch(
-      createDocument({
-        createdBy: +userInfo?.userId!,
-        idTemplate: id,
-        xfdfString: xfdfString!,
-      })
-    ).unwrap();
-    sendSignalNotification({userIds: [signatoryList[0].id], notify:{
-      isChecked: false,
-      description: `You have a new document waiting for an approval!`
-    }})
+    // await dispatch(
+    //   createDocument({
+    //     createdBy: +userInfo?.userId!,
+    //     idTemplate: id,
+    //     xfdfString: xfdfString!,
+    //   })
+    // ).unwrap();
+    sendSignalNotification({
+      userIds: [signatoryList[0].id],
+      notify: {
+        isChecked: false,
+        description: `You have a new document waiting for an approval!`,
+    }});
     navigate("/user");
   };
 
