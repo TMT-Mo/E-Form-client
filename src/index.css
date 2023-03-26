@@ -19,6 +19,7 @@ html {
 
 body {
   scroll-behavior: auto;
+  
 }
 
 .centered {
@@ -45,8 +46,4 @@ body {
 
 .tools-dropdown-container{
   display: none !important;
-}
-
-.CustomInnerLayout{
-  /* background-image: url('/src/assets/bg.jpg'); */
 }

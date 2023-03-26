@@ -54,7 +54,7 @@ export const System = () => {
   return (
     <div className="flex flex-col py-10 space-y-6">
       <h2>{t("System Management")}</h2>
-      <Stack direction="row" justifyContent="space-evenly">
+      <Stack direction="row" justifyContent="space-evenly" spacing={10}>
         <DepartmentSystem />
         <RoleSystem />
         <PermissionSystem />

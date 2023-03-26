@@ -22,12 +22,12 @@ import {
 import { Department } from "../../../models/system";
 import { useTranslation } from "react-i18next";
 import { editDepartment } from "../../../slices/system";
-import ListAltIcon from '@mui/icons-material/ListAlt';
+import ListAltIcon from "@mui/icons-material/ListAlt";
 
 const CustomBox = styled(Box)({
   padding: "20px 40px",
   backgroundColor: "#fff",
-  width: "fit-content",
+  width: "100%",
   borderRadius: "15px",
   lineHeight: "50px",
 });
@@ -50,13 +50,48 @@ export const DepartmentSystem = () => {
   return (
     <>
       <CustomBox>
-        <Typography
-          variant="h6"
-          component="h2"
-          style={{ paddingBottom: "10px" }}
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
         >
-          Department
-        </Typography>
+          <Typography
+            variant="h6"
+            component="h2"
+            // style={{ paddingBottom: "10px" }}
+            fontWeight="bold"
+          >
+            Department
+          </Typography>
+          <Stack direction="row">
+            <IconButton
+              onClick={() => setIsAddingDepartment((prevState) => !prevState)}
+              type="button"
+              
+              aria-label="search"
+
+            >
+              <AddBoxIcon sx={{ fill: '#fdcb6e' }}/>
+            </IconButton>
+            <IconButton
+              onClick={() => setIsEditingDepartment((prevState) => !prevState)}
+              type="button"
+              // sx={{ p: "10px" }}
+              aria-label="search"
+            >
+              <DriveFileRenameOutlineIcon sx={{ fill: '#00b894' }}/>
+            </IconButton>
+            <IconButton
+              onClick={() => setIsViewingDepartment((prevState) => !prevState)}
+              type="button"
+              // sx={{ p: "10px" }}
+              aria-label="search"
+            >
+              <ListAltIcon sx={{ fill: '#0984e3' }}/>
+            </IconButton>
+          </Stack>
+        </Stack>
+
         {isGetDepartmentsLoading && <CircularProgress />}
         {departmentList.length !== 0 && (
           <Stack
@@ -68,36 +103,6 @@ export const DepartmentSystem = () => {
             <Typography variant="h2" component="h1">
               {departmentList.length}
             </Typography>
-            <Stack spacing={1}>
-              <IconButton
-                onClick={() => setIsAddingDepartment((prevState) => !prevState)}
-                type="button"
-                sx={{ p: "10px" }}
-                aria-label="search"
-              >
-                <AddBoxIcon />
-              </IconButton>
-              <IconButton
-                onClick={() =>
-                  setIsEditingDepartment((prevState) => !prevState)
-                }
-                type="button"
-                sx={{ p: "10px" }}
-                aria-label="search"
-              >
-                <DriveFileRenameOutlineIcon />
-              </IconButton>
-              <IconButton
-                onClick={() =>
-                  setIsViewingDepartment((prevState) => !prevState)
-                }
-                type="button"
-                sx={{ p: "10px" }}
-                aria-label="search"
-              >
-                <ListAltIcon />
-              </IconButton>
-            </Stack>
           </Stack>
         )}
       </CustomBox>
@@ -105,7 +110,7 @@ export const DepartmentSystem = () => {
         <DialogContent>
           <Box minWidth="500px">
             <Stack spacing={3}>
-            <Typography variant="h5" component="h1" alignSelf="center">
+              <Typography variant="h5" component="h1" alignSelf="center">
                 Edit Department
               </Typography>
               <Autocomplete
@@ -192,7 +197,7 @@ export const DepartmentSystem = () => {
         <DialogContent>
           <Box minWidth="500px">
             <Stack spacing={3}>
-            <Typography variant="h5" component="h1" alignSelf="center">
+              <Typography variant="h5" component="h1" alignSelf="center">
                 Add Department
               </Typography>
               <Stack spacing={1}>
@@ -235,7 +240,11 @@ export const DepartmentSystem = () => {
                 Department List
               </Typography>
               {departmentList!.map((department) => (
-                <TextField key={department.id} value={department.departmentName} disabled />
+                <TextField
+                  key={department.id}
+                  value={department.departmentName}
+                  disabled
+                />
               ))}
               <DialogActions>
                 <WhiteBtn

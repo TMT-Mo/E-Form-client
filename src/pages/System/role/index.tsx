@@ -20,12 +20,12 @@ import { useTranslation } from "react-i18next";
 import { WhiteBtn, SaveLoadingBtn } from "../../../components/CustomStyled";
 import { editRole } from "../../../slices/system";
 import { DummyRoles } from "../../../utils/dummy-data";
-import ListAltIcon from '@mui/icons-material/ListAlt';
+import ListAltIcon from "@mui/icons-material/ListAlt";
 
 const CustomBox = styled(Box)({
   padding: "20px 40px",
   backgroundColor: "#fff",
-  width: "fit-content",
+  width: "100%",
   borderRadius: "15px",
   lineHeight: "50px",
 });
@@ -50,28 +50,34 @@ export const RoleSystem = () => {
   return (
     <>
       <CustomBox>
-        <Typography
-          variant="h6"
-          component="h2"
-          style={{ paddingBottom: "10px" }}
-        >
-          Role
-        </Typography>
-        {isGetRoleLoading && <CircularProgress />}
         <Stack
           direction="row"
-          spacing={25}
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography variant="h2" component="h1">
-            23
+          <Typography
+            variant="h6"
+            component="h1"
+            style={{ paddingBottom: "10px" }}
+            fontWeight="bold"
+          >
+            Role
           </Typography>
-          <Stack spacing={1}>
-            <IconButton type="button" sx={{ p: "10px" }} aria-label="search" onClick={() => setIsAddingRole((prevState) => !prevState)}>
+          <Stack direction="row">
+            <IconButton
+              type="button"
+              sx={{ p: "10px" }}
+              aria-label="search"
+              onClick={() => setIsAddingRole((prevState) => !prevState)}
+            >
               <AddBoxIcon />
             </IconButton>
-            <IconButton type="button" sx={{ p: "10px" }} aria-label="search" onClick={() => setIsEditingRole((prevState) => !prevState)}>
+            <IconButton
+              type="button"
+              sx={{ p: "10px" }}
+              aria-label="search"
+              onClick={() => setIsEditingRole((prevState) => !prevState)}
+            >
               <DriveFileRenameOutlineIcon />
             </IconButton>
             <IconButton
@@ -84,12 +90,23 @@ export const RoleSystem = () => {
             </IconButton>
           </Stack>
         </Stack>
+        {isGetRoleLoading && <CircularProgress />}
+        <Stack
+          direction="row"
+          spacing={25}
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Typography variant="h2" component="h1">
+            23
+          </Typography>
+        </Stack>
       </CustomBox>
       <Dialog open={isEditingRole}>
         <DialogContent>
           <Box minWidth="500px">
             <Stack spacing={3}>
-            <Typography variant="h5" component="h1" alignSelf="center">
+              <Typography variant="h5" component="h1" alignSelf="center">
                 Edit Role
               </Typography>
               <Autocomplete
@@ -174,7 +191,7 @@ export const RoleSystem = () => {
         <DialogContent>
           <Box minWidth="500px">
             <Stack spacing={3}>
-            <Typography variant="h5" component="h1" alignSelf="center">
+              <Typography variant="h5" component="h1" alignSelf="center">
                 Add Role
               </Typography>
               <Stack spacing={1}>

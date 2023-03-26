@@ -24,7 +24,7 @@ import TextField from "@mui/material/TextField/TextField";
 const CustomBox = styled(Box)({
   padding: "20px 40px",
   backgroundColor: "#fff",
-  width: "fit-content",
+  width: "100%",
   borderRadius: "15px",
   lineHeight: "50px",
 });
@@ -42,6 +42,7 @@ export const PermissionSystem = () => {
           variant="h6"
           component="h2"
           style={{ paddingBottom: "10px" }}
+          fontWeight='bold'
         >
           Permission
         </Typography>

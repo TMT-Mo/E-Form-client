@@ -92,9 +92,9 @@ const Layout: React.FC = () => {
   };
 //
   return (
-    <div className="flex bg-blue-light-config CustomInnerLayout">
+    <div className="flex bg-blue-light-config ">
       <SideBar />
-      <div className="w-full">
+      <div className="w-full ">
         <TopBar />
         {/* <Outlet /> */}
         <Container maxWidth="xl">{switchTab()}</Container>
