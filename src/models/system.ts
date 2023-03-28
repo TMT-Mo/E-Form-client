@@ -16,6 +16,10 @@ export interface IUser {
   createdAt: string;
   updateAt: string;
   departmentName: string;
+  idPermissions: number[];
+  firstName: string;
+  lastName: string;
+  isEnable: boolean
 }
 
 export interface GetUsersResponse {
@@ -49,25 +53,33 @@ export interface IFile {
   type: string;
 }
 
-export interface Account {
+export interface CreateAccountArgs {
   username?: string;
   password?: string;
   idPermissions: number[];
   idDepartment?: number;
   idRole?: number;
   signature?: string;
+  firstName?: string,
+  lastName?: string,
+  isEnable?: boolean,
   status?: number
-}
-
-export interface CreateAccountArgs {
-  account: Account;
 }
 
 export interface CreateAccountResponse {
   message: string;
 }
 export interface EditAccountArgs {
-  account: Account;
+  username?: string;
+  password?: string;
+  idPermissions: number[];
+  idDepartment?: number;
+  idRole?: number;
+  signature?: string;
+  firstName?: string,
+  lastName?: string,
+  isEnable?: boolean,
+  status?: number
 }
 
 export interface EditAccountResponse {

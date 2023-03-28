@@ -177,6 +177,14 @@ export const DummyPermissions: Permission[] = [
     id: 15,
     permissionName: 'VIEW_DOCUMENT_HISTORY'
   },
+  {
+    id: 15,
+    permissionName: 'ACCOUNT_MANAGEMENT'
+  },
+  {
+    id: 15,
+    permissionName: 'SYSTEM_MANAGEMENT'
+  },
 ]
 
 export const FixedDummyPermissions: Permission[] = [

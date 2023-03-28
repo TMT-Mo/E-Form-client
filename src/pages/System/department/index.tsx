@@ -23,6 +23,7 @@ import { Department } from "../../../models/system";
 import { useTranslation } from "react-i18next";
 import { editDepartment } from "../../../slices/system";
 import ListAltIcon from "@mui/icons-material/ListAlt";
+import CloseIcon from "@mui/icons-material/Close";
 
 const CustomBox = styled(Box)({
   padding: "20px 40px",
@@ -30,6 +31,7 @@ const CustomBox = styled(Box)({
   width: "100%",
   borderRadius: "15px",
   lineHeight: "50px",
+  filter: 'drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06))'
 });
 
 export const DepartmentSystem = () => {
@@ -63,33 +65,37 @@ export const DepartmentSystem = () => {
           >
             Department
           </Typography>
-          <Stack direction="row">
-            <IconButton
-              onClick={() => setIsAddingDepartment((prevState) => !prevState)}
-              type="button"
-              
-              aria-label="search"
-
-            >
-              <AddBoxIcon sx={{ fill: '#fdcb6e' }}/>
-            </IconButton>
-            <IconButton
-              onClick={() => setIsEditingDepartment((prevState) => !prevState)}
-              type="button"
-              // sx={{ p: "10px" }}
-              aria-label="search"
-            >
-              <DriveFileRenameOutlineIcon sx={{ fill: '#00b894' }}/>
-            </IconButton>
-            <IconButton
-              onClick={() => setIsViewingDepartment((prevState) => !prevState)}
-              type="button"
-              // sx={{ p: "10px" }}
-              aria-label="search"
-            >
-              <ListAltIcon sx={{ fill: '#0984e3' }}/>
-            </IconButton>
-          </Stack>
+          {departmentList && (
+            <Stack direction="row">
+              <IconButton
+                onClick={() => setIsAddingDepartment((prevState) => !prevState)}
+                type="button"
+                aria-label="search"
+              >
+                <AddBoxIcon sx={{ fill: "#fdcb6e" }} />
+              </IconButton>
+              <IconButton
+                onClick={() =>
+                  setIsEditingDepartment((prevState) => !prevState)
+                }
+                type="button"
+                // sx={{ p: "10px" }}
+                aria-label="search"
+              >
+                <DriveFileRenameOutlineIcon sx={{ fill: "#00b894" }} />
+              </IconButton>
+              <IconButton
+                onClick={() =>
+                  setIsViewingDepartment((prevState) => !prevState)
+                }
+                type="button"
+                // sx={{ p: "10px" }}
+                aria-label="search"
+              >
+                <ListAltIcon sx={{ fill: "#0984e3" }} />
+              </IconButton>
+            </Stack>
+          )}
         </Stack>
 
         {isGetDepartmentsLoading && <CircularProgress />}
@@ -236,9 +242,14 @@ export const DepartmentSystem = () => {
         <DialogContent>
           <Box minWidth="500px">
             <Stack spacing={2}>
-              <Typography variant="h5" component="h1" alignSelf="center">
-                Department List
-              </Typography>
+              <Stack direction="row" justifyContent="space-between">
+                <Typography variant="h5" component="h1" alignSelf="center">
+                  Department List
+                </Typography>
+                <IconButton onClick={() => setIsViewingDepartment(false)}>
+                  <CloseIcon />
+                </IconButton>
+              </Stack>
               {departmentList!.map((department) => (
                 <TextField
                   key={department.id}

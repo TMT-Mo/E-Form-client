@@ -11,6 +11,7 @@ import {
   getAccountDetail,
 } from "../../../../slices/system";
 import { EditDialog } from "./edit-dialog/";
+import { IUser } from "../../../../models/system";
 
 export const AccountManagementActionCell = (
   props: GridRenderCellParams<Date>
@@ -49,7 +50,7 @@ export const AccountManagementActionCell = (
       <IconButton aria-label="delete" onClick={onOpenAccountDetail}>
         <BorderColorIcon fontSize="small" />
       </IconButton>
-      {accountDetail && <EditDialog handleToggleDialog={handleToggleDialog} isOpen={isOpen}/>}
+      {accountDetail?.id === (row as IUser).id && <EditDialog handleToggleDialog={handleToggleDialog} isOpen={isOpen}/>}
     </div>
   );
 };

@@ -21,6 +21,7 @@ import { WhiteBtn, SaveLoadingBtn } from "../../../components/CustomStyled";
 import { editRole } from "../../../slices/system";
 import { DummyRoles } from "../../../utils/dummy-data";
 import ListAltIcon from "@mui/icons-material/ListAlt";
+import CloseIcon from '@mui/icons-material/Close';
 
 const CustomBox = styled(Box)({
   padding: "20px 40px",
@@ -28,6 +29,7 @@ const CustomBox = styled(Box)({
   width: "100%",
   borderRadius: "15px",
   lineHeight: "50px",
+  filter: 'drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06))'
 });
 
 export const RoleSystem = () => {
@@ -226,9 +228,14 @@ export const RoleSystem = () => {
         <DialogContent>
           <Box minWidth="500px">
             <Stack spacing={2}>
-              <Typography variant="h5" component="h1" alignSelf="center">
-                Role List
-              </Typography>
+            <Stack direction="row" justifyContent="space-between">
+                <Typography variant="h5" component="h1" alignSelf="center">
+                  Role List
+                </Typography>
+                <IconButton onClick={() => setIsViewingRole(false)}>
+                  <CloseIcon />
+                </IconButton>
+              </Stack>
               {DummyRoles!.map((role) => (
                 <TextField key={role.id} value={role.roleName} disabled />
               ))}

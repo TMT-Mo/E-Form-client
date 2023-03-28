@@ -11,6 +11,7 @@ import {
   CircularProgress,
   IconButton,
   Typography,
+  TextField,
   Chip,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -23,21 +24,25 @@ import { useDispatch, useSelector } from "../../../hooks";
 import { handleError } from "../../../slices/alert";
 import Resizer from "react-image-file-resizer";
 import { createAccount, getDepartmentList } from "../../../slices/system";
-import { Account, Permission } from "../../../models/system";
+import { Permission } from "../../../models/system";
 import {
   DummyPermissions,
+  DummyRoles,
   FixedDummyPermissions,
 } from "../../../utils/dummy-data";
-import { Permissions } from "../../../utils/constants";
+import { DefaultValue, Permissions } from "../../../utils/constants";
 
 interface AccountState {
   username?: string;
-  password?: string;
+  password: string;
   permissions: Permission[];
   idDepartment?: number;
   idRole?: number;
   signature?: string;
   status: number;
+  firstName?: string;
+  lastName?: string;
+  isEnable: boolean;
 }
 
 export const CreateAccount = () => {
@@ -55,12 +60,15 @@ export const CreateAccount = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const [account, setAccount] = useState<AccountState>({
     username: undefined,
-    password: undefined,
+    password: DefaultValue.PASSWORD,
     idDepartment: undefined,
     permissions: [...FixedDummyPermissions],
     idRole: undefined,
     signature: undefined,
     status: 1,
+    firstName: undefined,
+    lastName: undefined,
+    isEnable: true,
   });
   const [isDisabledSave, setIsDisabledSave] = useState(false);
   const currentPermissionList = (): Permission[] => {
@@ -113,16 +121,44 @@ export const CreateAccount = () => {
     });
   };
 
-  const onCreateAccount = () => {
+  const onCreateAccount = async () => {
+    const {
+      username,
+      password,
+      idRole,
+      idDepartment,
+      signature,
+      firstName,
+      lastName,
+      isEnable,
+    } = account;
     const createNewAccount = dispatch(
       createAccount({
-        account: {
-          ...account,
-          idPermissions: account.permissions.map((p) => p.id),
-        },
+        username,
+        password,
+        idRole,
+        firstName,
+        lastName,
+        idDepartment,
+        signature,
+        isEnable,
+        idPermissions: account.permissions.map((p) => p.id),
       })
     );
-    createNewAccount.unwrap();
+    await createNewAccount.unwrap();
+
+    setAccount({
+      username: undefined,
+      password: DefaultValue.PASSWORD,
+      idDepartment: undefined,
+      permissions: [...FixedDummyPermissions],
+      idRole: undefined,
+      signature: undefined,
+      status: 1,
+      firstName: undefined,
+      lastName: undefined,
+      isEnable: true,
+    });
     return () => createNewAccount.abort();
   };
 
@@ -158,18 +194,54 @@ export const CreateAccount = () => {
   return (
     <div className="flex flex-col py-10 space-y-6">
       <h2>{t("Create Account")}</h2>
-      <div className="flex flex-col rounded-md border border-gray-400 bg-white m-auto p-10">
-        <Box minWidth="500px" maxWidth="500px">
+      <div className="flex flex-col rounded-md border border-gray-400 bg-white m-auto p-10 drop-shadow-md">
+        <Box minWidth="800px" maxWidth="500px">
           <Stack spacing={3}>
             <Typography component="h1" fontSize="2rem">
               Create account
             </Typography>
+            <Stack spacing={1} direction="row">
+              <FormControl fullWidth>
+                <InputLabel htmlFor="component-outlined">First Name</InputLabel>
+                <OutlinedInput
+                  id="component-outlined"
+                  // placeholder="Composed TextField"
+                  label="First Name"
+                  onChange={(value) =>
+                    setAccount({
+                      ...account,
+                      firstName: value.target.value,
+                    })
+                  }
+                />
+              </FormControl>
+              <FormControl fullWidth>
+                <InputLabel htmlFor="component-outlined">Last Name</InputLabel>
+                <OutlinedInput
+                  id="component-outlined"
+                  // placeholder="Composed TextField"
+                  label="Last Nname"
+                  onChange={(value) =>
+                    setAccount({
+                      ...account,
+                      lastName: value.target.value,
+                    })
+                  }
+                />
+              </FormControl>
+            </Stack>
             <FormControl>
-              <InputLabel htmlFor="component-outlined">Name</InputLabel>
+              <InputLabel htmlFor="component-outlined">Username</InputLabel>
               <OutlinedInput
                 id="component-outlined"
-                placeholder="Composed TextField"
-                label="Name"
+                // placeholder="Composed TextField"
+                label="Username"
+                onChange={(value) =>
+                  setAccount({
+                    ...account,
+                    username: value.target.value,
+                  })
+                }
               />
               {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
             </FormControl>
@@ -177,8 +249,10 @@ export const CreateAccount = () => {
               <InputLabel htmlFor="component-outlined">Password</InputLabel>
               <OutlinedInput
                 id="component-outlined"
-                placeholder="Composed TextField"
+                // placeholder="Composed TextField"
                 label="Password"
+                defaultValue={account.password}
+                disabled
               />
               {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
             </FormControl>
@@ -193,11 +267,10 @@ export const CreateAccount = () => {
                 option.departmentName === value.departmentName
               }
               getOptionLabel={(option) => t(option.departmentName)}
-              options={departmentList}
+              options={departmentList.filter((d) => d.departmentName !== "All")}
               loading={isGetDepartmentsLoading}
               sx={{
                 ".MuiAutocomplete-clearIndicator": {
-                  backgroundColor: "#000",
                   scale: "75%",
                 },
                 ".MuiAutocomplete-popupIndicator": {
@@ -210,10 +283,10 @@ export const CreateAccount = () => {
                 },
               }}
               renderInput={(params) => (
-                <TextFieldStyled
+                <TextField
                   {...params}
                   label="Select department"
-                  color="primary"
+                  sx={{ color: "#000" }}
                   InputProps={{
                     ...params.InputProps,
                     startAdornment: (
@@ -239,12 +312,10 @@ export const CreateAccount = () => {
                 option.roleName === value.roleName
               }
               getOptionLabel={(option) => t(option.roleName)}
-              options={roleList}
-              disabled={!account.idDepartment}
+              options={DummyRoles}
               loading={isGetRoleLoading}
               sx={{
                 ".MuiAutocomplete-clearIndicator": {
-                  backgroundColor: "#000",
                   scale: "75%",
                 },
                 ".MuiAutocomplete-popupIndicator": {
@@ -255,14 +326,18 @@ export const CreateAccount = () => {
                   backgroundColor: "#2563EB",
                   scale: "75%",
                 },
+                "& .MuiChip-deleteIcon": {
+                  fill: "#000",
+                },
               }}
               renderInput={(params) => (
-                <TextFieldStyled
+                <TextField
                   {...params}
                   label="Select role"
                   sx={{
                     border: "1px solid #fff",
                     borderRadius: "5px",
+                    // color: '#000'
                   }}
                   InputProps={{
                     ...params.InputProps,
@@ -304,6 +379,7 @@ export const CreateAccount = () => {
               sx={{
                 ".MuiAutocomplete-clearIndicator": {
                   backgroundColor: "#000",
+                  fill: "#000",
                   scale: "75%",
                 },
                 ".MuiAutocomplete-popupIndicator": {
@@ -325,6 +401,7 @@ export const CreateAccount = () => {
                   sx={{
                     border: "1px solid #fff",
                     borderRadius: "5px",
+                    color: "#fff",
                   }}
                   InputProps={{
                     ...params.InputProps,

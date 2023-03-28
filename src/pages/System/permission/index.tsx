@@ -20,6 +20,7 @@ import Paper from "@mui/material/Paper";
 import { useTranslation } from "react-i18next";
 import ListItem from "@mui/material/ListItem";
 import TextField from "@mui/material/TextField/TextField";
+import CloseIcon from "@mui/icons-material/Close";
 
 const CustomBox = styled(Box)({
   padding: "20px 40px",
@@ -27,6 +28,7 @@ const CustomBox = styled(Box)({
   width: "100%",
   borderRadius: "15px",
   lineHeight: "50px",
+  filter: 'drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06))'
 });
 
 export const PermissionSystem = () => {
@@ -42,7 +44,7 @@ export const PermissionSystem = () => {
           variant="h6"
           component="h2"
           style={{ paddingBottom: "10px" }}
-          fontWeight='bold'
+          fontWeight="bold"
         >
           Permission
         </Typography>
@@ -74,11 +76,20 @@ export const PermissionSystem = () => {
         <DialogContent>
           <Box minWidth="500px">
             <Stack spacing={2}>
-              <Typography variant="h5" component="h1" alignSelf='center'>
-                Permission List
-              </Typography>
+              <Stack direction="row" justifyContent="space-between">
+                <Typography variant="h5" component="h1" alignSelf="center">
+                  Permission List
+                </Typography>
+                <IconButton onClick={() => setIsOpenPermissionDialog(false)}>
+                  <CloseIcon />
+                </IconButton>
+              </Stack>
               {DummyPermissions.map((permission) => (
-                <TextField key={permission.id} value={permission.permissionName} disabled />
+                <TextField
+                  key={permission.id}
+                  value={permission.permissionName}
+                  disabled
+                />
               ))}
               <DialogActions>
                 <WhiteBtn

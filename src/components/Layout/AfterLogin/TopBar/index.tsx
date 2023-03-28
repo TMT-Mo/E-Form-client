@@ -72,7 +72,7 @@ const TopBar: React.FC = () => {
   }, [notificationList]);
 
   return (
-    <div className="flex py-6 px-4 justify-between items-center bg-white md:px-20">
+    <div className="flex py-6 px-4 justify-between items-center bg-white drop-shadow-md md:px-20">
       <IconButton onClick={() => dispatch(toggleSideBar())}>
         {!isSideBarVisible ? (
           <MenuIcon fontSize="small" />

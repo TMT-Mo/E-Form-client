@@ -92,7 +92,7 @@ export const Account = () => {
               }
             >
               <AddIcon className="md:mr-2" />
-              {t("Add New")}
+              {t("Add")}
             </StyledAddBtn>
           </div>
         </div>

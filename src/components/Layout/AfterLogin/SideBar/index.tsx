@@ -24,7 +24,7 @@ import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { styled } from "@mui/system";
-import { useDispatch, useSelector } from "../../../../hooks";
+import { useDispatch, useSelector, usePermission } from "../../../../hooks";
 import { setLocation } from "../../../../slices/location";
 import ManageHistoryIcon from "@mui/icons-material/ManageHistory";
 import {
@@ -75,6 +75,8 @@ const {
   VIEW_SHARED_DOCUMENT,
   VIEW_TEMPLATE_HISTORY,
   VIEW_TEMPLATE_MANAGEMENT,
+  SYSTEM_MANAGEMENT,
+  ACCOUNT_MANAGEMENT,
 } = Permissions;
 
 const SideBar: React.FC = () => {
@@ -138,8 +140,8 @@ const SideBar: React.FC = () => {
       {innerWidth > DeviceWidth.IPAD_WIDTH && (
         <div
           className={`${
-            isSideBarVisible && "w-80 px-10"
-          } flex flex-col bg-dark-config min-h-screen items-center pt-8 px-3 space-y-8 absolute z-50 md:relative `}
+            isSideBarVisible && "w-80 px-8"
+          } flex flex-col bg-dark-config min-h-screen items-center pt-8 px-3 space-y-8 absolute z-50 drop-shadow-md md:relative `}
         >
           <IconButton
             onClick={() => dispatch(toggleSideBar())}
@@ -153,7 +155,7 @@ const SideBar: React.FC = () => {
               <AccountCircleIcon className="fill-white" />
               <h4 className="font-semibold text-white">{userInfo?.userName}</h4>
               <h4 className="font-semibold text-white">
-                {t(userInfo?.roleName!)}
+                {t(userInfo?.roleName!)} from {t(userInfo?.departmentName!)}
               </h4>
             </div>
           )}
@@ -166,29 +168,33 @@ const SideBar: React.FC = () => {
               <h5 className="pb-3 text-blue-config">{t("System")}</h5>
 
               <Stack spacing={0.5}>
-                <StyledListBtn
-                  selected={locationIndex === SYSTEM}
-                  onClick={(event) => handleListItemClick(event, SYSTEM)}
-                >
-                  <StyledTooltip title="System" placement="right">
-                    <ListItemIconStyled>
-                      <RecentActorsIcon className="fill-white" />
-                    </ListItemIconStyled>
-                  </StyledTooltip>
-                  <ListTextStyled primary={t("System")} />
-                </StyledListBtn>
+                {/* <RequiredPermission permission={SYSTEM_MANAGEMENT}> */}
+                  <StyledListBtn
+                    selected={locationIndex === SYSTEM}
+                    onClick={(event) => handleListItemClick(event, SYSTEM)}
+                  >
+                    <StyledTooltip title="System" placement="right">
+                      <ListItemIconStyled>
+                        <RecentActorsIcon className="fill-white" />
+                      </ListItemIconStyled>
+                    </StyledTooltip>
+                    <ListTextStyled primary={t("System")} />
+                  </StyledListBtn>
+                {/* </RequiredPermission> */}
 
-                <StyledListBtn
-                  selected={locationIndex === ACCOUNT}
-                  onClick={(event) => handleListItemClick(event, ACCOUNT)}
-                >
-                  <StyledTooltip title="Account List" placement="right">
-                    <ListItemIconStyled>
-                      <ManageAccountsIcon className="fill-white" />
-                    </ListItemIconStyled>
-                  </StyledTooltip>
-                  <ListTextStyled primary={t("Account List")} />
-                </StyledListBtn>
+                {/* <RequiredPermission permission={ACCOUNT_MANAGEMENT}> */}
+                  <StyledListBtn
+                    selected={locationIndex === ACCOUNT}
+                    onClick={(event) => handleListItemClick(event, ACCOUNT)}
+                  >
+                    <StyledTooltip title="Account List" placement="right">
+                      <ListItemIconStyled>
+                        <ManageAccountsIcon className="fill-white" />
+                      </ListItemIconStyled>
+                    </StyledTooltip>
+                    <ListTextStyled primary={t("Account List")} />
+                  </StyledListBtn>
+                {/* </RequiredPermission> */}
               </Stack>
             </List>
             <List component="nav" aria-label="main mailbox folders">

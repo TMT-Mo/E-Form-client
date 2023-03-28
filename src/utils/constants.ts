@@ -110,6 +110,8 @@ export enum Permissions {
   GROUP_VIEWER = 13,
   VIEW_SHARED_DOCUMENT = 14,
   VIEW_DOCUMENT_HISTORY = 15,
+  ACCOUNT_MANAGEMENT = 16,
+  SYSTEM_MANAGEMENT = 17,
 }
 
 export enum PermissionTag {
@@ -155,3 +157,7 @@ export enum AccountStatusTag{
   ENABLE = 'Enable',
   DISABLE = 'Disable'
 }
+
+export enum DefaultValue{
+  PASSWORD = 'P@ssw0rd'
+} 

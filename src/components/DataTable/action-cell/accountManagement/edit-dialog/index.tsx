@@ -10,6 +10,9 @@ import {
   Chip,
   CircularProgress,
   DialogActions,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
 } from "@mui/material";
 import { t } from "i18next";
 import React, { useEffect, useState } from "react";
@@ -26,6 +29,8 @@ import {
 } from "../../../../../utils/dummy-data";
 import { TextFieldStyled, SaveLoadingBtn } from "../../../../CustomStyled";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import { getSignature } from "../../../../../slices/auth";
+import CloseIcon from '@mui/icons-material/Close';
 
 interface Props {
   isOpen: boolean;
@@ -45,6 +50,8 @@ interface AccountState {
   idRole?: number;
   signature?: string;
   status?: AccountStatusOptions;
+  firstName: string;
+  lastName: string;
 }
 
 const statusOptions: AccountStatusOptions[] = [
@@ -66,30 +73,32 @@ export const EditDialog = (props: Props) => {
     isCreateAccountLoading,
     accountDetail,
   } = useSelector((state) => state.system);
-  const { userInfo } = useSelector((state) => state.auth);
+  const { userInfo, signature, isGetSignatureLoading } = useSelector((state) => state.auth);
   const [isDisabledSave, setIsDisabledSave] = useState(false);
   const dispatch = useDispatch();
 
   const currentPermissionList = (): Permission[] => {
     const list: Permission[] = [];
-    const currentPermissions = userInfo?.idPermissions.split(",")!;
+    // const currentPermissions = accountDetail?.idPermissions!.filter(p => FixedDummyPermissions.findIndex(f => f.id !== p) === -1)
+    const currentPermissions: number[] = [];
+    accountDetail?.idPermissions!.forEach((p) => {
+      if (FixedDummyPermissions.findIndex((f) => f.id === p) === -1) {
+        currentPermissions.push(p);
+      }
+      // console.log(FixedDummyPermissions.findIndex(f => f.id !== p) === -1)
+    });
     currentPermissions.forEach((p) =>
       list.push(DummyPermissions.find((value) => value.id === +p)!)
     );
     return list;
   };
   const [account, setAccount] = useState<AccountState>({
-    username: undefined,
-    password: undefined,
-    idDepartment: undefined,
-    permissions: [
-      ...FixedDummyPermissions,
-      ...currentPermissionList().filter(
-        (option) => FixedDummyPermissions.indexOf(option) === -1
-      ),
-    ],
-    idRole: undefined,
-    signature: undefined,
+    ...accountDetail!,
+    // password: undefined,
+    // idDepartment: undefined,
+    permissions: [...FixedDummyPermissions, ...currentPermissionList()],
+    // idRole: undefined,
+    // signature: undefined,
     status: {
       statusId: accountDetail?.status!,
       statusTag:
@@ -98,7 +107,6 @@ export const EditDialog = (props: Props) => {
           : AccountStatusTag.DISABLE,
     },
   });
-
   const onChangeSelectedPermissions = (value: Permission[]) => {
     setAccount({
       ...account,
@@ -114,11 +122,9 @@ export const EditDialog = (props: Props) => {
   const EditAccountHandle = () => {
     const onEditAccount = dispatch(
       editAccount({
-        account: {
-          ...account,
-          idPermissions: account.permissions.map((p) => p.id),
-          status: account.status?.statusId,
-        },
+        ...account,
+        idPermissions: account.permissions.map((p) => p.id),
+        status: account.status?.statusId,
       })
     );
     onEditAccount.unwrap();
@@ -133,14 +139,42 @@ export const EditDialog = (props: Props) => {
     setAccount({ ...account, status: value });
   };
 
+  useEffect(() => {
+    if (!accountDetail) return;
+    dispatch(getSignature({ userId: accountDetail?.id }));
+  }, [accountDetail, dispatch]);
+
   return (
     <Dialog open={isOpen} onClose={handleToggleDialog}>
       <DialogContent>
         <Box minWidth="500px">
           <Stack spacing={3}>
-            <Typography component="h1" fontSize="2rem">
+            <Stack direction='row' justifyContent='space-between'><Typography component="h1" fontSize="2rem">
               Edit account
             </Typography>
+            <IconButton onClick={handleToggleDialog}><CloseIcon/></IconButton></Stack>
+            <Stack spacing={1} direction="row">
+              <FormControl fullWidth>
+                <InputLabel htmlFor="component-outlined">First Name</InputLabel>
+                <OutlinedInput
+                  id="component-outlined"
+                  // placeholder="Composed TextField"
+                  label="First Name"
+                  value={accountDetail?.firstName}
+                  disabled
+                />
+              </FormControl>
+              <FormControl fullWidth>
+                <InputLabel htmlFor="component-outlined">Last Name</InputLabel>
+                <OutlinedInput
+                  id="component-outlined"
+                  // placeholder="Composed TextField"
+                  label="Last Name"
+                  value={accountDetail?.lastName}
+                  disabled
+                />
+              </FormControl>
+            </Stack>
             <Stack spacing={0.5}>
               <Typography fontSize="0.75rem">Username</Typography>
               <TextField
@@ -282,6 +316,10 @@ export const EditDialog = (props: Props) => {
                 />
               )}
             />
+            <Stack width="100%" alignItems="center" justifyContent="center">
+              {isGetSignatureLoading && <CircularProgress/>}
+              {signature && <img src={signature} width="200px" alt="" />}
+            </Stack>
             <SaveLoadingBtn
               loading={isCreateAccountLoading}
               disabled={isDisabledSave}
