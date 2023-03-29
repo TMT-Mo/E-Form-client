@@ -5,7 +5,6 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer from "@pdftron/webviewer";
 import AlertPopup from "../../../../components/AlertPopup";
 import { useDispatch, useSelector, useSignalR } from "../../../../hooks";
-import { createDocument } from "../../../../slices/document";
 import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from "uuid";
 import { SaveLoadingBtn } from "../../../../components/CustomStyled";
@@ -39,7 +38,7 @@ const ViewCreateDocument: React.FC = () => {
       <div className="flex space-x-2 items-center ">
         <h4>{t("Signer")}:</h4>
         <span className="text-white text-base break-words">
-          {signer.username}
+          {signer.userName}
         </span>
       </div>
       <div className="flex space-x-2 items-center">

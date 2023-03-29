@@ -621,5 +621,7 @@ export const accountColumns: GridColDef[] = [
     renderCell: AccountManagementActionCell,
     hideable: false,
     renderHeader: TranslateHeader,
+    align: 'center',
+    headerAlign: 'center'
   },
 ];

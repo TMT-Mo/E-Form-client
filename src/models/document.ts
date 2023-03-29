@@ -135,7 +135,7 @@ export interface SharedUser {
   id: number;
   createdAt: string;
   updateAt: string;
-  username: string;
+  userName: string;
   signature: null | string;
   roleName: null | string;
   departmentName: null | string;

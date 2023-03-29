@@ -35,7 +35,7 @@ const ViewTemplateHistory: React.FC = () => {
       <div className="flex space-x-2 items-center ">
         <h4>{t("Signer")}:</h4>
         <span className="text-white text-base break-words">
-          {signer.username}
+          {signer.userName}
         </span>
       </div>
       <div className="flex space-x-2 items-center">

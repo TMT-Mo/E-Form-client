@@ -3,8 +3,6 @@ import {
   Box,
   FormControl,
   InputLabel,
-  Input,
-  FormHelperText,
   OutlinedInput,
   Stack,
   Autocomplete,
@@ -30,10 +28,14 @@ import {
   DummyRoles,
   FixedDummyPermissions,
 } from "../../../utils/dummy-data";
-import { DefaultValue, Permissions } from "../../../utils/constants";
+import {
+  AccountStatus,
+  DefaultValue,
+  Permissions,
+} from "../../../utils/constants";
 
 interface AccountState {
-  username?: string;
+  userName?: string;
   password: string;
   permissions: Permission[];
   idDepartment?: number;
@@ -42,7 +44,6 @@ interface AccountState {
   status: number;
   firstName?: string;
   lastName?: string;
-  isEnable: boolean;
 }
 
 export const CreateAccount = () => {
@@ -59,16 +60,15 @@ export const CreateAccount = () => {
   } = useSelector((state) => state.system);
   const { userInfo } = useSelector((state) => state.auth);
   const [account, setAccount] = useState<AccountState>({
-    username: undefined,
+    userName: undefined,
     password: DefaultValue.PASSWORD,
     idDepartment: undefined,
     permissions: [...FixedDummyPermissions],
     idRole: undefined,
     signature: undefined,
-    status: 1,
+    status: AccountStatus.ENABLE,
     firstName: undefined,
     lastName: undefined,
-    isEnable: true,
   });
   const [isDisabledSave, setIsDisabledSave] = useState(false);
   const currentPermissionList = (): Permission[] => {
@@ -123,32 +123,32 @@ export const CreateAccount = () => {
 
   const onCreateAccount = async () => {
     const {
-      username,
+      userName,
       password,
       idRole,
       idDepartment,
       signature,
       firstName,
       lastName,
-      isEnable,
+      status,
     } = account;
     const createNewAccount = dispatch(
       createAccount({
-        username,
+        userName,
         password,
         idRole,
         firstName,
         lastName,
         idDepartment,
         signature,
-        isEnable,
+        status,
         idPermissions: account.permissions.map((p) => p.id),
       })
     );
     await createNewAccount.unwrap();
 
     setAccount({
-      username: undefined,
+      userName: undefined,
       password: DefaultValue.PASSWORD,
       idDepartment: undefined,
       permissions: [...FixedDummyPermissions],
@@ -157,7 +157,6 @@ export const CreateAccount = () => {
       status: 1,
       firstName: undefined,
       lastName: undefined,
-      isEnable: true,
     });
     return () => createNewAccount.abort();
   };
@@ -239,7 +238,7 @@ export const CreateAccount = () => {
                 onChange={(value) =>
                   setAccount({
                     ...account,
-                    username: value.target.value,
+                    userName: value.target.value,
                   })
                 }
               />

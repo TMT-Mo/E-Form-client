@@ -34,7 +34,7 @@ const ChangeSigner: React.FC<Props> = ({
     userList.forEach((u) => {
       checkExisted = false;
       signerList.forEach((value, index) => {
-        if (u.username === value.username) {
+        if (u.userName === value.userName) {
           checkExisted = true;
         }
       });
@@ -47,7 +47,7 @@ const ChangeSigner: React.FC<Props> = ({
     <div className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4 min-w-fit">
       <div className="flex space-x-2 items-center ">
         <h4>{t("Signer")}:</h4>
-        <Typography className="text-white">{signer.username}</Typography>
+        <Typography className="text-white">{signer.userName}</Typography>
       </div>
       <div className="flex space-x-2 items-center">
         <h4>{t("Department")}:</h4>
@@ -84,7 +84,7 @@ const ChangeSigner: React.FC<Props> = ({
             // isOptionEqualToValue={(option, value) =>
             //   option.username === value.username
             // }
-            getOptionLabel={(option) => option.username}
+            getOptionLabel={(option) => option.userName}
             options={filterUser()}
             loading={isGetSignerLoading}
             renderInput={(params) => (

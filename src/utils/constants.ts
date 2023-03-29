@@ -28,6 +28,7 @@ export enum LocationIndex {
   DOCUMENT_HISTORY = 8,
   CHANGE_PASSWORD = 9,
   ADD_ACCOUNT = 10,
+  MY_ACCOUNT = 11,
 }
 
 export enum ViewerLocationIndex {
@@ -40,6 +41,7 @@ export enum ViewerLocationIndex {
   VIEW_DOCUMENT_HISTORY_INDEX = 6,
   VIEW_TEMPLATE_HISTORY_INDEX = 7,
   VIEW_SHARED_DOCUMENT_INDEX = 8,
+ 
 }
 
 export enum TypeFile {
@@ -90,7 +92,7 @@ export enum DataTableHeader {
   IS_LOCKED = "isLocked",
   TYPE_DOCUMENT = "typeName",
   ID_USER = 'id',
-  USERNAME = 'username',
+  USERNAME = 'userName',
   ROLE_NAME = 'roleName'
 }
 

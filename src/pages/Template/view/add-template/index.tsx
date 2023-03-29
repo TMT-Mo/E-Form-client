@@ -26,7 +26,6 @@ import FileUploadIcon from "@mui/icons-material/FileUpload";
 import AlertPopup from "../../../../components/AlertPopup";
 import {
   getDepartmentList,
-  toggleDepartmentList,
   getTemplateTypeList,
   toggleTemplateTypeList,
   getSigner,
@@ -64,7 +63,6 @@ const ViewAddTemplate: React.FC = () => {
   const {
     isGetDepartmentsLoading,
     departmentList,
-    isOpenDepartmentList,
     isGetSignerLoading,
     userList,
     isGetTemplateTypesLoading,
@@ -208,7 +206,7 @@ const ViewAddTemplate: React.FC = () => {
       <div className="flex space-x-2 items-center ">
         <h4>{t("Signer")}:</h4>
         <span className="text-white text-base break-words">
-          {signer.username}
+          {signer.userName}
         </span>
       </div>
       <div className="flex space-x-2 items-center">
@@ -380,7 +378,7 @@ const ViewAddTemplate: React.FC = () => {
                   }}
                   id="multiple-limit-tags"
                   options={userList}
-                  getOptionLabel={(option) => option.username}
+                  getOptionLabel={(option) => option.userName}
                   onChange={(e, value) => {
                     setForm({
                       ...form,

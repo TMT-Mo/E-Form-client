@@ -7,6 +7,7 @@
     @apply py-2 px-4 bg-blue-500 text-white transition duration-300 font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
   }
 }
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
 html {
   scroll-behavior: smooth;
@@ -15,11 +16,13 @@ html {
 * {
   padding: 0;
   margin: 0;
+  font-family: 'Inter', sans-serif !important;
+  z-index: 10;
 }
 
 body {
   scroll-behavior: auto;
-  
+  /* background: url('https://images.pexels.com/photos/1421903/pexels-photo-1421903.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'); */
 }
 
 .centered {

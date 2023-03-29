@@ -43,7 +43,7 @@ interface AccountStatusOptions {
 }
 
 interface AccountState {
-  username?: string;
+  userName?: string;
   password?: string;
   permissions: Permission[];
   idDepartment?: number;
@@ -71,6 +71,7 @@ export const EditDialog = (props: Props) => {
     isGetDepartmentsLoading,
     isGetPermissionLoading,
     isCreateAccountLoading,
+    isEditAccountLoading,
     accountDetail,
   } = useSelector((state) => state.system);
   const { userInfo, signature, isGetSignatureLoading } = useSelector((state) => state.auth);
@@ -93,12 +94,16 @@ export const EditDialog = (props: Props) => {
     return list;
   };
   const [account, setAccount] = useState<AccountState>({
-    ...accountDetail!,
-    // password: undefined,
-    // idDepartment: undefined,
+    userName: accountDetail?.userName,
+    password: undefined,
+    firstName: accountDetail?.firstName!,
+    lastName: accountDetail?.lastName!,
+    idDepartment: 1,
     permissions: [...FixedDummyPermissions, ...currentPermissionList()],
     // idRole: undefined,
     // signature: undefined,
+    idRole: 1,
+    signature: undefined,
     status: {
       statusId: accountDetail?.status!,
       statusTag:
@@ -107,6 +112,8 @@ export const EditDialog = (props: Props) => {
           : AccountStatusTag.DISABLE,
     },
   });
+
+  console.log(account)
   const onChangeSelectedPermissions = (value: Permission[]) => {
     setAccount({
       ...account,
@@ -120,14 +127,16 @@ export const EditDialog = (props: Props) => {
   };
 
   const EditAccountHandle = () => {
+    console.log(account)
     const onEditAccount = dispatch(
       editAccount({
         ...account,
         idPermissions: account.permissions.map((p) => p.id),
-        status: account.status?.statusId,
+        status: account.status?.statusId === AccountStatus.ENABLE ? true : false,
       })
     );
     onEditAccount.unwrap();
+    handleToggleDialog()
     return () => onEditAccount.abort();
   };
 
@@ -179,7 +188,7 @@ export const EditDialog = (props: Props) => {
               <Typography fontSize="0.75rem">Username</Typography>
               <TextField
                 id="component-outlined"
-                defaultValue={accountDetail?.username}
+                defaultValue={accountDetail?.userName}
                 sx={{ color: "#000" }}
                 disabled
               />
@@ -321,7 +330,7 @@ export const EditDialog = (props: Props) => {
               {signature && <img src={signature} width="200px" alt="" />}
             </Stack>
             <SaveLoadingBtn
-              loading={isCreateAccountLoading}
+              loading={isEditAccountLoading}
               disabled={isDisabledSave}
               onClick={EditAccountHandle}
             >

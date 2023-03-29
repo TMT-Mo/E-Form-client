@@ -27,7 +27,7 @@ const LanguageSelect: React.FC = () => {
         <div className="flex items-center">
           <Button
             {...bindTrigger(popupState)}
-            className="bg-white font-semibold"
+            className=" font-semibold"
           >
             {handleDisplayFlag(currentLanguage)}
           </Button>

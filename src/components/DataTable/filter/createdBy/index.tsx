@@ -52,7 +52,7 @@ const SelectType = (props: GridFilterInputValueProps) => {
           >
             {userList.map((item) => (
               <MenuItem value={item.id} key={item.id}>
-                {item.username}
+                {item.userName}
               </MenuItem>
             ))}
           </Select>

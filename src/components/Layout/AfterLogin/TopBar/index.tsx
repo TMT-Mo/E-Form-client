@@ -4,6 +4,7 @@ import LockPersonIcon from "@mui/icons-material/LockPerson";
 import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MenuIcon from "@mui/icons-material/Menu";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import {
@@ -22,10 +23,19 @@ import { setLocation } from "../../../../slices/location";
 import { toggleSideBar } from "../../../../slices/ui-control";
 import { LocationIndex } from "../../../../utils/constants";
 import { Notification } from "./notification";
-import { checkNotification, getNotification } from "../../../../slices/notification";
+import {
+  checkNotification,
+  getNotification,
+} from "../../../../slices/notification";
 import Badge from "@mui/material/Badge";
 
-const TopBar: React.FC = () => {
+interface Props {
+  handleDrawerOpen: () => void;
+  isOpen: boolean;
+}
+
+const TopBar: React.FC<Props> = (props) => {
+  const { handleDrawerOpen, isOpen } = props;
   const dispatch = useDispatch();
   const { isSideBarVisible } = useSelector((state) => state.uiControl);
   const { logout } = useAuth();
@@ -72,13 +82,27 @@ const TopBar: React.FC = () => {
   }, [notificationList]);
 
   return (
-    <div className="flex py-6 px-4 justify-between items-center bg-white drop-shadow-md md:px-20">
-      <IconButton onClick={() => dispatch(toggleSideBar())}>
+    <div className="flex py-6 px-4 justify-between items-center  md:px-20">
+      {/* <IconButton onClick={() => dispatch(toggleSideBar())}>
         {!isSideBarVisible ? (
           <MenuIcon fontSize="small" />
         ) : (
           <ArrowBackIosNewIcon fontSize="small" />
         )}
+      </IconButton> */}
+      <IconButton
+        aria-label="open drawer"
+        onClick={handleDrawerOpen}
+        edge="end"
+        sx={{
+          // marginRight: 15,
+          marginLeft: 15,
+          ...(isOpen && { opacity: "0", cursor: "unset" }),
+          fill: "#000",
+        }}
+
+      >
+        <MenuIcon/>
       </IconButton>
       <div className="flex space-x-5">
         <LanguageSelect />

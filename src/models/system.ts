@@ -9,7 +9,7 @@ export interface DepartmentListResponse {
 
 export interface IUser {
   id: number;
-  username: string;
+  userName: string;
   signature: string;
   roleName: string;
   status: number;
@@ -19,7 +19,6 @@ export interface IUser {
   idPermissions: number[];
   firstName: string;
   lastName: string;
-  isEnable: boolean
 }
 
 export interface GetUsersResponse {
@@ -54,7 +53,7 @@ export interface IFile {
 }
 
 export interface CreateAccountArgs {
-  username?: string;
+  userName?: string;
   password?: string;
   idPermissions: number[];
   idDepartment?: number;
@@ -62,7 +61,6 @@ export interface CreateAccountArgs {
   signature?: string;
   firstName?: string,
   lastName?: string,
-  isEnable?: boolean,
   status?: number
 }
 
@@ -70,7 +68,7 @@ export interface CreateAccountResponse {
   message: string;
 }
 export interface EditAccountArgs {
-  username?: string;
+  userName?: string;
   password?: string;
   idPermissions: number[];
   idDepartment?: number;
@@ -78,8 +76,7 @@ export interface EditAccountArgs {
   signature?: string;
   firstName?: string,
   lastName?: string,
-  isEnable?: boolean,
-  status?: number
+  status?: boolean
 }
 
 export interface EditAccountResponse {

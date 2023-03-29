@@ -27,6 +27,8 @@ export interface UserInfo {
   signature: string,
   idPermissions: string,
   departmentName: string,
+  firstName: string,
+  lastName: string,
 }
 
 export interface GetSignatureArgs{

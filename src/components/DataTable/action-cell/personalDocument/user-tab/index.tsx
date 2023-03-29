@@ -126,9 +126,9 @@ const UserTab = (props: Props) => {
               multiple
               onChange={(e, value) => onAddSelectedUser(value!)}
               isOptionEqualToValue={(option, value) =>
-                option.username === value.username
+                option.userName === value.userName
               }
-              getOptionLabel={(option) => t(option.username)}
+              getOptionLabel={(option) => t(option.userName)}
               options={userList}
               value={selectedUser}
               loading={isGetUserListLoading}
@@ -170,8 +170,8 @@ const UserTab = (props: Props) => {
             />
             <Autocomplete
               multiple
-              options={sharedUser.map((user) => user.username)}
-              value={sharedUser.map((user) => user.username)}
+              options={sharedUser.map((user) => user.userName)}
+              value={sharedUser.map((user) => user.userName)}
               limitTags={2}
               readOnly
               loading={isGetSharedUserLoading}
