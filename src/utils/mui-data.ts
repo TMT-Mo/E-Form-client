@@ -1,3 +1,4 @@
+import { AccountStatusCell } from './../components/DataTable/account-status/index';
 import { TranslateContent } from './../components/DataTable/TranslateContent/index';
 import { TranslateHeader } from './../components/DataTable/TranslateHeader';
 
@@ -609,7 +610,7 @@ export const accountColumns: GridColDef[] = [
     field: STATUS,
     headerName: "Status",
     align: "center",
-    renderCell: StatusCell,
+    renderCell: AccountStatusCell,
     headerAlign: "center",
     renderHeader: TranslateHeader,
   },
