@@ -15,10 +15,11 @@ import {
   OutlinedInput,
 } from "@mui/material";
 import { t } from "i18next";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "../../../../../hooks";
 import { Permission } from "../../../../../models/system";
-import { editAccount } from "../../../../../slices/system";
+import { clearUserList, editAccount, getRoleList, getUserList } from "../../../../../slices/system";
+import { PhotoCamera } from "@mui/icons-material";
 import {
   AccountStatus,
   AccountStatusTag,
@@ -30,7 +31,9 @@ import {
 import { TextFieldStyled, SaveLoadingBtn } from "../../../../CustomStyled";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { getSignature } from "../../../../../slices/auth";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
+import { handleError } from "../../../../../slices/alert";
+import Resizer from "react-image-file-resizer";
 
 interface Props {
   isOpen: boolean;
@@ -43,9 +46,10 @@ interface AccountStatusOptions {
 }
 
 interface AccountState {
+  idUser: number;
   userName?: string;
   password?: string;
-  permissions: Permission[];
+  // permissions: Permission[];
   idDepartment?: number;
   idRole?: number;
   signature?: string;
@@ -73,8 +77,12 @@ export const EditDialog = (props: Props) => {
     isCreateAccountLoading,
     isEditAccountLoading,
     accountDetail,
+    roleList,
+    departmentList,
   } = useSelector((state) => state.system);
-  const { userInfo, signature, isGetSignatureLoading } = useSelector((state) => state.auth);
+  const { userInfo, signature, isGetSignatureLoading } = useSelector(
+    (state) => state.auth
+  );
   const [isDisabledSave, setIsDisabledSave] = useState(false);
   const dispatch = useDispatch();
 
@@ -94,15 +102,17 @@ export const EditDialog = (props: Props) => {
     return list;
   };
   const [account, setAccount] = useState<AccountState>({
+    idUser: accountDetail?.id!,
     userName: accountDetail?.userName,
     password: undefined,
     firstName: accountDetail?.firstName!,
     lastName: accountDetail?.lastName!,
-    idDepartment: 1,
-    permissions: [...FixedDummyPermissions, ...currentPermissionList()],
-    // idRole: undefined,
-    // signature: undefined,
-    idRole: 1,
+    idDepartment: departmentList.find(
+      (department) =>
+        department.departmentName === accountDetail?.departmentName
+    )?.id,
+    idRole: roleList.find((role) => role.roleName === accountDetail?.roleName)
+      ?.id,
     signature: undefined,
     status: {
       statusId: accountDetail?.status!,
@@ -112,31 +122,36 @@ export const EditDialog = (props: Props) => {
           : AccountStatusTag.DISABLE,
     },
   });
+  const [permissions, setPermissions] = useState<Permission[]>([
+    ...FixedDummyPermissions,
+    ...currentPermissionList(),
+  ]);
 
-  console.log(account)
+  console.log(account);
+
   const onChangeSelectedPermissions = (value: Permission[]) => {
-    setAccount({
-      ...account,
-      permissions: [
-        ...FixedDummyPermissions,
-        ...value.filter(
-          (option) => FixedDummyPermissions.indexOf(option) === -1
-        ),
-      ],
-    });
+    setPermissions([
+      ...FixedDummyPermissions,
+      ...value.filter((option) => FixedDummyPermissions.indexOf(option) === -1),
+    ]);
   };
 
-  const EditAccountHandle = () => {
-    console.log(account)
+  const EditAccountHandle = async () => {
+    console.log(account);
     const onEditAccount = dispatch(
       editAccount({
         ...account,
-        idPermissions: account.permissions.map((p) => p.id),
-        status: account.status?.statusId === AccountStatus.ENABLE ? true : false,
+        idPermissions: permissions.map((p) => p.id),
+        status:
+          account.status?.statusId === AccountStatus.ENABLE ? true : false,
+        signature: account.signature ?? signature,
       })
     );
-    onEditAccount.unwrap();
-    handleToggleDialog()
+    await onEditAccount.unwrap();
+    handleToggleDialog();
+    dispatch(clearUserList())
+    await dispatch(getUserList({}))
+    
     return () => onEditAccount.abort();
   };
 
@@ -148,20 +163,65 @@ export const EditDialog = (props: Props) => {
     setAccount({ ...account, status: value });
   };
 
-  useEffect(() => {
-    if (!accountDetail) return;
-    dispatch(getSignature({ userId: accountDetail?.id }));
-  }, [accountDetail, dispatch]);
+  const resizeFile = (file: File) =>
+  new Promise((resolve) => {
+    const maxWidth = 130;
+    const minWidth = 130;
+    const minHeight = 100;
+    const maxHeight = 100;
+
+    const fileName = file.name.slice(file.name.lastIndexOf(".") + 1);
+    Resizer.imageFileResizer(
+      file,
+      maxWidth,
+      maxHeight,
+      fileName,
+      100,
+      0,
+      (uri) => {
+        resolve(uri);
+      },
+      "base64",
+      minWidth,
+      minHeight
+    );
+  });
+
+const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  if (!e.target.files) {
+    dispatch(
+      handleError({
+        errorMessage: "Something went wrong with uploading image!",
+      })
+    );
+    return;
+  }
+  let file = e.target.files[0];
+  const image = await resizeFile(file);
+  setAccount({
+    ...account,
+    signature: image as string,
+  });
+};
+
+  // useEffect(() => {
+  //   if(!signature) return
+  //   setAccount({...account, signature})
+  // }, [account, signature]);
 
   return (
     <Dialog open={isOpen} onClose={handleToggleDialog}>
       <DialogContent>
         <Box minWidth="500px">
           <Stack spacing={3}>
-            <Stack direction='row' justifyContent='space-between'><Typography component="h1" fontSize="2rem">
-              Edit account
-            </Typography>
-            <IconButton onClick={handleToggleDialog}><CloseIcon/></IconButton></Stack>
+            <Stack direction="row" justifyContent="space-between">
+              <Typography component="h1" fontSize="2rem">
+                Edit account
+              </Typography>
+              <IconButton onClick={handleToggleDialog}>
+                <CloseIcon />
+              </IconButton>
+            </Stack>
             <Stack spacing={1} direction="row">
               <FormControl fullWidth>
                 <InputLabel htmlFor="component-outlined">First Name</InputLabel>
@@ -170,7 +230,7 @@ export const EditDialog = (props: Props) => {
                   // placeholder="Composed TextField"
                   label="First Name"
                   value={accountDetail?.firstName}
-                  disabled
+                  onChange={(value => setAccount({...account, firstName: value.target.value}))}
                 />
               </FormControl>
               <FormControl fullWidth>
@@ -180,7 +240,7 @@ export const EditDialog = (props: Props) => {
                   // placeholder="Composed TextField"
                   label="Last Name"
                   value={accountDetail?.lastName}
-                  disabled
+                  onChange={(value => setAccount({...account, lastName: value.target.value}))}
                 />
               </FormControl>
             </Stack>
@@ -247,7 +307,7 @@ export const EditDialog = (props: Props) => {
               getOptionLabel={(option) => t(option.permissionName)}
               options={DummyPermissions}
               loading={isGetPermissionLoading}
-              value={account.permissions}
+              value={permissions}
               renderTags={(tagValue, getTagProps) =>
                 tagValue.map((option, index) => (
                   <Chip
@@ -325,10 +385,30 @@ export const EditDialog = (props: Props) => {
                 />
               )}
             />
-            <Stack width="100%" alignItems="center" justifyContent="center">
-              {isGetSignatureLoading && <CircularProgress/>}
-              {signature && <img src={signature} width="200px" alt="" />}
+            <Stack
+              direction="row"
+              justifyContent="start"
+              alignItems="center"
+              minHeight="150px"
+            >
+              <IconButton
+                color="primary"
+                aria-label="upload picture"
+                component="label"
+              >
+                <input
+                  hidden
+                  accept="image/*"
+                  type="file"
+                  onChange={(e) => handleUploadImage(e)}
+                />
+                <PhotoCamera />
+              </IconButton>
+              {isGetSignatureLoading && <CircularProgress />}
+              {signature && <img src={account.signature ?? signature} width="200px" alt="" />}
             </Stack>
+            {/* <Stack width="100%" alignItems="center" justifyContent="center">
+            </Stack> */}
             <SaveLoadingBtn
               loading={isEditAccountLoading}
               disabled={isDisabledSave}

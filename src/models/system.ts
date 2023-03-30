@@ -68,6 +68,7 @@ export interface CreateAccountResponse {
   message: string;
 }
 export interface EditAccountArgs {
+  idUser?: number,
   userName?: string;
   password?: string;
   idPermissions: number[];

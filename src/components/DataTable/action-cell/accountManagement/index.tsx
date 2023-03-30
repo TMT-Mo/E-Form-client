@@ -12,6 +12,7 @@ import {
 } from "../../../../slices/system";
 import { EditDialog } from "./edit-dialog/";
 import { IUser } from "../../../../models/system";
+import { getSignature } from "../../../../slices/auth";
 
 export const AccountManagementActionCell = (
   props: GridRenderCellParams<Date>
@@ -37,6 +38,7 @@ export const AccountManagementActionCell = (
 
   const onOpenAccountDetail = () => {
     dispatch(getAccountDetail({ account: row }));
+    dispatch(getSignature({userId: (row as IUser).id})).unwrap()
     setIsOpen(true);
   };
 

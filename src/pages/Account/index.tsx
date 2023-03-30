@@ -1,12 +1,12 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase, Paper } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledAddBtn } from "../../components/CustomStyled";
 import DataTable from "../../components/DataTable";
 import { useDispatch, useSelector } from "../../hooks";
 import { DateFilter } from "../../models/mui-data";
-import { getUserList, searchAccount } from "../../slices/system";
+import { getDepartmentList, getRoleList, getUserList, searchAccount } from "../../slices/system";
 import { DataTableHeader, DeviceWidth, LocationIndex } from "../../utils/constants";
 import AddIcon from "@mui/icons-material/Add";
 import { setLocation } from "../../slices/location";
@@ -16,9 +16,22 @@ export const Account = () => {
   const dispatch = useDispatch();
   // const { userInfo } = useSelector((state) => state.auth);
   const { filter, sorter } = useSelector((state) => state.filter);
-  const { searchItemValue, currentPage } = useSelector((state) => state.system);
+  const { searchItemValue, currentPage, roleList } = useSelector((state) => state.system);
   const { t } = useTranslation();
 
+  const getRoles = useCallback(async () => {
+    await dispatch(getRoleList()).unwrap();
+  }, [dispatch]);
+
+  const getDepartments = useCallback(async () => {
+    await dispatch(getDepartmentList()).unwrap();
+  }, [dispatch]);
+
+  useEffect(() => {
+    getRoles();
+    getDepartments()
+  }, [getDepartments, getRoles]);
+  
   useEffect(() => {
     const getUser = dispatch(
       getUserList({

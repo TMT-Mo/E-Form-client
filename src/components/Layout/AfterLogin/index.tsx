@@ -145,7 +145,7 @@ const Drawer = styled(MuiDrawer, {
   whiteSpace: "nowrap",
   boxSizing: "border-box",
   "& .MuiPaper-root": {
-    // background: "#000",
+    background: "#000",
     position: "relative",
     padding: "10px 20px",
     "::-webkit-scrollbar": {
@@ -549,7 +549,7 @@ export default function AfterLogin() {
         <DividerStyled />
 
         
-        <div className="absolute top-0 left-0 w-full h-full z-0 bg-gradient-to-br from-slate-800 to-stone-500"></div>
+        {/* <div className="absolute top-0 left-0 w-full h-full z-0 bg-gradient-to-br from-slate-800 to-stone-500"></div> */}
       </Drawer>
       <Box
         component="main"
