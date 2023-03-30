@@ -65,7 +65,7 @@ export const DepartmentSystem = () => {
           >
             Department
           </Typography>
-          {departmentList && (
+          {!isGetDepartmentsLoading && (
             <Stack direction="row">
               <IconButton
                 onClick={() => setIsAddingDepartment((prevState) => !prevState)}
@@ -99,7 +99,7 @@ export const DepartmentSystem = () => {
         </Stack>
 
         {isGetDepartmentsLoading && <CircularProgress />}
-        {departmentList.length !== 0 && (
+        {!isGetDepartmentsLoading && (
           <Stack
             direction="row"
             spacing={25}
@@ -129,7 +129,7 @@ export const DepartmentSystem = () => {
                 options={departmentList}
                 sx={{
                   ".MuiAutocomplete-clearIndicator": {
-                    backgroundColor: "#000",
+                    backgroundColor: "#bdc3c7",
                     scale: "75%",
                   },
                   ".MuiAutocomplete-popupIndicator": {

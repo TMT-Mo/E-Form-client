@@ -272,7 +272,7 @@ export const EditDialog = (props: Props) => {
                   scale: "75%",
                 },
                 "& .MuiChip-deleteIcon": {
-                  fill: "#000",
+                  fill: "#fff",
                 },
               }}
               renderInput={(params) => (

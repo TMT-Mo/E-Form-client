@@ -482,7 +482,7 @@ const system = createSlice({
     builder.addCase(getRoleList.fulfilled, (state, { payload }) => ({
       ...state,
       isGetRoleLoading: false,
-      roleList: payload.roleList,
+      roleList: payload.items,
     }));
     builder.addCase(getRoleList.rejected, (state) => ({
       ...state,

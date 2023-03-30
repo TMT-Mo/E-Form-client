@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "../../../hooks";
 import { Role } from "../../../models/system";
 import { useTranslation } from "react-i18next";
 import { WhiteBtn, SaveLoadingBtn } from "../../../components/CustomStyled";
-import { editRole } from "../../../slices/system";
+import { createRole, editRole, getRoleList } from "../../../slices/system";
 import { DummyRoles } from "../../../utils/dummy-data";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import CloseIcon from '@mui/icons-material/Close';
@@ -35,7 +35,7 @@ const CustomBox = styled(Box)({
 export const RoleSystem = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { isGetRoleLoading, roleList, isEditRoleLoading } = useSelector(
+  const { isGetRoleLoading, roleList, isEditRoleLoading, isCreateRoleLoading } = useSelector(
     (state) => state.system
   );
   const [modifyRole, setModifyRole] = useState<Role>();
@@ -44,15 +44,32 @@ export const RoleSystem = () => {
   const [isEditingRole, setIsEditingRole] = useState(false);
   const [isViewingRole, setIsViewingRole] = useState(false);
 
-  const onEditRole = () => {
+  const onEditRole = async () => {
     const { roleName, id } = modifyRole!;
-    dispatch(editRole({ roleName, roleId: id }));
+    const editRoleHandle = dispatch(editRole({ roleName, roleId: id }));
+    await editRoleHandle.unwrap()
+
+    setModifyRole(undefined)
+    setIsEditingRole(false)
+
+    const getRole = dispatch(getRoleList())
+    await getRole.unwrap()
   };
+
+  const onCreateRole = async() => {
+    const createRoleHandler = dispatch(createRole({roleName: newRole!}))
+    await createRoleHandler.unwrap()
+
+    setNewRole('')
+
+    const getRole = dispatch(getRoleList())
+    await getRole.unwrap()
+  }
 
   return (
     <>
       <CustomBox>
-        <Stack
+        {!isGetRoleLoading && <Stack
           direction="row"
           justifyContent="space-between"
           alignItems="center"
@@ -91,7 +108,7 @@ export const RoleSystem = () => {
               <ListAltIcon />
             </IconButton>
           </Stack>
-        </Stack>
+        </Stack>}
         {isGetRoleLoading && <CircularProgress />}
         <Stack
           direction="row"
@@ -99,9 +116,9 @@ export const RoleSystem = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography variant="h2" component="h1">
-            23
-          </Typography>
+          {!isGetRoleLoading && <Typography variant="h2" component="h1">
+            {roleList?.length}
+          </Typography>}
         </Stack>
       </CustomBox>
       <Dialog open={isEditingRole}>
@@ -121,7 +138,7 @@ export const RoleSystem = () => {
                 options={roleList}
                 sx={{
                   ".MuiAutocomplete-clearIndicator": {
-                    backgroundColor: "#000",
+                    backgroundColor: "#bdc3c7",
                     scale: "75%",
                   },
                   ".MuiAutocomplete-popupIndicator": {
@@ -132,7 +149,6 @@ export const RoleSystem = () => {
                     backgroundColor: "#2563EB",
                     scale: "75%",
                   },
-                  color: "#000",
                 }}
                 renderInput={(params) => (
                   <TextField
@@ -210,12 +226,12 @@ export const RoleSystem = () => {
                 </WhiteBtn>
                 <SaveLoadingBtn
                   size="small"
-                  // loading={isApproveTemplateLoading}
+                  loading={isCreateRoleLoading}
                   loadingIndicator={
                     <CircularProgress color="inherit" size={16} />
                   }
                   variant="outlined"
-                  // onClick={onApproveTemplate}
+                  onClick={onCreateRole}
                 >
                   {t("Save")}
                 </SaveLoadingBtn>
@@ -236,7 +252,7 @@ export const RoleSystem = () => {
                   <CloseIcon />
                 </IconButton>
               </Stack>
-              {DummyRoles!.map((role) => (
+              {roleList?.map((role) => (
                 <TextField key={role.id} value={role.roleName} disabled />
               ))}
               <DialogActions>

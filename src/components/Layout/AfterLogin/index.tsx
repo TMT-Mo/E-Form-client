@@ -56,6 +56,8 @@ import {
   AccountCircleOutlined,
 } from "@mui/icons-material";
 import TopBar from "./TopBar";
+import { SignalR } from "../../../signalR/signalR";
+import AlertPopup from "../../AlertPopup";
 
 const {
   TEMPLATE,
@@ -565,6 +567,11 @@ export default function AfterLogin() {
         <DrawerHeader />
         <Container maxWidth="xl">{switchTab()}</Container>
       </Box>
+      <AlertPopup
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        autoHideDuration={3000}
+      />
+      <SignalR/>
     </Box>
   );
 }

@@ -98,7 +98,10 @@ export interface Role {
   roleName: string;
 }
 export interface GetRoleListResponse {
-  roleList: Role[];
+  items: Role[];
+  total: number;
+  page: number;
+  size: number;
 }
 
 export interface Permission {
