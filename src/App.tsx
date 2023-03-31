@@ -17,7 +17,6 @@ function App() {
     !checkAuthenticated && authenticate();
   }, [authenticate, checkAuthenticated]);
 
-  // console.log((helpers.getToken() as unknown as UserInfo).exp * 1000)
   return (
     <Routes>
       {/* Public Routes */}
