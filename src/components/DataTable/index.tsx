@@ -160,7 +160,8 @@ const DataTable: React.FC = () => {
           currentPage: currentPageAccount,
           totalPages: Math.ceil(totalAccount! / 10),
           onChangePage: (e, value) =>
-            dispatch(onChangeAccountPage({ selectedPage: --value })),
+            {dispatch(onChangeAccountPage({ selectedPage: --value }))
+          console.log(value)},
           columnVisible,
         };
       case NEW_TEMPLATE:

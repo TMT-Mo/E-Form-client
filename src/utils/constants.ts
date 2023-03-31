@@ -99,23 +99,26 @@ export enum DataTableHeader {
 }
 
 export enum Permissions {
+  // PROFILE_MANAGEMENT = 20,
+  ANALYTICS_DASHBOARD_MANAGEMENT = 18,
+  ANALYTICS_ACTIVITIES_MANAGEMENT = 19,
+  VIEW_NEW_TEMPLATE = 7,
+  VIEW_TEMPLATE_MANAGEMENT = 3,
   VIEW_TEMPLATE_HISTORY = 1,
   ADD_TEMPLATE = 2,
-  VIEW_TEMPLATE_MANAGEMENT = 3,
   ENABLE_TEMPLATE = 4,
-  CREATE_DOCUMENT = 5,
-  CREATE_PERSONAL_DOCUMENT = 6,
-  VIEW_NEW_TEMPLATE = 7,
   APPROVE_TEMPLATE = 8,
   VIEW_AWAIT_SIGNING_DOCUMENT = 9,
-  APPROVE_DOCUMENT = 10,
   VIEW_PERSONAL_DOCUMENT = 11,
-  LOCK_DOCUMENT = 12,
-  GROUP_VIEWER = 13,
   VIEW_SHARED_DOCUMENT = 14,
   VIEW_DOCUMENT_HISTORY = 15,
-  ACCOUNT_MANAGEMENT = 16,
+  CREATE_DOCUMENT = 5,
+  APPROVE_DOCUMENT = 10,
+  LOCK_DOCUMENT = 12,
+  GROUP_VIEWER = 13,
+  // ACCOUNT_MANAGEMENT = 16,
   SYSTEM_MANAGEMENT = 17,
+  
 }
 
 export enum PermissionTag {
@@ -124,7 +127,7 @@ export enum PermissionTag {
   VIEW_TEMPLATE_MANAGEMENT_TAG = "View Template Management",
   ENABLE_TEMPLATE_TAG = "Enable Template",
   CREATE_DOCUMENT_TAG = "Create Document",
-  CREATE_PERSONAL_DOCUMENT_TAG = "Create Personal Document",
+  // CREATE_PERSONAL_DOCUMENT_TAG = "Create Personal Document",
   VIEW_NEW_TEMPLATE_TAG = "View New Template",
   APPROVE_TEMPLATE_TAG = "Approve Template",
   VIEW_AWAIT_SIGNING_DOCUMENT_TAG = "View Await Signing Document",
@@ -134,6 +137,9 @@ export enum PermissionTag {
   GROUP_VIEWER_TAG = "Group Viewer",
   VIEW_SHARED_DOCUMENT_TAG = "View Shared Document",
   VIEW_DOCUMENT_HISTORY_TAG = "View Document History",
+  SYSTEM_MANAGEMENT_TAG = "System Management",
+  ANALYTICS_DASHBOARD_MANAGEMENT = 'Analytics Dashboard Management',
+  ANALYTICS_ACTIVITIES_MANAGEMENT = 'Analytics Activities Management'
 }
 
 export enum DeviceType {

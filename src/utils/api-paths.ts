@@ -24,9 +24,9 @@ const apiPaths = {
         editAccount: `${apiHead}api/Users/updateUser`,
         getPermissionList: `${apiHead}api/System/getPermissionList`,
         getRoleList: `${apiHead}api/Role/getRoles`,
-        editDepartment: `${apiHead}api/System/editDepartment`,
+        editDepartment: `${apiHead}api/Department/updateDepartment`,
         editRole: `${apiHead}api/Role/updateRole`,
-        createDepartment: `${apiHead}api/System/createDepartment`,
+        createDepartment: `${apiHead}api/Department/createDepartment`,
         createRole: `${apiHead}api/Role/createRole`,
 
     },

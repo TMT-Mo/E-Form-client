@@ -14,10 +14,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  SaveLoadingBtn,
-  TextFieldStyled,
-} from "components/CustomStyled";
+import { SaveLoadingBtn, TextFieldStyled } from "components/CustomStyled";
 import { useDispatch, useSelector } from "hooks";
 import { handleError } from "slices/alert";
 import Resizer from "react-image-file-resizer";
@@ -28,19 +25,15 @@ import {
   DummyRoles,
   FixedDummyPermissions,
 } from "utils/dummy-data";
-import {
-  AccountStatus,
-  DefaultValue,
-} from "utils/constants";
+import { DefaultValue } from "utils/constants";
 
 interface AccountState {
   userName?: string;
   password: string;
-  permissions: Permission[];
   idDepartment?: number;
   idRole?: number;
   signature?: string;
-  status: number;
+  status: boolean;
   firstName?: string;
   lastName?: string;
 }
@@ -62,22 +55,16 @@ export const CreateAccount = () => {
     userName: undefined,
     password: DefaultValue.PASSWORD,
     idDepartment: undefined,
-    permissions: [...FixedDummyPermissions],
     idRole: undefined,
     signature: undefined,
-    status: AccountStatus.ENABLE,
+    status: true,
     firstName: undefined,
     lastName: undefined,
   });
   const [isDisabledSave, setIsDisabledSave] = useState(false);
-  const currentPermissionList = (): Permission[] => {
-    const list: Permission[] = [];
-    const currentPermissions = userInfo?.idPermissions.split(",")!;
-    currentPermissions.forEach(
-      (p) => list.push(DummyPermissions!.find((value) => value.id === +p)!)!
-    );
-    return list;
-  };
+  const [permissions, setPermissions] = useState<Permission[]>([
+    ...FixedDummyPermissions,
+  ]);
 
   const resizeFile = (file: File) =>
     new Promise((resolve) => {
@@ -121,27 +108,10 @@ export const CreateAccount = () => {
   };
 
   const onCreateAccount = async () => {
-    const {
-      userName,
-      password,
-      idRole,
-      idDepartment,
-      signature,
-      firstName,
-      lastName,
-      status,
-    } = account;
     const createNewAccount = dispatch(
       createAccount({
-        userName,
-        password,
-        idRole,
-        firstName,
-        lastName,
-        idDepartment,
-        signature,
-        status,
-        idPermissions: account.permissions.map((p) => p.id),
+        ...account,
+        idPermissions: permissions.map((p) => p.id),
       })
     );
     await createNewAccount.unwrap();
@@ -150,10 +120,9 @@ export const CreateAccount = () => {
       userName: undefined,
       password: DefaultValue.PASSWORD,
       idDepartment: undefined,
-      permissions: [...FixedDummyPermissions],
       idRole: undefined,
       signature: undefined,
-      status: 1,
+      status: true,
       firstName: undefined,
       lastName: undefined,
     });
@@ -161,15 +130,10 @@ export const CreateAccount = () => {
   };
 
   const onChangeSelectedPermissions = (value: Permission[]) => {
-    setAccount({
-      ...account,
-      permissions: [
-        ...FixedDummyPermissions,
-        ...value.filter(
-          (option) => FixedDummyPermissions.indexOf(option) === -1
-        ),
-      ],
-    });
+    setPermissions([
+      ...FixedDummyPermissions,
+      ...value.filter((option) => FixedDummyPermissions.indexOf(option) === -1),
+    ]);
   };
 
   useEffect(() => {
@@ -363,7 +327,7 @@ export const CreateAccount = () => {
               getOptionLabel={(option) => t(option.permissionName)}
               options={DummyPermissions}
               loading={isGetPermissionLoading}
-              value={account.permissions}
+              value={permissions}
               renderTags={(tagValue, getTagProps) =>
                 tagValue.map((option, index) => (
                   <Chip

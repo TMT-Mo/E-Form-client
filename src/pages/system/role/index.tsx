@@ -68,7 +68,7 @@ export const RoleSystem = () => {
   return (
     <>
       <CustomBox>
-        {!isGetRoleLoading && <Stack
+         <Stack
           direction="row"
           justifyContent="space-between"
           alignItems="center"
@@ -81,14 +81,14 @@ export const RoleSystem = () => {
           >
             Role
           </Typography>
-          <Stack direction="row">
+          {!isGetRoleLoading && <Stack direction="row">
             <IconButton
               type="button"
               sx={{ p: "10px" }}
               aria-label="search"
               onClick={() => setIsAddingRole((prevState) => !prevState)}
             >
-              <AddBoxIcon />
+              <AddBoxIcon sx={{ fill: "#fdcb6e" }}/>
             </IconButton>
             <IconButton
               type="button"
@@ -96,7 +96,7 @@ export const RoleSystem = () => {
               aria-label="search"
               onClick={() => setIsEditingRole((prevState) => !prevState)}
             >
-              <DriveFileRenameOutlineIcon />
+              <DriveFileRenameOutlineIcon sx={{ fill: "#00b894" }}/>
             </IconButton>
             <IconButton
               type="button"
@@ -104,10 +104,10 @@ export const RoleSystem = () => {
               aria-label="search"
               onClick={() => setIsViewingRole((prevState) => !prevState)}
             >
-              <ListAltIcon />
+              <ListAltIcon sx={{ fill: "#0984e3" }}/>
             </IconButton>
-          </Stack>
-        </Stack>}
+          </Stack>}
+        </Stack>
         {isGetRoleLoading && <CircularProgress />}
         <Stack
           direction="row"

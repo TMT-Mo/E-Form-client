@@ -83,9 +83,6 @@ const Login = () => {
                 {t("Password")} <span className="text-red-500">*</span>
               </div>
               <FormControl variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password">
-                  {t("Enter password")}
-                </InputLabel>
                 <OutlinedInput
                   id="outlined-adornment-password"
                   type={values.showPassword ? "text" : "password"}
@@ -97,6 +94,7 @@ const Login = () => {
                     })
                   }
                   className="w-full bg-white"
+
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
@@ -113,7 +111,7 @@ const Login = () => {
                       </IconButton>
                     </InputAdornment>
                   }
-                  label="Password"
+                  // label="Password"
                 />
               </FormControl>
             </div>

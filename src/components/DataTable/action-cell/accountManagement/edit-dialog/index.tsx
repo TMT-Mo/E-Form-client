@@ -49,7 +49,6 @@ interface AccountState {
   idUser: number;
   userName?: string;
   password?: string;
-  // permissions: Permission[];
   idDepartment?: number;
   idRole?: number;
   signature?: string;

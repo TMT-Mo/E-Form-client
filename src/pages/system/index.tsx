@@ -28,16 +28,16 @@ export const System = () => {
   useEffect(() => {
     const getDepartment = dispatch(getDepartmentList());
     const getRole = dispatch(getRoleList());
-    const getPermission = dispatch(getPermissionList());
+    // const getPermission = dispatch(getPermissionList());
 
     getDepartment.unwrap();
     getRole.unwrap();
-    getPermission.unwrap();
+    // getPermission.unwrap();
 
     return () => {
       getDepartment.abort();
       getRole.abort();
-      getPermission.abort();
+      // getPermission.abort();
     };
   }, [dispatch]);
 

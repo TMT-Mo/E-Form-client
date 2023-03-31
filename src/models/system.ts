@@ -61,7 +61,7 @@ export interface CreateAccountArgs {
   signature?: string;
   firstName?: string,
   lastName?: string,
-  status?: number
+  status: boolean
 }
 
 export interface CreateAccountResponse {
@@ -77,7 +77,7 @@ export interface EditAccountArgs {
   signature?: string;
   firstName?: string,
   lastName?: string,
-  status?: boolean
+  status: boolean
 }
 
 export interface EditAccountResponse {
@@ -85,10 +85,6 @@ export interface EditAccountResponse {
 }
 
 export interface GetPermissionListArgs {}
-
-
-
-
 
 export interface GetRoleListArgs {
   idDepartment: number;

@@ -12,12 +12,12 @@ import {
   Paper,
 } from "@mui/material";
 import { t } from "i18next";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TextFieldStyled, SaveLoadingBtn } from "../../components/CustomStyled";
 import { useDispatch, useSelector } from "../../hooks";
 import { Permission } from "../../models/system";
-import { DefaultValue, AccountStatus } from "../../utils/constants";
+import { DefaultValue, AccountStatus, LocationIndex } from "../../utils/constants";
 import {
   DummyRoles,
   DummyPermissions,
@@ -25,17 +25,18 @@ import {
 } from "../../utils/dummy-data";
 import Divider from "@mui/material/Divider";
 import styled from "@emotion/styled";
+import { getSignature } from "slices/auth";
+import { setLocation } from "slices/location";
+
+
 
 interface AccountState {
+  idUser: number;
   userName?: string;
-  password: string;
-  permissions: Permission[];
   idDepartment?: number;
   idRole?: number;
-  signature?: string;
-  status: number;
-  firstName?: string;
-  lastName?: string;
+  firstName: string;
+  lastName: string;
 }
 
 const TypographyStyled = styled(Typography)({
@@ -58,20 +59,26 @@ export const MyAccount = () => {
     permissionList,
     isCreateAccountLoading,
   } = useSelector((state) => state.system);
-  const { userInfo } = useSelector((state) => state.auth);
+  const { userInfo, signature, isGetSignatureLoading } = useSelector((state) => state.auth);
   const [account, setAccount] = useState<AccountState>({
-    userName: undefined,
-    password: DefaultValue.PASSWORD,
-    idDepartment: undefined,
-    permissions: [...FixedDummyPermissions],
-    idRole: undefined,
-    signature: undefined,
-    status: AccountStatus.ENABLE,
-    firstName: undefined,
-    lastName: undefined,
+    idUser: userInfo?.userId!,
+    userName: userInfo?.userName,
+    firstName: userInfo?.firstName!,
+    lastName: userInfo?.lastName!,
+    idDepartment: departmentList.find(
+      (department) =>
+        department.departmentName === userInfo?.departmentName
+    )?.id,
+    idRole: roleList.find((role) => role.roleName === userInfo?.roleName)
+      ?.id,
   });
   const [isDisabledSave, setIsDisabledSave] = useState(false);
 
+  useEffect(() => {
+    if(!userInfo?.userId) return
+    dispatch(getSignature({userId: +userInfo?.userId})).unwrap()
+  }, [dispatch, userInfo?.userId]);
+  
   return (
     <Container sx={{ py: 10 }}>
         <Paper elevation={3} sx={{ background: "#fff", borderRadius: "15px", p: 5 }}>
@@ -199,12 +206,13 @@ export const MyAccount = () => {
                 // placeholder="Composed TextField"
                 label="Username"
                 sx={{ width: "50%" }}
-                // onChange={(value) =>
-                //   setAccount({
-                //     ...account,
-                //     userName: value.target.value,
-                //   })
-                // }
+                value={userInfo?.firstName}
+                onChange={(value) =>
+                  setAccount({
+                    ...account,
+                    firstName: value.target.value,
+                  })
+                }
               />
             </Stack>
             <Divider />
@@ -221,8 +229,13 @@ export const MyAccount = () => {
                 sx={{ width: "50%" }}
                 // placeholder="Composed TextField"
                 label="Password"
-                defaultValue={account.password}
-                disabled
+                value={userInfo?.lastName}
+                onChange={(value) =>
+                  setAccount({
+                    ...account,
+                    lastName: value.target.value,
+                  })
+                }
               />
               {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
             </Stack>
@@ -261,7 +274,13 @@ export const MyAccount = () => {
                   loading={isCreateAccountLoading}
                   disabled={isDisabledSave}
                   sx={{ height: "fit-content", width: "fit-content", px: 3 }}
-                  // onClick={onCreateAccount}
+                  onClick={() =>
+                    dispatch(
+                      setLocation({
+                        locationIndex: LocationIndex.CHANGE_PASSWORD,
+                      })
+                    )
+                  }
                 >
                   Change Password
                 </SaveLoadingBtn>
@@ -312,12 +331,8 @@ export const MyAccount = () => {
                 label="Department"
                 helperText='Please contact to admin to make any changes!'
                 sx={{ width: "50%" }}
-                // onChange={(value) =>
-                //   setAccount({
-                //     ...account,
-                //     userName: value.target.value,
-                //   })
-                // }
+                value={userInfo?.departmentName}
+                disabled
               />
             </Stack>
             <Divider />
@@ -336,15 +351,21 @@ export const MyAccount = () => {
                 label="Role"
                 helperText='Please contact to admin to make any changes!'
                 sx={{ width: "50%" }}
-                // onChange={(value) =>
-                //   setAccount({
-                //     ...account,
-                //     userName: value.target.value,
-                //   })
-                // }
+                value={userInfo?.roleName}
+                disabled
               />
             </Stack>
             <Divider />
+            <Stack
+              direction="row"
+              width="100%"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <TypographyStyled>Signature</TypographyStyled>
+              {isGetSignatureLoading && <CircularProgress/>}
+              {signature && <Box width='50%'><img src={signature} alt=''/></Box>}
+            </Stack>
           </Stack>
         </Stack>
         </Paper>

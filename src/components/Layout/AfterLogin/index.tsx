@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled,  Theme, CSSObject } from "@mui/material/styles";
+import { styled, Theme, CSSObject } from "@mui/material/styles";
 import {
   Box,
   List,
@@ -14,7 +14,7 @@ import {
   Container,
   TooltipProps,
 } from "@mui/material";
-import logo from "assets/logo-light.svg";
+import logo from "assets/logo-dark.svg";
 import logoShort from "assets/logo-short.svg";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
@@ -42,6 +42,7 @@ import Template from "pages/Template/template";
 import { System } from "pages/system";
 import { RequiredPermission } from "components/RequiredPermission";
 import { useTranslation } from "react-i18next";
+import Avatar from "@mui/material/Avatar/Avatar";
 import Fade from "@mui/material/Fade";
 import {
   Pending,
@@ -57,13 +58,13 @@ import {
   DashboardOutlined,
   LineAxisOutlined,
   AccountBoxOutlined,
-  HelpOutline
+  HelpOutline,
 } from "@mui/icons-material";
 import TopBar from "./TopBar";
-import { SignalR } from "../../../signalR/signalR";
-import AlertPopup from "../../AlertPopup";
-import { AnalyticsDashboard } from "../../../pages/analytics/dashboard";
-import { AnalyticsActivities } from "../../../pages/analytics/activities";
+import { SignalR } from "signalR/signalR";
+import AlertPopup from "components/AlertPopup";
+import { AnalyticsDashboard } from "pages/analytics/dashboard";
+import { AnalyticsActivities } from "pages/analytics/activities";
 import Typography from "@mui/material/Typography";
 
 const {
@@ -80,7 +81,7 @@ const {
   ADD_ACCOUNT,
   MY_ACCOUNT,
   ACTIVITIES,
-  DASHBOARD
+  DASHBOARD,
 } = LocationIndex;
 
 const {
@@ -91,6 +92,9 @@ const {
   VIEW_SHARED_DOCUMENT,
   VIEW_TEMPLATE_HISTORY,
   VIEW_TEMPLATE_MANAGEMENT,
+  ANALYTICS_ACTIVITIES_MANAGEMENT,
+  ANALYTICS_DASHBOARD_MANAGEMENT,
+  SYSTEM_MANAGEMENT,
 } = Permissions;
 
 const drawerWidth = 300;
@@ -113,15 +117,6 @@ const closedMixin = (theme: Theme): CSSObject => ({
     width: `calc(${theme.spacing(14)} + 1px)`,
   },
 });
-
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
-  padding: theme.spacing(0, 0.5),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}));
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -172,7 +167,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const DividerStyled = styled(Divider)({
-  margin: '30px 0',
+  margin: "30px 0",
   background: "#fff",
 });
 
@@ -183,6 +178,16 @@ export default function AfterLogin() {
   const { locationIndex } = useSelector((state) => state.location);
   const location = helpers.getLocation();
   const { userInfo } = useSelector((state) => state.auth);
+
+  const DrawerHeader = styled("div")(({ theme }) => ({
+    display: `${!open ? "none" : "flex"} `,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: theme.spacing(0, 0.5),
+    height: "fit-content",
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+  }));
 
   const ListTextStyled = styled(ListItemText)({
     display: open ? "block" : "none",
@@ -332,7 +337,7 @@ export default function AfterLogin() {
           <IconButton
             onClick={handleDrawerClose}
             sx={{
-              ...(!open && { opacity: "0", cursor: "unset" }),
+              ...(!open && { display: "none" }),
               height: "fit-content",
             }}
           >
@@ -341,7 +346,14 @@ export default function AfterLogin() {
         </DrawerHeader>
         <Stack spacing={3} alignItems="center" padding="20px 0">
           <img src={open ? logo : logoShort} alt="" />
-          <AccountCircleOutlined className="fill-white" />
+          <Avatar
+            sx={{
+              width: 50,
+              height: 50,
+            }}
+            alt="Cindy Baker"
+            src="https://mui.com/static/images/avatar/1.jpg"
+          />
           {open && (
             <Stack spacing={1}>
               <h4 className="font-semibold text-white">{userInfo?.userName}</h4>
@@ -363,14 +375,14 @@ export default function AfterLogin() {
               <StyledTooltip
                 TransitionComponent={Fade}
                 TransitionProps={{ timeout: 300 }}
-                title="My Account"
+                title="My Profile"
                 placement="right"
               >
                 <ListItemIconStyled>
                   <AccountBoxOutlined className="fill-white" />
                 </ListItemIconStyled>
               </StyledTooltip>
-              <ListTextStyled primary={t("My Account")} />
+              <ListTextStyled primary={t("My Profile")} />
             </StyledListBtn>
           </Stack>
         </StyledList>
@@ -378,83 +390,68 @@ export default function AfterLogin() {
           <h5 className="pb-3 text-blue-config">{t("Analytics")}</h5>
 
           <Stack spacing={0.5}>
-            <StyledListBtn
-              selected={locationIndex === DASHBOARD}
-              onClick={(event) => handleListItemClick(event, DASHBOARD)}
-            >
-              <StyledTooltip
-                TransitionComponent={Fade}
-                TransitionProps={{ timeout: 300 }}
-                title="Dashboard"
-                placement="right"
+            <RequiredPermission permission={ANALYTICS_DASHBOARD_MANAGEMENT}>
+              <StyledListBtn
+                selected={locationIndex === DASHBOARD}
+                onClick={(event) => handleListItemClick(event, DASHBOARD)}
               >
-                <ListItemIconStyled>
-                  <DashboardOutlined className="fill-white" />
-                </ListItemIconStyled>
-              </StyledTooltip>
-              <ListTextStyled primary={t("Dashboard")} />
-            </StyledListBtn>
-            <StyledListBtn
-              selected={locationIndex === ACTIVITIES}
-              onClick={(event) => handleListItemClick(event, ACTIVITIES)}
-            >
-              <StyledTooltip
-                TransitionComponent={Fade}
-                TransitionProps={{ timeout: 300 }}
-                title="Activities"
-                placement="right"
+                <StyledTooltip
+                  TransitionComponent={Fade}
+                  TransitionProps={{ timeout: 300 }}
+                  title="Dashboard"
+                  placement="right"
+                >
+                  <ListItemIconStyled>
+                    <DashboardOutlined className="fill-white" />
+                  </ListItemIconStyled>
+                </StyledTooltip>
+                <ListTextStyled primary={t("Dashboard")} />
+              </StyledListBtn>
+            </RequiredPermission>
+            <RequiredPermission permission={ANALYTICS_ACTIVITIES_MANAGEMENT}>
+              <StyledListBtn
+                selected={locationIndex === ACTIVITIES}
+                onClick={(event) => handleListItemClick(event, ACTIVITIES)}
               >
-                <ListItemIconStyled>
-                  <LineAxisOutlined className="fill-white" />
-                </ListItemIconStyled>
-              </StyledTooltip>
-              <ListTextStyled primary={t("Activities")} />
-            </StyledListBtn>
+                <StyledTooltip
+                  TransitionComponent={Fade}
+                  TransitionProps={{ timeout: 300 }}
+                  title="Activities"
+                  placement="right"
+                >
+                  <ListItemIconStyled>
+                    <LineAxisOutlined className="fill-white" />
+                  </ListItemIconStyled>
+                </StyledTooltip>
+                <ListTextStyled primary={t("Activities")} />
+              </StyledListBtn>
+            </RequiredPermission>
           </Stack>
         </StyledList>
-        <StyledList aria-label="main mailbox folders">
-          <h5 className="pb-3 text-blue-config">{t("System")}</h5>
+        <RequiredPermission permission={SYSTEM_MANAGEMENT}>
+          <StyledList aria-label="main mailbox folders">
+            <h5 className="pb-3 text-blue-config">{t("System")}</h5>
 
-          <Stack spacing={0.5}>
-            {/* <RequiredPermission permission={SYSTEM_MANAGEMENT}> */}
-            <StyledListBtn
-              selected={locationIndex === SYSTEM}
-              onClick={(event) => handleListItemClick(event, SYSTEM)}
-            >
-              <StyledTooltip
-                TransitionComponent={Fade}
-                TransitionProps={{ timeout: 300 }}
-                title="System"
-                placement="right"
+            <Stack spacing={0.5}>
+              <StyledListBtn
+                selected={locationIndex === SYSTEM}
+                onClick={(event) => handleListItemClick(event, SYSTEM)}
               >
-                <ListItemIconStyled>
-                  <RecentActorsOutlined className="fill-white" />
-                </ListItemIconStyled>
-              </StyledTooltip>
-              <ListTextStyled primary={t("System")} />
-            </StyledListBtn>
-            {/* </RequiredPermission> */}
-
-            {/* <RequiredPermission permission={ACCOUNT_MANAGEMENT}> */}
-            <StyledListBtn
-              selected={locationIndex === ACCOUNT}
-              onClick={(event) => handleListItemClick(event, ACCOUNT)}
-            >
-              <StyledTooltip
-                TransitionComponent={Fade}
-                TransitionProps={{ timeout: 300 }}
-                title="Account List"
-                placement="right"
-              >
-                <ListItemIconStyled>
-                  <ManageAccountsOutlined className="fill-white" />
-                </ListItemIconStyled>
-              </StyledTooltip>
-              <ListTextStyled primary={t("Account List")} />
-            </StyledListBtn>
-            {/* </RequiredPermission> */}
-          </Stack>
-        </StyledList>
+                <StyledTooltip
+                  TransitionComponent={Fade}
+                  TransitionProps={{ timeout: 300 }}
+                  title="System"
+                  placement="right"
+                >
+                  <ListItemIconStyled>
+                    <RecentActorsOutlined className="fill-white" />
+                  </ListItemIconStyled>
+                </StyledTooltip>
+                <ListTextStyled primary={t("System")} />
+              </StyledListBtn>
+            </Stack>
+          </StyledList>
+        </RequiredPermission>
         <StyledList aria-label="main mailbox folders">
           <h5 className="pb-3 text-blue-config">{t("Template")}</h5>
 
@@ -599,11 +596,13 @@ export default function AfterLogin() {
         </StyledList>
         <DividerStyled />
 
-          <Stack direction='row' alignItems='center' justifyContent='center'>
-            <Typography sx={{color: '#fff'}}>Help</Typography>
-            <IconButton><HelpOutline className="fill-white"/></IconButton>
-          </Stack>
-        
+        <Stack direction="row" alignItems="center" justifyContent="center">
+          <Typography sx={{ color: "#fff" }}>Help</Typography>
+          <IconButton>
+            <HelpOutline className="fill-white" />
+          </IconButton>
+        </Stack>
+
         {/* <div className="absolute top-0 left-0 w-full h-full z-0 bg-gradient-to-br from-slate-800 to-stone-500"></div> */}
       </Drawer>
       <Box
@@ -626,7 +625,7 @@ export default function AfterLogin() {
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         autoHideDuration={3000}
       />
-      <SignalR/>
+      <SignalR />
     </Box>
   );
 }

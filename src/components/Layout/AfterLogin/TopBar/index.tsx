@@ -4,6 +4,7 @@ import LockPersonIcon from "@mui/icons-material/LockPerson";
 import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Avatar from "@mui/material/Avatar/Avatar";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
   Divider,
@@ -47,11 +48,11 @@ const TopBar: React.FC<Props> = (props) => {
   };
   const handleClose = () => {
     setAnchorEl(null);
-    dispatch(
-      checkNotification({
-        notificationId: notificationList.map((noti) => noti.id),
-      })
-    ).unwrap();
+    // dispatch(
+    //   checkNotification({
+    //     notificationId: notificationList.map((noti) => noti.id),
+    //   })
+    // ).unwrap();
   };
 
   const signOutHandler = () => {
@@ -74,19 +75,11 @@ const TopBar: React.FC<Props> = (props) => {
 
   return (
     <div className="flex py-6 px-4 justify-between items-center  md:px-20">
-      {/* <IconButton onClick={() => dispatch(toggleSideBar())}>
-        {!isSideBarVisible ? (
-          <MenuIcon fontSize="small" />
-        ) : (
-          <ArrowBackIosNewIcon fontSize="small" />
-        )}
-      </IconButton> */}
       <IconButton
         aria-label="open drawer"
         onClick={handleDrawerOpen}
         edge="end"
         sx={{
-          // marginRight: 15,
           marginLeft: 15,
           ...(isOpen && { opacity: "0", cursor: "unset" }),
           fill: "#000",
@@ -107,9 +100,13 @@ const TopBar: React.FC<Props> = (props) => {
           {(popupState) => (
             <div>
               <IconButton {...bindTrigger(popupState)}>
-                <AccountCircleIcon
-                  className="fill-blue-config"
-                  fontSize="medium"
+              <Avatar
+                  sx={{
+                    width: 30,
+                    height: 30,
+                  }}
+                  alt="Cindy Baker"
+                  src="https://mui.com/static/images/avatar/1.jpg"
                 />
               </IconButton>
               <Popover

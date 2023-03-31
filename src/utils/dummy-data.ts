@@ -204,6 +204,10 @@ export const FixedDummyPermissions: Permission[] = [
     id: 14,
     permissionName: 'VIEW_SHARED_DOCUMENT'
   },
+  {
+    id: 19,
+    permissionName: 'ANALYTICS_ACTIVITIES_MANAGEMENT'
+  },
 ]
 
 export const DummyRoles: Role[] = [

@@ -134,7 +134,8 @@ const ChangePassword = () => {
 
           <SaveLoadingBtn
             loading={isChangePasswordLoading}
-            disabled={isDisable}
+            // disabled={isDisable}
+            disabled
             onClick={onChangePasswordHandler}
           >
             Save

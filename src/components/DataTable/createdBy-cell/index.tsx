@@ -1,7 +1,7 @@
 import { GridRenderCellParams } from "@mui/x-data-grid";
 
 interface Creator {
-  username: string;
+  userName: string;
   signature: string;
   status: number;
   roleName: string;
@@ -10,5 +10,5 @@ interface Creator {
 export const CreatedByCell = (props: GridRenderCellParams<Date>) => {
   const { value } = props;
 
-  return <div>{value && (value as unknown as Creator).username}</div>;
+  return <div>{value && (value as unknown as Creator).userName}</div>;
 };

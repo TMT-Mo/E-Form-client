@@ -14,13 +14,10 @@ import { useDispatch, useSelector } from "hooks";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Dialog, DialogContent, DialogActions } from "@mui/material";
 import { t } from "i18next";
-import {
-  SaveLoadingBtn,
-  WhiteBtn,
-} from "components/CustomStyled";
+import { SaveLoadingBtn, WhiteBtn } from "components/CustomStyled";
 import { Department } from "models/system";
 import { useTranslation } from "react-i18next";
-import { editDepartment } from "slices/system";
+import { createDepartment, editDepartment, getDepartmentList } from "slices/system";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -30,12 +27,13 @@ const CustomBox = styled(Box)({
   width: "100%",
   borderRadius: "15px",
   lineHeight: "50px",
-  filter: 'drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06))'
+  filter:
+    "drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06))",
 });
 
 export const DepartmentSystem = () => {
   const dispatch = useDispatch();
-  const { isGetDepartmentsLoading, departmentList, isEditDepartmentLoading } =
+  const { isGetDepartmentsLoading, departmentList, isEditDepartmentLoading, isCreateDepartmentLoading } =
     useSelector((state) => state.system);
   const [modifyDepartment, setModifyDepartment] = useState<Department>();
   const [newDepartment, setNewDepartment] = useState<string>();
@@ -44,9 +42,19 @@ export const DepartmentSystem = () => {
   const [isViewingDepartment, setIsViewingDepartment] = useState(false);
   const { t } = useTranslation();
 
-  const onEditDepartment = () => {
+  const onEditDepartment = async () => {
     const { departmentName, id } = modifyDepartment!;
-    dispatch(editDepartment({ departmentId: id, departmentName }));
+    await dispatch(editDepartment({ departmentId: id, departmentName })).unwrap();
+    await dispatch(getDepartmentList()).unwrap()
+    setModifyDepartment(undefined)
+    setIsEditingDepartment(false)
+  };
+
+  const onCreateDepartment = async () => {
+    await dispatch(createDepartment({ departmentName: newDepartment! })).unwrap();
+    await dispatch(getDepartmentList()).unwrap()
+    setNewDepartment(undefined)
+    setIsAddingDepartment(false)
   };
   return (
     <>
@@ -98,18 +106,18 @@ export const DepartmentSystem = () => {
         </Stack>
 
         {isGetDepartmentsLoading && <CircularProgress />}
-        {!isGetDepartmentsLoading && (
-          <Stack
-            direction="row"
-            spacing={25}
-            justifyContent="space-between"
-            alignItems="center"
-          >
+        <Stack
+          direction="row"
+          spacing={25}
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          {!isGetDepartmentsLoading && (
             <Typography variant="h2" component="h1">
               {departmentList.length}
             </Typography>
-          </Stack>
-        )}
+          )}
+        </Stack>
       </CustomBox>
       <Dialog open={isEditingDepartment}>
         <DialogContent>
@@ -184,12 +192,13 @@ export const DepartmentSystem = () => {
                 </WhiteBtn>
                 <SaveLoadingBtn
                   size="small"
-                  // loading={isApproveTemplateLoading}
+                  loading={isEditDepartmentLoading}
                   loadingIndicator={
                     <CircularProgress color="inherit" size={16} />
                   }
                   variant="outlined"
-                  // onClick={onApproveTemplate}
+                  onClick={onEditDepartment}
+                  disabled={!modifyDepartment}
                 >
                   {t("Save")}
                 </SaveLoadingBtn>
@@ -222,13 +231,13 @@ export const DepartmentSystem = () => {
                 </WhiteBtn>
                 <SaveLoadingBtn
                   size="small"
-                  loading={isEditDepartmentLoading}
+                  loading={isCreateDepartmentLoading}
                   loadingIndicator={
                     <CircularProgress color="inherit" size={16} />
                   }
                   variant="outlined"
-                  onClick={onEditDepartment}
-                  disabled={!modifyDepartment}
+                  onClick={onCreateDepartment}
+                  disabled={!newDepartment}
                 >
                   {t("Save")}
                 </SaveLoadingBtn>
