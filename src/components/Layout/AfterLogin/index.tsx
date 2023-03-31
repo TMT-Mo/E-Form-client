@@ -26,7 +26,7 @@ import ChangePassword from "pages/change-password";
 import AwaitSigning from "../../../pages/Document/await-signing";
 import PersonalDoc from "../../../pages/Document/personal";
 import SharedDoc from "../../../pages/Document/shared";
-import { MyAccount } from "../../../pages/MyAccount";
+import { MyAccount } from "../../../pages/my-account";
 import NewTemplates from "../../../pages/Template/new-templates";
 import TemplateHistory from "../../../pages/Template/template-history";
 import { clearDocuments } from "../../../slices/document";
