@@ -14,13 +14,13 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer from "@pdftron/webviewer";
-import AlertPopup from "../../../../components/AlertPopup";
-import { useDispatch, useSelector, useSignalR } from "../../../../hooks";
-import { approveTemplate } from "../../../../slices/template";
-import { StatusTemplate } from "../../../../utils/constants";
+import AlertPopup from "components/AlertPopup";
+import { useDispatch, useSelector, useSignalR } from "hooks";
+import { approveTemplate } from "slices/template";
+import { StatusTemplate } from "utils/constants";
 import { useTranslation } from "react-i18next";
-import { helpers } from "../../../../utils";
-import { WhiteBtn, SaveLoadingBtn, RejectBtn } from "../../../../components/CustomStyled";
+import { helpers } from "utils";
+import { WhiteBtn, SaveLoadingBtn, RejectBtn } from "components/CustomStyled";
 
 const { APPROVED_TEMPLATE, REJECTED_TEMPLATE } = StatusTemplate;
 

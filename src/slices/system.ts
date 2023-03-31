@@ -1,4 +1,4 @@
-import { systemServices } from "./../services/system";
+import { systemServices } from "services/system";
 import {
   CreateAccountArgs,
   CreateDepartmentArgs,
@@ -11,7 +11,7 @@ import {
   IUser,
   Permission,
   Role,
-} from "./../models/system";
+} from "models/system";
 import {
   CaseReducer,
   createAsyncThunk,
@@ -19,9 +19,9 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-import { ValidationErrors } from "../models/alert";
+import { ValidationErrors } from "models/alert";
 import { handleError, handleSuccess } from "./alert";
-import { TemplateType } from "../models/template";
+import { TemplateType } from "models/template";
 
 interface State {
   total?: number;

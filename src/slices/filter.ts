@@ -1,5 +1,5 @@
 import { CaseReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { FilterModel, SorterModel } from "./../models/mui-data";
+import { FilterModel, SorterModel } from "models/mui-data";
 interface State {
   filter?: FilterModel;
   sorter?: SorterModel;

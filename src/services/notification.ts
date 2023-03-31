@@ -1,11 +1,10 @@
-import { httpClient, apiPaths } from "../utils";
-import { DummyNotificationList } from "../utils/dummy-data";
+import { httpClient, apiPaths } from "utils";
 import {
     CheckNotificationArgs,
   CheckNotificationResponse,
   GetNotificationArgs,
   GetNotificationResponse,
-} from "./../models/notification";
+} from "models/notification";
 
 const getNotificationList = async (
   args: GetNotificationArgs

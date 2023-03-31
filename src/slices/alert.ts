@@ -1,6 +1,6 @@
-import { AlertStatus } from "../utils/constants";
+import { AlertStatus } from "utils/constants";
 import { CaseReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Alert } from "../models/alert";
+import { Alert } from "models/alert";
 
 const initialState: Alert = {
   status: undefined,

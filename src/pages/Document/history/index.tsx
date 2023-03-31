@@ -5,9 +5,9 @@ import {
   Paper,
 } from "@mui/material";
 import { useEffect } from "react";
-import DataTable from "../../../components/DataTable";
-import { getDocumentHistory } from "../../../slices/document";
-import { useDispatch, useSelector } from "../../../hooks";
+import DataTable from "components/DataTable";
+import { getDocumentHistory } from "slices/document";
+import { useDispatch, useSelector } from "hooks";
 
 const History = () => {
   const dispatch = useDispatch();

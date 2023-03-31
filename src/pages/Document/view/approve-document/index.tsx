@@ -16,19 +16,19 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer, { Core } from "@pdftron/webviewer";
-import AlertPopup from "../../../../components/AlertPopup";
-import { useDispatch, useSelector, useSignalR } from "../../../../hooks";
+import AlertPopup from "components/AlertPopup";
+import { useDispatch, useSelector, useSignalR } from "hooks";
 import { useTranslation } from "react-i18next";
-import { helpers } from "../../../../utils";
-import { approveDocument } from "../../../../slices/document";
-import { StatusDocument } from "../../../../utils/constants";
-import { getSignature } from "../../../../slices/auth";
+import { helpers } from "utils";
+import { approveDocument } from "slices/document";
+import { StatusDocument } from "utils/constants";
+import { getSignature } from "slices/auth";
 import {
   WhiteBtn,
   SaveLoadingBtn,
   RejectBtn,
-} from "../../../../components/CustomStyled";
-import StatusTag from "../../../../components/StatusTag";
+} from "components/CustomStyled";
+import StatusTag from "components/StatusTag";
 
 const { APPROVED_DOCUMENT, REJECTED_DOCUMENT } = StatusDocument;
 const ViewApproveDocument: React.FC = () => {

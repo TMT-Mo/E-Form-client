@@ -1,12 +1,12 @@
 import { Autocomplete, CircularProgress, Typography } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { TextFieldStyled } from "../../../../../components/CustomStyled";
-import StatusTag from "../../../../../components/StatusTag";
-import { useSelector } from "../../../../../hooks";
-import { IUser } from "../../../../../models/system";
-import { helpers } from "../../../../../utils";
-import { StatusDocument } from "../../../../../utils/constants";
+import { TextFieldStyled } from "components/CustomStyled";
+import StatusTag from "components/StatusTag";
+import { useSelector } from "hooks";
+import { IUser } from "models/system";
+import { helpers } from "utils";
+import { StatusDocument } from "utils/constants";
  
 interface Props {
   signerList: IUser[]

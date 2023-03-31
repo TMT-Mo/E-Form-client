@@ -5,10 +5,10 @@ import {
   Paper,
 } from "@mui/material";
 import { useEffect } from "react";
-import DataTable from "../../../components/DataTable";
+import DataTable from "components/DataTable";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "../../../hooks";
-import { getDocuments, getSharedDocument } from "../../../slices/document";
+import { useDispatch, useSelector } from "hooks";
+import { getSharedDocument } from "slices/document";
 
 
 

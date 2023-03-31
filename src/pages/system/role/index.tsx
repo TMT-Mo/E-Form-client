@@ -14,12 +14,11 @@ import React, { useState } from "react";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useDispatch, useSelector } from "../../../hooks";
-import { Role } from "../../../models/system";
+import { useDispatch, useSelector } from "hooks";
+import { Role } from "models/system";
 import { useTranslation } from "react-i18next";
-import { WhiteBtn, SaveLoadingBtn } from "../../../components/CustomStyled";
-import { createRole, editRole, getRoleList } from "../../../slices/system";
-import { DummyRoles } from "../../../utils/dummy-data";
+import { WhiteBtn, SaveLoadingBtn } from "components/CustomStyled";
+import { createRole, editRole, getRoleList } from "slices/system";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import CloseIcon from '@mui/icons-material/Close';
 

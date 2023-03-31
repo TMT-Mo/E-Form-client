@@ -1,19 +1,19 @@
 import React, { Fragment, useEffect } from "react";
-import { useDispatch, useSelector } from "../../../hooks";
-import TemplateHistory from "../../../pages/Template/template-history";
-import AlertPopup from "../../AlertPopup";
+import { useDispatch, useSelector } from "hooks";
+import TemplateHistory from "pages/Template/template-history";
+import AlertPopup from "components/AlertPopup";
 // import DesktopOnly from "../DesktopOnly";
-import ViewAddTemplate from "../../../pages/Template/view/add-template";
-import ViewCreateDocument from "../../../pages/Template/view/create-document";
+import ViewAddTemplate from "pages/Template/view/add-template";
+import ViewCreateDocument from "pages/Template/view/create-document";
 import { clearTemplateDetail } from "../../../slices/template";
-import ViewApproveTemplate from "../../../pages/Template/view/approve-template";
-import ViewTemplateHistory from "../../../pages/Template/view/template-history";
+import ViewApproveTemplate from "pages/Template/view/approve-template";
+import ViewTemplateHistory from "pages/Template/view/template-history";
 import { ViewerLocationIndex } from "../../../utils/constants";
-import ViewApproveDocument from "../../../pages/Document/view/approve-document";
-import { clearDocumentDetail } from "../../../slices/document";
-import ViewPersonalDocument from "../../../pages/Document/view/personal-document";
-import ViewHistoryDocument from "../../../pages/Document/view/history-document";
-import ViewShareDocument from "../../../pages/Document/view/shared-document";
+import ViewApproveDocument from "pages/Document/view/approve-document";
+import { clearDocumentDetail } from "slices/document";
+import ViewPersonalDocument from "pages/Document/view/personal-document";
+import ViewHistoryDocument from "pages/Document/view/history-document";
+import ViewShareDocument from "pages/Document/view/shared-document";
 
 const {
   ADD_TEMPLATE_INDEX,

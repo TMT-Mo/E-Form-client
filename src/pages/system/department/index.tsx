@@ -10,18 +10,17 @@ import {
 import React, { useState } from "react";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
-import { useDispatch, useSelector } from "../../../hooks";
+import { useDispatch, useSelector } from "hooks";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Dialog, DialogContent, DialogActions } from "@mui/material";
 import { t } from "i18next";
 import {
   SaveLoadingBtn,
-  TextFieldStyled,
   WhiteBtn,
-} from "../../../components/CustomStyled";
-import { Department } from "../../../models/system";
+} from "components/CustomStyled";
+import { Department } from "models/system";
 import { useTranslation } from "react-i18next";
-import { editDepartment } from "../../../slices/system";
+import { editDepartment } from "slices/system";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import CloseIcon from "@mui/icons-material/Close";
 

@@ -12,7 +12,7 @@ import {
 } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { DataTableHeader, StatusTemplate } from "../../../../utils/constants";
+import { DataTableHeader, StatusTemplate } from "utils/constants";
 
 interface Items {
   value: StatusTemplate;

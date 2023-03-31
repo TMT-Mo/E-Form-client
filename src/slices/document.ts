@@ -1,4 +1,4 @@
-import { Department } from "./../models/system";
+import { Department } from "models/system";
 import {
   ApproveDocumentArgs,
   ChangeSignerDocumentArgs,
@@ -13,16 +13,16 @@ import {
   ShareDepartmentsArgs,
   SharedUser,
   ShareUsersArgs,
-} from "./../models/document";
+} from "models/document";
 import {
   CaseReducer,
   createAsyncThunk,
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import { documentServices } from "../services/document";
+import { documentServices } from "services/document";
 import { AxiosError } from "axios";
-import { ValidationErrors } from "../models/alert";
+import { ValidationErrors } from "models/alert";
 import { handleSuccess, handleError } from "./alert";
 interface State {
   isCreateDocumentLoading: boolean;

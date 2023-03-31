@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import LanguageSelect from "../../../LanguageSelect";
 import LockPersonIcon from "@mui/icons-material/LockPerson";
 import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MenuIcon from "@mui/icons-material/Menu";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import {
   Divider,
   IconButton,
@@ -18,15 +16,14 @@ import {
   Popover,
 } from "@mui/material";
 import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
-import { useAuth, useDispatch, useSelector } from "../../../../hooks";
-import { setLocation } from "../../../../slices/location";
-import { toggleSideBar } from "../../../../slices/ui-control";
-import { LocationIndex } from "../../../../utils/constants";
+import { useAuth, useDispatch, useSelector } from "hooks";
+import { setLocation } from "slices/location";
+import { LocationIndex } from "utils/constants";
 import { Notification } from "./notification";
 import {
   checkNotification,
   getNotification,
-} from "../../../../slices/notification";
+} from "slices/notification";
 import Badge from "@mui/material/Badge";
 
 interface Props {
@@ -37,12 +34,10 @@ interface Props {
 const TopBar: React.FC<Props> = (props) => {
   const { handleDrawerOpen, isOpen } = props;
   const dispatch = useDispatch();
-  const { isSideBarVisible } = useSelector((state) => state.uiControl);
   const { logout } = useAuth();
   const { userInfo } = useSelector((state) => state.auth);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const [badge, setBadge] = useState<number>();
   const { notificationList, hasNewNotification } = useSelector(
     (state) => state.notification
   );
@@ -75,10 +70,6 @@ const TopBar: React.FC<Props> = (props) => {
 
   useEffect(() => {
     if (!notificationList) return;
-    const badgeNumber = notificationList.filter(
-      (notification) => notification.isChecked === false
-    );
-    setBadge(badgeNumber.length);
   }, [notificationList]);
 
   return (

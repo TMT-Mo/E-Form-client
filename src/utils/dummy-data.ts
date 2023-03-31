@@ -1,6 +1,6 @@
-import { UserInfo } from "../models/auth";
-import { Notification } from "../models/notification";
-import { Permission, Role } from "../models/system";
+import { UserInfo } from "models/auth";
+import { Notification } from "models/notification";
+import { Permission, Role } from "models/system";
 
 export interface User {
   username: string;

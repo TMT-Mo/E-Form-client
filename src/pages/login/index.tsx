@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
-import intropic from "../../assets/intropic.svg";
-import { useDispatch, useSelector } from "../../hooks";
-import { login } from "../../slices/auth";
+import intropic from "assets/intropic.svg";
+import { useDispatch, useSelector } from "hooks";
+import { login } from "slices/auth";
 import {
   CircularProgress,
   FormControl,
@@ -11,12 +11,10 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  styled,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
-import { LoadingButton } from "@mui/lab";
-import { SaveLoadingBtn } from "../../components/CustomStyled";
+import { SaveLoadingBtn } from "components/CustomStyled";
 
 interface State {
   password: string;

@@ -5,12 +5,12 @@ import {
   Paper,
 } from "@mui/material";
 import React, { useEffect } from "react";
-import DataTable from "../../../components/DataTable";
-import { getDocuments, searchDocument } from "../../../slices/document";
-import { useDispatch, useSelector } from "../../../hooks";
+import DataTable from "components/DataTable";
+import { getDocuments, searchDocument } from "slices/document";
+import { useDispatch, useSelector } from "hooks";
 import { useTranslation } from "react-i18next";
-import { DataTableHeader } from "../../../utils/constants";
-import { DateFilter } from "../../../models/mui-data";
+import { DataTableHeader } from "utils/constants";
+import { DateFilter } from "models/mui-data";
 
 const { CREATED_AT, UPDATED_AT } = DataTableHeader;
 const PersonalDoc = () => {

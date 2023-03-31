@@ -1,5 +1,5 @@
-import { ChangePasswordArgument, ChangePasswordResponse, GetSignatureArgs, GetSignatureResponse, LoginArgument, LoginResponse } from "./../models/auth";
-import { apiPaths, helpers, httpClient } from "../utils";
+import { ChangePasswordArgument, ChangePasswordResponse, GetSignatureArgs, GetSignatureResponse, LoginArgument, LoginResponse } from "models/auth";
+import { apiPaths, helpers, httpClient } from "utils";
 
 const login = async (data: LoginArgument): Promise<LoginResponse | undefined> => {
   const response = await httpClient.post({

@@ -8,13 +8,13 @@ import {
   enUS,
   GridColDef,
 } from "@mui/x-data-grid";
-import { useDispatch, useSelector } from "../../hooks";
+import { useDispatch, useSelector } from "hooks";
 import {
   DataTableHeader,
   DeviceType,
   LocationIndex,
   Permissions,
-} from "../../utils/constants";
+} from "utils/constants";
 import {
   accountColumns,
   awaitSigningColumns,
@@ -24,24 +24,24 @@ import {
   sharedDocColumns,
   templateColumns,
   templateHistoryColumns,
-} from "../../utils/mui-data";
+} from "utils/mui-data";
 import {
   clearTemplatePagination,
   onChangeTemplatePage,
-} from "../../slices/template";
+} from "slices/template";
 import CustomPagination from "./pagination";
-import { usePermission } from "../../hooks/use-permission";
+import { usePermission } from "hooks/use-permission";
 import {
   clearDocumentPagination,
   onChangeDocumentPage,
-} from "../../slices/document";
-import { GridColumnModel, Data, GetRowIdParams } from "../../models/mui-data";
-import { setFilter, setSorter } from "../../slices/filter";
-import { helpers } from "../../utils";
-import CustomNoRow from "../CustomNoRow";
+} from "slices/document";
+import { GridColumnModel, Data, GetRowIdParams } from "models/mui-data";
+import { setFilter, setSorter } from "slices/filter";
+import { helpers } from "utils";
+import CustomNoRow from "components/CustomNoRow";
 import { useTranslation } from "react-i18next";
-import { clearAccountPagination, clearUserList, onChangeAccountPage } from "../../slices/system";
-import { DummyUserList } from "../../utils/dummy-data";
+import { clearAccountPagination, clearUserList, onChangeAccountPage } from "slices/system";
+import { DummyUserList } from "utils/dummy-data";
 
 const {
   SYSTEM,

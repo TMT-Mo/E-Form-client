@@ -5,7 +5,7 @@ import {
   StatusTemplate,
   StatusTemplateTag,
   StatusDocumentTag,
-} from "../../utils/constants";
+} from "utils/constants";
 
 const { APPROVED_TEMPLATE, NEW_TEMPLATE } = StatusTemplate;
 const { APPROVED_TEMPLATE_TAG, NEW_TEMPLATE_TAG, REJECTED_TEMPLATE_TAG } =

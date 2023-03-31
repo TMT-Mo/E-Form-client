@@ -17,22 +17,21 @@ import { useTranslation } from "react-i18next";
 import {
   SaveLoadingBtn,
   TextFieldStyled,
-} from "../../../../components/CustomStyled";
-import { useDispatch, useSelector } from "../../../../hooks";
-import { handleError } from "../../../../slices/alert";
+} from "components/CustomStyled";
+import { useDispatch, useSelector } from "hooks";
+import { handleError } from "slices/alert";
 import Resizer from "react-image-file-resizer";
-import { createAccount, getDepartmentList } from "../../../../slices/system";
-import { Permission } from "../../../../models/system";
+import { createAccount, getDepartmentList } from "slices/system";
+import { Permission } from "models/system";
 import {
   DummyPermissions,
   DummyRoles,
   FixedDummyPermissions,
-} from "../../../../utils/dummy-data";
+} from "utils/dummy-data";
 import {
   AccountStatus,
   DefaultValue,
-  Permissions,
-} from "../../../../utils/constants";
+} from "utils/constants";
 
 interface AccountState {
   userName?: string;

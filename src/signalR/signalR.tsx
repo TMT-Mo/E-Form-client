@@ -1,10 +1,10 @@
-import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
+import { HubConnectionBuilder } from "@microsoft/signalr";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "../hooks";
-import { handleInfo } from "../slices/alert";
-import { getNewNotification, getNotification } from "../slices/notification";
-import { setHubConnection } from "../slices/signalR";
-import { apiPaths } from "../utils";
+import { useDispatch, useSelector } from "hooks";
+import { handleInfo } from "slices/alert";
+import { getNewNotification, getNotification } from "slices/notification";
+import { setHubConnection } from "slices/signalR";
+import { apiPaths } from "utils";
 import { SignalRMethod } from "./signalR-constant";
 import {
   receiveSignalNotification,

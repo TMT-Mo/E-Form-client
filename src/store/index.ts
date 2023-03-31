@@ -1,5 +1,5 @@
 import { combineReducers, configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-import appReducers from "../slices";
+import appReducers from "slices";
 
 const middleware = getDefaultMiddleware({
   serializableCheck: false,

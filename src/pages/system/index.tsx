@@ -10,8 +10,8 @@ import {
   getDepartmentList,
   getPermissionList,
   getRoleList,
-} from "../../slices/system";
-import { Account } from "../system/account";
+} from "slices/system";
+import { Account } from "./account";
 
 const CustomBox = styled(Box)({
   padding: "20px 40px",

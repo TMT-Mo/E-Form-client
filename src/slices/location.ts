@@ -1,5 +1,5 @@
 import { CaseReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ViewerLocationIndex } from "../utils/constants";
+import { ViewerLocationIndex } from "utils/constants";
 
 interface State {
   locationIndex?: number;

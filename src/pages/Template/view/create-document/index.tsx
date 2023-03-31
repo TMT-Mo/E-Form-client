@@ -3,15 +3,14 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer from "@pdftron/webviewer";
-import AlertPopup from "../../../../components/AlertPopup";
-import { useDispatch, useSelector, useSignalR } from "../../../../hooks";
+import AlertPopup from "components/AlertPopup";
+import { useDispatch, useSelector, useSignalR } from "hooks";
 import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from "uuid";
-import { SaveLoadingBtn } from "../../../../components/CustomStyled";
+import { SaveLoadingBtn } from "components/CustomStyled";
 
 const ViewCreateDocument: React.FC = () => {
   const viewer = useRef(null);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { templateDetail } = useSelector((state) => state.template);
   const { isCreateDocumentLoading } = useSelector((state) => state.document);

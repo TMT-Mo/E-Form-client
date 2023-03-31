@@ -14,8 +14,8 @@ import {
 } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "../../../../hooks";
-import { DataTableHeader } from "../../../../utils/constants";
+import { useSelector } from "hooks";
+import { DataTableHeader } from "utils/constants";
 
 const { CREATED_BY } = DataTableHeader;
 const SelectType = (props: GridFilterInputValueProps) => {

@@ -7,8 +7,8 @@ import {
   Stack,
   Box,
 } from "@mui/material";
-import { useSelector } from "../../../../../hooks";
-import { MenuNotification, StyledMenu } from "../../../../CustomStyled";
+import { useSelector } from "hooks";
+import { MenuNotification, StyledMenu } from "components/CustomStyled";
 import CircleIcon from "@mui/icons-material/Circle";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 
@@ -25,7 +25,6 @@ export const BoxCustom = styled(Box)({
 });
 
 export const Notification = (props: Props) => {
-  const { userInfo } = useSelector((state) => state.auth);
   const { notificationList, isGetNotification, isCheckNotificationLoading } =
     useSelector((state) => state.notification);
   const { open, anchorEl, handleClose } = props;

@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import AlertPopup from "../../AlertPopup";
+import AlertPopup from "components/AlertPopup";
 import TopBar from "./TopBar";
 
 const Layout: React.FC = () => {

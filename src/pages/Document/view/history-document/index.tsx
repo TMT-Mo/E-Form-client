@@ -3,11 +3,11 @@ import React, { Fragment, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer from "@pdftron/webviewer";
-import { useSelector } from "../../../../hooks";
-import StatusTag from "../../../../components/StatusTag";
+import { useSelector } from "hooks";
+import StatusTag from "components/StatusTag";
 import { useTranslation } from "react-i18next";
-import { helpers } from "../../../../utils";
-import { StatusDocument } from "../../../../utils/constants";
+import { helpers } from "utils";
+import { StatusDocument } from "utils/constants";
 
 const ViewHistoryDocument: React.FC = () => {
   const viewer = useRef(null);

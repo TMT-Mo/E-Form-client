@@ -2,11 +2,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase, Paper } from "@mui/material";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import DataTable from "../../../components/DataTable";
-import { useDispatch, useSelector } from "../../../hooks";
-import { DateFilter } from "../../../models/mui-data";
-import { getDocuments, searchDocument } from "../../../slices/document";
-import { DataTableHeader } from "../../../utils/constants";
+import DataTable from "components/DataTable";
+import { useDispatch, useSelector } from "hooks";
+import { DateFilter } from "models/mui-data";
+import { getDocuments, searchDocument } from "slices/document";
+import { DataTableHeader } from "utils/constants";
 
 const { TYPE, CREATED_AT,CREATED_BY } = DataTableHeader;
 const AwaitSigning = () => {

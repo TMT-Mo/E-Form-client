@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "../../../../assets/logo-light.svg";
-import { links } from "../../../../utils";
-import LanguageSelect from "../../../LanguageSelect";
+import logo from "assets/logo-light.svg";
+import { links } from "utils";
+import LanguageSelect from "components/LanguageSelect";
 
 const TopBar: React.FC = () => {
   return (

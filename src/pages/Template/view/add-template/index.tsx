@@ -23,17 +23,17 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer, { WebViewerInstance } from "@pdftron/webviewer";
 import { ref } from "firebase/storage";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-import AlertPopup from "../../../../components/AlertPopup";
+import AlertPopup from "components/AlertPopup";
 import {
   getDepartmentList,
   getTemplateTypeList,
   toggleTemplateTypeList,
   getSigner,
   clearUserList,
-} from "../../../../slices/system";
-import { addNewTemplate } from "../../../../slices/template";
-import { useDispatch, useSelector, useSignalR } from "../../../../hooks";
-import storage from "../../../../utils/firebase";
+} from "slices/system";
+import { addNewTemplate } from "slices/template";
+import { useDispatch, useSelector, useSignalR } from "hooks";
+import storage from "utils/firebase";
 import { useTranslation } from "react-i18next";
 import {
   WhiteBtn,

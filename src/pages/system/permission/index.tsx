@@ -8,17 +8,13 @@ import {
   DialogActions,
   DialogContent,
 } from "@mui/material";
-import React, { useState } from "react";
-import AddBoxIcon from "@mui/icons-material/AddBox";
+import { useState } from "react";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useSelector } from "../../../hooks";
-import { DummyPermissions } from "../../../utils/dummy-data";
-import { t } from "i18next";
-import { WhiteBtn } from "../../../components/CustomStyled";
-import Paper from "@mui/material/Paper";
+import { useSelector } from "hooks";
+import { DummyPermissions } from "utils/dummy-data";
+import { WhiteBtn } from "components/CustomStyled";
 import { useTranslation } from "react-i18next";
-import ListItem from "@mui/material/ListItem";
 import TextField from "@mui/material/TextField/TextField";
 import CloseIcon from "@mui/icons-material/Close";
 

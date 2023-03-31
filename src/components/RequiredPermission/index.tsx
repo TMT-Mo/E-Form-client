@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
-import { usePermission } from "../../hooks/use-permission"
-import { Permissions } from "../../utils/constants"
+import { usePermission } from "hooks/use-permission"
+import { Permissions } from "utils/constants"
 
 interface IProps {
   permission: Permissions

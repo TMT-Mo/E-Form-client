@@ -1,4 +1,4 @@
-import { UserInfo } from "./../models/auth";
+import { UserInfo } from "models/auth";
 import jwtDecode from "jwt-decode";
 import { DeviceType, DeviceWidth, Permissions, SessionStorage } from "./constants";
 

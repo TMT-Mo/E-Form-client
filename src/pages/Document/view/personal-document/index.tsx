@@ -12,21 +12,21 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer from "@pdftron/webviewer";
-import { useDispatch, useSelector } from "../../../../hooks";
+import { useDispatch, useSelector } from "hooks";
 import { useTranslation } from "react-i18next";
-import { helpers } from "../../../../utils";
-import { Document } from "../../../../models/document";
-import { StatusDocument } from "../../../../utils/constants";
-import { IUser } from "../../../../models/system";
-import { clearUserList, getSigner } from "../../../../slices/system";
+import { helpers } from "utils";
+import { Document } from "models/document";
+import { StatusDocument } from "utils/constants";
+import { IUser } from "models/system";
+import { clearUserList, getSigner } from "slices/system";
 import {
   TransparentBtn,
   WhiteBtn,
   SaveLoadingBtn,
-} from "../../../../components/CustomStyled";
+} from "components/CustomStyled";
 import ChangeSigner from "./ChangeSigner";
-import StatusTag from "../../../../components/StatusTag";
-import { changeSignerDocument } from "../../../../slices/document";
+import StatusTag from "components/StatusTag";
+import { changeSignerDocument } from "slices/document";
 
 const ViewPersonalDocument: React.FC = () => {
   const viewer = useRef(null);

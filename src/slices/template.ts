@@ -5,8 +5,8 @@ import {
   AddTemplateToFirebaseArgs,
   EnableTemplateArgs,
   ApproveTemplateArgs,
-} from "./../models/template";
-import { templateServices } from "./../services/template";
+} from "models/template";
+import { templateServices } from "services/template";
 import {
   CaseReducer,
   createAsyncThunk,
@@ -14,7 +14,7 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-import { ValidationErrors } from "../models/alert";
+import { ValidationErrors } from "models/alert";
 import { handleError, handleSuccess } from "./alert";
 
 interface State {

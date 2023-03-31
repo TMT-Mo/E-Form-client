@@ -16,7 +16,7 @@ export const Account = () => {
   const dispatch = useDispatch();
   // const { userInfo } = useSelector((state) => state.auth);
   const { filter, sorter } = useSelector((state) => state.filter);
-  const { searchItemValue, currentPage, roleList } = useSelector((state) => state.system);
+  const { searchItemValue, currentPage,  } = useSelector((state) => state.system);
   const { t } = useTranslation();
   
   useEffect(() => {

@@ -1,6 +1,6 @@
-import { ValidationErrors } from './../models/alert';
-import { authServices } from "./../services/auth";
-import { UserInfo, LoginArgument, GetSignatureArgs, ChangePasswordArgument} from "./../models/auth";
+import { ValidationErrors } from 'models/alert';
+import { authServices } from "services/auth";
+import { UserInfo, LoginArgument, GetSignatureArgs, ChangePasswordArgument} from "models/auth";
 import {
   CaseReducer,
   createAsyncThunk,

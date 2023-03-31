@@ -1,32 +1,32 @@
-import { AccountStatusCell } from './../components/DataTable/account-status/index';
-import { TranslateContent } from './../components/DataTable/TranslateContent/index';
-import { TranslateHeader } from './../components/DataTable/TranslateHeader';
+import { AccountStatusCell } from 'components/DataTable/account-status/index';
+import { TranslateContent } from 'components/DataTable/TranslateContent/index';
+import { TranslateHeader } from 'components/DataTable/TranslateHeader';
 
-import { renderEditLockTemplateCell, renderLockTemplateCell } from './../components/DataTable/lockTemplate-cell/index';
-import { DocumentHistoryActionCell } from "./../components/DataTable/action-cell/documentHistory/index";
-import { updatedAtOnlyOperators } from "./../components/DataTable/filter/updatedAt/index";
-import { createdByOnlyOperators } from "./../components/DataTable/filter/createdBy/index";
-import { PersonalDocumentActionCell } from "./../components/DataTable/action-cell/personalDocument";
-import { AwaitSigningActionCell } from "./../components/DataTable/action-cell/awaitSigning/index";
-import { TemplateHistoryActionCell } from "./../components/DataTable/action-cell/templateHistory/index";
-import { statusOnlyOperators } from "./../components/DataTable/filter/status/index";
+import { renderEditLockTemplateCell, renderLockTemplateCell } from 'components/DataTable/lockTemplate-cell/index';
+import { DocumentHistoryActionCell } from "components/DataTable/action-cell/documentHistory/index";
+import { updatedAtOnlyOperators } from "components/DataTable/filter/updatedAt/index";
+import { createdByOnlyOperators } from "components/DataTable/filter/createdBy/index";
+import { PersonalDocumentActionCell } from "components/DataTable/action-cell/personalDocument";
+import { AwaitSigningActionCell } from "components/DataTable/action-cell/awaitSigning/index";
+import { TemplateHistoryActionCell } from "components/DataTable/action-cell/templateHistory/index";
+import { statusOnlyOperators } from "components/DataTable/filter/status/index";
 
-import { isEnableOnlyOperators } from "./../components/DataTable/filter/isEnable/index";
-import { StatusCell } from "./../components/DataTable/status-cell/index";
+import { isEnableOnlyOperators } from "components/DataTable/filter/isEnable/index";
+import { StatusCell } from "components/DataTable/status-cell/index";
 import { GridColDef } from "@mui/x-data-grid";
-import { FileCell } from "../components/DataTable/file-cell";
-import { typeOnlyOperators } from "../components/DataTable/filter/type-file";
-import { typeTemplateOnlyOperators } from "../components/DataTable/filter/type-template";
+import { FileCell } from "components/DataTable/file-cell";
+import { typeOnlyOperators } from "components/DataTable/filter/type-file";
+import { typeTemplateOnlyOperators } from "components/DataTable/filter/type-template";
 import { DataTableHeader, DeviceType, Permissions } from "./constants";
-import { TemplateActionCell } from "../components/DataTable/action-cell/template";
-import { NewTemplateActionCell } from "../components/DataTable/action-cell/newTemplate";
-import { DateCell } from "../components/DataTable/formatDate-cell";
-import { CreatedByCell } from "../components/DataTable/createdBy-cell";
-import { createdAtOnlyOperators } from "../components/DataTable/filter/createdAt";
+import { TemplateActionCell } from "components/DataTable/action-cell/template";
+import { NewTemplateActionCell } from "components/DataTable/action-cell/newTemplate";
+import { DateCell } from "components/DataTable/formatDate-cell";
+import { CreatedByCell } from "components/DataTable/createdBy-cell";
+import { createdAtOnlyOperators } from "components/DataTable/filter/createdAt";
 import helpers from "./helpers";
-import { SharedDocumentActionCell } from "../components/DataTable/action-cell/sharedDocument";
-import { renderEditLockDocumentCell, renderLockDocumentCell } from '../components/DataTable/lockDocument-cell';
-import { AccountManagementActionCell } from '../components/DataTable/action-cell/accountManagement';
+import { SharedDocumentActionCell } from "components/DataTable/action-cell/sharedDocument";
+import { renderEditLockDocumentCell, renderLockDocumentCell } from 'components/DataTable/lockDocument-cell';
+import { AccountManagementActionCell } from 'components/DataTable/action-cell/accountManagement';
 
 const {
   TYPE,

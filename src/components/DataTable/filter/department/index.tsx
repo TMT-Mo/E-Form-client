@@ -13,11 +13,11 @@ import {
   } from "@mui/x-data-grid";
   import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-  import { useDispatch, useSelector } from "../../../../hooks";
+  import { useDispatch, useSelector } from "hooks";
   import {
       getDepartmentList,
-  } from "../../../../slices/system";
-  import { DataTableHeader } from "../../../../utils/constants";
+  } from "slices/system";
+  import { DataTableHeader } from "utils/constants";
   
   const {DEPARTMENT } = DataTableHeader;
   const SelectDepartment = (props: GridFilterInputValueProps) => {

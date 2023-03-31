@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
+import { styled,  Theme, CSSObject } from "@mui/material/styles";
 import {
   Box,
   List,
@@ -20,27 +20,27 @@ import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { Account } from "../../../pages/system/account";
-import { CreateAccount } from "../../../pages/system/account/create-account";
+import { Account } from "pages/system/account";
+import { CreateAccount } from "pages/system/account/create-account";
 import ChangePassword from "pages/change-password";
-import AwaitSigning from "../../../pages/Document/await-signing";
-import PersonalDoc from "../../../pages/Document/personal";
-import SharedDoc from "../../../pages/Document/shared";
-import { MyAccount } from "../../../pages/my-account";
-import NewTemplates from "../../../pages/Template/new-templates";
-import TemplateHistory from "../../../pages/Template/template-history";
-import { clearDocuments } from "../../../slices/document";
-import { clearFilter } from "../../../slices/filter";
-import { setLocation } from "../../../slices/location";
-import { clearUserList } from "../../../slices/system";
-import { clearTemplates } from "../../../slices/template";
-import { helpers } from "../../../utils";
-import { LocationIndex, Permissions } from "../../../utils/constants";
-import { useDispatch, useSelector } from "../../../hooks";
-import History from "../../../pages/Document/history";
-import Template from "../../../pages/Template/template";
-import { System } from "../../../pages/system";
-import { RequiredPermission } from "../../RequiredPermission";
+import AwaitSigning from "pages/Document/await-signing";
+import PersonalDoc from "pages/Document/personal";
+import SharedDoc from "pages/Document/shared";
+import { MyAccount } from "pages/my-account";
+import NewTemplates from "pages/Template/new-templates";
+import TemplateHistory from "pages/Template/template-history";
+import { clearDocuments } from "slices/document";
+import { clearFilter } from "slices/filter";
+import { setLocation } from "slices/location";
+import { clearUserList } from "slices/system";
+import { clearTemplates } from "slices/template";
+import { helpers } from "utils";
+import { LocationIndex, Permissions } from "utils/constants";
+import { useDispatch, useSelector } from "hooks";
+import History from "pages/Document/history";
+import Template from "pages/Template/template";
+import { System } from "pages/system";
+import { RequiredPermission } from "components/RequiredPermission";
 import { useTranslation } from "react-i18next";
 import Fade from "@mui/material/Fade";
 import {

@@ -1,34 +1,17 @@
 import SearchIcon from "@mui/icons-material/Search";
-import { IconButton, InputBase, Paper, Button } from "@mui/material";
+import { IconButton, InputBase, Paper } from "@mui/material";
 import React, { useCallback, useEffect } from "react";
-import UploadIcon from "@mui/icons-material/Upload";
-import { styled } from "@mui/system";
-import DataTable from "../../../components/DataTable";
-import { useDispatch, useSelector } from "../../../hooks";
-import { getTemplates, searchTemplate } from "../../../slices/template";
+import DataTable from "components/DataTable";
+import { useDispatch, useSelector } from "hooks";
+import { getTemplates, searchTemplate } from "slices/template";
 import {
   DataTableHeader,
-  DeviceWidth,
   Permissions,
   StatusTemplate,
-} from "../../../utils/constants";
+} from "utils/constants";
 import { useTranslation } from "react-i18next";
-import { helpers } from "../../../utils";
+import { helpers } from "utils";
 
-const StyledUploadBtn = styled(Button)({
-  backgroundColor: "#fff",
-  borderRadius: "10px",
-  color: "#407AFF",
-  padding: "0px 15px",
-  display: "flex",
-  alignItems: "center",
-  height: "80%",
-  ":hover": {
-    backgroundColor: "#407AFF",
-    color: "#fff",
-  },
-});
-//
 const { TYPE, IS_ENABLE, TYPE_TEMPLATE, DEPARTMENT, CREATED_BY } =
   DataTableHeader;
 
@@ -41,7 +24,6 @@ const Template = () => {
   const { searchItemValue, currentPage } = useSelector(
     (state) => state.template
   );
-  const { innerWidth } = window;
 
   const checkEnablePermission = useCallback(
     () => {
@@ -107,16 +89,6 @@ const Template = () => {
               }
             />
           </Paper>
-          {/* <div className="flex items-center space-x-2 border border-blue-400">
-            <StyledUploadBtn
-              size="small"
-              className="shadow-md"
-              variant="outlined"
-            >
-              <UploadIcon className="md:mr-2" />
-              {innerWidth > DeviceWidth.IPAD_WIDTH && t("Upload")}
-            </StyledUploadBtn>
-          </div> */}
         </div>
         <DataTable />
       </div>

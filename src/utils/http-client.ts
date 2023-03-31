@@ -1,9 +1,9 @@
-import store from "../store/index";
+import store from "store/index";
 import axios, { Method, AxiosResponse, ResponseType, AxiosError } from "axios";
 import jwtDecode from "jwt-decode";
-import { UserInfo } from "../models/auth";
-import { helpers } from "../utils";
-import { handleSuccess } from "../slices/alert";
+import { UserInfo } from "models/auth";
+import { helpers } from "utils";
+import { handleSuccess } from "slices/alert";
 
 interface Options {
   url: string;

@@ -3,11 +3,11 @@ import React, { Fragment, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import WebViewer from "@pdftron/webviewer";
-import AlertPopup from "../../../../components/AlertPopup";
-import { useSelector } from "../../../../hooks";
-import StatusTag from "../../../../components/StatusTag";
+import AlertPopup from "components/AlertPopup";
+import { useSelector } from "hooks";
+import StatusTag from "components/StatusTag";
 import { useTranslation } from "react-i18next";
-import { helpers } from "../../../../utils";
+import { helpers } from "utils";
 // const { APPROVED, NEW } = StatusTemplate;
 // const { APPROVED_TAG, REJECTED_TAG, NEW_TAG } = StatusTemplateTag;
 

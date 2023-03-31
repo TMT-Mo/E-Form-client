@@ -1,15 +1,15 @@
 import React from "react";
-import intropic from "../../assets/intropic.svg";
-import scroll from "../../assets/scroll.svg";
-import signature from "../../assets/signature.svg";
-import paper from "../../assets/paper.svg";
-import clock from "../../assets/clock.svg";
+import intropic from "assets/intropic.svg";
+import scroll from "assets/scroll.svg";
+import signature from "assets/signature.svg";
+import paper from "assets/paper.svg";
+import clock from "assets/clock.svg";
 import { useTranslation } from "react-i18next";
-import logo from "../../assets/logo-dark.svg";
+import logo from "assets/logo-dark.svg";
 import { Link } from "react-router-dom";
-import { links } from "../../utils";
+import { links } from "utils";
 import ReactPlayer from "react-player";
-import demo from "../../assets/Demo.png";
+import demo from "assets/Demo.png";
 import { Modal, Box } from "@mui/material";
 import Typography from '@mui/material/Typography';
 

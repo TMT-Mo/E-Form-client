@@ -8,10 +8,10 @@ import {
 import React, { useState } from "react";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import { useDispatch, useSelector } from "../../../hooks";
-import { Document } from "../../../models/document";
-import { lockDocument } from "../../../slices/document";
-import { StatusDocument } from "../../../utils/constants";
+import { useDispatch, useSelector } from "hooks";
+import { Document } from "models/document";
+import { lockDocument } from "slices/document";
+import { StatusDocument } from "utils/constants";
 
 const createData = (value: unknown) => {
   const result = value as boolean;

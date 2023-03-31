@@ -8,11 +8,11 @@ import {
   import { Link } from "react-router-dom";
   import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
   import WebViewer, { Core } from "@pdftron/webviewer";
-  import AlertPopup from "../../../../components/AlertPopup";
-  import { useSelector } from "../../../../hooks";
+  import AlertPopup from "components/AlertPopup";
+  import { useSelector } from "hooks";
   import { useTranslation } from "react-i18next";
-  import { helpers } from "../../../../utils";
-import StatusTag from "../../../../components/StatusTag";
+  import { helpers } from "utils";
+import StatusTag from "components/StatusTag";
   
   const ViewShareDocument: React.FC = () => {
     const {t, i18n} = useTranslation();

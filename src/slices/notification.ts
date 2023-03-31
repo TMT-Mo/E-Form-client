@@ -1,17 +1,17 @@
 import {
   CheckNotificationArgs,
   GetNotificationArgs,
-} from "./../models/notification";
+} from "models/notification";
 import {
   CaseReducer,
   createAsyncThunk,
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import { Notification } from "../models/notification";
-import { notificationServices } from "../services/notification";
+import { Notification } from "models/notification";
+import { notificationServices } from "services/notification";
 import { AxiosError } from "axios";
-import { ValidationErrors } from "../models/alert";
+import { ValidationErrors } from "models/alert";
 import { handleError } from "./alert";
 
 interface State {

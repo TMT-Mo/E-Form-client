@@ -2,11 +2,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase, Paper } from "@mui/material";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import DataTable from "../../../components/DataTable";
-import { useDispatch, useSelector } from "../../../hooks";
-import { DateFilter } from "../../../models/mui-data";
-import { getTemplates, searchTemplate } from "../../../slices/template";
-import { DataTableHeader, StatusTemplate } from "../../../utils/constants";
+import DataTable from "components/DataTable";
+import { useDispatch, useSelector } from "hooks";
+import { DateFilter } from "models/mui-data";
+import { getTemplates, searchTemplate } from "slices/template";
+import { DataTableHeader, StatusTemplate } from "utils/constants";
 
 const { TYPE_TEMPLATE, CREATED_BY, CREATED_AT } =
   DataTableHeader;

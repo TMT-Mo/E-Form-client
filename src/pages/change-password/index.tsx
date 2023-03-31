@@ -6,10 +6,10 @@ import {
   TextField,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { SaveLoadingBtn } from "../../components/CustomStyled";
-import { useDispatch, useSelector } from "../../hooks";
-import { changePassword } from "../../slices/auth";
-import { handleError } from "../../slices/alert";
+import { SaveLoadingBtn } from "components/CustomStyled";
+import { useDispatch, useSelector } from "hooks";
+import { changePassword } from "slices/auth";
+import { handleError } from "slices/alert";
 
 interface Form {
   idUser: number;
