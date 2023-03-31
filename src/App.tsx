@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import Login from "./pages/Login";
-import Unauthorized from "./pages/Unauthorized";
-import Introduction from "./pages/Introduction";
+import Login from "./pages/login";
+import Unauthorized from "./pages/unauthorized";
+import Introduction from "./pages/introduction";
 // import { Roles } from "./utils/constants";
 import BeforeLogin from "./components/Layout/BeforeLogin";
-import NotFound from "./pages/NotFound";
+import NotFound from "pages/not-found";
 import AfterLogin from "./components/Layout/AfterLogin";
 import { useAuth, useSelector } from "./hooks";
 import Viewer from "./components/Layout/Viewer";

@@ -29,6 +29,8 @@ export enum LocationIndex {
   CHANGE_PASSWORD = 9,
   ADD_ACCOUNT = 10,
   MY_ACCOUNT = 11,
+  DASHBOARD = 12,
+  ACTIVITIES = 13,
 }
 
 export enum ViewerLocationIndex {

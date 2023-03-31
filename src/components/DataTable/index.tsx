@@ -154,9 +154,14 @@ const DataTable: React.FC = () => {
     switch (locationIndex) {
       case SYSTEM:
         return {
-          columns: [],
-          loading: false,
-          table: [],
+          columns: onTranslateFilter(accountColumns),
+          loading: isGetUserListLoading,
+          table: userList,
+          currentPage: currentPageAccount,
+          totalPages: Math.ceil(totalAccount! / 10),
+          onChangePage: (e, value) =>
+            dispatch(onChangeAccountPage({ selectedPage: --value })),
+          columnVisible,
         };
       case NEW_TEMPLATE:
         return {

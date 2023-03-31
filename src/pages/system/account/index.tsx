@@ -1,15 +1,15 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase, Paper } from "@mui/material";
-import React, { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { StyledAddBtn } from "../../components/CustomStyled";
-import DataTable from "../../components/DataTable";
-import { useDispatch, useSelector } from "../../hooks";
-import { DateFilter } from "../../models/mui-data";
-import { getDepartmentList, getRoleList, getUserList, searchAccount } from "../../slices/system";
-import { DataTableHeader, DeviceWidth, LocationIndex } from "../../utils/constants";
+import { StyledAddBtn } from "../../../components/CustomStyled";
+import DataTable from "components/DataTable";
+import { useDispatch, useSelector } from "../../../hooks";
+import { DateFilter } from "../../../models/mui-data";
+import { getUserList, searchAccount } from "../../../slices/system";
+import { DataTableHeader, LocationIndex } from "../../../utils/constants";
 import AddIcon from "@mui/icons-material/Add";
-import { setLocation } from "../../slices/location";
+import { setLocation } from "slices/location";
 
 const { TYPE, CREATED_AT, CREATED_BY } = DataTableHeader;
 export const Account = () => {
@@ -18,19 +18,6 @@ export const Account = () => {
   const { filter, sorter } = useSelector((state) => state.filter);
   const { searchItemValue, currentPage, roleList } = useSelector((state) => state.system);
   const { t } = useTranslation();
-
-  const getRoles = useCallback(async () => {
-    await dispatch(getRoleList()).unwrap();
-  }, [dispatch]);
-
-  const getDepartments = useCallback(async () => {
-    await dispatch(getDepartmentList()).unwrap();
-  }, [dispatch]);
-
-  useEffect(() => {
-    getRoles();
-    getDepartments()
-  }, [getDepartments, getRoles]);
   
   useEffect(() => {
     const getUser = dispatch(

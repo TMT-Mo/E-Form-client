@@ -8,6 +8,8 @@ import {
   CircularProgress,
   Chip,
   Container,
+  Avatar,
+  Paper,
 } from "@mui/material";
 import { t } from "i18next";
 import React, { useState } from "react";
@@ -21,9 +23,8 @@ import {
   DummyPermissions,
   FixedDummyPermissions,
 } from "../../utils/dummy-data";
-import Divider from '@mui/material/Divider';
+import Divider from "@mui/material/Divider";
 import styled from "@emotion/styled";
-
 
 interface AccountState {
   userName?: string;
@@ -38,7 +39,11 @@ interface AccountState {
 }
 
 const TypographyStyled = styled(Typography)({
-  color: '#6F7276'
+  color: "#6F7276",
+});
+
+const StackStyled = styled(Stack)({
+  color: "#6F7276",
 });
 
 export const MyAccount = () => {
@@ -66,265 +71,283 @@ export const MyAccount = () => {
     lastName: undefined,
   });
   const [isDisabledSave, setIsDisabledSave] = useState(false);
+
   return (
     <Container sx={{ py: 10 }}>
-      <Box sx={{ background: "#fff", borderRadius: "15px", p: 5 }}>
-        <Stack spacing={3}>
-          <TypographyStyled >
-            Create account
-          </TypographyStyled>
-          <Stack spacing={10} direction="row">
-            <Stack direction="row" width='50%' justifyContent='space-between' alignItems='center'>
-              <TypographyStyled >First name</TypographyStyled>
-              <TextField
-                id="component-outlined"
-                // placeholder="Composed TextField"
-                label="First Name"
-                // onChange={(value) =>
-                //   setAccount({
-                //     ...account,
-                //     firstName: value.target.value,
-                //   })
-                // }
-              />
-            </Stack>
-            <Stack direction="row" width='50%' justifyContent='space-between' alignItems='center'>
-              <TypographyStyled >Last name</TypographyStyled>
-              <TextField
-                id="component-outlined"
-                // placeholder="Composed TextField"
-                label="Last Nname"
-                // onChange={(value) =>
-                //   setAccount({
-                //     ...account,
-                //     lastName: value.target.value,
-                //   })
-                // }
-              />
-            </Stack>
-          </Stack>
-          <Stack direction="row" width='100%' justifyContent='space-between' alignItems='center'>
-            <TypographyStyled >Username</TypographyStyled>
-            <TextField
-              id="component-outlined"
-              // placeholder="Composed TextField"
-              label="Username"
-              sx={{width: '50%'}}
-              // onChange={(value) =>
-              //   setAccount({
-              //     ...account,
-              //     userName: value.target.value,
-              //   })
-              // }
-            />
-            {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
-          </Stack>
-          <Divider />
-
-          <Stack direction='row' width='100%' justifyContent='space-between' alignItems='center'>
-            <TypographyStyled >Password</TypographyStyled>
-            <TextField
-              id="component-outlined"
-              sx={{width: '50%'}}
-              // placeholder="Composed TextField"
-              label="Password"
-              defaultValue={account.password}
-              disabled
-            />
-            {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
-          </Stack>
-          <Divider />
-
-          {/* Department */}
-          <Stack direction="row" width='100%' justifyContent='space-between' alignItems='center'>
-            <TypographyStyled >Department</TypographyStyled>
-            <Autocomplete
-              id="asynchronous-demo"
-              // onChange={(e, value) =>
-              //   setAccount({ ...account, idDepartment: value?.id })
-              // }
-              // isOptionEqualToValue={(option, value) =>
-              //   option.departmentName === value.departmentName
-              // }
-              // getOptionLabel={(option) => t(option.departmentName)}
-              options={departmentList.filter((d) => d.departmentName !== "All")}
-              loading={isGetDepartmentsLoading}
-              sx={{
-                width: '50%',
-                ".MuiAutocomplete-clearIndicator": {
-                  scale: "75%",
-                },
-                ".MuiAutocomplete-popupIndicator": {
-                  backgroundColor: "#DBEAFE",
-                  scale: "75%",
-                },
-                ".MuiAutocomplete-popupIndicatorOpen": {
-                  backgroundColor: "#2563EB",
-                  scale: "75%",
-                },
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Select department"
-                  sx={{ color: "#000" }}
-                  InputProps={{
-                    ...params.InputProps,
-                    startAdornment: (
-                      <React.Fragment>
-                        {isGetDepartmentsLoading ? (
-                          <CircularProgress color="primary" size={20} />
-                        ) : null}
-                        {params.InputProps.startAdornment}
-                      </React.Fragment>
-                    ),
-                  }}
-                />
-              )}
-            />
-          </Stack>
-          <Divider />
-
-          {/* Role */}
-          <Stack direction="row" width='100%' justifyContent='space-between' alignItems='center'>
-            <TypographyStyled >Role</TypographyStyled>
-          <Autocomplete
-            id="asynchronous-demo"
-            // onChange={(e, value) =>
-            //   setAccount({ ...account, idRole: value?.id })
-            // }
-            // isOptionEqualToValue={(option, value) =>
-            //   option.roleName === value.roleName
-            // }
-            // getOptionLabel={(option) => t(option.roleName)}
-            options={DummyRoles}
-            loading={isGetRoleLoading}
+        <Paper elevation={3} sx={{ background: "#fff", borderRadius: "15px", p: 5 }}>
+      <Stack spacing={3} >
+          {/* <TypographyStyled>Create account</TypographyStyled> */}
+          <Box
             sx={{
-              width: '50%',
-              ".MuiAutocomplete-clearIndicator": {
-                scale: "75%",
-              },
-              ".MuiAutocomplete-popupIndicator": {
-                backgroundColor: "#DBEAFE",
-                scale: "75%",
-              },
-              ".MuiAutocomplete-popupIndicatorOpen": {
-                backgroundColor: "#2563EB",
-                scale: "75%",
-              },
-              "& .MuiChip-deleteIcon": {
-                fill: "#000",
-              },
+              borderRadius: "15px",
+              height: "200px",
+              background:
+                "linear-gradient(159deg, rgba(233,241,255,1) 9%, rgba(115,152,221,1) 95%)",
+              position: "relative",
             }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Select role"
-                sx={{
-                  border: "1px solid #fff",
-                  borderRadius: "5px",
-                  // color: '#000'
-                }}
-                InputProps={{
-                  ...params.InputProps,
-                  startAdornment: (
-                    <React.Fragment>
-                      {isGetRoleLoading ? (
-                        <CircularProgress color="primary" size={20} />
-                      ) : null}
-                      {params.InputProps.startAdornment}
-                    </React.Fragment>
-                  ),
-                }}
-              />
-            )}
-          />
-          </Stack>
-          <Divider />
-          {/* Permission */}
-          {/* <Stack direction="row" width='100%' justifyContent='space-between' alignItems='center'>
-            <TypographyStyled >Password</TypographyStyled>
-          <Autocomplete
-            id="asynchronous-demo"
-            multiple
-            // onChange={(e, value) => onChangeSelectedPermissions(value)}
-            // isOptionEqualToValue={(option, value) =>
-            //   option.permissionName === value.permissionName
-            // }
-            // getOptionLabel={(option) => t(option.permissionName)}
-            options={DummyPermissions}
-            loading={isGetPermissionLoading}
-            value={account.permissions}
-            renderTags={(tagValue, getTagProps) =>
-              tagValue.map((option, index) => (
-                <Chip
-                  label={option.permissionName}
-                  {...getTagProps({ index })}
-                  disabled={FixedDummyPermissions.indexOf(option) !== -1}
-                />
-              ))
-            }
-            limitTags={2}
-            sx={{
-              width: '50%',
-              ".MuiAutocomplete-clearIndicator": {
-                backgroundColor: "#000",
-                fill: "#000",
-                scale: "75%",
-              },
-              ".MuiAutocomplete-popupIndicator": {
-                backgroundColor: "#DBEAFE",
-                scale: "75%",
-              },
-              ".MuiAutocomplete-popupIndicatorOpen": {
-                backgroundColor: "#2563EB",
-                scale: "75%",
-              },
-              "& .MuiChip-deleteIcon": {
-                fill: "#000",
-              },
-            }}
-            renderInput={(params) => (
-              <TextFieldStyled
-                {...params}
-                label="Select permission"
-                sx={{
-                  border: "1px solid #fff",
-                  borderRadius: "5px",
-                  color: "#fff",
-                }}
-                InputProps={{
-                  ...params.InputProps,
-                  startAdornment: (
-                    <React.Fragment>
-                      {isGetPermissionLoading ? (
-                        <CircularProgress color="primary" size={20} />
-                      ) : null}
-                      {params.InputProps.startAdornment}
-                    </React.Fragment>
-                  ),
-                }}
-              />
-            )}
-          />
-          </Stack> */}
-          {/* <Stack
+          ></Box>
+          <Stack
             direction="row"
-            justifyContent="start"
-            alignItems="center"
-            minHeight="150px"
+            spacing={5}
+            sx={{
+              transform: "translate(0, -60%)",
+              padding: "30px 30px 0 30px",
+            }}
           >
-            {account.signature && <img src={account.signature} alt=""></img>}
-          </Stack> */}
-          <SaveLoadingBtn
-            loading={isCreateAccountLoading}
-            disabled={isDisabledSave}
-            // onClick={onCreateAccount}
+            <Avatar
+              sx={{
+                width: 150,
+                height: 150,
+              }}
+              alt="Cindy Baker"
+              src="https://mui.com/static/images/avatar/1.jpg"
+            />
+            <Stack
+              spacing={1}
+              justifyContent="end"
+              sx={{ width: "fit-content" }}
+            >
+              <Typography variant="h4">Profile</Typography>
+              <Typography whiteSpace="nowrap">
+                Update your photo and personal detail.
+              </Typography>
+            </Stack>
+            <Stack
+              sx={{ width: "100%" }}
+              direction="row"
+              justifyContent="end"
+              alignItems="end"
+            >
+              <SaveLoadingBtn
+                loading={isCreateAccountLoading}
+                disabled={isDisabledSave}
+                sx={{ height: "fit-content", width: "fit-content" }}
+                // onClick={onCreateAccount}
+              >
+                Save
+              </SaveLoadingBtn>
+            </Stack>
+          </Stack>
+          <Stack
+            spacing={3}
+            sx={{ transform: "translateY(-10%)", paddingRight: "100px" }}
           >
-            Save
-          </SaveLoadingBtn>
+            {/* <Stack spacing={10} direction="row">
+              <Stack
+                direction="row"
+                width="50%"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <TypographyStyled>First name</TypographyStyled>
+                <TextField
+                  id="component-outlined"
+                  // placeholder="Composed TextField"
+                  label="First Name"
+                  // onChange={(value) =>
+                  //   setAccount({
+                  //     ...account,
+                  //     firstName: value.target.value,
+                  //   })
+                  // }
+                />
+              </Stack>
+              <Stack
+                direction="row"
+                width="50%"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <TypographyStyled>Last name</TypographyStyled>
+                <TextField
+                  id="component-outlined"
+                  // placeholder="Composed TextField"
+                  label="Last Nname"
+                  // onChange={(value) =>
+                  //   setAccount({
+                  //     ...account,
+                  //     lastName: value.target.value,
+                  //   })
+                  // }
+                />
+              </Stack>
+            </Stack> */}
+            <Stack
+              direction="row"
+              width="100%"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <TypographyStyled>ID</TypographyStyled>
+
+              <Typography id="component-outlined" sx={{ width: "50%" }}>
+                9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d
+              </Typography>
+              {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
+            </Stack>
+            <Divider />
+
+            <Stack
+              direction="row"
+              width="100%"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <TypographyStyled>First name</TypographyStyled>
+              <TextField
+                id="component-outlined"
+                // placeholder="Composed TextField"
+                label="Username"
+                sx={{ width: "50%" }}
+                // onChange={(value) =>
+                //   setAccount({
+                //     ...account,
+                //     userName: value.target.value,
+                //   })
+                // }
+              />
+            </Stack>
+            <Divider />
+
+            <Stack
+              direction="row"
+              width="100%"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <TypographyStyled>Last name</TypographyStyled>
+              <TextField
+                id="component-outlined"
+                sx={{ width: "50%" }}
+                // placeholder="Composed TextField"
+                label="Password"
+                defaultValue={account.password}
+                disabled
+              />
+              {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
+            </Stack>
+            <Divider />
+
+            <Stack
+              direction="row"
+              width="100%"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <TypographyStyled>Username</TypographyStyled>
+              <TextField
+                id="component-outlined"
+                // placeholder="Composed TextField"
+                label="Username"
+                sx={{ width: "50%" }}
+                // onChange={(value) =>
+                //   setAccount({
+                //     ...account,
+                //     userName: value.target.value,
+                //   })
+                // }
+              />
+            </Stack>
+            <Divider />
+            <Stack
+              direction="row"
+              width="100%"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <TypographyStyled>Password</TypographyStyled>
+              <Box width="50%">
+                <SaveLoadingBtn
+                  loading={isCreateAccountLoading}
+                  disabled={isDisabledSave}
+                  sx={{ height: "fit-content", width: "fit-content", px: 3 }}
+                  // onClick={onCreateAccount}
+                >
+                  Change Password
+                </SaveLoadingBtn>
+              </Box>
+            </Stack>
+            <Divider />
+
+            <Stack
+              direction="row"
+              width="100%"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <TypographyStyled>Your avatar</TypographyStyled>
+              <Stack width="50%" direction="row" justifyContent="space-between">
+                <Avatar
+                  sx={{
+                    width: 50,
+                    height: 50,
+                  }}
+                  alt="Cindy Baker"
+                  src="https://mui.com/static/images/avatar/1.jpg"
+                />
+                <SaveLoadingBtn
+                  loading={isCreateAccountLoading}
+                  disabled={isDisabledSave}
+                  sx={{ height: "fit-content", width: "fit-content", px: 2 }}
+                  // onClick={onCreateAccount}
+                >
+                  Upload
+                </SaveLoadingBtn>
+              </Stack>
+              {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
+            </Stack>
+            <Divider />
+
+            {/* Department */}
+            <Stack
+              direction="row"
+              width="100%"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <TypographyStyled>Department</TypographyStyled>
+              <TextField
+                id="component-outlined"
+                // placeholder="Composed TextField"
+                label="Department"
+                helperText='Please contact to admin to make any changes!'
+                sx={{ width: "50%" }}
+                // onChange={(value) =>
+                //   setAccount({
+                //     ...account,
+                //     userName: value.target.value,
+                //   })
+                // }
+              />
+            </Stack>
+            <Divider />
+
+            {/* Role */}
+            <Stack
+              direction="row"
+              width="100%"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <TypographyStyled>Role</TypographyStyled>
+              <TextField
+                id="component-outlined"
+                // placeholder="Composed TextField"
+                label="Role"
+                helperText='Please contact to admin to make any changes!'
+                sx={{ width: "50%" }}
+                // onChange={(value) =>
+                //   setAccount({
+                //     ...account,
+                //     userName: value.target.value,
+                //   })
+                // }
+              />
+            </Stack>
+            <Divider />
+          </Stack>
         </Stack>
-      </Box>
+        </Paper>
     </Container>
   );
 };

@@ -14,15 +14,15 @@ import {
   Container,
   TooltipProps,
 } from "@mui/material";
-import logo from "../../../assets/logo-dark.svg";
-import logoShort from "../../../assets/logo-short.svg";
+import logo from "assets/logo-light.svg";
+import logoShort from "assets/logo-short.svg";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { Account } from "../../../pages/Account";
-import { CreateAccount } from "../../../pages/Account/create-account";
-import ChangePassword from "../../../pages/ChangePassword";
+import { Account } from "../../../pages/system/account";
+import { CreateAccount } from "../../../pages/system/account/create-account";
+import ChangePassword from "pages/change-password";
 import AwaitSigning from "../../../pages/Document/await-signing";
 import PersonalDoc from "../../../pages/Document/personal";
 import SharedDoc from "../../../pages/Document/shared";
@@ -39,7 +39,7 @@ import { LocationIndex, Permissions } from "../../../utils/constants";
 import { useDispatch, useSelector } from "../../../hooks";
 import History from "../../../pages/Document/history";
 import Template from "../../../pages/Template/template";
-import { System } from "../../../pages/System";
+import { System } from "../../../pages/system";
 import { RequiredPermission } from "../../RequiredPermission";
 import { useTranslation } from "react-i18next";
 import Fade from "@mui/material/Fade";
@@ -54,10 +54,17 @@ import {
   ManageAccountsOutlined,
   ManageHistoryOutlined,
   AccountCircleOutlined,
+  DashboardOutlined,
+  LineAxisOutlined,
+  AccountBoxOutlined,
+  HelpOutline
 } from "@mui/icons-material";
 import TopBar from "./TopBar";
 import { SignalR } from "../../../signalR/signalR";
 import AlertPopup from "../../AlertPopup";
+import { AnalyticsDashboard } from "../../../pages/analytics/dashboard";
+import { AnalyticsActivities } from "../../../pages/analytics/activities";
+import Typography from "@mui/material/Typography";
 
 const {
   TEMPLATE,
@@ -72,6 +79,8 @@ const {
   TEMPLATE_HISTORY,
   ADD_ACCOUNT,
   MY_ACCOUNT,
+  ACTIVITIES,
+  DASHBOARD
 } = LocationIndex;
 
 const {
@@ -163,7 +172,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const DividerStyled = styled(Divider)({
-  marginBottom: "20px",
+  margin: '30px 0',
   background: "#fff",
 });
 
@@ -260,6 +269,10 @@ export default function AfterLogin() {
         return <History />;
       case MY_ACCOUNT:
         return <MyAccount />;
+      case DASHBOARD:
+        return <AnalyticsDashboard />;
+      case ACTIVITIES:
+        return <AnalyticsActivities />;
       default:
         return <></>;
     }
@@ -354,10 +367,48 @@ export default function AfterLogin() {
                 placement="right"
               >
                 <ListItemIconStyled>
-                  <RecentActorsOutlined className="fill-white" />
+                  <AccountBoxOutlined className="fill-white" />
                 </ListItemIconStyled>
               </StyledTooltip>
               <ListTextStyled primary={t("My Account")} />
+            </StyledListBtn>
+          </Stack>
+        </StyledList>
+        <StyledList aria-label="main mailbox folders">
+          <h5 className="pb-3 text-blue-config">{t("Analytics")}</h5>
+
+          <Stack spacing={0.5}>
+            <StyledListBtn
+              selected={locationIndex === DASHBOARD}
+              onClick={(event) => handleListItemClick(event, DASHBOARD)}
+            >
+              <StyledTooltip
+                TransitionComponent={Fade}
+                TransitionProps={{ timeout: 300 }}
+                title="Dashboard"
+                placement="right"
+              >
+                <ListItemIconStyled>
+                  <DashboardOutlined className="fill-white" />
+                </ListItemIconStyled>
+              </StyledTooltip>
+              <ListTextStyled primary={t("Dashboard")} />
+            </StyledListBtn>
+            <StyledListBtn
+              selected={locationIndex === ACTIVITIES}
+              onClick={(event) => handleListItemClick(event, ACTIVITIES)}
+            >
+              <StyledTooltip
+                TransitionComponent={Fade}
+                TransitionProps={{ timeout: 300 }}
+                title="Activities"
+                placement="right"
+              >
+                <ListItemIconStyled>
+                  <LineAxisOutlined className="fill-white" />
+                </ListItemIconStyled>
+              </StyledTooltip>
+              <ListTextStyled primary={t("Activities")} />
             </StyledListBtn>
           </Stack>
         </StyledList>
@@ -548,6 +599,10 @@ export default function AfterLogin() {
         </StyledList>
         <DividerStyled />
 
+          <Stack direction='row' alignItems='center' justifyContent='center'>
+            <Typography sx={{color: '#fff'}}>Help</Typography>
+            <IconButton><HelpOutline className="fill-white"/></IconButton>
+          </Stack>
         
         {/* <div className="absolute top-0 left-0 w-full h-full z-0 bg-gradient-to-br from-slate-800 to-stone-500"></div> */}
       </Drawer>

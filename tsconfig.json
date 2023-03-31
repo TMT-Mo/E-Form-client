@@ -19,7 +19,11 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+    "baseUrl": "src",
+    // "paths": {
+    //   "src/*": ["./src/*"]
+    // },
   },
   "include": ["src", "src/declaration.d.ts"]
 }
