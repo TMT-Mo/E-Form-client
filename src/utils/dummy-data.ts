@@ -178,13 +178,21 @@ export const DummyPermissions: Permission[] = [
     permissionName: 'VIEW_DOCUMENT_HISTORY'
   },
   {
-    id: 15,
-    permissionName: 'ACCOUNT_MANAGEMENT'
-  },
-  {
-    id: 15,
+    id: 17,
     permissionName: 'SYSTEM_MANAGEMENT'
   },
+  {
+    id: 18,
+    permissionName: 'ANALYTICS_DASHBOARD_MANAGEMENT'
+  },
+  {
+    id: 19,
+    permissionName: 'ANALYTICS_ACTIVITIES_MANAGEMENT'
+  },
+  // {
+  //   id: 20,
+  //   permissionName: 'SYSTEM_MANAGEMENT'
+  // },
 ]
 
 export const FixedDummyPermissions: Permission[] = [
