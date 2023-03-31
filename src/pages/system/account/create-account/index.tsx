@@ -18,7 +18,7 @@ import { SaveLoadingBtn, TextFieldStyled } from "components/CustomStyled";
 import { useDispatch, useSelector } from "hooks";
 import { handleError } from "slices/alert";
 import Resizer from "react-image-file-resizer";
-import { createAccount, getDepartmentList } from "slices/system";
+import { createAccount, getDepartmentList, getRoleList } from "slices/system";
 import { Permission } from "models/system";
 import {
   DummyPermissions,
@@ -49,6 +49,7 @@ export const CreateAccount = () => {
     roleList,
     permissionList,
     isCreateAccountLoading,
+    
   } = useSelector((state) => state.system);
   const { userInfo } = useSelector((state) => state.auth);
   const [account, setAccount] = useState<AccountState>({
@@ -148,9 +149,14 @@ export const CreateAccount = () => {
 
   useEffect(() => {
     const getDepartment = dispatch(getDepartmentList());
-    getDepartment.unwrap();
+    const getRole = dispatch(getRoleList());
 
-    return () => getDepartment.abort();
+    getDepartment.unwrap();
+    getRole.unwrap();
+
+    return () => {
+      getDepartment.abort();
+      getRole.abort();}
   }, [dispatch]);
 
   return (
@@ -274,7 +280,7 @@ export const CreateAccount = () => {
                 option.roleName === value.roleName
               }
               getOptionLabel={(option) => t(option.roleName)}
-              options={DummyRoles}
+              options={roleList}
               loading={isGetRoleLoading}
               sx={{
                 ".MuiAutocomplete-clearIndicator": {

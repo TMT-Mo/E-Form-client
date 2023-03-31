@@ -8,9 +8,11 @@ import { useDispatch, useSelector, useSignalR } from "hooks";
 import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from "uuid";
 import { SaveLoadingBtn } from "components/CustomStyled";
+import { createDocument } from "slices/document";
 
 const ViewCreateDocument: React.FC = () => {
   const viewer = useRef(null);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { templateDetail } = useSelector((state) => state.template);
   const { isCreateDocumentLoading } = useSelector((state) => state.document);
@@ -138,19 +140,20 @@ const ViewCreateDocument: React.FC = () => {
   ]);
 
   const onCreateDocument = async () => {
-    // await dispatch(
-    //   createDocument({
-    //     createdBy: +userInfo?.userId!,
-    //     idTemplate: id,
-    //     xfdfString: xfdfString!,
-    //   })
-    // ).unwrap();
+    await dispatch(
+      createDocument({
+        createdBy: +userInfo?.userId!,
+        idTemplate: id,
+        xfdfString: xfdfString!,
+      })
+    ).unwrap();
     sendSignalNotification({
       userIds: [signatoryList[0].id],
       notify: {
         isChecked: false,
         description: `You have a new document waiting for an approval!`,
-    }});
+      },
+    });
     navigate("/user");
   };
 
