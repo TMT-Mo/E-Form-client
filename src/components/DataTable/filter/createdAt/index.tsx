@@ -10,9 +10,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useState } from "react";
-import { DataTableHeader } from "../../../../utils/constants";
-import { DateFilter } from "../../../../models/mui-data";
-import { useSelector } from "../../../../hooks";
+import { DataTableHeader } from "utils/constants";
+import { DateFilter } from "models/mui-data";
+import { useSelector } from "hooks";
 
 const { CREATED_AT } = DataTableHeader;
 function InputNumberInterval(props: GridFilterInputValueProps) {

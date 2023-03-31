@@ -9,19 +9,19 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector, useSignalR } from "../../../../../hooks";
-import { Department } from "../../../../../models/system";
+import { useDispatch, useSelector, useSignalR } from "hooks";
+import { Department } from "models/system";
 import {
   clearSharedInfo,
   getSharedDepartment,
   shareDepartment,
-} from "../../../../../slices/document";
-import { getDepartmentList } from "../../../../../slices/system";
+} from "slices/document";
+import { getDepartmentList } from "slices/system";
 import {
   TextFieldStyled,
   WhiteBtn,
   SaveLoadingBtn,
-} from "../../../../CustomStyled";
+} from "components/CustomStyled";
 import { Stack } from "@mui/material";
 
 interface Props {

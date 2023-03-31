@@ -4,10 +4,10 @@ import { GridRenderCellParams } from "@mui/x-data-grid";
 import React from "react";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { Link } from "react-router-dom";
-import { setViewerLocation } from "../../../../slices/location";
-import { ViewerLocationIndex } from "../../../../utils/constants";
-import { useDispatch } from "../../../../hooks";
-import { getDocumentDetail } from "../../../../slices/document";
+import { setViewerLocation } from "slices/location";
+import { ViewerLocationIndex } from "utils/constants";
+import { useDispatch } from "hooks";
+import { getDocumentDetail } from "slices/document";
 
 const {
   APPROVING_DOCUMENT_INDEX

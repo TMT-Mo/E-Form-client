@@ -16,23 +16,23 @@ import {
 } from "@mui/material";
 import { t } from "i18next";
 import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "../../../../../hooks";
-import { Permission } from "../../../../../models/system";
-import { clearUserList, editAccount, getRoleList, getUserList } from "../../../../../slices/system";
+import { useDispatch, useSelector } from "hooks";
+import { Permission } from "models/system";
+import { clearUserList, editAccount, getRoleList, getUserList } from "slices/system";
 import { PhotoCamera } from "@mui/icons-material";
 import {
   AccountStatus,
   AccountStatusTag,
-} from "../../../../../utils/constants";
+} from "utils/constants";
 import {
   DummyPermissions,
   FixedDummyPermissions,
-} from "../../../../../utils/dummy-data";
-import { TextFieldStyled, SaveLoadingBtn } from "../../../../CustomStyled";
+} from "utils/dummy-data";
+import { TextFieldStyled, SaveLoadingBtn } from "components/CustomStyled";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { getSignature } from "../../../../../slices/auth";
+import { getSignature } from "slices/auth";
 import CloseIcon from "@mui/icons-material/Close";
-import { handleError } from "../../../../../slices/alert";
+import { handleError } from "slices/alert";
 import Resizer from "react-image-file-resizer";
 
 interface Props {

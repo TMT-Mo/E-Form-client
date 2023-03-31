@@ -1,7 +1,7 @@
 import {  IconButton } from "@mui/material";
 import { GridRenderCellParams } from "@mui/x-data-grid";
-import docIcon from '../../../assets/word.svg'
-import pdfIcon from '../../../assets/pdf.svg'
+import docIcon from 'assets/word.svg'
+import pdfIcon from 'assets/pdf.svg'
 
 export const FileCell = (props: GridRenderCellParams<Date>) => {
   const { value } = props;

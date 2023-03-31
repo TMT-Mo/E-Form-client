@@ -2,12 +2,12 @@ import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase, Paper } from "@mui/material";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { StyledAddBtn } from "../../../components/CustomStyled";
+import { StyledAddBtn } from "components/CustomStyled";
 import DataTable from "components/DataTable";
-import { useDispatch, useSelector } from "../../../hooks";
-import { DateFilter } from "../../../models/mui-data";
-import { getUserList, searchAccount } from "../../../slices/system";
-import { DataTableHeader, LocationIndex } from "../../../utils/constants";
+import { useDispatch, useSelector } from "hooks";
+import { DateFilter } from "models/mui-data";
+import { getUserList, searchAccount } from "slices/system";
+import { DataTableHeader, LocationIndex } from "utils/constants";
 import AddIcon from "@mui/icons-material/Add";
 import { setLocation } from "slices/location";
 

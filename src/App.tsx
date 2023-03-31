@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import Login from "./pages/login";
-import Unauthorized from "./pages/unauthorized";
-import Introduction from "./pages/introduction";
+import Login from "pages/login";
+import Unauthorized from "pages/unauthorized";
+import Introduction from "pages/introduction";
 // import { Roles } from "./utils/constants";
-import BeforeLogin from "./components/Layout/BeforeLogin";
+import BeforeLogin from "components/Layout/BeforeLogin";
 import NotFound from "pages/not-found";
-import AfterLogin from "./components/Layout/AfterLogin";
-import { useAuth, useSelector } from "./hooks";
-import Viewer from "./components/Layout/Viewer";
+import AfterLogin from "components/Layout/AfterLogin";
+import { useAuth, useSelector } from "hooks";
+import Viewer from "components/Layout/Viewer";
 
 function App() {
   const { checkAuthenticated } = useSelector((state) => state.auth);

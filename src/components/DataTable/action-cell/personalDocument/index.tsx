@@ -4,19 +4,19 @@ import { GridRenderCellParams } from "@mui/x-data-grid";
 import React, { useState } from "react";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { Link } from "react-router-dom";
-import { setViewerLocation } from "../../../../slices/location";
+import { setViewerLocation } from "slices/location";
 import {
   ShareTabIndex,
   StatusDocument,
   ViewerLocationIndex,
-} from "../../../../utils/constants";
-import { useDispatch } from "../../../../hooks";
-import { getDocumentDetail } from "../../../../slices/document";
+} from "utils/constants";
+import { useDispatch } from "hooks";
+import { getDocumentDetail } from "slices/document";
 import ShareIcon from "@mui/icons-material/Share";
 import { useTranslation } from "react-i18next";
 import { styled } from "@mui/system";
 import DepartmentTab from "./department-tab";
-import { Document } from "../../../../models/document";
+import { Document } from "models/document";
 import UserTab from "./user-tab";
 
 const StyledDialog = styled(Dialog)({

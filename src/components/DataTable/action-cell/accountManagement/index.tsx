@@ -5,14 +5,14 @@ import { TouchRippleActions } from "@mui/material/ButtonBase/TouchRipple";
 import { GridRenderCellParams } from "@mui/x-data-grid";
 import React, { useState } from "react";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-import { useDispatch, useSelector } from "../../../../hooks";
+import { useDispatch, useSelector } from "hooks";
 import {
   clearAccountDetail,
   getAccountDetail,
-} from "../../../../slices/system";
+} from "slices/system";
 import { EditDialog } from "./edit-dialog/";
-import { IUser } from "../../../../models/system";
-import { getSignature } from "../../../../slices/auth";
+import { IUser } from "models/system";
+import { getSignature } from "slices/auth";
 
 export const AccountManagementActionCell = (
   props: GridRenderCellParams<Date>

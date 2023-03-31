@@ -1,11 +1,10 @@
 import { GridRenderCellParams } from "@mui/x-data-grid";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { AccountStatus, AccountStatusTag } from "../../../utils/constants";
-import StatusTag from "../../StatusTag";
+import { AccountStatus, AccountStatusTag } from "utils/constants";
 
 export const AccountStatusCell = (props: GridRenderCellParams<Date>) => {
-  const { value, row } = props;
+  const { value } = props;
   const { t } = useTranslation();
   const status = value as unknown as AccountStatus;
   const createAccountStatus = () => {

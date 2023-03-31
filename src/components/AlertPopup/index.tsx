@@ -1,8 +1,8 @@
 import React from "react";
 import Alert from "@mui/material/Alert";
-import { useDispatch, useSelector } from "../../hooks";
+import { useDispatch, useSelector } from "hooks";
 import Snackbar from "@mui/material/Snackbar";
-import { handleClose } from "../../slices/alert";
+import { handleClose } from "slices/alert";
 import { useTranslation } from "react-i18next";
 
 interface Props {

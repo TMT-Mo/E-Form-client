@@ -9,19 +9,19 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector, useSignalR } from "../../../../../hooks";
+import { useDispatch, useSelector, useSignalR } from "hooks";
 import {
   clearSharedInfo,
   getSharedUser,
   shareUsers,
-} from "../../../../../slices/document";
+} from "slices/document";
 import {
   TextFieldStyled,
   WhiteBtn,
   SaveLoadingBtn,
-} from "../../../../CustomStyled";
-import { SharedUser } from "../../../../../models/document";
-import { clearUserList, getUserList } from "../../../../../slices/system";
+} from "components/CustomStyled";
+import { SharedUser } from "models/document";
+import { clearUserList, getUserList } from "slices/system";
 import Stack from "@mui/material/Stack";
 interface Props {
   onOpen: () => void;
