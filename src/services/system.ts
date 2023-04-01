@@ -20,11 +20,11 @@ import {
   EditRoleResponse,
 } from "models/system";
 
-const getDepartmentList = async (): Promise<DepartmentListResponse> => {
+const getDepartmentList = async (): Promise<DepartmentListResponse[]> => {
   const response = await httpClient.get({
     url: apiPaths.system.getDepartmentList,
   });
-  return response.data as DepartmentListResponse;
+  return response.data as DepartmentListResponse[];
 };
 
 const getUserList = async (arg: GetUsersArgs): Promise<GetUsersResponse> => {
@@ -116,11 +116,11 @@ const getPermissionList = async (): Promise<GetPermissionListResponse> => {
   return response.data as GetPermissionListResponse;
 };
 
-const getRoleList = async (): Promise<GetRoleListResponse> => {
+const getRoleList = async (): Promise<GetRoleListResponse[]> => {
   const response = await httpClient.get({
     url: `${apiPaths.system.getRoleList}`,
   });
-  return response.data as GetRoleListResponse;
+  return response.data as GetRoleListResponse[];
 };
 
 export const systemServices = {

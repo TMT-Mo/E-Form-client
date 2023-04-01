@@ -34,6 +34,7 @@ import { getSignature } from "slices/auth";
 import CloseIcon from "@mui/icons-material/Close";
 import { handleError } from "slices/alert";
 import Resizer from "react-image-file-resizer";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   isOpen: boolean;
@@ -69,17 +70,17 @@ const statusOptions: AccountStatusOptions[] = [
 ];
 
 export const EditDialog = (props: Props) => {
+  const {t} = useTranslation()
   const { isOpen, handleToggleDialog } = props;
   const {
     isGetDepartmentsLoading,
     isGetPermissionLoading,
-    isCreateAccountLoading,
     isEditAccountLoading,
     accountDetail,
     roleList,
     departmentList,
   } = useSelector((state) => state.system);
-  const { userInfo, signature, isGetSignatureLoading } = useSelector(
+  const {  signature, isGetSignatureLoading } = useSelector(
     (state) => state.auth
   );
   const [isDisabledSave, setIsDisabledSave] = useState(false);
@@ -215,7 +216,7 @@ const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between">
               <Typography component="h1" fontSize="2rem">
-                Edit account
+                {t('Edit account')}
               </Typography>
               <IconButton onClick={handleToggleDialog}>
                 <CloseIcon />
@@ -223,28 +224,28 @@ const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
             </Stack>
             <Stack spacing={1} direction="row">
               <FormControl fullWidth>
-                <InputLabel htmlFor="component-outlined">First Name</InputLabel>
+                <InputLabel htmlFor="component-outlined">{t('First Name')}</InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   // placeholder="Composed TextField"
-                  label="First Name"
+                  label={t("First Name")}
                   value={accountDetail?.firstName}
                   onChange={(value => setAccount({...account, firstName: value.target.value}))}
                 />
               </FormControl>
               <FormControl fullWidth>
-                <InputLabel htmlFor="component-outlined">Last Name</InputLabel>
+                <InputLabel htmlFor="component-outlined">{t('Last Name')}</InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   // placeholder="Composed TextField"
-                  label="Last Name"
+                  label={t("Last Name")}
                   value={accountDetail?.lastName}
                   onChange={(value => setAccount({...account, lastName: value.target.value}))}
                 />
               </FormControl>
             </Stack>
             <Stack spacing={0.5}>
-              <Typography fontSize="0.75rem">Username</Typography>
+              <Typography fontSize="0.75rem">{t('Username')}</Typography>
               <TextField
                 id="component-outlined"
                 defaultValue={accountDetail?.userName}
@@ -255,7 +256,7 @@ const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
             </Stack>
             <Stack direction="row" alignItems="center">
               <Stack spacing={0.5} width="100%">
-                <Typography fontSize="0.75rem">Password</Typography>
+                <Typography fontSize="0.75rem">{t('Password')}</Typography>
                 <TextField
                   id="component-outlined"
                   sx={{ color: "#000" }}
@@ -271,10 +272,9 @@ const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
 
             {/* Department */}
             <Stack spacing={0.5}>
-              <Typography fontSize="0.75rem">Department</Typography>
+              <Typography fontSize="0.75rem">{t('Department')}</Typography>
               <TextField
                 id="component-outlined"
-                placeholder="Composed TextField"
                 defaultValue={accountDetail?.departmentName}
                 sx={{ color: "#000" }}
                 disabled
@@ -284,10 +284,9 @@ const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
 
             {/* Role */}
             <Stack spacing={0.5}>
-              <Typography fontSize="0.75rem">Role</Typography>
+              <Typography fontSize="0.75rem">{t('Role')}</Typography>
               <TextField
                 id="component-outlined"
-                placeholder="Composed TextField"
                 defaultValue={accountDetail?.roleName}
                 sx={{ color: "#000" }}
                 disabled
@@ -337,7 +336,7 @@ const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
               renderInput={(params) => (
                 <TextFieldStyled
                   {...params}
-                  label="Select permission"
+                  label={t("Select permission")}
                   sx={{
                     border: "1px solid #fff",
                     borderRadius: "5px",

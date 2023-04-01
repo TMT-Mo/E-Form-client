@@ -596,6 +596,7 @@ export const accountColumns: GridColDef[] = [
     headerAlign: "center",
     flex: 0.3,
     renderHeader: TranslateHeader,
+    renderCell: TranslateContent
   },
   {
     field: DEPARTMENT,
@@ -605,6 +606,7 @@ export const accountColumns: GridColDef[] = [
     flex: 0.3,
     minWidth: 100,
     renderHeader: TranslateHeader,
+    renderCell: TranslateContent
   },
   {
     field: STATUS,

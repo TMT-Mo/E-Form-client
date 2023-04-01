@@ -4,7 +4,10 @@ export interface Department {
 }
 
 export interface DepartmentListResponse {
-  items: Department[];
+  id: number;
+  departmentName: string;
+
+  // items: Department[];
 }
 
 export interface IUser {
@@ -95,10 +98,12 @@ export interface Role {
   roleName: string;
 }
 export interface GetRoleListResponse {
-  items: Role[];
-  total: number;
-  page: number;
-  size: number;
+  id: number;
+  roleName: string;
+  // items: Role[];
+  // total: number;
+  // page: number;
+  // size: number;
 }
 
 export interface Permission {
