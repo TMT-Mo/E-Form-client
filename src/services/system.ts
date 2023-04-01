@@ -28,7 +28,7 @@ const getDepartmentList = async (): Promise<DepartmentListResponse[]> => {
 };
 
 const getUserList = async (arg: GetUsersArgs): Promise<GetUsersResponse> => {
-  const response = await httpClient.get({ url: apiPaths.system.getUserList });
+  const response = await httpClient.get({ url: apiPaths.system.getUserList, params: arg });
   return response.data as GetUsersResponse;
   // const response = DummyUserList
   // return response as unknown as GetUsersResponse
