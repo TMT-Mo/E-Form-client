@@ -6,7 +6,7 @@ import { IUser } from "./system";
 interface Creator {
   id: number;
   departmentName: string;
-  username: string;
+  userName: string;
   signature: string;
   status: number;
   roleName: string;

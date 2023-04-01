@@ -189,7 +189,7 @@ const ViewPersonalDocument: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <h4 className="whitespace-nowrap">{t("Created By")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {createdBy.username}
+                {createdBy.userName}
               </span>
             </div>
             <div className="flex flex-col space-y-2">

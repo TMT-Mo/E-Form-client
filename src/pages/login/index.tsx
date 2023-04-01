@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import intropic from "assets/intropic.svg";
-import { useDispatch, useSelector } from "hooks";
+import { useAuth, useDispatch, useSelector } from "hooks";
 import { login } from "slices/auth";
 import {
   CircularProgress,
@@ -25,6 +25,7 @@ const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const {handleLocation} = useAuth()
   const { isLoginLoading } = useSelector((state) => state.auth);
   const [username, setUsername] = useState<string>();
   const [values, setValues] = useState<State>({
@@ -35,6 +36,7 @@ const Login = () => {
   const onLoginHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     await dispatch(login({ username, password: values.password })).unwrap();
+    handleLocation()
     navigate("/user");
   };
 

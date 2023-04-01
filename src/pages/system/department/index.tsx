@@ -17,7 +17,11 @@ import { t } from "i18next";
 import { SaveLoadingBtn, WhiteBtn } from "components/CustomStyled";
 import { Department } from "models/system";
 import { useTranslation } from "react-i18next";
-import { createDepartment, editDepartment, getDepartmentList } from "slices/system";
+import {
+  createDepartment,
+  editDepartment,
+  getDepartmentList,
+} from "slices/system";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -33,8 +37,12 @@ const CustomBox = styled(Box)({
 
 export const DepartmentSystem = () => {
   const dispatch = useDispatch();
-  const { isGetDepartmentsLoading, departmentList, isEditDepartmentLoading, isCreateDepartmentLoading } =
-    useSelector((state) => state.system);
+  const {
+    isGetDepartmentsLoading,
+    departmentList,
+    isEditDepartmentLoading,
+    isCreateDepartmentLoading,
+  } = useSelector((state) => state.system);
   const [modifyDepartment, setModifyDepartment] = useState<Department>();
   const [newDepartment, setNewDepartment] = useState<string>();
   const [isAddingDepartment, setIsAddingDepartment] = useState(false);
@@ -44,18 +52,24 @@ export const DepartmentSystem = () => {
 
   const onEditDepartment = async () => {
     const { departmentName, id } = modifyDepartment!;
-    await dispatch(editDepartment({ departmentId: id, departmentName })).unwrap();
-    await dispatch(getDepartmentList()).unwrap()
-    setModifyDepartment(undefined)
-    setIsEditingDepartment(false)
+    await dispatch(
+      editDepartment({ departmentId: id, departmentName })
+    ).unwrap();
+    await dispatch(getDepartmentList()).unwrap();
+    setModifyDepartment(undefined);
+    setIsEditingDepartment(false);
   };
 
   const onCreateDepartment = async () => {
-    await dispatch(createDepartment({ departmentName: newDepartment! })).unwrap();
-    await dispatch(getDepartmentList()).unwrap()
-    setNewDepartment(undefined)
-    setIsAddingDepartment(false)
+    await dispatch(
+      createDepartment({ departmentName: newDepartment! })
+    ).unwrap();
+    await dispatch(getDepartmentList()).unwrap();
+    setNewDepartment(undefined);
+    setIsAddingDepartment(false);
   };
+
+  
   return (
     <>
       <CustomBox>
@@ -70,7 +84,7 @@ export const DepartmentSystem = () => {
             // style={{ paddingBottom: "10px" }}
             fontWeight="bold"
           >
-            {t('Department')}
+            {t("Department")}
           </Typography>
           {!isGetDepartmentsLoading && (
             <Stack direction="row">
@@ -124,7 +138,7 @@ export const DepartmentSystem = () => {
           <Box minWidth="500px">
             <Stack spacing={3}>
               <Typography variant="h5" component="h1" alignSelf="center">
-                {t('Edit Department')}
+                {t("Edit Department")}
               </Typography>
               <Autocomplete
                 id="asynchronous-demo"
@@ -170,7 +184,7 @@ export const DepartmentSystem = () => {
                 )}
               />
               <Stack spacing={1}>
-                <Typography>{t('Modify department')}</Typography>
+                <Typography>{t("Modify department")}</Typography>
                 <TextField
                   fullWidth
                   value={modifyDepartment?.departmentName}
@@ -212,10 +226,10 @@ export const DepartmentSystem = () => {
           <Box minWidth="500px">
             <Stack spacing={3}>
               <Typography variant="h5" component="h1" alignSelf="center">
-                {t('Add Department')}
+                {t("Add Department")}
               </Typography>
               <Stack spacing={1}>
-                <Typography>{t('Input department')}</Typography>
+                <Typography>{t("Input department")}</Typography>
                 <TextField
                   fullWidth
                   value={newDepartment}
@@ -252,7 +266,7 @@ export const DepartmentSystem = () => {
             <Stack spacing={2}>
               <Stack direction="row" justifyContent="space-between">
                 <Typography variant="h5" component="h1" alignSelf="center">
-                  {t('Department List')}
+                  {t("Department List")}
                 </Typography>
                 <IconButton onClick={() => setIsViewingDepartment(false)}>
                   <CloseIcon />

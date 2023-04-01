@@ -83,12 +83,13 @@ const TopBar: React.FC<Props> = (props) => {
           marginLeft: 15,
           ...(isOpen && { opacity: "0", cursor: "unset" }),
           fill: "#000",
+          scale: '120%'
         }}
 
       >
         <MenuIcon/>
       </IconButton>
-      <div className="flex space-x-5">
+      <div className="flex space-x-5 scale-110">
         <LanguageSelect />
         <IconButton id="basic-button" onClick={handleClick}>
           <Badge variant="dot" color="error" invisible={!hasNewNotification}>

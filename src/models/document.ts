@@ -31,7 +31,7 @@ export interface GetDocumentsArgs {
 interface Creator {
   id: number;
   departmentName: string;
-  username: string;
+  userName: string;
   signature: string;
   status: number;
   roleName: string;

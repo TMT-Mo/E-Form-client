@@ -355,11 +355,11 @@ export default function AfterLogin() {
             src="https://mui.com/static/images/avatar/1.jpg"
           />
           {open && (
-            <Stack spacing={1}>
-              <h4 className="font-semibold text-white">{userInfo?.userName}</h4>
-              <h4 className="font-semibold text-white">
+            <Stack spacing={1} textAlign='center'>
+              <Typography maxWidth='200px' color='#fff' whiteSpace='normal' fontWeight='bold'>{userInfo?.userName}</Typography>
+              <Typography maxWidth='200px' color='#fff' whiteSpace='normal' fontWeight='bold'>
                 {t(userInfo?.roleName!)} {t('from')} {t(userInfo?.departmentName!)}
-              </h4>
+              </Typography>
             </Stack>
           )}
         </Stack>
@@ -375,7 +375,7 @@ export default function AfterLogin() {
               <StyledTooltip
                 TransitionComponent={Fade}
                 TransitionProps={{ timeout: 300 }}
-                title="My Profile"
+                title={t("My Profile")}
                 placement="right"
               >
                 <ListItemIconStyled>
@@ -398,7 +398,7 @@ export default function AfterLogin() {
                 <StyledTooltip
                   TransitionComponent={Fade}
                   TransitionProps={{ timeout: 300 }}
-                  title="Dashboard"
+                  title={t("Dashboard")}
                   placement="right"
                 >
                   <ListItemIconStyled>
@@ -416,7 +416,7 @@ export default function AfterLogin() {
                 <StyledTooltip
                   TransitionComponent={Fade}
                   TransitionProps={{ timeout: 300 }}
-                  title="Activities"
+                  title={t("Activities")}
                   placement="right"
                 >
                   <ListItemIconStyled>
@@ -440,7 +440,7 @@ export default function AfterLogin() {
                 <StyledTooltip
                   TransitionComponent={Fade}
                   TransitionProps={{ timeout: 300 }}
-                  title="System"
+                  title={t("System")}
                   placement="right"
                 >
                   <ListItemIconStyled>
@@ -464,7 +464,7 @@ export default function AfterLogin() {
                 <StyledTooltip
                   TransitionComponent={Fade}
                   TransitionProps={{ timeout: 300 }}
-                  title="Unapproved"
+                  title={t("Unapproved")}
                   placement="right"
                 >
                   <ListItemIconStyled>
@@ -483,7 +483,7 @@ export default function AfterLogin() {
                 <StyledTooltip
                   TransitionComponent={Fade}
                   TransitionProps={{ timeout: 300 }}
-                  title="Template"
+                  title={t("Template")}
                   placement="right"
                 >
                   <ListItemIconStyled>
@@ -502,7 +502,7 @@ export default function AfterLogin() {
                 <StyledTooltip
                   TransitionComponent={Fade}
                   TransitionProps={{ timeout: 300 }}
-                  title="History"
+                  title={t("History")}
                   placement="right"
                 >
                   <ListItemIconStyled>
@@ -526,7 +526,7 @@ export default function AfterLogin() {
                 <StyledTooltip
                   TransitionComponent={Fade}
                   TransitionProps={{ timeout: 300 }}
-                  title="Await Signing"
+                  title={t("Await Signing")}
                   placement="right"
                 >
                   <ListItemIconStyled>
@@ -544,7 +544,7 @@ export default function AfterLogin() {
                 <StyledTooltip
                   TransitionComponent={Fade}
                   TransitionProps={{ timeout: 300 }}
-                  title="Personal"
+                  title={t("Personal")}
                   placement="right"
                 >
                   <ListItemIconStyled>
@@ -562,7 +562,7 @@ export default function AfterLogin() {
                 <StyledTooltip
                   TransitionComponent={Fade}
                   TransitionProps={{ timeout: 300 }}
-                  title="Shared"
+                  title={t("Shared")}
                   placement="right"
                 >
                   <ListItemIconStyled>
@@ -582,7 +582,7 @@ export default function AfterLogin() {
                 <StyledTooltip
                   TransitionComponent={Fade}
                   TransitionProps={{ timeout: 300 }}
-                  title="History"
+                  title={t("History")}
                   placement="right"
                 >
                   <ListItemIconStyled>

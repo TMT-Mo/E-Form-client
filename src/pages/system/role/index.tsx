@@ -47,22 +47,21 @@ export const RoleSystem = () => {
     const { roleName, id } = modifyRole!;
     const editRoleHandle = dispatch(editRole({ roleName, roleId: id }));
     await editRoleHandle.unwrap()
+    const getRole = dispatch(getRoleList())
+    await getRole.unwrap()
 
     setModifyRole(undefined)
     setIsEditingRole(false)
-
-    const getRole = dispatch(getRoleList())
-    await getRole.unwrap()
   };
 
   const onCreateRole = async() => {
     const createRoleHandler = dispatch(createRole({roleName: newRole!}))
     await createRoleHandler.unwrap()
-
-    setNewRole('')
-
     const getRole = dispatch(getRoleList())
     await getRole.unwrap()
+
+    setNewRole(undefined)
+    setIsAddingRole(false)
   }
 
   return (

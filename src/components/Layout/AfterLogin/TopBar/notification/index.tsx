@@ -11,6 +11,8 @@ import { useSelector } from "hooks";
 import { MenuNotification, StyledMenu } from "components/CustomStyled";
 import CircleIcon from "@mui/icons-material/Circle";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
+import { helpers } from "utils";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   open: boolean;
@@ -25,6 +27,7 @@ export const BoxCustom = styled(Box)({
 });
 
 export const Notification = (props: Props) => {
+  const {t} = useTranslation()
   const { notificationList, isGetNotification, isCheckNotificationLoading } =
     useSelector((state) => state.notification);
   const { open, anchorEl, handleClose } = props;
@@ -61,17 +64,17 @@ export const Notification = (props: Props) => {
         pb={2}
       >
         <Typography variant="h6" fontWeight={600} component="h1">
-          Notifications
+          {t('Notifications')}
         </Typography>
         <Stack direction="row" spacing={1} alignItems="center">
           <Typography fontWeight={600} component="h1" color="#407AFF">
-            Mark read all
+            {t('Mark read all')}
           </Typography>
-          {isCheckNotificationLoading ? (
+          {/* {isCheckNotificationLoading ? (
             <CircularProgress sx={{ fill: "#407AFF", scale: "75%" }} />
           ) : (
             <DoneAllIcon sx={{ fill: "#407AFF", scale: "75%" }} />
-          )}
+          )} */}
         </Stack>
       </Stack>
       <Divider />
@@ -83,7 +86,7 @@ export const Notification = (props: Props) => {
       {notificationList.length === 0 && !isGetNotification && (
         <MenuNotification>
           <Typography sx={{ width: "100%", textAlign: "center" }}>
-            Empty
+            {t('Empty')}
           </Typography>
         </MenuNotification>
       )}
@@ -108,7 +111,7 @@ export const Notification = (props: Props) => {
                 color="GrayText"
                 sx={{ fontSize: "14px", fontWeight: "bold", paddingTop: "4px" }}
               >
-                Tue, 19/3/2023
+                {helpers.addHours(notification.createdAt)}
               </Typography>
               <Divider
                 sx={{
