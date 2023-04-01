@@ -114,9 +114,9 @@ export const MyAccount = () => {
               justifyContent="end"
               sx={{ width: "fit-content" }}
             >
-              <Typography variant="h4">Profile</Typography>
+              <Typography variant="h4">{t('Profile')}</Typography>
               <Typography whiteSpace="nowrap">
-                Update your photo and personal detail.
+                {t('Update your photo and personal detail.')}
               </Typography>
             </Stack>
             <Stack
@@ -131,7 +131,7 @@ export const MyAccount = () => {
                 sx={{ height: "fit-content", width: "fit-content" }}
                 // onClick={onCreateAccount}
               >
-                Save
+                {t('Save')}
               </SaveLoadingBtn>
             </Stack>
           </Stack>
@@ -200,11 +200,11 @@ export const MyAccount = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <TypographyStyled>First name</TypographyStyled>
+              <TypographyStyled>{t('First name')}</TypographyStyled>
               <TextField
                 id="component-outlined"
                 // placeholder="Composed TextField"
-                label="Username"
+                label={t("Username")}
                 sx={{ width: "50%" }}
                 value={userInfo?.firstName}
                 onChange={(value) =>
@@ -223,12 +223,12 @@ export const MyAccount = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <TypographyStyled>Last name</TypographyStyled>
+              <TypographyStyled>{t('Last name')}</TypographyStyled>
               <TextField
                 id="component-outlined"
                 sx={{ width: "50%" }}
                 // placeholder="Composed TextField"
-                label="Password"
+                label={t("Password")}
                 value={userInfo?.lastName}
                 onChange={(value) =>
                   setAccount({
@@ -247,11 +247,11 @@ export const MyAccount = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <TypographyStyled>Username</TypographyStyled>
+              <TypographyStyled>{t('Username')}</TypographyStyled>
               <TextField
                 id="component-outlined"
                 // placeholder="Composed TextField"
-                label="Username"
+                label={t("Username")}
                 sx={{ width: "50%" }}
                 // onChange={(value) =>
                 //   setAccount({
@@ -268,7 +268,7 @@ export const MyAccount = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <TypographyStyled>Password</TypographyStyled>
+              <TypographyStyled>{t('Password')}</TypographyStyled>
               <Box width="50%">
                 <SaveLoadingBtn
                   loading={isCreateAccountLoading}
@@ -282,7 +282,7 @@ export const MyAccount = () => {
                     )
                   }
                 >
-                  Change Password
+                  {t('Change Password')}
                 </SaveLoadingBtn>
               </Box>
             </Stack>
@@ -294,7 +294,7 @@ export const MyAccount = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <TypographyStyled>Your avatar</TypographyStyled>
+              <TypographyStyled>{t('Your avatar')}</TypographyStyled>
               <Stack width="50%" direction="row" justifyContent="space-between">
                 <Avatar
                   sx={{
@@ -310,7 +310,7 @@ export const MyAccount = () => {
                   sx={{ height: "fit-content", width: "fit-content", px: 2 }}
                   // onClick={onCreateAccount}
                 >
-                  Upload
+                  {t('Upload')}
                 </SaveLoadingBtn>
               </Stack>
               {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
@@ -324,11 +324,11 @@ export const MyAccount = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <TypographyStyled>Department</TypographyStyled>
+              <TypographyStyled>{t('Department')}</TypographyStyled>
               <TextField
                 id="component-outlined"
                 // placeholder="Composed TextField"
-                label="Department"
+                label={t("Department")}
                 helperText='Please contact to admin to make any changes!'
                 sx={{ width: "50%" }}
                 value={userInfo?.departmentName}
@@ -344,11 +344,11 @@ export const MyAccount = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <TypographyStyled>Role</TypographyStyled>
+              <TypographyStyled>{t('Role')}</TypographyStyled>
               <TextField
                 id="component-outlined"
                 // placeholder="Composed TextField"
-                label="Role"
+                label={t("Role")}
                 helperText='Please contact to admin to make any changes!'
                 sx={{ width: "50%" }}
                 value={userInfo?.roleName}
@@ -362,7 +362,7 @@ export const MyAccount = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <TypographyStyled>Signature</TypographyStyled>
+              <TypographyStyled>{t('Signature')}</TypographyStyled>
               {isGetSignatureLoading && <CircularProgress/>}
               {signature && <Box width='50%'><img src={signature} alt=''/></Box>}
             </Stack>

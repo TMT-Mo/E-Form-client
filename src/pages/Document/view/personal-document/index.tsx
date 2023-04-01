@@ -122,6 +122,7 @@ const ViewPersonalDocument: React.FC = () => {
       });
       documentViewer.addEventListener("documentLoaded", async () => {
         await documentViewer.getDocument().getDocumentCompletePromise();
+
         await annotationManager.importAnnotations(xfdfString);
         documentViewer.updateView();
         annotationManager.setAnnotationDisplayAuthorMap((userId) => {

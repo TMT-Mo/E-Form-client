@@ -13,13 +13,6 @@ import {
 } from "slices/system";
 import { Account } from "./account";
 
-const CustomBox = styled(Box)({
-  padding: "20px 40px",
-  backgroundColor: "#fff",
-  width: "fit-content",
-  borderRadius: "15px",
-  lineHeight: "50px",
-});
 export const System = () => {
   const dispatch = useDispatch();
   const {} = useSelector((state) => state.system);

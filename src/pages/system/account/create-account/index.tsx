@@ -166,15 +166,15 @@ export const CreateAccount = () => {
         <Box minWidth="800px" maxWidth="500px">
           <Stack spacing={3}>
             <Typography component="h1" fontSize="2rem">
-              Create account
+              {t('Create account')}
             </Typography>
             <Stack spacing={1} direction="row">
               <FormControl fullWidth>
-                <InputLabel htmlFor="component-outlined">First Name</InputLabel>
+                <InputLabel htmlFor="component-outlined">{t('First Name')}</InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   // placeholder="Composed TextField"
-                  label="First Name"
+                  label={t("First Name")}
                   onChange={(value) =>
                     setAccount({
                       ...account,
@@ -184,11 +184,11 @@ export const CreateAccount = () => {
                 />
               </FormControl>
               <FormControl fullWidth>
-                <InputLabel htmlFor="component-outlined">Last Name</InputLabel>
+                <InputLabel htmlFor="component-outlined">{t('Last Name')}</InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   // placeholder="Composed TextField"
-                  label="Last Nname"
+                  label={t("Last Name")}
                   onChange={(value) =>
                     setAccount({
                       ...account,
@@ -199,11 +199,11 @@ export const CreateAccount = () => {
               </FormControl>
             </Stack>
             <FormControl>
-              <InputLabel htmlFor="component-outlined">Username</InputLabel>
+              <InputLabel htmlFor="component-outlined">{t('Username')}</InputLabel>
               <OutlinedInput
                 id="component-outlined"
                 // placeholder="Composed TextField"
-                label="Username"
+                label={t("Username")}
                 onChange={(value) =>
                   setAccount({
                     ...account,
@@ -214,11 +214,11 @@ export const CreateAccount = () => {
               {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
             </FormControl>
             <FormControl>
-              <InputLabel htmlFor="component-outlined">Password</InputLabel>
+              <InputLabel htmlFor="component-outlined">{t('Password')}</InputLabel>
               <OutlinedInput
                 id="component-outlined"
                 // placeholder="Composed TextField"
-                label="Password"
+                label={t("Password")}
                 defaultValue={account.password}
                 disabled
               />
@@ -301,7 +301,7 @@ export const CreateAccount = () => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Select role"
+                  label={t("Select role")}
                   sx={{
                     border: "1px solid #fff",
                     borderRadius: "5px",
@@ -337,7 +337,7 @@ export const CreateAccount = () => {
               renderTags={(tagValue, getTagProps) =>
                 tagValue.map((option, index) => (
                   <Chip
-                    label={option.permissionName}
+                    label={t(option.permissionName)}
                     {...getTagProps({ index })}
                     disabled={FixedDummyPermissions.indexOf(option) !== -1}
                   />
@@ -365,7 +365,7 @@ export const CreateAccount = () => {
               renderInput={(params) => (
                 <TextFieldStyled
                   {...params}
-                  label="Select permission"
+                  label={t("Select permission")}
                   sx={{
                     border: "1px solid #fff",
                     borderRadius: "5px",
@@ -411,7 +411,7 @@ export const CreateAccount = () => {
               disabled={isDisabledSave}
               onClick={onCreateAccount}
             >
-              Save
+              {t('Save')}
             </SaveLoadingBtn>
           </Stack>
         </Box>

@@ -125,7 +125,7 @@ export const RoleSystem = () => {
           <Box minWidth="500px">
             <Stack spacing={3}>
               <Typography variant="h5" component="h1" alignSelf="center">
-                Edit Role
+                {t('Edit Role')}
               </Typography>
               <Autocomplete
                 id="asynchronous-demo"
@@ -152,7 +152,7 @@ export const RoleSystem = () => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Select Role"
+                    label={t("Select Role")}
                     sx={{ color: "#000" }}
                     InputProps={{
                       ...params.InputProps,
@@ -170,7 +170,7 @@ export const RoleSystem = () => {
                 )}
               />
               <Stack spacing={1}>
-                <Typography>Modify Role</Typography>
+                <Typography>{t('Modify Role')}</Typography>
                 <TextField
                   fullWidth
                   value={modifyRole?.roleName}
@@ -209,10 +209,10 @@ export const RoleSystem = () => {
           <Box minWidth="500px">
             <Stack spacing={3}>
               <Typography variant="h5" component="h1" alignSelf="center">
-                Add Role
+                {t('Add Role')}
               </Typography>
               <Stack spacing={1}>
-                <Typography>Input role</Typography>
+                <Typography>{t('Input role')}</Typography>
                 <TextField
                   fullWidth
                   value={newRole}
@@ -245,7 +245,7 @@ export const RoleSystem = () => {
             <Stack spacing={2}>
             <Stack direction="row" justifyContent="space-between">
                 <Typography variant="h5" component="h1" alignSelf="center">
-                  Role List
+                  {t('Role List')}
                 </Typography>
                 <IconButton onClick={() => setIsViewingRole(false)}>
                   <CloseIcon />

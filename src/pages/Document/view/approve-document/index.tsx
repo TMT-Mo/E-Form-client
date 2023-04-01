@@ -62,6 +62,7 @@ const ViewApproveDocument: React.FC = () => {
   const [annotationList, setAnnotationList] = useState<any[] | null>();
   const [newXfdfString, setNewXfdfString] = useState<string | undefined>();
   // if using a class, equivalent of componentDidMount
+  
 
   const signers = signatoryList!.map((signer, index) => (
     <div
@@ -166,7 +167,7 @@ const ViewApproveDocument: React.FC = () => {
         ) as Core.Tools.SignatureCreateTool;
 
         inst.UI.enableFeatures([inst.UI.Feature.Initials]);
-        const iframeDoc = inst.UI.iframeWindow.document;
+        // const iframeDoc = inst.UI.iframeWindow.document;
         // const zoomOverlay = iframeDoc.querySelector(
         //   '[data-element="styling-button"]'
         // );
@@ -184,13 +185,11 @@ const ViewApproveDocument: React.FC = () => {
         });
 
         documentViewer.addEventListener("documentLoaded", async () => {
-          signatureTool.importSignatures([signature!]);
-          const sig = signatureTool.getFullSignatureAnnotation();
-          // sig[0].Width = 50
-          // inst.UI.disableElements(["styling-button"]);
-          await annotationManager.importAnnotations(xfdfString);
-          setInitialXfdfString(annotationManager.getAnnotationsList());
           await documentViewer.getDocument().getDocumentCompletePromise();
+          await annotationManager.importAnnotations(xfdfString);
+
+          signatureTool.importSignatures([signature!]);
+          setInitialXfdfString(annotationManager.getAnnotationsList());
           documentViewer.updateView();
           annotationManager.setAnnotationDisplayAuthorMap((userId) => {
             if (userId === userInfo?.userId!.toString()) {

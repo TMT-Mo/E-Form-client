@@ -70,7 +70,7 @@ export const DepartmentSystem = () => {
             // style={{ paddingBottom: "10px" }}
             fontWeight="bold"
           >
-            Department
+            {t('Department')}
           </Typography>
           {!isGetDepartmentsLoading && (
             <Stack direction="row">
@@ -124,7 +124,7 @@ export const DepartmentSystem = () => {
           <Box minWidth="500px">
             <Stack spacing={3}>
               <Typography variant="h5" component="h1" alignSelf="center">
-                Edit Department
+                {t('Edit Department')}
               </Typography>
               <Autocomplete
                 id="asynchronous-demo"
@@ -152,7 +152,7 @@ export const DepartmentSystem = () => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Select department"
+                    label={t("Select department")}
                     sx={{ color: "#000" }}
                     InputProps={{
                       ...params.InputProps,
@@ -170,7 +170,7 @@ export const DepartmentSystem = () => {
                 )}
               />
               <Stack spacing={1}>
-                <Typography>Modify department</Typography>
+                <Typography>{t('Modify department')}</Typography>
                 <TextField
                   fullWidth
                   value={modifyDepartment?.departmentName}
@@ -212,10 +212,10 @@ export const DepartmentSystem = () => {
           <Box minWidth="500px">
             <Stack spacing={3}>
               <Typography variant="h5" component="h1" alignSelf="center">
-                Add Department
+                {t('Add Department')}
               </Typography>
               <Stack spacing={1}>
-                <Typography>Input department</Typography>
+                <Typography>{t('Input department')}</Typography>
                 <TextField
                   fullWidth
                   value={newDepartment}
@@ -252,7 +252,7 @@ export const DepartmentSystem = () => {
             <Stack spacing={2}>
               <Stack direction="row" justifyContent="space-between">
                 <Typography variant="h5" component="h1" alignSelf="center">
-                  Department List
+                  {t('Department List')}
                 </Typography>
                 <IconButton onClick={() => setIsViewingDepartment(false)}>
                   <CloseIcon />

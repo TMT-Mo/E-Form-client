@@ -358,7 +358,7 @@ export default function AfterLogin() {
             <Stack spacing={1}>
               <h4 className="font-semibold text-white">{userInfo?.userName}</h4>
               <h4 className="font-semibold text-white">
-                {t(userInfo?.roleName!)} from {t(userInfo?.departmentName!)}
+                {t(userInfo?.roleName!)} {t('from')} {t(userInfo?.departmentName!)}
               </h4>
             </Stack>
           )}
@@ -428,7 +428,7 @@ export default function AfterLogin() {
             </RequiredPermission>
           </Stack>
         </StyledList>
-        {/* <RequiredPermission permission={SYSTEM_MANAGEMENT}> */}
+        <RequiredPermission permission={SYSTEM_MANAGEMENT}>
           <StyledList aria-label="main mailbox folders">
             <h5 className="pb-3 text-blue-config">{t("System")}</h5>
 
@@ -451,7 +451,7 @@ export default function AfterLogin() {
               </StyledListBtn>
             </Stack>
           </StyledList>
-        {/* </RequiredPermission> */}
+        </RequiredPermission>
         <StyledList aria-label="main mailbox folders">
           <h5 className="pb-3 text-blue-config">{t("Template")}</h5>
 

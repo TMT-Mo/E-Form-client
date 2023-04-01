@@ -42,7 +42,7 @@ export const PermissionSystem = () => {
           style={{ paddingBottom: "10px" }}
           fontWeight="bold"
         >
-          Permission
+          {t('Permission')}
         </Typography>
         {isGetPermissionLoading && <CircularProgress />}
         <Stack
@@ -74,7 +74,7 @@ export const PermissionSystem = () => {
             <Stack spacing={2}>
               <Stack direction="row" justifyContent="space-between">
                 <Typography variant="h5" component="h1" alignSelf="center">
-                  Permission List
+                  {t('Permission List')}
                 </Typography>
                 <IconButton onClick={() => setIsOpenPermissionDialog(false)}>
                   <CloseIcon />
