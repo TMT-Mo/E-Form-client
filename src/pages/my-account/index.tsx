@@ -114,9 +114,9 @@ export const MyAccount = () => {
               justifyContent="end"
               sx={{ width: "fit-content" }}
             >
-              <Typography variant="h4">{t('Profile')}</Typography>
+              <Typography variant="h4" whiteSpace="nowrap">{t('Profile')}</Typography>
               <Typography whiteSpace="nowrap">
-                {t('Update your photo and personal detail.')}
+                {t('Update your photo and personal detail')}
               </Typography>
             </Stack>
             <Stack
@@ -139,46 +139,6 @@ export const MyAccount = () => {
             spacing={3}
             sx={{ transform: "translateY(-10%)", paddingRight: "100px" }}
           >
-            {/* <Stack spacing={10} direction="row">
-              <Stack
-                direction="row"
-                width="50%"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <TypographyStyled>First name</TypographyStyled>
-                <TextField
-                  id="component-outlined"
-                  // placeholder="Composed TextField"
-                  label="First Name"
-                  // onChange={(value) =>
-                  //   setAccount({
-                  //     ...account,
-                  //     firstName: value.target.value,
-                  //   })
-                  // }
-                />
-              </Stack>
-              <Stack
-                direction="row"
-                width="50%"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <TypographyStyled>Last name</TypographyStyled>
-                <TextField
-                  id="component-outlined"
-                  // placeholder="Composed TextField"
-                  label="Last Nname"
-                  // onChange={(value) =>
-                  //   setAccount({
-                  //     ...account,
-                  //     lastName: value.target.value,
-                  //   })
-                  // }
-                />
-              </Stack>
-            </Stack> */}
             <Stack
               direction="row"
               width="100%"
@@ -334,6 +294,7 @@ export const MyAccount = () => {
                 value={userInfo?.departmentName}
                 disabled
               />
+              
             </Stack>
             <Divider />
 

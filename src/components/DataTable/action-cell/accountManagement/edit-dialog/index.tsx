@@ -17,17 +17,16 @@ import {
 import { t } from "i18next";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "hooks";
-import { Permission } from "models/system";
-import { clearUserList, editAccount, getRoleList, getUserList } from "slices/system";
+import { Department, Permission, Role } from "models/system";
+import {
+  clearUserList,
+  editAccount,
+  getRoleList,
+  getUserList,
+} from "slices/system";
 import { PhotoCamera } from "@mui/icons-material";
-import {
-  AccountStatus,
-  AccountStatusTag,
-} from "utils/constants";
-import {
-  DummyPermissions,
-  FixedDummyPermissions,
-} from "utils/dummy-data";
+import { AccountStatus, AccountStatusTag } from "utils/constants";
+import { DummyPermissions, FixedDummyPermissions } from "utils/dummy-data";
 import { TextFieldStyled, SaveLoadingBtn } from "components/CustomStyled";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { getSignature } from "slices/auth";
@@ -50,8 +49,6 @@ interface AccountState {
   idUser: number;
   userName?: string;
   password?: string;
-  idDepartment?: number;
-  idRole?: number;
   signature?: string;
   status?: AccountStatusOptions;
   firstName: string;
@@ -70,17 +67,18 @@ const statusOptions: AccountStatusOptions[] = [
 ];
 
 export const EditDialog = (props: Props) => {
-  const {t} = useTranslation()
+  const { t } = useTranslation();
   const { isOpen, handleToggleDialog } = props;
   const {
     isGetDepartmentsLoading,
     isGetPermissionLoading,
+    isGetRoleLoading,
     isEditAccountLoading,
     accountDetail,
     roleList,
     departmentList,
   } = useSelector((state) => state.system);
-  const {  signature, isGetSignatureLoading } = useSelector(
+  const { signature, isGetSignatureLoading } = useSelector(
     (state) => state.auth
   );
   const [isDisabledSave, setIsDisabledSave] = useState(false);
@@ -88,31 +86,36 @@ export const EditDialog = (props: Props) => {
 
   const currentPermissionList = (): Permission[] => {
     const list: Permission[] = [];
-    // const currentPermissions = accountDetail?.idPermissions!.filter(p => FixedDummyPermissions.findIndex(f => f.id !== p) === -1)
     const currentPermissions: number[] = [];
     accountDetail?.idPermissions!.forEach((p) => {
       if (FixedDummyPermissions.findIndex((f) => f.id === p) === -1) {
         currentPermissions.push(p);
       }
-      // console.log(FixedDummyPermissions.findIndex(f => f.id !== p) === -1)
     });
     currentPermissions.forEach((p) =>
       list.push(DummyPermissions.find((value) => value.id === +p)!)
     );
     return list;
   };
+  const [selectedDepartment, setSelectedDepartment] = useState<Department>(
+    departmentList.find(
+      (department) =>
+        department?.departmentName === accountDetail?.departmentName
+    )!
+  );
+  const [selectedRole, setSelectedRole] = useState<Role>(
+    roleList.find(
+      (role) =>
+        role?.roleName === accountDetail?.roleName
+    )!
+  );
   const [account, setAccount] = useState<AccountState>({
     idUser: accountDetail?.id!,
     userName: accountDetail?.userName,
     password: undefined,
     firstName: accountDetail?.firstName!,
     lastName: accountDetail?.lastName!,
-    idDepartment: departmentList.find(
-      (department) =>
-        department.departmentName === accountDetail?.departmentName
-    )?.id,
-    idRole: roleList.find((role) => role.roleName === accountDetail?.roleName)
-      ?.id,
+    //   ?.id,
     signature: undefined,
     status: {
       statusId: accountDetail?.status!,
@@ -127,13 +130,21 @@ export const EditDialog = (props: Props) => {
     ...currentPermissionList(),
   ]);
 
-  console.log(account);
-
   const onChangeSelectedPermissions = (value: Permission[]) => {
     setPermissions([
       ...FixedDummyPermissions,
       ...value.filter((option) => FixedDummyPermissions.indexOf(option) === -1),
     ]);
+  };
+
+  const onChangeSelectedDepartment = (value: Department | null) => {
+    if(!value) return
+    setSelectedDepartment(value)
+  };
+
+  const onChangeSelectedRole = (value: Role | null) => {
+    if(!value) return
+    setSelectedRole(value)
   };
 
   const EditAccountHandle = async () => {
@@ -145,13 +156,15 @@ export const EditDialog = (props: Props) => {
         status:
           account.status?.statusId === AccountStatus.ENABLE ? true : false,
         signature: account.signature ?? signature,
+        idDepartment: selectedDepartment.id,
+        idRole: selectedRole.id
       })
     );
     await onEditAccount.unwrap();
     handleToggleDialog();
-    dispatch(clearUserList())
-    await dispatch(getUserList({}))
-    
+    dispatch(clearUserList());
+    await dispatch(getUserList({}));
+
     return () => onEditAccount.abort();
   };
 
@@ -164,50 +177,45 @@ export const EditDialog = (props: Props) => {
   };
 
   const resizeFile = (file: File) =>
-  new Promise((resolve) => {
-    const maxWidth = 130;
-    const minWidth = 130;
-    const minHeight = 100;
-    const maxHeight = 100;
+    new Promise((resolve) => {
+      const maxWidth = 130;
+      const minWidth = 130;
+      const minHeight = 100;
+      const maxHeight = 100;
 
-    const fileName = file.name.slice(file.name.lastIndexOf(".") + 1);
-    Resizer.imageFileResizer(
-      file,
-      maxWidth,
-      maxHeight,
-      fileName,
-      100,
-      0,
-      (uri) => {
-        resolve(uri);
-      },
-      "base64",
-      minWidth,
-      minHeight
-    );
-  });
+      const fileName = file.name.slice(file.name.lastIndexOf(".") + 1);
+      Resizer.imageFileResizer(
+        file,
+        maxWidth,
+        maxHeight,
+        fileName,
+        100,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        "base64",
+        minWidth,
+        minHeight
+      );
+    });
 
-const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  if (!e.target.files) {
-    dispatch(
-      handleError({
-        errorMessage: "Something went wrong with uploading image!",
-      })
-    );
-    return;
-  }
-  let file = e.target.files[0];
-  const image = await resizeFile(file);
-  setAccount({
-    ...account,
-    signature: image as string,
-  });
-};
-
-  // useEffect(() => {
-  //   if(!signature) return
-  //   setAccount({...account, signature})
-  // }, [account, signature]);
+  const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) {
+      dispatch(
+        handleError({
+          errorMessage: "Something went wrong with uploading image!",
+        })
+      );
+      return;
+    }
+    let file = e.target.files[0];
+    const image = await resizeFile(file);
+    setAccount({
+      ...account,
+      signature: image as string,
+    });
+  };
 
   return (
     <Dialog open={isOpen} onClose={handleToggleDialog}>
@@ -216,7 +224,7 @@ const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between">
               <Typography component="h1" fontSize="2rem">
-                {t('Edit account')}
+                {t("Edit account")}
               </Typography>
               <IconButton onClick={handleToggleDialog}>
                 <CloseIcon />
@@ -224,39 +232,46 @@ const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
             </Stack>
             <Stack spacing={1} direction="row">
               <FormControl fullWidth>
-                <InputLabel htmlFor="component-outlined">{t('First Name')}</InputLabel>
+                <InputLabel htmlFor="component-outlined">
+                  {t("First Name")}
+                </InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   // placeholder="Composed TextField"
                   label={t("First Name")}
                   value={accountDetail?.firstName}
-                  onChange={(value => setAccount({...account, firstName: value.target.value}))}
+                  onChange={(value) =>
+                    setAccount({ ...account, firstName: value.target.value })
+                  }
                 />
               </FormControl>
               <FormControl fullWidth>
-                <InputLabel htmlFor="component-outlined">{t('Last Name')}</InputLabel>
+                <InputLabel htmlFor="component-outlined">
+                  {t("Last Name")}
+                </InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   // placeholder="Composed TextField"
                   label={t("Last Name")}
                   value={accountDetail?.lastName}
-                  onChange={(value => setAccount({...account, lastName: value.target.value}))}
+                  onChange={(value) =>
+                    setAccount({ ...account, lastName: value.target.value })
+                  }
                 />
               </FormControl>
             </Stack>
             <Stack spacing={0.5}>
-              <Typography fontSize="0.75rem">{t('Username')}</Typography>
+              <Typography fontSize="0.75rem">{t("Username")}</Typography>
               <TextField
                 id="component-outlined"
                 defaultValue={accountDetail?.userName}
                 sx={{ color: "#000" }}
                 disabled
               />
-              {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
             </Stack>
             <Stack direction="row" alignItems="center">
               <Stack spacing={0.5} width="100%">
-                <Typography fontSize="0.75rem">{t('Password')}</Typography>
+                <Typography fontSize="0.75rem">{t("Password")}</Typography>
                 <TextField
                   id="component-outlined"
                   sx={{ color: "#000" }}
@@ -272,26 +287,103 @@ const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
 
             {/* Department */}
             <Stack spacing={0.5}>
-              <Typography fontSize="0.75rem">{t('Department')}</Typography>
-              <TextField
-                id="component-outlined"
-                defaultValue={accountDetail?.departmentName}
-                sx={{ color: "#000" }}
-                disabled
+              <Typography fontSize="0.75rem">{t("Department")}</Typography>
+              <Autocomplete
+                id="asynchronous-demo"
+                onChange={(e, value) =>
+                  onChangeSelectedDepartment(value)
+                }
+                isOptionEqualToValue={(option, value) =>
+                  option.departmentName === value.departmentName
+                }
+                getOptionLabel={(option) => t(option.departmentName)}
+                loading={isGetDepartmentsLoading}
+                value={selectedDepartment}
+                options={departmentList.filter(department => department.departmentName !== 'All')}
+                sx={{
+                  ".MuiAutocomplete-clearIndicator": {
+                    backgroundColor: "#bdc3c7",
+                    scale: "75%",
+                  },
+                  ".MuiAutocomplete-popupIndicator": {
+                    backgroundColor: "#DBEAFE",
+                    scale: "75%",
+                  },
+                  ".MuiAutocomplete-popupIndicatorOpen": {
+                    backgroundColor: "#2563EB",
+                    scale: "75%",
+                  },
+                  color: "#000",
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    sx={{ color: "#000" }}
+                    InputProps={{
+                      ...params.InputProps,
+
+                      startAdornment: (
+                        <React.Fragment>
+                          {isGetDepartmentsLoading ? (
+                            <CircularProgress color="primary" size={20} />
+                          ) : null}
+                          {params.InputProps.startAdornment}
+                        </React.Fragment>
+                      ),
+                    }}
+                  />
+                )}
               />
-              {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
             </Stack>
 
             {/* Role */}
             <Stack spacing={0.5}>
-              <Typography fontSize="0.75rem">{t('Role')}</Typography>
-              <TextField
-                id="component-outlined"
-                defaultValue={accountDetail?.roleName}
-                sx={{ color: "#000" }}
-                disabled
-              />
-              {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
+              <Typography fontSize="0.75rem">{t("Role")}</Typography>
+              <Autocomplete
+                id="asynchronous-demo"
+                onChange={(e, value) =>
+                  onChangeSelectedRole(value)
+                }
+                isOptionEqualToValue={(option, value) =>
+                  option.roleName === value.roleName
+                }
+                getOptionLabel={(option) => t(option.roleName)}
+                loading={isGetRoleLoading}
+                value={selectedRole}
+                options={roleList}
+                sx={{
+                  ".MuiAutocomplete-clearIndicator": {
+                    backgroundColor: "#bdc3c7",
+                    scale: "75%",
+                  },
+                  ".MuiAutocomplete-popupIndicator": {
+                    backgroundColor: "#DBEAFE",
+                    scale: "75%",
+                  },
+                  ".MuiAutocomplete-popupIndicatorOpen": {
+                    backgroundColor: "#2563EB",
+                    scale: "75%",
+                  },
+                  color: "#000",
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    sx={{ color: "#000" }}
+                    InputProps={{
+                      ...params.InputProps,
+
+                      startAdornment: (
+                        <React.Fragment>
+                          {isGetDepartmentsLoading ? (
+                            <CircularProgress color="primary" size={20} />
+                          ) : null}
+                          {params.InputProps.startAdornment}
+                        </React.Fragment>
+                      ),
+                    }}
+                  />
+                )} />
             </Stack>
 
             {/* Permission */}
@@ -403,7 +495,13 @@ const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
                 <PhotoCamera />
               </IconButton>
               {isGetSignatureLoading && <CircularProgress />}
-              {signature && <img src={account.signature ?? signature} width="200px" alt="" />}
+              {signature && (
+                <img
+                  src={account.signature ?? signature}
+                  width="200px"
+                  alt=""
+                />
+              )}
             </Stack>
             {/* <Stack width="100%" alignItems="center" justifyContent="center">
             </Stack> */}
