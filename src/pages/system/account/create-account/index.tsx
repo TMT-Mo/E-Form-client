@@ -253,7 +253,7 @@ export const CreateAccount = () => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Select department"
+                  label={t("Select department")}
                   sx={{ color: "#000" }}
                   InputProps={{
                     ...params.InputProps,

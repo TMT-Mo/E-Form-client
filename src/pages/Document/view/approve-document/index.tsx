@@ -143,12 +143,24 @@ const ViewApproveDocument: React.FC = () => {
 
   useEffect(() => {
     if (annotationList?.length === 0) return;
-    const hasNewSignature =
-      annotationList[annotationList?.length - 1].Author ===
-        userInfo?.userId!.toString() &&
-      annotationList[annotationList?.length - 1].Subject === "Signature";
-    setIsDisable(!hasNewSignature);
-  }, [annotationList, annotationList?.length, userInfo?.userId]);
+    const checkCondition = i18n.language === 'en' ? "Signature" : "Chữ ký"
+    for (let i = 0; i < annotationList.length; i++) {
+      const currentAnnot = annotationList[i]
+      if (currentAnnot.Author !== userInfo?.userId!.toString()) continue
+
+      if(currentAnnot.Subject === checkCondition){
+        console.log('in')
+        setIsDisable(false)
+        break;
+      }
+
+      if(!isDisable){
+        setIsDisable(true)
+      }
+    }
+    // console.log(hasNewSignature);
+    // setIsDisable(!hasNewSignature);
+  }, [annotationList, annotationList.length, i18n.language, isDisable, userInfo?.userId]);
 
   useEffect(() => {
     signature &&
@@ -176,10 +188,6 @@ const ViewApproveDocument: React.FC = () => {
         ) as Core.Tools.SignatureCreateTool;
 
         inst.UI.enableFeatures([inst.UI.Feature.Initials]);
-        // const iframeDoc = inst.UI.iframeWindow.document;
-        // const zoomOverlay = iframeDoc.querySelector(
-        //   '[data-element="styling-button"]'
-        // );
 
         inst.UI.setHeaderItems(function (header) {
           header.push({
