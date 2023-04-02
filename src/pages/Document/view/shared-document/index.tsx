@@ -90,9 +90,9 @@ import StatusTag from "components/StatusTag";
           inst.UI.enableFeatures([inst.UI.Feature.Initials]);
   
           documentViewer.addEventListener("documentLoaded", async () => {
+            await documentViewer.getDocument().getDocumentCompletePromise();
             signatureTool.importSignatures([signature!]);
             await annotationManager.importAnnotations(xfdfString);
-            await documentViewer.getDocument().getDocumentCompletePromise();
             documentViewer.updateView();
             annotationManager.setAnnotationDisplayAuthorMap((userId) => {
               if (userId === userInfo?.userId!.toString()) {

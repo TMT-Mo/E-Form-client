@@ -66,7 +66,7 @@ const ViewHistoryDocument: React.FC = () => {
         });
       });
     });
-  }, [documentName, link, userInfo?.userId, userInfo?.userName, xfdfString]);
+  }, [documentName, i18n.language, link, userInfo?.userId, userInfo?.userName, xfdfString]);
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
