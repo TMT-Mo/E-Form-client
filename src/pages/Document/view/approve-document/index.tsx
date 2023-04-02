@@ -23,11 +23,7 @@ import { helpers } from "utils";
 import { approveDocument } from "slices/document";
 import { StatusDocument } from "utils/constants";
 import { getSignature } from "slices/auth";
-import {
-  WhiteBtn,
-  SaveLoadingBtn,
-  RejectBtn,
-} from "components/CustomStyled";
+import { WhiteBtn, SaveLoadingBtn, RejectBtn } from "components/CustomStyled";
 import StatusTag from "components/StatusTag";
 
 const { APPROVED_DOCUMENT, REJECTED_DOCUMENT } = StatusDocument;
@@ -59,10 +55,12 @@ const ViewApproveDocument: React.FC = () => {
   const [reason, setReason] = useState<string | undefined>();
   const [openDialog, setOpenDialog] = useState(false);
   const [initialXfdfString, setInitialXfdfString] = useState<any[] | null>();
-  const [annotationList, setAnnotationList] = useState<any[] | null>();
+  const [annotationList, setAnnotationList] = useState<
+    Core.Annotations.Annotation[]
+  >([]);
   const [newXfdfString, setNewXfdfString] = useState<string | undefined>();
+  const [isDisable, setIsDisable] = useState(true);
   // if using a class, equivalent of componentDidMount
-  
 
   const signers = signatoryList!.map((signer, index) => (
     <div
@@ -121,12 +119,14 @@ const ViewApproveDocument: React.FC = () => {
           },
         });
     }
-    if(+userInfo?.userId! === signatoryList?.[signatoryList.length-1].id){
+    if (+userInfo?.userId! === signatoryList?.[signatoryList.length - 1].id) {
       sendSignalNotification({
         userIds: [createdBy.id],
         notify: {
           isChecked: false,
-          description: `${documentName} has been ${isAccepting ? 'approved' : 'rejected'}!`,
+          description: `${documentName} has been ${
+            isAccepting ? "approved" : "rejected"
+          }!`,
         },
       });
     }
@@ -140,6 +140,15 @@ const ViewApproveDocument: React.FC = () => {
     onGetSignature.unwrap();
     return () => onGetSignature.abort();
   }, [dispatch, userInfo?.userId]);
+
+  useEffect(() => {
+    if (annotationList?.length === 0) return;
+    const hasNewSignature =
+      annotationList[annotationList?.length - 1].Author ===
+        userInfo?.userId!.toString() &&
+      annotationList[annotationList?.length - 1].Subject === "Signature";
+    setIsDisable(!hasNewSignature);
+  }, [annotationList, annotationList?.length, userInfo?.userId]);
 
   useEffect(() => {
     signature &&
@@ -211,8 +220,6 @@ const ViewApproveDocument: React.FC = () => {
 
               const annotList = annotationManager.getAnnotationsList();
               setAnnotationList(annotList);
-
-              // console.log(checkAnnotExists)
             }
           );
         });
@@ -226,6 +233,7 @@ const ViewApproveDocument: React.FC = () => {
     xfdfString,
     i18n.language,
   ]);
+
   return (
     <Fragment>
       <div className="bg-blue-config px-20 py-6 flex space-x-4 items-center">
@@ -332,13 +340,7 @@ const ViewApproveDocument: React.FC = () => {
                 size="small"
                 variant="outlined"
                 onClick={() => setOpenDialog(true)}
-                disabled={
-                  annotationList
-                    ? annotationList.every((annot) =>
-                        initialXfdfString?.includes(annot)
-                      )
-                    : true
-                }
+                disabled={isDisable}
               >
                 {t("Approve")}
               </SaveLoadingBtn>
