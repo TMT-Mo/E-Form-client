@@ -385,6 +385,7 @@ export const CreateAccount = () => {
                 />
               )}
             />
+            <Typography>Select signature</Typography>
             <Stack
               direction="row"
               justifyContent="start"

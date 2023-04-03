@@ -114,7 +114,7 @@ export const MyAccount = () => {
               justifyContent="end"
               sx={{ width: "fit-content" }}
             >
-              <Typography variant="h4" whiteSpace="nowrap">{t('Profile')}</Typography>
+              <Typography variant="h4" whiteSpace="nowrap">{t(`Welcome back, ${userInfo?.firstName} ${userInfo?.lastName}`)}</Typography>
               <Typography whiteSpace="nowrap">
                 {t('Update your photo and personal detail')}
               </Typography>
@@ -148,7 +148,7 @@ export const MyAccount = () => {
               <TypographyStyled>ID</TypographyStyled>
 
               <Typography id="component-outlined" sx={{ width: "50%" }}>
-                9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d
+                {userInfo?.userId}
               </Typography>
               {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
             </Stack>
@@ -208,18 +208,16 @@ export const MyAccount = () => {
               alignItems="center"
             >
               <TypographyStyled>{t('Username')}</TypographyStyled>
-              <TextField
+              {/* <TextField
                 id="component-outlined"
-                // placeholder="Composed TextField"
+                value={userInfo?.userName}
+                disabled
                 label={t("Username")}
                 sx={{ width: "50%" }}
-                // onChange={(value) =>
-                //   setAccount({
-                //     ...account,
-                //     userName: value.target.value,
-                //   })
-                // }
-              />
+              /> */}
+              <Typography id="component-outlined" sx={{ width: "50%" }}>
+              {userInfo?.userName}
+              </Typography>
             </Stack>
             <Divider />
             <Stack
