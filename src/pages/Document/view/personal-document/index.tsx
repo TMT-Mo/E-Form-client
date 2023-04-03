@@ -109,7 +109,7 @@ const ViewPersonalDocument: React.FC = () => {
     ).then(async (instance) => {
       const { documentViewer, annotationManager } = instance.Core;
       instance.UI.setLanguage(i18n.language === "vn" ? "vi" : "en");
-      instance.UI.setHeaderItems(function (header) {
+      status !== StatusDocument.REJECTED_DOCUMENT && instance.UI.setHeaderItems(function (header) {
         header.push({
           type: "actionButton",
           img: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20"><path d="M19 9h-4V3H9v6H5l7 8zM4 19h16v2H4z"></path></svg>',
@@ -244,7 +244,7 @@ const ViewPersonalDocument: React.FC = () => {
                   variant="outlined"
                   onClick={onCancelChangeSigner}
                 >
-                  Cancel
+                  {t('Cancel')}
                 </TransparentBtn>
                 <SaveLoadingBtn
                   size="small"
@@ -255,7 +255,7 @@ const ViewPersonalDocument: React.FC = () => {
                   variant="outlined"
                   onClick={() => setOpenDialog(true)}
                 >
-                  Save
+                  {t('Save')}
                 </SaveLoadingBtn>
               </div>
             )}
@@ -290,7 +290,7 @@ const ViewPersonalDocument: React.FC = () => {
             </SaveLoadingBtn>
           </DialogActions>
         </Dialog>
-        <div className="webviewer w-full h-screen" ref={viewer}></div>
+        <div className="webviewer w-full min-h-screen" ref={viewer}></div>
       </div>
     </Fragment>
   );

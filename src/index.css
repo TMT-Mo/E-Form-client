@@ -50,3 +50,7 @@ body {
 .tools-dropdown-container{
   display: none !important;
 }
+
+.comment-textarea .add-attachment{
+  display: none !important;
+}

@@ -143,6 +143,7 @@ const ViewApproveDocument: React.FC = () => {
 
   useEffect(() => {
     if (annotationList?.length === 0) return;
+    
     const checkCondition = i18n.language === 'en' ? "Signature" : "Chữ ký"
     for (let i = 0; i < annotationList.length; i++) {
       const currentAnnot = annotationList[i]
@@ -158,8 +159,6 @@ const ViewApproveDocument: React.FC = () => {
         setIsDisable(true)
       }
     }
-    // console.log(hasNewSignature);
-    // setIsDisable(!hasNewSignature);
   }, [annotationList, annotationList.length, i18n.language, isDisable, userInfo?.userId]);
 
   useEffect(() => {
@@ -169,7 +168,7 @@ const ViewApproveDocument: React.FC = () => {
           path: "/webviewer/lib",
           initialDoc: link!,
           disabledElements: [
-            "toolbarGroup-Insert",
+            // "toolbarGroup-Insert",
             "toolbarGroup-Forms",
             "downloadButton",
             "styling-button",
@@ -177,12 +176,16 @@ const ViewApproveDocument: React.FC = () => {
             "languageButton",
           ],
           annotationUser: userInfo?.userId!.toString(),
-          css: "../../../../index.css",
+          css: "/webviewer/lib/ui/style.css",
+
         },
         viewer.current!
       ).then(async (inst) => {
         const { documentViewer, annotationManager } = inst.Core;
         inst.UI.setLanguage(i18n.language === "vn" ? "vi" : "en");
+          const iframeDoc = inst.UI.iframeWindow.document;
+
+        inst.UI.disableElements(['add-attachment'])
         const signatureTool = documentViewer.getTool(
           "AnnotationCreateSignature"
         ) as Core.Tools.SignatureCreateTool;
@@ -228,6 +231,7 @@ const ViewApproveDocument: React.FC = () => {
 
               const annotList = annotationManager.getAnnotationsList();
               setAnnotationList(annotList);
+              console.log(annotList)
             }
           );
         });
@@ -355,7 +359,7 @@ const ViewApproveDocument: React.FC = () => {
             )}
           </div>
         </div>
-        <div className="webviewer w-full h-screen" ref={viewer}></div>
+        <div className="webviewer w-full min-h-screen" ref={viewer}></div>
       </div>
       <Dialog
         open={openDialog}

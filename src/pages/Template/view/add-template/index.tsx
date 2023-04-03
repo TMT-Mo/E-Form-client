@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Stack,
 } from "@mui/material";
 import React, {
   Fragment,
@@ -210,7 +211,7 @@ const ViewAddTemplate: React.FC = () => {
         </span>
       </div>
       <div className="flex space-x-2 items-center">
-        <h4>Department:</h4>
+        <h4>{t('Department:')}</h4>
         <span className="text-white text-base break-words">
           {signer.departmentName}
         </span>
@@ -235,7 +236,7 @@ const ViewAddTemplate: React.FC = () => {
       <div className="flex flex-col-reverse md:flex-row">
         <div className="flex flex-col bg-dark-config min-h-screen px-10 pt-12 space-y-8 pb-8 md:w-80 md:pb-0">
           <div className="flex flex-col space-y-8 text-white">
-            <div className="flex flex-col space-y-4">
+            <Stack spacing={2}>
               <h4>{t("Choose a file")}</h4>
               <IconButton
                 color="primary"
@@ -252,11 +253,11 @@ const ViewAddTemplate: React.FC = () => {
                   onChange={handleChange}
                 />
                 <FileUploadIcon />
-                <Typography className="text-white">
+                <Typography color='#fff' maxWidth='200px' whiteSpace='break-spaces' className="break-all">
                   {form.templateName}
                 </Typography>
               </IconButton>
-            </div>
+            </Stack>
             <Divider className="bg-white" />
             <div className="flex flex-col space-y-4">
               <h4>{t("Description")}</h4>
@@ -333,7 +334,7 @@ const ViewAddTemplate: React.FC = () => {
                   option.departmentName === value.departmentName
                 }
                 getOptionLabel={(option) => t(option.departmentName)}
-                options={departmentList}
+                options={departmentList.filter(d => d.departmentName === userInfo?.departmentName || d.departmentName === 'All')}
                 loading={isGetDepartmentsLoading}
                 renderInput={(params) => (
                   <TextFieldStyled
@@ -407,7 +408,7 @@ const ViewAddTemplate: React.FC = () => {
             </SaveLoadingBtn>
           </div>
         </div>
-        <div className="webviewer w-full h-screen" ref={viewer}></div>
+        <div className="webviewer w-full min-h-screen" ref={viewer}></div>
       </div>
       <AlertPopup
         anchorOrigin={{ vertical: "top", horizontal: "right" }}

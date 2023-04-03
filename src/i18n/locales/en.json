@@ -230,5 +230,6 @@
   "Assistant":"Assistant",
   "Employee":"Employee",
   "Role List":"Role List",
-  "Permission List":"Permission List"
+  "Permission List":"Permission List",
+  "No data in table": "No data in table!"
 }

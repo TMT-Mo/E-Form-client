@@ -94,8 +94,7 @@ export const PersonalDocumentActionCell = (
           <BorderColorIcon fontSize="small" />
         </Link>
       </IconButton>
-      {(status === StatusDocument.APPROVED_DOCUMENT ||
-        status === StatusDocument.REJECTED_DOCUMENT) && (
+      {status === StatusDocument.APPROVED_DOCUMENT && (
         <IconButton
           aria-label="delete"
           onClick={() => setOpen((prevState) => !prevState)}
@@ -110,20 +109,17 @@ export const PersonalDocumentActionCell = (
         aria-describedby="alert-dialog-description"
       >
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <DialogTitle id="alert-dialog-title">Share Document</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{t('Share Document')}</DialogTitle>
           <Tabs
             value={value}
             onChange={handleChange}
             aria-label="basic tabs example"
-            // sx={}
           >
             <Tab label="Department" {...a11yProps(DEPARTMENT)} />
             <Tab label="User" {...a11yProps(USER)} />
             {/* <Tab label="User" {...a11yProps(2)} /> */}
           </Tabs>
         </Box>
-
-        {/* Department Tab */}
 
         {createTab()}
         

@@ -115,7 +115,6 @@ export const EditDialog = (props: Props) => {
     password: undefined,
     firstName: accountDetail?.firstName!,
     lastName: accountDetail?.lastName!,
-    //   ?.id,
     signature: undefined,
     status: {
       statusId: accountDetail?.status!,

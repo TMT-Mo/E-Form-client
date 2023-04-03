@@ -4,7 +4,7 @@ const apiHead = 'https://documentcapstone.azurewebsites.net/'
 const apiPaths = {
     auth:{
         login: `${apiHead}api/Users/login`,
-        changePassword: `${apiHead}api/Users/changePassword`,
+        changePassword: `${apiHead}api/Users/updateUser`,
         extractToken: `${apiHead}`,
         getSignature: `${apiHead}api/Users/getSignature`,
     },
@@ -44,7 +44,7 @@ const apiPaths = {
     },
     notification:{
         getNotificationList: `${apiHead}api/Users/getNotificationByUser`,
-        checkNotification: `${apiHead}api/notification/checkNotification`,
+        checkNotification: `${apiHead}api/Users/checkNotificationByUser`,
     },
     signalR:{
         hubURL: `${apiHead}hubs/notifications`,

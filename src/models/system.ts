@@ -41,6 +41,7 @@ export interface GetUsersArgs {
   createdBy_eq?: number;
   type_eq?: string;
   typeName_eq?: string;
+  userName_eq?: string;
   department_eq?: string;
   isLocked_eq?: boolean;
   createdAt_gte?: string; //* gte: Greater than equal

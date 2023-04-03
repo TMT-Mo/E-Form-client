@@ -208,7 +208,7 @@
   "Share User":"Chia sẻ theo người dùng",
   "My Profile":"Hồ sơ của tôi",
   "You have a new document waiting for an approval!":"Bạn có một tài liệu mới đang chờ phê duyệt!",
-  "Analytics":"Phân tích",
+  "Analytics":"Thống kê",
   "Are you sure you want to approve this document?":"Bạn có chắc là bạn muốn phê duyệt tài liệu này?",
   "Are you sure you want to reject this document?":"Bạn có chắc là bạn muốn từ chối tài liệu này?",
   "Dashboard":"Bảng điều khiển",
@@ -230,5 +230,6 @@
   "Assistant":"Trợ lý",
   "Employee":"Nhân viên",
   "Role List":"Danh sách chức danh",
-  "Permission List":"Danh sách quyền" 
+  "Permission List":"Danh sách quyền",
+  "No data in table": "Hiện dữ liệu đang trống!" 
 }

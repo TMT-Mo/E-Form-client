@@ -13,9 +13,22 @@ import { handleError } from "slices/alert";
 
 interface Form {
   idUser: number;
-  password?: string;
+  // password?: string;
   newPassword?: string;
   repeatNewPassword?: string;
+}
+
+interface AccountState {
+  idUser: number;
+  userName?: string;
+  password?: string;
+  signature?: string;
+  status?: number;
+  firstName: string;
+  lastName: string;
+  idRole: number;
+  idDepartment: number;
+
 }
 
 const ChangePassword = () => {
@@ -23,17 +36,33 @@ const ChangePassword = () => {
     (state) => state.auth
   );
   const [isDisable, setIsDisable] = useState(false);
-  const [isPwErrorDisplay, setIsPwErrorDisplay] = useState(false)
+  const [isPwErrorDisplay, setIsPwErrorDisplay] = useState(false);
   const dispatch = useDispatch();
   const [form, setForm] = useState<Form>({
-    idUser: userInfo?.userId!,
-    password: undefined,
+    idUser: +userInfo?.userId!,
+    // password: undefined,
     newPassword: undefined,
     repeatNewPassword: undefined,
   });
 
+  // const [account, setAccount] = useState<AccountState>({
+  //   idUser: accountDetail?.id!,
+  //   userName: accountDetail?.userName,
+  //   password: undefined,
+  //   firstName: accountDetail?.firstName!,
+  //   lastName: accountDetail?.lastName!,
+  //   signature: undefined,
+  //   status: {
+  //     statusId: accountDetail?.status!,
+  //     statusTag:
+  //       accountDetail?.status === AccountStatus.ENABLE
+  //         ? AccountStatusTag.ENABLE
+  //         : AccountStatusTag.DISABLE,
+  //   },
+  // });
+
   const onChangePasswordHandler = async (e: { preventDefault: () => void }) => {
-    const { idUser, newPassword, repeatNewPassword, password } = form;
+    const { idUser, newPassword, repeatNewPassword } = form;
     if (newPassword !== repeatNewPassword) {
       dispatch(
         handleError({
@@ -43,31 +72,39 @@ const ChangePassword = () => {
       return;
     }
 
+    const permissions = userInfo?.idPermissions!.split(',').map(p => +p)
+
     await dispatch(
-      changePassword({ idUser, newPassword: newPassword!, password: password! })
+      changePassword({ idUser, password: newPassword!, idPermissions: permissions! })
     ).unwrap();
   };
 
   useEffect(() => {
     let check = false;
-    Object.values(form).forEach((value) => {
-      if (!value) {
-        check = true;
-      }
-    });
-    check ? setIsDisable(true) : setIsDisable(false);
+    // Object.values(form).forEach((value) => {
+    //   if (!value) {
+    //     check = true;
+    //   }
+    // });
+    if(!form.newPassword || !form.repeatNewPassword){
+      setIsDisable(true)
+      return
+    }
+    setIsDisable(false)
+    // check ? setIsDisable(true) : setIsDisable(false);
   }, [form]);
 
   // * Check password's validation
   useEffect(() => {
-    const {newPassword} = form
-    if(!newPassword) return
-    const reg = /(?=[A-Za-z0-9@#$%^&+!=]+$)^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,}).*$/g
-    if(!reg.test(newPassword)){
-      setIsPwErrorDisplay(true)
-      return
+    const { newPassword } = form;
+    if (!newPassword) return;
+    const reg =
+      /(?=[A-Za-z0-9@#$%^&+!=]+$)^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,}).*$/g;
+    if (!reg.test(newPassword)) {
+      setIsPwErrorDisplay(true);
+      return;
     }
-    setIsPwErrorDisplay(false)
+    setIsPwErrorDisplay(false);
   }, [form]);
 
   return (
@@ -75,7 +112,7 @@ const ChangePassword = () => {
       <form>
         <div className="flex flex-col space-y-8 w-2/3 z-10 rounded-md bg-white shadow-md lg:w-96 lg:px-10 lg:py-10">
           <h1 className="text-2xl font-bold z-10">Change password</h1>
-          <TextField
+          {/* <TextField
             // error
             id="standard-error-helper-text"
             label="Password"
@@ -84,7 +121,7 @@ const ChangePassword = () => {
             onChange={(value) =>
               setForm({ ...form, password: value.target.value })
             }
-          />
+          /> */}
           <FormControl
             error={
               form.newPassword !== form.repeatNewPassword &&
@@ -92,7 +129,7 @@ const ChangePassword = () => {
             }
             variant="standard"
           >
-            <InputLabel htmlFor="component-error">Repeat password</InputLabel>
+            <InputLabel htmlFor="component-error">New password</InputLabel>
             <Input
               id="component-error"
               aria-describedby="component-error-text"
@@ -115,7 +152,9 @@ const ChangePassword = () => {
             }
             variant="standard"
           >
-            <InputLabel htmlFor="component-error">Repeat password</InputLabel>
+            <InputLabel htmlFor="component-error">
+              Repeat new password
+            </InputLabel>
             <Input
               id="component-error"
               aria-describedby="component-error-text"
@@ -134,15 +173,15 @@ const ChangePassword = () => {
 
           <SaveLoadingBtn
             loading={isChangePasswordLoading}
-            // disabled={isDisable}
-            disabled
+            disabled={isDisable}
+            // disabled
             onClick={onChangePasswordHandler}
           >
             Save
           </SaveLoadingBtn>
-          <span className="text-gray-500 italic">
-            *Lưu ý: Sau khi đổi mật khẩu, bạn phải đăng nhập lại vào hệ thống!
-          </span>
+          {/* <span className="text-gray-500 italic">
+            *Notice: After change
+          </span> */}
         </div>
       </form>
     </div>

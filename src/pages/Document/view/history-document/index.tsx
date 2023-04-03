@@ -136,7 +136,7 @@ const ViewHistoryDocument: React.FC = () => {
             <Divider className="bg-white" />
           </div>
         </div>
-        <div className="webviewer w-full h-screen" ref={viewer}></div>
+        <div className="webviewer w-full min-h-screen" ref={viewer}></div>
       </div>
     </Fragment>
   );

@@ -22,6 +22,7 @@ export const Account = () => {
   useEffect(() => {
     const getUser = dispatch(
       getUserList({
+        userName_eq: searchItemValue,
         _page: currentPage,
         _size: 10,
         _sort: sorter ? `${sorter?.field}:${sorter?.sort}` : undefined,

@@ -12,12 +12,11 @@ const login = async (data: LoginArgument): Promise<LoginResponse | undefined> =>
 };
 
 const changePassword = async (data: ChangePasswordArgument): Promise<ChangePasswordResponse> => {
-  // const response = await httpClient.post({
-  //   url: apiPaths.auth.login,
-  //   data,
-  // });
-  // const responseData: ChangePasswordResponse = response.data;
-  const responseData: ChangePasswordResponse = {message: 'Change password successfully!'};
+  const response = await httpClient.patch({
+    url: apiPaths.auth.changePassword,
+    data,
+  });
+  const responseData: ChangePasswordResponse = response.data;
   return responseData;
 };
 
