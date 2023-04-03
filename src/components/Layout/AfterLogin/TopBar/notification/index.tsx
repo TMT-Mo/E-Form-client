@@ -6,13 +6,14 @@ import {
   CircularProgress,
   Stack,
   Box,
+  Button,
 } from "@mui/material";
-import { useSelector } from "hooks";
+import { useDispatch, useSelector } from "hooks";
 import { MenuNotification, StyledMenu } from "components/CustomStyled";
 import CircleIcon from "@mui/icons-material/Circle";
-import DoneAllIcon from "@mui/icons-material/DoneAll";
 import { helpers } from "utils";
 import { useTranslation } from "react-i18next";
+import { checkNotification } from "slices/notification";
 
 interface Props {
   open: boolean;
@@ -27,19 +28,16 @@ export const BoxCustom = styled(Box)({
 });
 
 export const Notification = (props: Props) => {
-  const {t} = useTranslation()
+  const { t } = useTranslation();
+  const dispatch = useDispatch()
   const { notificationList, isGetNotification, isCheckNotificationLoading } =
     useSelector((state) => state.notification);
+   const {userInfo} = useSelector(state => state.auth)
   const { open, anchorEl, handleClose } = props;
 
-  // useEffect(() => {
-  //   if (open && notificationList)
-  //     dispatch(
-  //       checkNotification({
-  //         notificationId: notificationList.map((noti) => noti.id),
-  //       })
-  //     ).unwrap();
-  // }, [dispatch, notificationList, open]);
+  const handleCheckNotifications = () => {
+    dispatch(checkNotification({isChecked: true, userId: [+userInfo?.userId!]})).unwrap()
+  }
 
   return (
     <StyledMenu
@@ -64,17 +62,17 @@ export const Notification = (props: Props) => {
         pb={2}
       >
         <Typography variant="h6" fontWeight={600} component="h1">
-          {t('Notifications')}
+          {t("Notifications")}
         </Typography>
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Typography fontWeight={600} component="h1" color="#407AFF">
-            {t('Mark read all')}
-          </Typography>
-          {/* {isCheckNotificationLoading ? (
-            <CircularProgress sx={{ fill: "#407AFF", scale: "75%" }} />
-          ) : (
-            <DoneAllIcon sx={{ fill: "#407AFF", scale: "75%" }} />
-          )} */}
+        <Stack direction="row" alignItems="center">
+          <Button sx={{textTransform: 'none'}} onClick={handleCheckNotifications}>
+            <Typography fontWeight={600} component="h1" color="#407AFF">
+              {t("Mark read all")}
+            </Typography>
+          </Button>
+          {isCheckNotificationLoading && (
+            <CircularProgress sx={{ fill: "#407AFF", scale: "50%" }} />
+          )}
         </Stack>
       </Stack>
       <Divider />
@@ -86,7 +84,7 @@ export const Notification = (props: Props) => {
       {notificationList.length === 0 && !isGetNotification && (
         <MenuNotification>
           <Typography sx={{ width: "100%", textAlign: "center" }}>
-            {t('Empty')}
+            {t("Empty")}
           </Typography>
         </MenuNotification>
       )}

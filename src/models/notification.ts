@@ -14,7 +14,8 @@ export interface GetNotificationResponse{
 
 }
 export interface CheckNotificationArgs{
-    notificationId: number[]
+    userId: number[],
+    isChecked: true
 }
 export interface CheckNotificationResponse{
 }

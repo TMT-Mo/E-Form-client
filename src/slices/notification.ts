@@ -40,6 +40,12 @@ const getNewNotificationCR: CR<{ hasNewNotification: boolean }> = (
   hasNewNotification: payload.hasNewNotification,
 });
 
+const checkAllNotificationCR: CR<{ isCheck: true }> = (state, { payload }) => {
+  state.notificationList.forEach((value) => {
+    value.isChecked = payload.isCheck;
+  });
+};
+
 const getNotification = createAsyncThunk(
   `${ACTION_TYPE}getNotification`,
   async (args: GetNotificationArgs, { dispatch }) => {
@@ -73,6 +79,7 @@ const checkNotification = createAsyncThunk(
     try {
       const result = await notificationServices.checkNotification(args);
       dispatch(getNewNotification({ hasNewNotification: false }));
+      dispatch(checkAllNotification({ isCheck: true }));
       return result;
     } catch (error) {
       const err = error as AxiosError;
@@ -95,6 +102,7 @@ const notification = createSlice({
   initialState,
   reducers: {
     getNewNotification: getNewNotificationCR,
+    checkAllNotification: checkAllNotificationCR,
   },
   extraReducers: (builder) => {
     builder.addCase(getNotification.pending, (state) => ({
@@ -104,7 +112,9 @@ const notification = createSlice({
     builder.addCase(getNotification.fulfilled, (state, { payload }) => ({
       ...state,
       isGetNotification: false,
-      notificationList: payload,
+      notificationList: payload.sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      ),
     }));
     builder.addCase(getNotification.rejected, (state) => ({
       ...state,
@@ -127,6 +137,7 @@ const notification = createSlice({
 
 export { getNotification, checkNotification };
 
-export const { getNewNotification } = notification.actions;
+export const { getNewNotification, checkAllNotification } =
+  notification.actions;
 
 export default notification.reducer;
