@@ -29,15 +29,17 @@ export const BoxCustom = styled(Box)({
 
 export const Notification = (props: Props) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch()
-  const { notificationList, isGetNotification, isCheckNotificationLoading } =
+  const dispatch = useDispatch();
+  const { notificationList, isGetNotification, isCheckNotificationLoading, hasNewNotification } =
     useSelector((state) => state.notification);
-   const {userInfo} = useSelector(state => state.auth)
+  const { userInfo } = useSelector((state) => state.auth);
   const { open, anchorEl, handleClose } = props;
 
   const handleCheckNotifications = () => {
-    dispatch(checkNotification({isChecked: true, userId: [+userInfo?.userId!]})).unwrap()
-  }
+    dispatch(
+      checkNotification({ isChecked: true, userId: [+userInfo?.userId!] })
+    ).unwrap();
+  };
 
   return (
     <StyledMenu
@@ -65,8 +67,12 @@ export const Notification = (props: Props) => {
           {t("Notifications")}
         </Typography>
         <Stack direction="row" alignItems="center">
-          <Button sx={{textTransform: 'none'}} onClick={handleCheckNotifications}>
-            <Typography fontWeight={600} component="h1" color="#407AFF">
+          <Button
+            sx={{ textTransform: "none" }}
+            onClick={handleCheckNotifications}
+            disabled={!hasNewNotification}
+          >
+            <Typography fontWeight={600} component="h1" color={`${hasNewNotification ? "#407AFF" : '#707070'}`}>
               {t("Mark read all")}
             </Typography>
           </Button>

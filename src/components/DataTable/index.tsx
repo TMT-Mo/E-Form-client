@@ -260,7 +260,7 @@ const DataTable: React.FC = () => {
   };
   
   return (
-    <div style={{ height: 600, width: "100%" }}>
+    <div style={{ height: 577.5, width: "100%" }}>
       <DataGrid
         rows={data().table}
         columns={data().columns!}
