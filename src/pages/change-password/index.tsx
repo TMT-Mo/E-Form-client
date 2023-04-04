@@ -1,16 +1,20 @@
 import {
   FormControl,
   FormHelperText,
+  IconButton,
   Input,
+  InputAdornment,
   InputLabel,
+  OutlinedInput,
   TextField,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { SaveLoadingBtn } from "components/CustomStyled";
-import { useDispatch, useSelector } from "hooks";
+import { useAuth, useDispatch, useSelector } from "hooks";
 import { changePassword } from "slices/auth";
 import { handleError } from "slices/alert";
 import { getDepartmentList, getRoleList } from "slices/system";
+import { VisibilityOff, Visibility } from "@mui/icons-material";
 
 interface Form {
   idUser: number;
@@ -29,16 +33,15 @@ interface AccountState {
   lastName: string;
   idRole: number;
   idDepartment: number;
-
 }
 
 const ChangePassword = () => {
   const { userInfo, isChangePasswordLoading } = useSelector(
     (state) => state.auth
   );
-  const {roleList, departmentList} = useSelector(state => state.system)
   const [isDisable, setIsDisable] = useState(false);
   const [isPwErrorDisplay, setIsPwErrorDisplay] = useState(false);
+  const {logout} = useAuth()
   const dispatch = useDispatch();
   const [form, setForm] = useState<Form>({
     idUser: +userInfo?.userId!,
@@ -46,22 +49,12 @@ const ChangePassword = () => {
     newPassword: undefined,
     repeatNewPassword: undefined,
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
-  // const [account, setAccount] = useState<AccountState>({
-  //   idUser: accountDetail?.id!,
-  //   userName: accountDetail?.userName,
-  //   password: undefined,
-  //   firstName: accountDetail?.firstName!,
-  //   lastName: accountDetail?.lastName!,
-  //   signature: undefined,
-  //   status: {
-  //     statusId: accountDetail?.status!,
-  //     statusTag:
-  //       accountDetail?.status === AccountStatus.ENABLE
-  //         ? AccountStatusTag.ENABLE
-  //         : AccountStatusTag.DISABLE,
-  //   },
-  // });
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowRepeatPassword = () =>
+    setShowRepeatPassword((show) => !show);
 
   const onChangePasswordHandler = async (e: { preventDefault: () => void }) => {
     const { idUser, newPassword, repeatNewPassword } = form;
@@ -74,13 +67,13 @@ const ChangePassword = () => {
       return;
     }
 
-    const permissions = userInfo?.idPermissions!.split(',').map(p => +p)
-    const idRole = roleList.find(role => role.roleName === userInfo?.roleName!)!.id
-    const idDepartment = departmentList.find(department => department.departmentName === userInfo?.departmentName!)!.id
-
     await dispatch(
-      changePassword({ idUser, password: newPassword!, idPermissions: permissions!, idDepartment, idRole })
+      changePassword({
+        idUser,
+        password: newPassword!,
+      })
     ).unwrap();
+    logout()
   };
 
   useEffect(() => {
@@ -90,11 +83,11 @@ const ChangePassword = () => {
     //     check = true;
     //   }
     // });
-    if(!form.newPassword || !form.repeatNewPassword){
-      setIsDisable(true)
-      return
+    if (!form.newPassword || !form.repeatNewPassword) {
+      setIsDisable(true);
+      return;
     }
-    setIsDisable(false)
+    setIsDisable(false);
     // check ? setIsDisable(true) : setIsDisable(false);
   }, [form]);
 
@@ -129,30 +122,37 @@ const ChangePassword = () => {
       <form>
         <div className="flex flex-col space-y-8 w-2/3 z-10 rounded-md bg-white shadow-md lg:w-96 lg:px-10 lg:py-10">
           <h1 className="text-2xl font-bold z-10">Change password</h1>
-          {/* <TextField
-            // error
-            id="standard-error-helper-text"
-            label="Password"
-            variant="standard"
-            value={form?.password}
-            onChange={(value) =>
-              setForm({ ...form, password: value.target.value })
-            }
-          /> */}
           <FormControl
+            variant="standard"
             error={
               form.newPassword !== form.repeatNewPassword &&
               form.repeatNewPassword?.length !== 0
             }
-            variant="standard"
           >
-            <InputLabel htmlFor="component-error">New password</InputLabel>
+            <InputLabel htmlFor="outlined-adornment-password">
+              New password
+            </InputLabel>
             <Input
-              id="component-error"
-              aria-describedby="component-error-text"
+              id="outlined-adornment-password"
+              type={showPassword ? "text" : "password"}
               value={form?.newPassword}
               onChange={(value) =>
                 setForm({ ...form, newPassword: value.target.value })
+              }
+              error={
+                form.newPassword !== form.repeatNewPassword &&
+                form.repeatNewPassword?.length !== 0
+              }
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
               }
             />
             {form.newPassword !== form.repeatNewPassword &&
@@ -163,21 +163,32 @@ const ChangePassword = () => {
               )}
           </FormControl>
           <FormControl
+            variant="standard"
             error={
               form.newPassword !== form.repeatNewPassword &&
               form.repeatNewPassword?.length !== 0
             }
-            variant="standard"
           >
-            <InputLabel htmlFor="component-error">
+            <InputLabel htmlFor="outlined-adornment-password">
               Repeat new password
             </InputLabel>
             <Input
-              id="component-error"
-              aria-describedby="component-error-text"
+              id="outlined-adornment-password"
+              type={showRepeatPassword ? "text" : "password"}
               value={form?.repeatNewPassword}
               onChange={(value) =>
                 setForm({ ...form, repeatNewPassword: value.target.value })
+              }
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowRepeatPassword}
+                    edge="end"
+                  >
+                    {showRepeatPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
               }
             />
             {form.newPassword !== form.repeatNewPassword &&
@@ -196,9 +207,9 @@ const ChangePassword = () => {
           >
             Save
           </SaveLoadingBtn>
-          {/* <span className="text-gray-500 italic">
-            *Notice: After change
-          </span> */}
+          <span className="text-gray-500 italic">
+            *Notice: After changing password, you have to login again!
+          </span>
         </div>
       </form>
     </div>

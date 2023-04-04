@@ -1,7 +1,9 @@
+import { Container } from '@mui/material'
+import CustomizedProgressBars from 'components/Statistics'
 import React from 'react'
 
 export const AnalyticsDashboard = () => {
   return (
-    <div>index</div>
+    <Container><CustomizedProgressBars/></Container>
   )
 }

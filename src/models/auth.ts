@@ -14,9 +14,9 @@ export interface ChangePasswordResponse {
 export interface ChangePasswordArgument {
   idUser: number;
   password: string;
-  idPermissions: number[],
-  idDepartment: number,
-  idRole: number
+  // idPermissions: number[],
+  // idDepartment: number,
+  // idRole: number
   // newPassword: string;
 }
 
