@@ -10,6 +10,7 @@ import { SaveLoadingBtn } from "components/CustomStyled";
 import { useDispatch, useSelector } from "hooks";
 import { changePassword } from "slices/auth";
 import { handleError } from "slices/alert";
+import { getDepartmentList, getRoleList } from "slices/system";
 
 interface Form {
   idUser: number;
@@ -35,6 +36,7 @@ const ChangePassword = () => {
   const { userInfo, isChangePasswordLoading } = useSelector(
     (state) => state.auth
   );
+  const {roleList, departmentList} = useSelector(state => state.system)
   const [isDisable, setIsDisable] = useState(false);
   const [isPwErrorDisplay, setIsPwErrorDisplay] = useState(false);
   const dispatch = useDispatch();
@@ -73,9 +75,11 @@ const ChangePassword = () => {
     }
 
     const permissions = userInfo?.idPermissions!.split(',').map(p => +p)
+    const idRole = roleList.find(role => role.roleName === userInfo?.roleName!)!.id
+    const idDepartment = departmentList.find(department => department.departmentName === userInfo?.departmentName!)!.id
 
     await dispatch(
-      changePassword({ idUser, password: newPassword!, idPermissions: permissions! })
+      changePassword({ idUser, password: newPassword!, idPermissions: permissions!, idDepartment, idRole })
     ).unwrap();
   };
 
@@ -106,6 +110,19 @@ const ChangePassword = () => {
     }
     setIsPwErrorDisplay(false);
   }, [form]);
+
+  useEffect(() => {
+    const getDepartment = dispatch(getDepartmentList());
+    const getRole = dispatch(getRoleList());
+
+    getDepartment.unwrap();
+    getRole.unwrap();
+
+    return () => {
+      getDepartment.abort();
+      getRole.abort();
+    };
+  }, [dispatch]);
 
   return (
     <div className={`h-screen flex items-center justify-center `}>
