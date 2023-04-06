@@ -1,12 +1,13 @@
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "hooks";
+import { useAuth, useDispatch, useSelector } from "hooks";
 import { handleInfo } from "slices/alert";
 import { getNewNotification, getNotification } from "slices/notification";
 import { setHubConnection } from "slices/signalR";
 import { apiPaths } from "utils";
 import { SignalRMethod } from "./signalR-constant";
 import {
+  editSystemSignalR,
   receiveSignalNotification,
   receiveSignalNotificationByPermission,
 } from "./signalR-model";
@@ -15,8 +16,9 @@ export const SignalR = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const { connection } = useSelector((state) => state.signalR);
   const { message } = useSelector((state) => state.alert);
+  const { logout } = useAuth();
   const dispatch = useDispatch();
-  const { receiveNotification, receiveNotificationByPermission } =
+  const { receiveNotification, receiveNotificationByPermission, editSystem } =
     SignalRMethod;
 
   useEffect(() => {
@@ -73,6 +75,21 @@ export const SignalR = () => {
             }
           );
 
+          // * EditSystem
+          connection.on(editSystem, async (response: editSystemSignalR) => {
+            console.log(response)
+            const { departmentName, idUser, roleName } = response;
+            if (idUser === userInfo?.userId) {
+              logout();
+            }
+            if (departmentName === userInfo?.departmentName) {
+              logout();
+            }
+            if (roleName === userInfo?.roleName) {
+              logout();
+            }
+          });
+
           connection.onclose(async (e) => {});
         })
         .catch((error) => console.log(error));
@@ -80,10 +97,13 @@ export const SignalR = () => {
   }, [
     connection,
     dispatch,
+    editSystem,
+    logout,
     message,
     receiveNotification,
     receiveNotificationByPermission,
     userInfo?.departmentName,
+    userInfo?.roleName,
     userInfo?.userId,
   ]);
 

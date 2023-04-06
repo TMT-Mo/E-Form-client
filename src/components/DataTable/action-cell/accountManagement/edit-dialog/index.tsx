@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { t } from "i18next";
 import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "hooks";
+import { useDispatch, useSelector, useSignalR } from "hooks";
 import { Department, Permission, Role } from "models/system";
 import {
   clearUserList,
@@ -83,6 +83,7 @@ export const EditDialog = (props: Props) => {
   );
   const [isDisabledSave, setIsDisabledSave] = useState(false);
   const dispatch = useDispatch();
+  const {sendSignalREditSystem} = useSignalR()
 
   const currentPermissionList = (): Permission[] => {
     const list: Permission[] = [];
@@ -151,7 +152,6 @@ export const EditDialog = (props: Props) => {
   };
 
   const EditAccountHandle = async () => {
-    console.log(account);
     const onEditAccount = dispatch(
       editAccount({
         ...account,
@@ -164,6 +164,7 @@ export const EditDialog = (props: Props) => {
       })
     );
     await onEditAccount.unwrap();
+    sendSignalREditSystem({idUser: account.idUser})
     handleToggleDialog();
     dispatch(clearUserList());
     await dispatch(getUserList({}));

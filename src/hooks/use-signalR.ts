@@ -1,13 +1,14 @@
 import { SignalRMethod } from "./../signalR/signalR-constant";
 
 import React, { useCallback } from "react";
-import { sendSignalNotificationArgs, sendSignalNotificationByPermissionArgs } from "../signalR/signalR-model";
+import { editSystemSignalRArgs, sendSignalNotificationArgs, sendSignalNotificationByPermissionArgs } from "../signalR/signalR-model";
 import { useDispatch } from "./use-dispatch";
 import { useSelector } from "./use-selector";
 
 interface UseSignalR {
   sendSignalNotification: (args: sendSignalNotificationArgs) => void;
   sendSignalNotificationByPermission: (args: sendSignalNotificationByPermissionArgs) => void;
+  sendSignalREditSystem: (args: editSystemSignalRArgs) => void;
 }
 
 export const useSignalR = (): UseSignalR => {
@@ -37,8 +38,20 @@ export const useSignalR = (): UseSignalR => {
     [connection]
   );
 
+  const sendSignalREditSystem = useCallback(
+    async (args: editSystemSignalRArgs) => {
+      try {
+        await connection!.invoke(SignalRMethod.editSystem, args);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [connection]
+  );
+
   return {
     sendSignalNotification,
-    sendSignalNotificationByPermission
+    sendSignalNotificationByPermission,
+    sendSignalREditSystem
   };
 };

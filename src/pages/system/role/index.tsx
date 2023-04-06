@@ -14,7 +14,7 @@ import React, { useEffect, useState } from "react";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useDispatch, useSelector } from "hooks";
+import { useDispatch, useSelector, useSignalR } from "hooks";
 import { Role } from "models/system";
 import { useTranslation } from "react-i18next";
 import { WhiteBtn, SaveLoadingBtn } from "components/CustomStyled";
@@ -38,15 +38,18 @@ export const RoleSystem = () => {
   const { isGetRoleLoading, roleList, isEditRoleLoading, isCreateRoleLoading } =
     useSelector((state) => state.system);
   const [modifyRole, setModifyRole] = useState<Role>();
+  const [selectedRole, setSelectedRole] = useState<Role>();
   const [newRole, setNewRole] = useState<string>();
   const [isAddingRole, setIsAddingRole] = useState(false);
   const [isEditingRole, setIsEditingRole] = useState(false);
   const [isViewingRole, setIsViewingRole] = useState(false);
+  const {sendSignalREditSystem} = useSignalR()
 
   const onEditRole = async () => {
     const { roleName, id } = modifyRole!;
     const editRoleHandle = dispatch(editRole({ roleName, roleId: id }));
     await editRoleHandle.unwrap();
+    sendSignalREditSystem({ roleName: selectedRole?.roleName });
     const getRole = dispatch(getRoleList());
     await getRole.unwrap();
 
@@ -56,6 +59,7 @@ export const RoleSystem = () => {
   const onCreateRole = async () => {
     const createRoleHandler = dispatch(createRole({ roleName: newRole! }));
     await createRoleHandler.unwrap();
+
     const getRole = dispatch(getRoleList());
     await getRole.unwrap();
 
@@ -142,7 +146,10 @@ export const RoleSystem = () => {
               </Typography>
               <Autocomplete
                 id="asynchronous-demo"
-                onChange={(e, value) => setModifyRole(value!)}
+                onChange={(e, value) => {
+                  setModifyRole(value!);
+                  setSelectedRole(value!);
+                }}
                 isOptionEqualToValue={(option, value) =>
                   option.roleName === value.roleName
                 }
@@ -279,3 +286,5 @@ export const RoleSystem = () => {
     </>
   );
 };
+
+

@@ -22,7 +22,6 @@ import { createAccount, getDepartmentList, getRoleList } from "slices/system";
 import { Department, Permission, Role } from "models/system";
 import {
   DummyPermissions,
-  DummyRoles,
   FixedDummyPermissions,
 } from "utils/dummy-data";
 import { DefaultValue } from "utils/constants";
@@ -47,7 +46,6 @@ export const CreateAccount = () => {
     roleList,
     isCreateAccountLoading,
   } = useSelector((state) => state.system);
-  const { userInfo } = useSelector((state) => state.auth);
   const [account, setAccount] = useState<AccountState>();
   const [isDisabledSave, setIsDisabledSave] = useState(false);
   const [permissions, setPermissions] = useState<Permission[]>([

@@ -33,3 +33,13 @@ export interface receiveSignalNotificationByPermission {
   notify: NotificationResponse;
   departmentNames: string[] | null;
 }
+export interface editSystemSignalR {
+  idUser?: number,
+	departmentName?: string,
+	roleName?: string
+}
+export interface editSystemSignalRArgs {
+  idUser?: number,
+	departmentName?: string,
+	roleName?: string
+}

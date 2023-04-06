@@ -10,7 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
-import { useDispatch, useSelector } from "hooks";
+import { useDispatch, useSelector, useSignalR } from "hooks";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Dialog, DialogContent, DialogActions } from "@mui/material";
 import { t } from "i18next";
@@ -44,10 +44,12 @@ export const DepartmentSystem = () => {
     isCreateDepartmentLoading,
   } = useSelector((state) => state.system);
   const [modifyDepartment, setModifyDepartment] = useState<Department>();
+  const [selectedDepartment, setSelectedDepartment] = useState<Department>();
   const [newDepartment, setNewDepartment] = useState<string>();
   const [isAddingDepartment, setIsAddingDepartment] = useState(false);
   const [isEditingDepartment, setIsEditingDepartment] = useState(false);
   const [isViewingDepartment, setIsViewingDepartment] = useState(false);
+  const { sendSignalREditSystem } = useSignalR();
   const { t } = useTranslation();
 
   const onEditDepartment = async () => {
@@ -55,8 +57,8 @@ export const DepartmentSystem = () => {
     await dispatch(
       editDepartment({ departmentId: id, departmentName })
     ).unwrap();
+    sendSignalREditSystem({ departmentName: selectedDepartment?.departmentName });
     await dispatch(getDepartmentList()).unwrap();
-    
     setIsEditingDepartment(false);
   };
 
@@ -70,18 +72,17 @@ export const DepartmentSystem = () => {
   };
 
   useEffect(() => {
-    if(!isEditingDepartment){
+    if (!isEditingDepartment) {
       setModifyDepartment(undefined);
     }
   }, [isEditingDepartment]);
 
   useEffect(() => {
-    if(!isAddingDepartment){
+    if (!isAddingDepartment) {
       setNewDepartment(undefined);
     }
   }, [isAddingDepartment]);
 
-  
   return (
     <>
       <CustomBox>
@@ -154,7 +155,10 @@ export const DepartmentSystem = () => {
               </Typography>
               <Autocomplete
                 id="asynchronous-demo"
-                onChange={(e, value) => setModifyDepartment(value!)}
+                onChange={(e, value) => {
+                  setModifyDepartment(value!);
+                  setSelectedDepartment(value!);
+                }}
                 isOptionEqualToValue={(option, value) =>
                   option.departmentName === value.departmentName
                 }
