@@ -72,7 +72,7 @@ export const useAuth = (): UseAuth => {
       return;
     }
     handleLocation();
-    navigate("/user");
+    navigate("/user", {replace: true});
   }, [dispatch, getToken, handleLocation, navigate]);
 
   return {

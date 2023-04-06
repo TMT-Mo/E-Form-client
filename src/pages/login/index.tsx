@@ -9,7 +9,6 @@ import {
   FormControl,
   IconButton,
   InputAdornment,
-  InputLabel,
   OutlinedInput,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
@@ -38,7 +37,8 @@ const Login = () => {
     e.preventDefault();
     await dispatch(login({ username, password: values.password })).unwrap();
     handleLocation()
-    navigate("/user", {replace: true});
+    // navigate("/user", {replace: true});
+    window.location.replace('/user');
   };
 
   const handleClickShowPassword = () => {

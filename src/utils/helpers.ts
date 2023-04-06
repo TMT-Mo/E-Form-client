@@ -64,7 +64,6 @@ const checkHideColumnFromPermission = (permission: Permissions) => {
   return permissions?.includes(permission!) ;
 };
 
-const handleFilter = ({})
 // *-------------------------------------------- HANDLE NOTIFICATIONS --------------------------------------------
 // export handleNotification =
 

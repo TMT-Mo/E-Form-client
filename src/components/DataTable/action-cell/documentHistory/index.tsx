@@ -42,7 +42,7 @@ export const DocumentHistoryActionCell = (
           );
         }}
       >
-        <Link to="/viewer" replace>
+        <Link to="/viewer" >
           <BorderColorIcon fontSize="small" />
         </Link>
       </IconButton>

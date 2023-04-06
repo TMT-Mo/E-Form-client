@@ -36,7 +36,7 @@ export const TemplateActionCell = (props: GridRenderCellParams<Date>) => {
         );
       }}
     >
-      <Link to="/viewer" replace>
+      <Link to="/viewer" >
         <BorderColorIcon fontSize="small" />
       </Link>
     </IconButton>

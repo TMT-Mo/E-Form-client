@@ -38,7 +38,7 @@ export const TemplateHistoryActionCell = (props: GridRenderCellParams<Date>) => 
           dispatch(setViewerLocation({viewerLocationIndex: VIEW_TEMPLATE_HISTORY_INDEX}))
         }}
       >
-        <Link to="/viewer" replace>
+        <Link to="/viewer" >
           <BorderColorIcon fontSize="small" />
         </Link>
       </IconButton>

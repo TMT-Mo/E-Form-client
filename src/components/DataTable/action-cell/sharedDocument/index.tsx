@@ -42,7 +42,7 @@ export const SharedDocumentActionCell = (
           );
         }}
       >
-        <Link to="/viewer" replace>
+        <Link to="/viewer" >
           <BorderColorIcon fontSize="small" />
         </Link>
       </IconButton>

@@ -38,7 +38,7 @@ export const AwaitSigningActionCell = (props: GridRenderCellParams<Date>) => {
           dispatch(setViewerLocation({viewerLocationIndex: APPROVING_DOCUMENT_INDEX}))
         }}
       >
-        <Link to="/viewer" replace>
+        <Link to="/viewer" >
           <BorderColorIcon fontSize="small" />
         </Link>
       </IconButton>

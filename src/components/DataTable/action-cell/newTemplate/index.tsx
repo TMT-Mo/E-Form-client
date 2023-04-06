@@ -38,7 +38,7 @@ export const NewTemplateActionCell = (props: GridRenderCellParams<Date>) => {
           dispatch(setViewerLocation({viewerLocationIndex: APPROVING_TEMPLATE_INDEX}))
         }}
       >
-        <Link to="/viewer" replace>
+        <Link to="/viewer" >
           <BorderColorIcon fontSize="small" />
         </Link>
       </IconButton>
