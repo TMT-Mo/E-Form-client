@@ -5,7 +5,6 @@ const apiPaths = {
     auth:{
         login: `${apiHead}api/Users/login`,
         changePassword: `${apiHead}api/Users/updateUser`,
-        extractToken: `${apiHead}`,
         getSignature: `${apiHead}api/Users/getSignature`,
     },
     template:{
@@ -48,7 +47,6 @@ const apiPaths = {
     },
     signalR:{
         hubURL: `${apiHead}hubs/notifications`,
-        test : `https://localhost:44356/hubs/notifications`
     }
 }
 

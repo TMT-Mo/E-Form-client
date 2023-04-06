@@ -10,7 +10,7 @@ import {
   DialogContent,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -20,7 +20,7 @@ import { useTranslation } from "react-i18next";
 import { WhiteBtn, SaveLoadingBtn } from "components/CustomStyled";
 import { createRole, editRole, getRoleList } from "slices/system";
 import ListAltIcon from "@mui/icons-material/ListAlt";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 
 const CustomBox = styled(Box)({
   padding: "20px 40px",
@@ -28,15 +28,15 @@ const CustomBox = styled(Box)({
   width: "100%",
   borderRadius: "15px",
   lineHeight: "50px",
-  filter: 'drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06))'
+  filter:
+    "drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06))",
 });
 
 export const RoleSystem = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { isGetRoleLoading, roleList, isEditRoleLoading, isCreateRoleLoading } = useSelector(
-    (state) => state.system
-  );
+  const { isGetRoleLoading, roleList, isEditRoleLoading, isCreateRoleLoading } =
+    useSelector((state) => state.system);
   const [modifyRole, setModifyRole] = useState<Role>();
   const [newRole, setNewRole] = useState<string>();
   const [isAddingRole, setIsAddingRole] = useState(false);
@@ -46,28 +46,38 @@ export const RoleSystem = () => {
   const onEditRole = async () => {
     const { roleName, id } = modifyRole!;
     const editRoleHandle = dispatch(editRole({ roleName, roleId: id }));
-    await editRoleHandle.unwrap()
-    const getRole = dispatch(getRoleList())
-    await getRole.unwrap()
+    await editRoleHandle.unwrap();
+    const getRole = dispatch(getRoleList());
+    await getRole.unwrap();
 
-    setModifyRole(undefined)
-    setIsEditingRole(false)
+    setIsEditingRole(false);
   };
 
-  const onCreateRole = async() => {
-    const createRoleHandler = dispatch(createRole({roleName: newRole!}))
-    await createRoleHandler.unwrap()
-    const getRole = dispatch(getRoleList())
-    await getRole.unwrap()
+  const onCreateRole = async () => {
+    const createRoleHandler = dispatch(createRole({ roleName: newRole! }));
+    await createRoleHandler.unwrap();
+    const getRole = dispatch(getRoleList());
+    await getRole.unwrap();
 
-    setNewRole(undefined)
-    setIsAddingRole(false)
-  }
+    setIsAddingRole(false);
+  };
+
+  useEffect(() => {
+    if (!isEditingRole) {
+      setModifyRole(undefined);
+    }
+  }, [isEditingRole]);
+
+  useEffect(() => {
+    if (!isAddingRole) {
+      setNewRole(undefined);
+    }
+  }, [isAddingRole]);
 
   return (
     <>
       <CustomBox>
-         <Stack
+        <Stack
           direction="row"
           justifyContent="space-between"
           alignItems="center"
@@ -80,32 +90,34 @@ export const RoleSystem = () => {
           >
             Role
           </Typography>
-          {!isGetRoleLoading && <Stack direction="row">
-            <IconButton
-              type="button"
-              sx={{ p: "10px" }}
-              aria-label="search"
-              onClick={() => setIsAddingRole((prevState) => !prevState)}
-            >
-              <AddBoxIcon sx={{ fill: "#fdcb6e" }}/>
-            </IconButton>
-            <IconButton
-              type="button"
-              sx={{ p: "10px" }}
-              aria-label="search"
-              onClick={() => setIsEditingRole((prevState) => !prevState)}
-            >
-              <DriveFileRenameOutlineIcon sx={{ fill: "#00b894" }}/>
-            </IconButton>
-            <IconButton
-              type="button"
-              sx={{ p: "10px" }}
-              aria-label="search"
-              onClick={() => setIsViewingRole((prevState) => !prevState)}
-            >
-              <ListAltIcon sx={{ fill: "#0984e3" }}/>
-            </IconButton>
-          </Stack>}
+          {!isGetRoleLoading && (
+            <Stack direction="row">
+              <IconButton
+                type="button"
+                sx={{ p: "10px" }}
+                aria-label="search"
+                onClick={() => setIsAddingRole((prevState) => !prevState)}
+              >
+                <AddBoxIcon sx={{ fill: "#fdcb6e" }} />
+              </IconButton>
+              <IconButton
+                type="button"
+                sx={{ p: "10px" }}
+                aria-label="search"
+                onClick={() => setIsEditingRole((prevState) => !prevState)}
+              >
+                <DriveFileRenameOutlineIcon sx={{ fill: "#00b894" }} />
+              </IconButton>
+              <IconButton
+                type="button"
+                sx={{ p: "10px" }}
+                aria-label="search"
+                onClick={() => setIsViewingRole((prevState) => !prevState)}
+              >
+                <ListAltIcon sx={{ fill: "#0984e3" }} />
+              </IconButton>
+            </Stack>
+          )}
         </Stack>
         {isGetRoleLoading && <CircularProgress />}
         <Stack
@@ -114,9 +126,11 @@ export const RoleSystem = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          {!isGetRoleLoading && <Typography variant="h2" component="h1">
-            {roleList?.length}
-          </Typography>}
+          {!isGetRoleLoading && (
+            <Typography variant="h2" component="h1">
+              {roleList?.length}
+            </Typography>
+          )}
         </Stack>
       </CustomBox>
       <Dialog open={isEditingRole}>
@@ -124,7 +138,7 @@ export const RoleSystem = () => {
           <Box minWidth="500px">
             <Stack spacing={3}>
               <Typography variant="h5" component="h1" alignSelf="center">
-                {t('Edit Role')}
+                {t("Edit Role")}
               </Typography>
               <Autocomplete
                 id="asynchronous-demo"
@@ -169,7 +183,7 @@ export const RoleSystem = () => {
                 )}
               />
               <Stack spacing={1}>
-                <Typography>{t('Modify Role')}</Typography>
+                <Typography>{t("Modify Role")}</Typography>
                 <TextField
                   fullWidth
                   value={modifyRole?.roleName}
@@ -208,10 +222,10 @@ export const RoleSystem = () => {
           <Box minWidth="500px">
             <Stack spacing={3}>
               <Typography variant="h5" component="h1" alignSelf="center">
-                {t('Add Role')}
+                {t("Add Role")}
               </Typography>
               <Stack spacing={1}>
-                <Typography>{t('Input role')}</Typography>
+                <Typography>{t("Input role")}</Typography>
                 <TextField
                   fullWidth
                   value={newRole}
@@ -242,9 +256,9 @@ export const RoleSystem = () => {
         <DialogContent>
           <Box minWidth="500px">
             <Stack spacing={2}>
-            <Stack direction="row" justifyContent="space-between">
+              <Stack direction="row" justifyContent="space-between">
                 <Typography variant="h5" component="h1" alignSelf="center">
-                  {t('Role List')}
+                  {t("Role List")}
                 </Typography>
                 <IconButton onClick={() => setIsViewingRole(false)}>
                   <CloseIcon />

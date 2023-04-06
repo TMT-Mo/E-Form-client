@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Login from "pages/login";
 import Unauthorized from "pages/unauthorized";
 import Introduction from "pages/introduction";
@@ -13,10 +13,15 @@ import Viewer from "components/Layout/Viewer";
 function App() {
   const { checkAuthenticated } = useSelector((state) => state.auth);
   const { authenticate } = useAuth();
+  const navigate = useNavigate()
   useEffect(() => {
     !checkAuthenticated && authenticate();
   }, [authenticate, checkAuthenticated]);
 
+  // window.addEventListener("popstate", e => {
+  //   // Nope, go back to your page
+  //   navigate(1);
+  // });
   return (
     <Routes>
       {/* Public Routes */}

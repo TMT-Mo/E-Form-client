@@ -87,14 +87,17 @@ export const EditDialog = (props: Props) => {
   const currentPermissionList = (): Permission[] => {
     const list: Permission[] = [];
     const currentPermissions: number[] = [];
-    accountDetail?.idPermissions!.forEach((p) => {
-      if (FixedDummyPermissions.findIndex((f) => f.id === p) === -1) {
-        currentPermissions.push(p);
-      }
-    });
-    currentPermissions.forEach((p) =>
-      list.push(DummyPermissions.find((value) => value.id === +p)!)
-    );
+    // accountDetail?.idPermissions!.forEach((p) => {
+    //   if (FixedDummyPermissions.findIndex((f) => f.id === p) === -1) {
+    //     currentPermissions.push(p);
+    //   }
+    // });
+    // currentPermissions.forEach((p) =>
+    //   list.push(DummyPermissions.find((value) => value.id === +p)!)
+    // );
+    accountDetail?.idPermissions!.forEach((p) =>
+    list.push(DummyPermissions.find((value) => value.id === +p)!)
+  );
     return list;
   };
   const [selectedDepartment, setSelectedDepartment] = useState<Department>(
@@ -125,14 +128,15 @@ export const EditDialog = (props: Props) => {
     },
   });
   const [permissions, setPermissions] = useState<Permission[]>([
-    ...FixedDummyPermissions,
+    // ...FixedDummyPermissions,
     ...currentPermissionList(),
   ]);
 
   const onChangeSelectedPermissions = (value: Permission[]) => {
     setPermissions([
-      ...FixedDummyPermissions,
-      ...value.filter((option) => FixedDummyPermissions.indexOf(option) === -1),
+      // ...FixedDummyPermissions,
+      // ...value.filter((option) => FixedDummyPermissions.indexOf(option) === -1),
+      ...value
     ]);
   };
 

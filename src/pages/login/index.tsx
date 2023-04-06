@@ -24,6 +24,7 @@ interface State {
 const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  
   const dispatch = useDispatch();
   const {handleLocation} = useAuth()
   const { isLoginLoading } = useSelector((state) => state.auth);
@@ -37,7 +38,7 @@ const Login = () => {
     e.preventDefault();
     await dispatch(login({ username, password: values.password })).unwrap();
     handleLocation()
-    navigate("/user");
+    navigate("/user", {replace: true});
   };
 
   const handleClickShowPassword = () => {

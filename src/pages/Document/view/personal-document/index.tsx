@@ -134,14 +134,7 @@ const ViewPersonalDocument: React.FC = () => {
         });
       });
     });
-  }, [
-    documentName,
-    link,
-    userInfo?.userId,
-    userInfo?.userName,
-    xfdfString,
-    i18n,
-  ]);
+  }, [documentName, link, userInfo?.userId, userInfo?.userName, xfdfString, i18n, status]);
 
   useEffect(() => {
     return () => {
@@ -223,7 +216,7 @@ const ViewPersonalDocument: React.FC = () => {
               signerList={signerList}
               onChangeSigner={onChangeSigner}
             />
-            {status === StatusDocument.PROCESSING_DOCUMENT &&
+            {/* {status === StatusDocument.PROCESSING_DOCUMENT &&
               !isChangingSigner && (
                 <SaveLoadingBtn
                   size="small"
@@ -236,7 +229,7 @@ const ViewPersonalDocument: React.FC = () => {
                 >
                   Change Signer
                 </SaveLoadingBtn>
-              )}
+              )} */}
             {isChangingSigner && (
               <div className="flex justify-center space-x-10">
                 <TransparentBtn

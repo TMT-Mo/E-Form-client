@@ -7,7 +7,7 @@ import {
   Autocomplete,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import { useDispatch, useSelector } from "hooks";
@@ -56,7 +56,7 @@ export const DepartmentSystem = () => {
       editDepartment({ departmentId: id, departmentName })
     ).unwrap();
     await dispatch(getDepartmentList()).unwrap();
-    setModifyDepartment(undefined);
+    
     setIsEditingDepartment(false);
   };
 
@@ -68,6 +68,18 @@ export const DepartmentSystem = () => {
     setNewDepartment(undefined);
     setIsAddingDepartment(false);
   };
+
+  useEffect(() => {
+    if(!isEditingDepartment){
+      setModifyDepartment(undefined);
+    }
+  }, [isEditingDepartment]);
+
+  useEffect(() => {
+    if(!isAddingDepartment){
+      setNewDepartment(undefined);
+    }
+  }, [isAddingDepartment]);
 
   
   return (

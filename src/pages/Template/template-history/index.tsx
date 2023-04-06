@@ -123,7 +123,7 @@ const TemplateHistory = () => {
               >
                 <StyledAddBtn
                   variant="outlined"
-                  size="small"
+                  size="small" 
                   className="shadow-md"
                 >
                   <AddIcon className="md:mr-2"/>

@@ -11,6 +11,7 @@ import {
   Box,
   LinearProgress,
   Typography,
+  Stack,
 } from "@mui/material";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -21,10 +22,11 @@ import { useDispatch, useSelector, useSignalR } from "hooks";
 import { useTranslation } from "react-i18next";
 import { helpers } from "utils";
 import { approveDocument } from "slices/document";
-import { StatusDocument } from "utils/constants";
+import { Permissions, StatusDocument } from "utils/constants";
 import { getSignature } from "slices/auth";
 import { WhiteBtn, SaveLoadingBtn, RejectBtn } from "components/CustomStyled";
 import StatusTag from "components/StatusTag";
+import { RequiredPermission } from "components/RequiredPermission";
 
 const { APPROVED_DOCUMENT, REJECTED_DOCUMENT } = StatusDocument;
 const ViewApproveDocument: React.FC = () => {
@@ -304,6 +306,8 @@ const ViewApproveDocument: React.FC = () => {
               <h4 className="whitespace-nowrap">{t("Signer List")}:</h4>
             </div>
             {signers}
+            <RequiredPermission permission={Permissions.APPROVE_DOCUMENT}>
+            <Stack spacing={3}>
             <div className="flex items-center">
               <Switch
                 checked={isAccepting}
@@ -357,6 +361,8 @@ const ViewApproveDocument: React.FC = () => {
                 {t("Approve")}
               </SaveLoadingBtn>
             )}
+            </Stack>
+            </RequiredPermission>
           </div>
         </div>
         <div className="webviewer w-full min-h-screen" ref={viewer}></div>

@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "hooks";
 import { handleError } from "slices/alert";
 import Resizer from "react-image-file-resizer";
 import { createAccount, getDepartmentList, getRoleList } from "slices/system";
-import { Permission } from "models/system";
+import { Department, Permission, Role } from "models/system";
 import {
   DummyPermissions,
   DummyRoles,
@@ -30,8 +30,6 @@ import { DefaultValue } from "utils/constants";
 interface AccountState {
   userName?: string;
   password: string;
-  idDepartment?: number;
-  idRole?: number;
   signature?: string;
   status: boolean;
   firstName?: string;
@@ -47,25 +45,26 @@ export const CreateAccount = () => {
     isGetRoleLoading,
     departmentList,
     roleList,
-    permissionList,
     isCreateAccountLoading,
-    
   } = useSelector((state) => state.system);
   const { userInfo } = useSelector((state) => state.auth);
-  const [account, setAccount] = useState<AccountState>({
-    userName: undefined,
-    password: DefaultValue.PASSWORD,
-    idDepartment: undefined,
-    idRole: undefined,
-    signature: undefined,
-    status: true,
-    firstName: undefined,
-    lastName: undefined,
-  });
+  const [account, setAccount] = useState<AccountState>();
   const [isDisabledSave, setIsDisabledSave] = useState(false);
   const [permissions, setPermissions] = useState<Permission[]>([
     ...FixedDummyPermissions,
   ]);
+  const [selectedDepartment, setSelectedDepartment] = useState<Department>();
+  const [selectedRole, setSelectedRole] = useState<Role>();
+
+  const onChangeSelectedDepartment = (value: Department | null) => {
+    if(!value) return
+    setSelectedDepartment(value)
+  };
+
+  const onChangeSelectedRole = (value: Role | null) => {
+    if(!value) return
+    setSelectedRole(value)
+  };
 
   const resizeFile = (file: File) =>
     new Promise((resolve) => {
@@ -103,31 +102,35 @@ export const CreateAccount = () => {
     let file = e.target.files[0];
     const image = await resizeFile(file);
     setAccount({
-      ...account,
+      ...account!,
       signature: image as string,
     });
+    e.target.value = ''
   };
 
   const onCreateAccount = async () => {
-    const createNewAccount = dispatch(
+    await dispatch(
       createAccount({
         ...account,
         idPermissions: permissions.map((p) => p.id),
+        idRole: selectedRole?.id!,
+        idDepartment: selectedDepartment?.id!,
+        status: true
       })
-    );
-    await createNewAccount.unwrap();
+    ).unwrap();
 
+    
     setAccount({
-      userName: undefined,
+      userName: "",
       password: DefaultValue.PASSWORD,
-      idDepartment: undefined,
-      idRole: undefined,
-      signature: undefined,
+      signature: "",
       status: true,
-      firstName: undefined,
-      lastName: undefined,
+      firstName: "",
+      lastName: "",
     });
-    return () => createNewAccount.abort();
+    setSelectedDepartment(undefined)
+    setSelectedRole(undefined)
+    setPermissions([...FixedDummyPermissions])
   };
 
   const onChangeSelectedPermissions = (value: Permission[]) => {
@@ -138,6 +141,7 @@ export const CreateAccount = () => {
   };
 
   useEffect(() => {
+    if(!account) return
     let check = false;
     Object.values(account).forEach((value) => {
       if (!value) {
@@ -156,7 +160,8 @@ export const CreateAccount = () => {
 
     return () => {
       getDepartment.abort();
-      getRole.abort();}
+      getRole.abort();
+    };
   }, [dispatch]);
 
   return (
@@ -166,32 +171,37 @@ export const CreateAccount = () => {
         <Box minWidth="800px" maxWidth="500px">
           <Stack spacing={3}>
             <Typography component="h1" fontSize="2rem">
-              {t('Create account')}
+              {t("Create account")}
             </Typography>
             <Stack spacing={1} direction="row">
               <FormControl fullWidth>
-                <InputLabel htmlFor="component-outlined">{t('First Name')}</InputLabel>
+                <InputLabel htmlFor="component-outlined">
+                  {t("First Name")}
+                </InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   // placeholder="Composed TextField"
+                  value={account?.firstName}
                   label={t("First Name")}
                   onChange={(value) =>
                     setAccount({
-                      ...account,
+                      ...account!,
                       firstName: value.target.value,
                     })
                   }
                 />
               </FormControl>
               <FormControl fullWidth>
-                <InputLabel htmlFor="component-outlined">{t('Last Name')}</InputLabel>
+                <InputLabel htmlFor="component-outlined">
+                  {t("Last Name")}
+                </InputLabel>
                 <OutlinedInput
                   id="component-outlined"
-                  // placeholder="Composed TextField"
+                  value={account?.lastName}
                   label={t("Last Name")}
                   onChange={(value) =>
                     setAccount({
-                      ...account,
+                      ...account!,
                       lastName: value.target.value,
                     })
                   }
@@ -199,14 +209,16 @@ export const CreateAccount = () => {
               </FormControl>
             </Stack>
             <FormControl>
-              <InputLabel htmlFor="component-outlined">{t('Username')}</InputLabel>
+              <InputLabel htmlFor="component-outlined">
+                {t("Username")}
+              </InputLabel>
               <OutlinedInput
                 id="component-outlined"
-                // placeholder="Composed TextField"
+                value={account?.userName}
                 label={t("Username")}
                 onChange={(value) =>
                   setAccount({
-                    ...account,
+                    ...account!,
                     userName: value.target.value,
                   })
                 }
@@ -214,12 +226,14 @@ export const CreateAccount = () => {
               {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
             </FormControl>
             <FormControl>
-              <InputLabel htmlFor="component-outlined">{t('Password')}</InputLabel>
+              <InputLabel htmlFor="component-outlined">
+                {t("Password")}
+              </InputLabel>
               <OutlinedInput
                 id="component-outlined"
-                // placeholder="Composed TextField"
+                value={"P@ssw0rd"}
                 label={t("Password")}
-                defaultValue={account.password}
+                // defaultValue={account.password}
                 disabled
               />
               {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
@@ -229,11 +243,12 @@ export const CreateAccount = () => {
             <Autocomplete
               id="asynchronous-demo"
               onChange={(e, value) =>
-                setAccount({ ...account, idDepartment: value?.id })
+                onChangeSelectedDepartment(value)
               }
-              isOptionEqualToValue={(option, value) =>
-                option.departmentName === value.departmentName
-              }
+              value={selectedDepartment ?? null}
+              // isOptionEqualToValue={(option, value) =>
+              //   option.departmentName === value.departmentName
+              // }
               getOptionLabel={(option) => t(option.departmentName)}
               options={departmentList.filter((d) => d.departmentName !== "All")}
               loading={isGetDepartmentsLoading}
@@ -274,11 +289,9 @@ export const CreateAccount = () => {
             <Autocomplete
               id="asynchronous-demo"
               onChange={(e, value) =>
-                setAccount({ ...account, idRole: value?.id })
+                onChangeSelectedRole(value)
               }
-              isOptionEqualToValue={(option, value) =>
-                option.roleName === value.roleName
-              }
+              value={selectedRole ?? null}
               getOptionLabel={(option) => t(option.roleName)}
               options={roleList}
               loading={isGetRoleLoading}
@@ -405,14 +418,14 @@ export const CreateAccount = () => {
                 />
                 <PhotoCamera />
               </IconButton>
-              {account.signature && <img src={account.signature} alt=""></img>}
+              {account?.signature && <img src={account?.signature} alt=""></img>}
             </Stack>
             <SaveLoadingBtn
               loading={isCreateAccountLoading}
               disabled={isDisabledSave}
               onClick={onCreateAccount}
             >
-              {t('Save')}
+              {t("Save")}
             </SaveLoadingBtn>
           </Stack>
         </Box>
