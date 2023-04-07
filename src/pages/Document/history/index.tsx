@@ -23,8 +23,6 @@ const History = () => {
         _page: currentPage,
         _size: 10,                                                                  
         _sort: sorter ? `${sorter?.field}:${sorter?.sort}` : undefined,
-        createdBy_eq: userInfo?.userId,
-        userId: userInfo?.userId!
         // createdAt_lte:
         //   filter?.field === CREATED_AT
         //     ? (filter?.value as DateFilter).endDate

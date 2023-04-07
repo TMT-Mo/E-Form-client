@@ -78,7 +78,7 @@ export interface ApproveDocumentResponse {
 }
 
 export interface GetDocumentHistoryArgs extends GetDocumentsArgs {
-  userId: number;
+  userId?: number;
 }
 
 export interface GetDocumentHistoryResponse {

@@ -49,7 +49,7 @@ const getDocumentHistory = async (
 ): Promise<GetDocumentHistoryResponse> => {
   const response = await httpClient.get({
     url: apiPaths.document.getDocumentHistory,
-    data,
+    params: data,
   });
   return response.data as GetDocumentHistoryResponse;
 };

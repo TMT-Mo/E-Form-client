@@ -173,7 +173,7 @@ const DepartmentTab = (props: Props) => {
               renderInput={(params) => (
                 <TextFieldStyled
                   {...params}
-                  label="To:"
+                  label={t("To:")}
                   sx={{
                     border: "1px solid #fff",
                     borderRadius: "5px",
@@ -207,7 +207,7 @@ const DepartmentTab = (props: Props) => {
               renderInput={(params) => (
                 <TextFieldStyled
                   {...params}
-                  label="Current Sharing:"
+                  label={t("Current Sharing:")}
                   variant="standard"
                   InputProps={{
                     ...params.InputProps,
