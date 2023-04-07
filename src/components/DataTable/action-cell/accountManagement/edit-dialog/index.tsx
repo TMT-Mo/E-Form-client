@@ -14,14 +14,12 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
-import { t } from "i18next";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector, useSignalR } from "hooks";
 import { Department, Permission, Role } from "models/system";
 import {
   clearUserList,
   editAccount,
-  getRoleList,
   getUserList,
 } from "slices/system";
 import { PhotoCamera } from "@mui/icons-material";
@@ -29,7 +27,6 @@ import { AccountStatus, AccountStatusTag } from "utils/constants";
 import { DummyPermissions, FixedDummyPermissions } from "utils/dummy-data";
 import { TextFieldStyled, SaveLoadingBtn } from "components/CustomStyled";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { getSignature } from "slices/auth";
 import CloseIcon from "@mui/icons-material/Close";
 import { handleError } from "slices/alert";
 import Resizer from "react-image-file-resizer";
@@ -83,7 +80,7 @@ export const EditDialog = (props: Props) => {
   );
   const [isDisabledSave, setIsDisabledSave] = useState(false);
   const dispatch = useDispatch();
-  const {sendSignalREditSystem} = useSignalR()
+  const { sendSignalREditSystem } = useSignalR();
 
   const currentPermissionList = (): Permission[] => {
     const list: Permission[] = [];
@@ -97,8 +94,8 @@ export const EditDialog = (props: Props) => {
     //   list.push(DummyPermissions.find((value) => value.id === +p)!)
     // );
     accountDetail?.idPermissions!.forEach((p) =>
-    list.push(DummyPermissions.find((value) => value.id === +p)!)
-  );
+      list.push(DummyPermissions.find((value) => value.id === +p)!)
+    );
     return list;
   };
   const [selectedDepartment, setSelectedDepartment] = useState<Department>(
@@ -108,10 +105,7 @@ export const EditDialog = (props: Props) => {
     )!
   );
   const [selectedRole, setSelectedRole] = useState<Role>(
-    roleList.find(
-      (role) =>
-        role?.roleName === accountDetail?.roleName
-    )!
+    roleList.find((role) => role?.roleName === accountDetail?.roleName)!
   );
   const [account, setAccount] = useState<AccountState>({
     idUser: accountDetail?.id!,
@@ -137,18 +131,18 @@ export const EditDialog = (props: Props) => {
     setPermissions([
       // ...FixedDummyPermissions,
       // ...value.filter((option) => FixedDummyPermissions.indexOf(option) === -1),
-      ...value
+      ...value,
     ]);
   };
 
   const onChangeSelectedDepartment = (value: Department | null) => {
-    if(!value) return
-    setSelectedDepartment(value)
+    if (!value) return;
+    setSelectedDepartment(value);
   };
 
   const onChangeSelectedRole = (value: Role | null) => {
-    if(!value) return
-    setSelectedRole(value)
+    if (!value) return;
+    setSelectedRole(value);
   };
 
   const EditAccountHandle = async () => {
@@ -160,11 +154,11 @@ export const EditDialog = (props: Props) => {
           account.status?.statusId === AccountStatus.ENABLE ? true : false,
         signature: account.signature ?? signature,
         idDepartment: selectedDepartment.id,
-        idRole: selectedRole.id
+        idRole: selectedRole.id,
       })
     );
     await onEditAccount.unwrap();
-    sendSignalREditSystem({idUser: account.idUser})
+    sendSignalREditSystem({ idUser: account.idUser });
     handleToggleDialog();
     dispatch(clearUserList());
     await dispatch(getUserList({}));
@@ -243,7 +237,7 @@ export const EditDialog = (props: Props) => {
                   id="component-outlined"
                   // placeholder="Composed TextField"
                   label={t("First Name")}
-                  value={accountDetail?.firstName}
+                  value={account?.firstName}
                   onChange={(value) =>
                     setAccount({ ...account, firstName: value.target.value })
                   }
@@ -257,7 +251,7 @@ export const EditDialog = (props: Props) => {
                   id="component-outlined"
                   // placeholder="Composed TextField"
                   label={t("Last Name")}
-                  value={accountDetail?.lastName}
+                  value={account?.lastName}
                   onChange={(value) =>
                     setAccount({ ...account, lastName: value.target.value })
                   }
@@ -294,16 +288,16 @@ export const EditDialog = (props: Props) => {
               <Typography fontSize="0.75rem">{t("Department")}</Typography>
               <Autocomplete
                 id="asynchronous-demo"
-                onChange={(e, value) =>
-                  onChangeSelectedDepartment(value)
-                }
+                onChange={(e, value) => onChangeSelectedDepartment(value)}
                 isOptionEqualToValue={(option, value) =>
                   option.departmentName === value.departmentName
                 }
                 getOptionLabel={(option) => t(option.departmentName)}
                 loading={isGetDepartmentsLoading}
                 value={selectedDepartment}
-                options={departmentList.filter(department => department.departmentName !== 'All')}
+                options={departmentList.filter(
+                  (department) => department.departmentName !== "All"
+                )}
                 sx={{
                   ".MuiAutocomplete-clearIndicator": {
                     backgroundColor: "#bdc3c7",
@@ -345,9 +339,7 @@ export const EditDialog = (props: Props) => {
               <Typography fontSize="0.75rem">{t("Role")}</Typography>
               <Autocomplete
                 id="asynchronous-demo"
-                onChange={(e, value) =>
-                  onChangeSelectedRole(value)
-                }
+                onChange={(e, value) => onChangeSelectedRole(value)}
                 isOptionEqualToValue={(option, value) =>
                   option.roleName === value.roleName
                 }
@@ -387,7 +379,8 @@ export const EditDialog = (props: Props) => {
                       ),
                     }}
                   />
-                )} />
+                )}
+              />
             </Stack>
 
             {/* Permission */}

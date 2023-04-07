@@ -3,7 +3,6 @@ import { GridColDef, GridFilterModel } from "@mui/x-data-grid";
 import { Document } from "./document";
 import { Template } from "./template";
 import { IUser } from './system';
-import { User } from '../utils/dummy-data';
 
 export interface GetRowIdParams {
   // The data item provided to the grid for the row in question

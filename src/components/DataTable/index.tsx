@@ -41,7 +41,6 @@ import { helpers } from "utils";
 import CustomNoRow from "components/CustomNoRow";
 import { useTranslation } from "react-i18next";
 import { clearAccountPagination, clearUserList, onChangeAccountPage } from "slices/system";
-import { DummyUserList } from "utils/dummy-data";
 
 const {
   SYSTEM,

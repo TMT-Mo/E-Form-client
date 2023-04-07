@@ -2,27 +2,17 @@ import {
   Box,
   Stack,
   Typography,
-  InputLabel,
   TextField,
-  Autocomplete,
   CircularProgress,
-  Chip,
   Container,
   Avatar,
   Paper,
 } from "@mui/material";
-import { t } from "i18next";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { TextFieldStyled, SaveLoadingBtn } from "../../components/CustomStyled";
+import { SaveLoadingBtn } from "../../components/CustomStyled";
 import { useDispatch, useSelector } from "../../hooks";
-import { Permission } from "../../models/system";
-import { DefaultValue, AccountStatus, LocationIndex } from "../../utils/constants";
-import {
-  DummyRoles,
-  DummyPermissions,
-  FixedDummyPermissions,
-} from "../../utils/dummy-data";
+import { LocationIndex } from "../../utils/constants";
 import Divider from "@mui/material/Divider";
 import styled from "@emotion/styled";
 import { getSignature } from "slices/auth";
@@ -43,20 +33,13 @@ const TypographyStyled = styled(Typography)({
   color: "#6F7276",
 });
 
-const StackStyled = styled(Stack)({
-  color: "#6F7276",
-});
 
 export const MyAccount = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const {
-    isGetDepartmentsLoading,
-    isGetPermissionLoading,
-    isGetRoleLoading,
     departmentList,
     roleList,
-    permissionList,
     isCreateAccountLoading,
   } = useSelector((state) => state.system);
   const { userInfo, signature, isGetSignatureLoading } = useSelector((state) => state.auth);

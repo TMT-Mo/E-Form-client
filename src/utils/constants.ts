@@ -123,7 +123,7 @@ export enum Permissions {
 }
 
 export enum PermissionTag {
-  VIEW_TEMPLATE_HISTORY_TAG = "View Template History",
+  VIEW_TEMPLATE_HISTORY_TAG = "VIEW_TEMPLATE_HISTORY",
   ADD_TEMPLATE_TAG = "Add New Template",
   VIEW_TEMPLATE_MANAGEMENT_TAG = "View Template Management",
   ENABLE_TEMPLATE_TAG = "Enable Template",
@@ -139,9 +139,9 @@ export enum PermissionTag {
   VIEW_SHARED_DOCUMENT_TAG = "View Shared Document",
   VIEW_DOCUMENT_HISTORY_TAG = "View Document History",
   SYSTEM_MANAGEMENT_TAG = "System Management",
-  ANALYTICS_DASHBOARD_MANAGEMENT = 'Analytics Dashboard Management',
-  ANALYTICS_ACTIVITIES_MANAGEMENT = 'Analytics Activities Management',
-  SHARE_DOCUMENT = 'Share Document'
+  ANALYTICS_DASHBOARD_MANAGEMENT_TAG = 'Analytics Dashboard Management',
+  ANALYTICS_ACTIVITIES_MANAGEMENT_TAG = 'Analytics Activities Management',
+  SHARE_DOCUMENT_TAG = 'Share Document'
 }
 
 export enum DeviceType {
