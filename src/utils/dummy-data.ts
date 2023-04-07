@@ -189,6 +189,10 @@ export const DummyPermissions: Permission[] = [
     id: 19,
     permissionName: 'ANALYTICS_ACTIVITIES_MANAGEMENT'
   },
+  {
+    id: 20,
+    permissionName: 'SHARE_DOCUMENT'
+  },
   // {
   //   id: 20,
   //   permissionName: 'SYSTEM_MANAGEMENT'
@@ -215,6 +219,10 @@ export const FixedDummyPermissions: Permission[] = [
   {
     id: 19,
     permissionName: 'ANALYTICS_ACTIVITIES_MANAGEMENT'
+  },
+  {
+    id: 20,
+    permissionName: 'SHARE_DOCUMENT'
   },
 ]
 

@@ -111,6 +111,7 @@ export enum Permissions {
   VIEW_AWAIT_SIGNING_DOCUMENT = 9,
   VIEW_PERSONAL_DOCUMENT = 11,
   VIEW_SHARED_DOCUMENT = 14,
+  SHARE_DOCUMENT = 20,
   VIEW_DOCUMENT_HISTORY = 15,
   CREATE_DOCUMENT = 5,
   APPROVE_DOCUMENT = 10,
@@ -139,7 +140,8 @@ export enum PermissionTag {
   VIEW_DOCUMENT_HISTORY_TAG = "View Document History",
   SYSTEM_MANAGEMENT_TAG = "System Management",
   ANALYTICS_DASHBOARD_MANAGEMENT = 'Analytics Dashboard Management',
-  ANALYTICS_ACTIVITIES_MANAGEMENT = 'Analytics Activities Management'
+  ANALYTICS_ACTIVITIES_MANAGEMENT = 'Analytics Activities Management',
+  SHARE_DOCUMENT = 'Share Document'
 }
 
 export enum DeviceType {

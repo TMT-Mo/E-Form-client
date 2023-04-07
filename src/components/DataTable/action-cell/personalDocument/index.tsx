@@ -6,6 +6,7 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { Link } from "react-router-dom";
 import { setViewerLocation } from "slices/location";
 import {
+  Permissions,
   ShareTabIndex,
   StatusDocument,
   ViewerLocationIndex,
@@ -18,6 +19,7 @@ import { styled } from "@mui/system";
 import DepartmentTab from "./department-tab";
 import { Document } from "models/document";
 import UserTab from "./user-tab";
+import { RequiredPermission } from "components/RequiredPermission";
 
 const StyledDialog = styled(Dialog)({
   width: "100vw",
@@ -95,12 +97,14 @@ export const PersonalDocumentActionCell = (
         </Link>
       </IconButton>
       {status === StatusDocument.APPROVED_DOCUMENT && (
-        <IconButton
+        <RequiredPermission permission={Permissions.SHARE_DOCUMENT}>
+          <IconButton
           aria-label="delete"
           onClick={() => setOpen((prevState) => !prevState)}
         >
           <ShareIcon fontSize="small" />
         </IconButton>
+        </RequiredPermission>
       )}
       <StyledDialog
         open={open}
