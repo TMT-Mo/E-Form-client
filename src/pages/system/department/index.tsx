@@ -93,8 +93,8 @@ export const DepartmentSystem = () => {
         >
           <Typography
             variant="h6"
-            component="h2"
-            // style={{ paddingBottom: "10px" }}
+            component="h1"
+            style={{ paddingBottom: "10px" }}
             fontWeight="bold"
           >
             {t("Department")}
@@ -105,6 +105,7 @@ export const DepartmentSystem = () => {
                 onClick={() => setIsAddingDepartment((prevState) => !prevState)}
                 type="button"
                 aria-label="search"
+                sx={{ p: "10px" }}
               >
                 <AddBoxIcon sx={{ fill: "#fdcb6e" }} />
               </IconButton>
@@ -113,7 +114,7 @@ export const DepartmentSystem = () => {
                   setIsEditingDepartment((prevState) => !prevState)
                 }
                 type="button"
-                // sx={{ p: "10px" }}
+                sx={{ p: "10px" }}
                 aria-label="search"
               >
                 <DriveFileRenameOutlineIcon sx={{ fill: "#00b894" }} />
@@ -123,7 +124,7 @@ export const DepartmentSystem = () => {
                   setIsViewingDepartment((prevState) => !prevState)
                 }
                 type="button"
-                // sx={{ p: "10px" }}
+                sx={{ p: "10px" }}
                 aria-label="search"
               >
                 <ListAltIcon sx={{ fill: "#0984e3" }} />

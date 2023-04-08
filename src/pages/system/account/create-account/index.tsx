@@ -113,7 +113,8 @@ export const CreateAccount = () => {
         idPermissions: permissions.map((p) => p.id),
         idRole: selectedRole?.id!,
         idDepartment: selectedDepartment?.id!,
-        status: true
+        status: true,
+        password: DefaultValue.PASSWORD,
       })
     ).unwrap();
 

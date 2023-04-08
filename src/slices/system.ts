@@ -429,7 +429,7 @@ const system = createSlice({
     builder.addCase(getSigner.fulfilled, (state, { payload }) => ({
       ...state,
       isGetSignerLoading: false,
-      userList: payload.items,
+      userList: payload,
     }));
     builder.addCase(getSigner.rejected, (state) => ({
       ...state,

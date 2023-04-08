@@ -49,6 +49,38 @@ export interface GetUsersArgs {
   updateAt_gte?: string; //* gte: Greater than equal
   updateAt_lte?: string; //* lte: Lower than equal
 }
+export interface GetSignersResponse {
+  id: number;
+  userName: string;
+  signature: string;
+  roleName: string;
+  status: number;
+  createdAt: string;
+  updateAt: string;
+  departmentName: string;
+  idPermissions: number[];
+  firstName: string;
+  lastName: string;
+}
+
+export interface GetSignersArgs {
+  departmentId_eq?: number;
+  // id_eq?: number;
+  // _page?: number;
+  // _size?: number;
+  // _sort?: string;
+  // status_eq?: number;
+  // createdBy_eq?: number;
+  // type_eq?: string;
+  // typeName_eq?: string;
+  // userName_eq?: string;
+  // department_eq?: string;
+  // isLocked_eq?: boolean;
+  // createdAt_gte?: string; //* gte: Greater than equal
+  // createdAt_lte?: string; //* lte: Lower than equal
+  // updateAt_gte?: string; //* gte: Greater than equal
+  // updateAt_lte?: string; //* lte: Lower than equal
+}
 
 export interface IFile {
   name: string;
