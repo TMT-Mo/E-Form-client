@@ -80,12 +80,15 @@ export const SignalR = () => {
             console.log(response)
             const { departmentName, idUser, roleName } = response;
             if (idUser === userInfo?.userId) {
+              dispatch(handleInfo({ message: 'Your account just got edited by Admin. Please login again or contact Admin for more information!' }));
               logout();
             }
             if (departmentName === userInfo?.departmentName) {
+              dispatch(handleInfo({ message: 'Your account just got edited by Admin. Please login again or contact Admin for more information!' }));
               logout();
             }
             if (roleName === userInfo?.roleName) {
+              dispatch(handleInfo({ message: 'Your account just got edited by Admin. Please login again or contact Admin for more information!' }));
               logout();
             }
           });

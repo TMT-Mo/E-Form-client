@@ -1,29 +1,13 @@
-import SearchIcon from "@mui/icons-material/Search";
-import { IconButton, InputBase, Paper, Button } from "@mui/material";
-import React, { useEffect } from "react";
-import AddIcon from "@mui/icons-material/Add";
-import { styled } from "@mui/system";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import DataTable from "../../../components/DataTable";
 import { useDispatch, useSelector } from "../../../hooks";
-import { getTemplates, searchTemplate } from "../../../slices/template";
-import { setViewerLocation } from "../../../slices/location";
+import { getTemplates } from "../../../slices/template";
 import {
   DataTableHeader,
-  DeviceWidth,
-  Permissions,
-  ViewerLocationIndex,
 } from "../../../utils/constants";
-import { RequiredPermission } from "../../../components/RequiredPermission";
 import { useTranslation } from "react-i18next";
 import { DateFilter } from "../../../models/mui-data";
-import { StyledAddBtn } from "../../../components/CustomStyled";
 
-
-
-const { ADD_TEMPLATE } = Permissions;
-
-const { ADD_TEMPLATE_INDEX } = ViewerLocationIndex;
 const { TYPE, TYPE_TEMPLATE, STATUS, CREATED_AT, UPDATED_AT } = DataTableHeader;
 const TemplateHistory = () => {
   const { t } = useTranslation();
@@ -33,7 +17,6 @@ const TemplateHistory = () => {
     (state) => state.template
   );
   const { userInfo } = useSelector((state) => state.auth);
-  const {innerWidth} = window
 
   useEffect(() => {
     const getTemplateList = dispatch(
@@ -86,53 +69,6 @@ const TemplateHistory = () => {
     <div className="flex flex-col py-10 space-y-6">
       <h2>{t("History")}</h2>
       <div className="flex flex-col rounded-md border border-gray-400 bg-white">
-        <div className="flex px-2 py-6 justify-between scale-90 space-x-10 md:scale-100 md:px-10">
-          <Paper
-            component="form"
-            sx={{
-              p: "2px 4px",
-              display: "flex",
-              alignItems: "center",
-              width: 300,
-            }}
-            variant="outlined"
-          >
-            <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-              <SearchIcon />
-            </IconButton>
-            <InputBase
-              sx={{ ml: 1, flex: 1 }}
-              placeholder={t("Search Template")}
-              onChange={(e) =>
-                dispatch(searchTemplate({ value: e.target.value }))
-              }
-            />
-          </Paper>
-          <RequiredPermission permission={ADD_TEMPLATE}>
-            <div className="flex space-x-8">
-              <Link
-                to="/viewer"
-                className="no-underline"
-                onClick={() =>
-                  dispatch(
-                    setViewerLocation({
-                      viewerLocationIndex: ADD_TEMPLATE_INDEX,
-                    })
-                  )
-                }
-              >
-                <StyledAddBtn
-                  variant="outlined"
-                  size="small" 
-                  className="shadow-md"
-                >
-                  <AddIcon className="md:mr-2"/>
-                  {innerWidth > DeviceWidth.IPAD_WIDTH && t("Add New")}
-                </StyledAddBtn>
-              </Link>
-            </div>
-          </RequiredPermission>
-        </div>
         <DataTable />
       </div>
     </div>

@@ -65,7 +65,7 @@ const ViewAddTemplate: React.FC = () => {
     isGetDepartmentsLoading,
     departmentList,
     isGetSignerLoading,
-    userList,
+    signerList,
     isGetTemplateTypesLoading,
     isOpenTemplateTypes,
     templateTypeList,
@@ -115,7 +115,7 @@ const ViewAddTemplate: React.FC = () => {
         description: `You got a new template waiting for approval from ${userInfo?.userName}!`,
       },
     });
-    navigate("/user");
+    navigate("../user", {replace: true});
   };
 
   const onChangeSelectedDepartment = (value: number | undefined) => {
@@ -378,7 +378,7 @@ const ViewAddTemplate: React.FC = () => {
                     },
                   }}
                   id="multiple-limit-tags"
-                  options={userList}
+                  options={signerList}
                   getOptionLabel={(option) => option.userName}
                   onChange={(e, value) => {
                     setForm({

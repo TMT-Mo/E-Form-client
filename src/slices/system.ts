@@ -30,6 +30,7 @@ interface State {
   currentPage: number;
   departmentList: Department[];
   userList: IUser[];
+  signerList: IUser[];
   permissionList: Permission[];
   templateTypeList: TemplateType[];
   roleList: Role[];
@@ -58,6 +59,7 @@ const initialState: State = {
   templateTypeList: [],
   departmentList: [],
   userList: [],
+  signerList: [],
   permissionList: [],
   roleList: [],
   accountDetail: undefined,
@@ -429,7 +431,7 @@ const system = createSlice({
     builder.addCase(getSigner.fulfilled, (state, { payload }) => ({
       ...state,
       isGetSignerLoading: false,
-      userList: payload,
+      signerList: payload,
     }));
     builder.addCase(getSigner.rejected, (state) => ({
       ...state,

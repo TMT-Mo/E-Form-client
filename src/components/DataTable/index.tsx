@@ -25,26 +25,30 @@ import {
   templateColumns,
   templateHistoryColumns,
 } from "utils/mui-data";
-import {
-  clearTemplatePagination,
-  onChangeTemplatePage,
-} from "slices/template";
+import { clearTemplatePagination, onChangeTemplatePage } from "slices/template";
 import CustomPagination from "./pagination";
 import { usePermission } from "hooks/use-permission";
-import {
-  clearDocumentPagination,
-  onChangeDocumentPage,
-} from "slices/document";
+import { clearDocumentPagination, onChangeDocumentPage } from "slices/document";
 import { GridColumnModel, Data, GetRowIdParams } from "models/mui-data";
 import { setFilter, setSorter } from "slices/filter";
 import { helpers } from "utils";
 import CustomNoRow from "components/CustomNoRow";
 import { useTranslation } from "react-i18next";
-import { clearAccountPagination, clearUserList, onChangeAccountPage } from "slices/system";
+import {
+  clearAccountPagination,
+  onChangeAccountPage,
+} from "slices/system";
+import { TemplateHistoryToolBar } from "components/DataTable/toolbar/Template/template-history";
+import { TemplateManagementToolbar } from "components/DataTable/toolbar/Template/template-management";
+import { NewTemplateToolBar } from "components/DataTable/toolbar/Template/new-template";
+import { AwaitSigningDocumentToolBar } from "components/DataTable/toolbar/Document/await-signing";
+import { PersonalDocumentToolBar } from "components/DataTable/toolbar/Document/personal";
+import { SharedDocumentToolBar } from "components/DataTable/toolbar/Document/shared";
+import { HistoryDocumentToolBar } from "components/DataTable/toolbar/Document/history";
+import { AccountManagementToolBar } from "components/DataTable/toolbar/System/account-management";
 
 const {
   SYSTEM,
-  ACCOUNT,
   NEW_TEMPLATE,
   TEMPLATE,
   TEMPLATE_HISTORY,
@@ -95,7 +99,7 @@ const DataTable: React.FC = () => {
       }
       dispatch(clearTemplatePagination());
       dispatch(clearDocumentPagination());
-      dispatch(clearAccountPagination())
+      dispatch(clearAccountPagination());
       dispatch(setFilter({ field: columnField as DataTableHeader, value }));
     },
     [dispatch]
@@ -148,7 +152,7 @@ const DataTable: React.FC = () => {
     createdBy:
       usePermission(ENABLE_TEMPLATE) && checkHideColumnFromDevice(IPAD),
   };
-  
+
   const data = (): Data => {
     switch (locationIndex) {
       case SYSTEM:
@@ -158,10 +162,12 @@ const DataTable: React.FC = () => {
           table: userList,
           currentPage: currentPageAccount,
           totalPages: Math.ceil(totalAccount! / 10),
-          onChangePage: (e, value) =>
-            {dispatch(onChangeAccountPage({ selectedPage: --value }))
-          console.log(value)},
+          onChangePage: (e, value) => {
+            dispatch(onChangeAccountPage({ selectedPage: --value }));
+            console.log(value);
+          },
           columnVisible,
+          toolbar: AccountManagementToolBar
         };
       case NEW_TEMPLATE:
         return {
@@ -173,18 +179,19 @@ const DataTable: React.FC = () => {
           onChangePage: (e, value) =>
             dispatch(onChangeTemplatePage({ selectedPage: --value })),
           columnVisible,
+          toolbar: NewTemplateToolBar,
         };
-      case ACCOUNT:
-        return {
-          columns: onTranslateFilter(accountColumns),
-          loading: isGetUserListLoading,
-          table: userList,
-          currentPage: currentPageAccount,
-          totalPages: Math.ceil(totalAccount! / 10),
-          onChangePage: (e, value) =>
-            dispatch(onChangeAccountPage({ selectedPage: --value })),
-          columnVisible,
-        };
+      // case ACCOUNT:
+      //   return {
+      //     columns: onTranslateFilter(accountColumns),
+      //     loading: isGetUserListLoading,
+      //     table: userList,
+      //     currentPage: currentPageAccount,
+      //     totalPages: Math.ceil(totalAccount! / 10),
+      //     onChangePage: (e, value) =>
+      //       dispatch(onChangeAccountPage({ selectedPage: --value })),
+      //     columnVisible,
+      //   };
       case TEMPLATE: {
         return {
           columns: onTranslateFilter(templateColumns),
@@ -195,6 +202,7 @@ const DataTable: React.FC = () => {
           onChangePage: (e, value) =>
             dispatch(onChangeTemplatePage({ selectedPage: --value })),
           columnVisible,
+          toolbar: TemplateManagementToolbar,
         };
       }
 
@@ -207,6 +215,7 @@ const DataTable: React.FC = () => {
           totalPages: Math.ceil(totalDocument! / 10),
           onChangePage: (e, value) =>
             dispatch(onChangeDocumentPage({ selectedPage: --value })),
+          toolbar: AwaitSigningDocumentToolBar,
         };
       case TEMPLATE_HISTORY:
         return {
@@ -218,6 +227,7 @@ const DataTable: React.FC = () => {
           onChangePage: (e, value) =>
             dispatch(onChangeTemplatePage({ selectedPage: --value })),
           columnVisible,
+          toolbar: TemplateHistoryToolBar,
         };
       case PERSONAL:
         return {
@@ -228,6 +238,7 @@ const DataTable: React.FC = () => {
           totalPages: Math.ceil(totalDocument! / 10),
           onChangePage: (e, value) =>
             dispatch(onChangeDocumentPage({ selectedPage: --value })),
+          toolbar: PersonalDocumentToolBar,
         };
       case SHARED:
         return {
@@ -238,6 +249,7 @@ const DataTable: React.FC = () => {
           totalPages: Math.ceil(totalDocument! / 10),
           onChangePage: (e, value) =>
             dispatch(onChangeDocumentPage({ selectedPage: --value })),
+          toolbar: SharedDocumentToolBar,
         };
       case DOCUMENT_HISTORY:
         return {
@@ -248,6 +260,7 @@ const DataTable: React.FC = () => {
           totalPages: Math.ceil(totalDocument! / 10),
           onChangePage: (e, value) =>
             dispatch(onChangeDocumentPage({ selectedPage: --value })),
+          toolbar: HistoryDocumentToolBar,
         };
       default:
         return { table: [] };
@@ -257,9 +270,9 @@ const DataTable: React.FC = () => {
   const getRowId = (params: GetRowIdParams) => {
     return params.id;
   };
-  
+
   return (
-    <div style={{ height: 577.5, width: "100%" }}>
+    <div style={{ height: 670, width: "100%" }}>
       <DataGrid
         rows={data().table}
         columns={data().columns!}
@@ -288,7 +301,18 @@ const DataTable: React.FC = () => {
         hideFooter
         components={{
           NoRowsOverlay: CustomNoRow,
-          // FilterPanel: () => <TextField/>
+          Toolbar: data().toolbar,
+        }}
+        componentsProps={{
+          panel: {
+            placement: "bottom-end",
+          },
+        }}
+        sx={{
+          borderTop: "none",
+          ".MuiDataGrid-columnHeaders": {
+            borderTop: "1px solid #E0E0E0",
+          },
         }}
       />
       {data().table.length > 0 && (

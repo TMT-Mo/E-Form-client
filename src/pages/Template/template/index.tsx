@@ -1,9 +1,7 @@
-import SearchIcon from "@mui/icons-material/Search";
-import { IconButton, InputBase, Paper } from "@mui/material";
-import React, { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import DataTable from "components/DataTable";
 import { useDispatch, useSelector } from "hooks";
-import { getTemplates, searchTemplate } from "slices/template";
+import { getTemplates } from "slices/template";
 import {
   DataTableHeader,
   Permissions,
@@ -67,29 +65,6 @@ const Template = () => {
     <div className="flex flex-col  py-10 space-y-6">
       <h2>{t("Template Management")}</h2>
       <div className="flex flex-col rounded-md border border-gray-400 bg-white">
-        <div className="flex px-2 py-6 justify-between space-x-10 scale-90 md:scale-100 md:px-10">
-          <Paper
-            component="form"
-            sx={{
-              p: "2px 4px",
-              display: "flex",
-              alignItems: "center",
-              width: 300,
-            }}
-            variant="outlined"
-          >
-            <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-              <SearchIcon />
-            </IconButton>
-            <InputBase
-              sx={{ ml: 1, flex: 1 }}
-              placeholder={t("Search Template")}
-              onChange={(e) =>
-                dispatch(searchTemplate({ value: e.target.value }))
-              }
-            />
-          </Paper>
-        </div>
         <DataTable />
       </div>
     </div>

@@ -47,5 +47,6 @@ export interface Data {
   totalPages?: number;
   onChangePage?: (event: React.ChangeEvent<unknown>, page: number) => void;
   columnVisible?: GridColumnModel;
-  filterModel?: GridFilterModel
+  filterModel?: GridFilterModel,
+  toolbar?: React.JSXElementConstructor<any>
 }

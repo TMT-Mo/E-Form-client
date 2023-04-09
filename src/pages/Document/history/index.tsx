@@ -1,9 +1,3 @@
-import SearchIcon from "@mui/icons-material/Search";
-import {
-  IconButton,
-  InputBase,
-  Paper,
-} from "@mui/material";
 import { useEffect } from "react";
 import DataTable from "components/DataTable";
 import { getDocumentHistory } from "slices/document";
@@ -52,27 +46,6 @@ const History = () => {
     <div className="flex flex-col py-10 space-y-6">
       <h2>{t('History')}</h2>
       <div className="flex flex-col rounded-md border border-gray-400 bg-white">
-        <div className="flex px-10 py-6 justify-between">
-          <Paper
-            component="form"
-            sx={{
-              p: "2px 4px",
-              display: "flex",
-              alignItems: "center",
-              width: 300,
-            }}
-            variant="outlined"
-          >
-            <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-              <SearchIcon />
-            </IconButton>
-            <InputBase
-              sx={{ ml: 1, flex: 1 }}
-              placeholder={t("Search Document")}
-              inputProps={{ "aria-label": "search google maps" }}
-            />
-          </Paper>
-        </div>
         <DataTable />
       </div>
     </div>

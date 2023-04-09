@@ -117,7 +117,7 @@ const ViewApproveTemplate: React.FC = () => {
         description: `${templateName} has been ${isAccepting ? 'accepted':'rejected'} by ${userInfo?.userName}!`,
       },
     });
-    navigate("/user");
+    navigate("/user", {replace: true});
   };
   return (
     <Fragment>

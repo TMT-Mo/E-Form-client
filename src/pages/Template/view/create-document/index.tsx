@@ -155,7 +155,7 @@ const ViewCreateDocument: React.FC = () => {
         description: `You have a new document waiting for an approval!`,
       },
     });
-    navigate("/user");
+    navigate("/user", {replace: true});
   };
 
   return (
