@@ -10,7 +10,7 @@ import {
   GridFilterItem,
   GridFilterInputValueProps,
 } from "@mui/x-data-grid";
-import { useState } from "react";
+import { useSelector } from "hooks";
 import { useTranslation } from "react-i18next";
 import { DataTableHeader } from "utils/constants";
 
@@ -19,8 +19,8 @@ interface Items {
   label: string;
 }
 const items: Items[] = [
-  { value: "false", label: "enable" },
-  { value: "true", label: "disable" },
+  { value: "true", label: "enable" },
+  { value: "false", label: "disable" },
 ];
 
 const { IS_ENABLE } = DataTableHeader;
@@ -29,7 +29,7 @@ const SelectType = (props: GridFilterInputValueProps) => {
   const { t } = useTranslation();
   const { applyValue, item } = props;
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [value, setValue] = useState<any>("");
+  const { filter} = useSelector((state) => state.filter);
 
   const handleChange = (e: SelectChangeEvent) => {
     applyValue({
@@ -37,7 +37,6 @@ const SelectType = (props: GridFilterInputValueProps) => {
       value: e.target.value,
       columnField: IS_ENABLE,
     });
-    setValue(e.target.value);
   };
 
   return (
@@ -49,7 +48,7 @@ const SelectType = (props: GridFilterInputValueProps) => {
         labelId="demo-simple-select-standard-label"
         id="demo-simple-select-standard"
         label="Age"
-        value={value}
+        value={filter?.value as string}
         onChange={handleChange}
       >
         {items.map((item, index) => (

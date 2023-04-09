@@ -34,10 +34,7 @@ import { setFilter, setSorter } from "slices/filter";
 import { helpers } from "utils";
 import CustomNoRow from "components/CustomNoRow";
 import { useTranslation } from "react-i18next";
-import {
-  clearAccountPagination,
-  onChangeAccountPage,
-} from "slices/system";
+import { clearAccountPagination, onChangeAccountPage } from "slices/system";
 import { TemplateHistoryToolBar } from "components/DataTable/toolbar/Template/template-history";
 import { TemplateManagementToolbar } from "components/DataTable/toolbar/Template/template-management";
 import { NewTemplateToolBar } from "components/DataTable/toolbar/Template/new-template";
@@ -167,7 +164,7 @@ const DataTable: React.FC = () => {
             console.log(value);
           },
           columnVisible,
-          toolbar: AccountManagementToolBar
+          toolbar: AccountManagementToolBar,
         };
       case NEW_TEMPLATE:
         return {
@@ -306,6 +303,13 @@ const DataTable: React.FC = () => {
         componentsProps={{
           panel: {
             placement: "bottom-end",
+          },
+          columnsPanel: {
+            sx: {
+              "& .MuiDataGrid-panelFooter button:first-child": {
+                display: "none"
+              }
+            }
           },
         }}
         sx={{

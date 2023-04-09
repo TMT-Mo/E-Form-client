@@ -12,20 +12,18 @@ import {
   GridFilterItem,
   GridFilterInputValueProps,
 } from "@mui/x-data-grid";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "hooks";
-import {
-  getTemplateTypeList,
-} from "slices/system";
+import { getTemplateTypeList } from "slices/system";
 import { DataTableHeader } from "utils/constants";
 
-const {TYPE_TEMPLATE } = DataTableHeader;
+const { TYPE_TEMPLATE } = DataTableHeader;
 const SelectType = (props: GridFilterInputValueProps) => {
-  const {t} = useTranslation()
+  const { t } = useTranslation();
   const { applyValue, item } = props;
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [value, setValue] = useState<any>("");
+  const { filter} = useSelector((state) => state.filter);
   const dispatch = useDispatch();
   const { isGetTemplateTypesLoading, templateTypeList } = useSelector(
     (state) => state.system
@@ -37,29 +35,37 @@ const SelectType = (props: GridFilterInputValueProps) => {
       value: e.target.value,
       columnField: TYPE_TEMPLATE,
     });
-    setValue(e.target.value);
   };
 
-  const getTypeListHandler = useCallback(() => {
-      dispatch(getTemplateTypeList()).unwrap()
-  }, [dispatch]);
-
   useEffect(() => {
-    !templateTypeList && getTypeListHandler();
-  }, [getTypeListHandler, templateTypeList]);
+    if(templateTypeList.length !== 0) return
+    dispatch(getTemplateTypeList()).unwrap();
+  }, [dispatch, templateTypeList]);
 
   return (
     <>
-      {templateTypeList && (
+      {isGetTemplateTypesLoading ? (
+        <Box
+          sx={{
+            display: "inline-flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            height: 48,
+          }}
+        >
+          <CircularProgress size={20} />
+        </Box>
+      ) : (
         <FormControl variant="standard" sx={{ minWidth: 120 }}>
           <InputLabel id="demo-simple-select-standard-label">
-            {t('Filter value')}
+            {t("Filter value")}
           </InputLabel>
           <Select
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
             label="Age"
-            value={value}
+            value={filter?.value as string}
             onChange={handleChange}
           >
             {templateTypeList.map((item) => (
@@ -70,14 +76,6 @@ const SelectType = (props: GridFilterInputValueProps) => {
           </Select>
         </FormControl>
       )}
-      {isGetTemplateTypesLoading && <Box
-          sx={{
-            display: "inline-flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            height: 48,
-          }}><CircularProgress size={20} /></Box>}
     </>
   );
 };

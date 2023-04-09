@@ -9,9 +9,9 @@ import { createdByOnlyOperators } from "components/DataTable/filter/createdBy/in
 import { PersonalDocumentActionCell } from "components/DataTable/action-cell/personalDocument";
 import { AwaitSigningActionCell } from "components/DataTable/action-cell/awaitSigning/index";
 import { TemplateHistoryActionCell } from "components/DataTable/action-cell/templateHistory/index";
-import { statusOnlyOperators } from "components/DataTable/filter/status/index";
+import { statusOnlyOperators } from "components/DataTable/filter/status-template/index";
 
-import { isEnableOnlyOperators } from "components/DataTable/filter/isEnable/index";
+import { isEnableOnlyOperators } from "components/DataTable/filter/isEnable-template/index";
 import { StatusCell } from "components/DataTable/status-cell/index";
 import { GridColDef } from "@mui/x-data-grid";
 import { FileCell } from "components/DataTable/file-cell";
@@ -27,6 +27,7 @@ import helpers from "./helpers";
 import { SharedDocumentActionCell } from "components/DataTable/action-cell/sharedDocument";
 import { renderEditLockDocumentCell, renderLockDocumentCell } from 'components/DataTable/lockDocument-cell';
 import { AccountManagementActionCell } from 'components/DataTable/action-cell/accountManagement';
+import { departmentOnlyOperators } from 'components/DataTable/filter/department';
 
 const {
   TYPE,
@@ -81,7 +82,7 @@ export const templateColumns: GridColDef[] = [
   {
     field: TYPE_TEMPLATE,
     headerName: "Type",
-    // filterOperators: typeTemplateOnlyOperators,
+    filterOperators: typeTemplateOnlyOperators,
     renderHeader: TranslateHeader,
     renderCell: TranslateContent
   },
@@ -89,8 +90,8 @@ export const templateColumns: GridColDef[] = [
     field: DEPARTMENT,
     headerName: "Department",
     align: "center",
-    // filterOperators: departmentOnlyOperators,
-    filterable: false,
+    filterOperators: departmentOnlyOperators,
+    // filterable: false,
     renderHeader: TranslateHeader,
     renderCell: TranslateContent,
     headerAlign: 'center',
