@@ -10,28 +10,26 @@ import {
     GridFilterItem,
     GridFilterInputValueProps,
   } from "@mui/x-data-grid";
-import { useSelector } from "hooks";
+  import { useSelector } from "hooks";
   import { useTranslation } from "react-i18next";
-  import { DataTableHeader, StatusDocument } from "utils/constants";
+  import { DataTableHeader, AccountStatus } from "utils/constants";
   
   interface Items {
-    value: StatusDocument;
+    value: AccountStatus;
     label: string;
   }
-  const { APPROVED_DOCUMENT, PROCESSING_DOCUMENT, REJECTED_DOCUMENT, NOT_YET_DOCUMENT } = StatusDocument;
+  const { ENABLE, DISABLE,  } = AccountStatus;
   const items: Items[] = [
-    { value: PROCESSING_DOCUMENT, label: "Processing" },
-    { value: APPROVED_DOCUMENT, label: "Approved" },
-    { value: REJECTED_DOCUMENT, label: "Rejected" },
-    { value: NOT_YET_DOCUMENT, label: "Not yet" },
+    { value: DISABLE, label: "Enable" },
+    { value: ENABLE, label: "Disabled" },
   ];
   
   const { STATUS } = DataTableHeader;
   const SelectStatus = (props: GridFilterInputValueProps) => {
     const { t } = useTranslation();
     const { applyValue, item } = props;
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { filter} = useSelector((state) => state.filter);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
   
     const handleChange = (e: SelectChangeEvent) => {
       applyValue({
@@ -63,7 +61,7 @@ import { useSelector } from "hooks";
     );
   };
   
-  export const statusDocumentOnlyOperators: GridFilterOperator[] = [
+  export const statusAccountOnlyOperators: GridFilterOperator[] = [
     {
       label: "equal",
       value: "equal",

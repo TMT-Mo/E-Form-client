@@ -308,7 +308,7 @@ const DataTable: React.FC = () => {
             sx: {
               "& .MuiDataGrid-panelFooter button:first-child": {
                 display: "none"
-              }
+              },
             }
           },
         }}

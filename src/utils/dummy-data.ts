@@ -1,5 +1,5 @@
 
-import { Permission, Role } from "models/system";
+import { Permission, Statistics } from "models/system";
 
 export const DummyPermissions: Permission[] = [
   {
@@ -104,5 +104,14 @@ export const FixedDummyPermissions: Permission[] = [
   {
     id: 20,
     permissionName: 'SHARE_DOCUMENT'
+  },
+]
+
+export const DummyStatistics: Statistics[] = [
+  {
+    total: 100,
+    waiting: 30,
+    approved: 35,
+    rejected: 35
   },
 ]

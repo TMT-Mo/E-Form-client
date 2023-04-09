@@ -9,7 +9,7 @@ import { createdByOnlyOperators } from "components/DataTable/filter/createdBy/in
 import { PersonalDocumentActionCell } from "components/DataTable/action-cell/personalDocument";
 import { AwaitSigningActionCell } from "components/DataTable/action-cell/awaitSigning/index";
 import { TemplateHistoryActionCell } from "components/DataTable/action-cell/templateHistory/index";
-import { statusOnlyOperators } from "components/DataTable/filter/status-template/index";
+import { statusTemplateOnlyOperators } from "components/DataTable/filter/status-template/index";
 
 import { isEnableOnlyOperators } from "components/DataTable/filter/isEnable-template/index";
 import { StatusCell } from "components/DataTable/status-cell/index";
@@ -28,6 +28,10 @@ import { SharedDocumentActionCell } from "components/DataTable/action-cell/share
 import { renderEditLockDocumentCell, renderLockDocumentCell } from 'components/DataTable/lockDocument-cell';
 import { AccountManagementActionCell } from 'components/DataTable/action-cell/accountManagement';
 import { departmentOnlyOperators } from 'components/DataTable/filter/department';
+import { isLockedOnlyOperators } from 'components/DataTable/filter/isLocked-document';
+import { statusDocumentOnlyOperators } from 'components/DataTable/filter/status-document';
+import { roleOnlyOperators } from 'components/DataTable/filter/role';
+import { statusAccountOnlyOperators } from 'components/DataTable/filter/status-account';
 
 const {
   TYPE,
@@ -179,6 +183,7 @@ export const templateHistoryColumns: GridColDef[] = [
     headerName: "Department",
     align: "center",
     headerAlign: 'center',
+    filterOperators: departmentOnlyOperators,
     flex: .5,
     renderHeader: TranslateHeader,
   },
@@ -186,7 +191,7 @@ export const templateHistoryColumns: GridColDef[] = [
     field: STATUS,
     headerName: "Status",
     renderCell: StatusCell,
-    filterOperators: statusOnlyOperators,
+    filterOperators: statusTemplateOnlyOperators,
     headerAlign: "center",
     renderHeader: TranslateHeader,
   },
@@ -263,6 +268,7 @@ export const newTemplatesColumns: GridColDef[] = [
     headerAlign: 'center',
     flex: .5,
     renderHeader: TranslateHeader,
+    filterOperators: departmentOnlyOperators,
   },
   {
     field: CREATED_BY,
@@ -343,6 +349,7 @@ export const awaitSigningColumns: GridColDef[] = [
     headerAlign: 'center',
     align: 'center',
     flex: .5,
+    filterOperators: departmentOnlyOperators,
     renderHeader: TranslateHeader,
   },
   {
@@ -390,6 +397,7 @@ export const personalDocColumns: GridColDef[] = [
     headerName: "Name",
     flex: 1,
     minWidth: 200,
+    filterable: false,
     renderHeader: TranslateHeader,
   },
   {
@@ -422,6 +430,7 @@ export const personalDocColumns: GridColDef[] = [
     headerAlign: 'center',
     align: 'center',
     flex: .5,
+    filterOperators: departmentOnlyOperators,
     renderHeader: TranslateHeader,
   },
   {
@@ -438,6 +447,7 @@ export const personalDocColumns: GridColDef[] = [
     renderCell: StatusCell,
     headerAlign: "center",
     renderHeader: TranslateHeader,
+    filterOperators: statusDocumentOnlyOperators,
   },
   {
     field: IS_LOCKED,
@@ -446,7 +456,7 @@ export const personalDocColumns: GridColDef[] = [
     editable: true,
     renderCell: renderLockDocumentCell,
     align: "center",
-    filterOperators: isEnableOnlyOperators,
+    filterOperators: isLockedOnlyOperators,
     headerAlign: "center",
     filterable: checkHideColumnFromPermission(LOCK_DOCUMENT),
     hideable: checkHideColumnFromPermission(LOCK_DOCUMENT),
@@ -514,6 +524,7 @@ export const sharedDocColumns: GridColDef[] = [
     headerAlign: 'center',
     align: 'center',
     flex: .5,
+    filterOperators: departmentOnlyOperators,
     renderHeader: TranslateHeader,
   },
   {
@@ -609,7 +620,8 @@ export const historyDocColumns: GridColDef[] = [
     align: "center",
     renderHeader: TranslateHeader,
     headerAlign: 'center',
-    flex: .5
+    flex: .5,
+    filterOperators: departmentOnlyOperators,
   },
   {
     field: STATUS,
@@ -618,13 +630,15 @@ export const historyDocColumns: GridColDef[] = [
     renderCell: StatusCell,
     headerAlign: "center",
     renderHeader: TranslateHeader,
+    filterOperators: statusDocumentOnlyOperators
   },
   {
     field: "version",
     headerName: "Version",
     renderHeader: TranslateHeader,
     align: 'center',
-    headerAlign: "center"
+    headerAlign: "center",
+    filterable: false
   },
   {
     field: ACTION,
@@ -644,12 +658,14 @@ export const accountColumns: GridColDef[] = [
     headerAlign: "center",
     align: "center",
     renderHeader: TranslateHeader,
+    filterable: false
   },
   {
     field: USERNAME,
     headerName: "Username",
     flex: 1,
     renderHeader: TranslateHeader,
+    filterable: false
   },
   {
     field: ROLE_NAME,
@@ -658,7 +674,8 @@ export const accountColumns: GridColDef[] = [
     headerAlign: "center",
     flex: 0.3,
     renderHeader: TranslateHeader,
-    renderCell: TranslateContent
+    renderCell: TranslateContent,
+    filterOperators: roleOnlyOperators
   },
   {
     field: DEPARTMENT,
@@ -668,7 +685,8 @@ export const accountColumns: GridColDef[] = [
     flex: 0.3,
     minWidth: 100,
     renderHeader: TranslateHeader,
-    renderCell: TranslateContent
+    renderCell: TranslateContent,
+    filterOperators: departmentOnlyOperators,
   },
   {
     field: CREATED_AT,
@@ -700,6 +718,7 @@ export const accountColumns: GridColDef[] = [
     renderCell: AccountStatusCell,
     headerAlign: "center",
     renderHeader: TranslateHeader,
+    filterOperators: statusAccountOnlyOperators
   },
   {
     field: ACTION,

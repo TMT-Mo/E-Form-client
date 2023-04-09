@@ -62,7 +62,7 @@ const SelectStatus = (props: GridFilterInputValueProps) => {
   );
 };
 
-export const statusOnlyOperators: GridFilterOperator[] = [
+export const statusTemplateOnlyOperators: GridFilterOperator[] = [
   {
     label: "equal",
     value: "equal",

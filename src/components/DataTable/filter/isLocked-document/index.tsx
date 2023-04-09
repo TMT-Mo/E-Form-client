@@ -61,7 +61,7 @@ import {
     );
   };
   
-  export const isEnableOnlyOperators: GridFilterOperator[] = [
+  export const isLockedOnlyOperators: GridFilterOperator[] = [
     {
       label: "equal",
       value: "equal",
