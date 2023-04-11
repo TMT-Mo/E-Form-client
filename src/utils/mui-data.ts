@@ -36,6 +36,7 @@ import { statusAccountOnlyOperators } from 'components/DataTable/filter/status-a
 const {
   TYPE,
   DEPARTMENT,
+  DEPARTMENT_HISTORY,
   IS_ENABLE,
   STATUS,
   TYPE_TEMPLATE,
@@ -178,7 +179,7 @@ export const templateHistoryColumns: GridColDef[] = [
     renderCell: TranslateContent
   },
   {
-    field: DEPARTMENT,
+    field: DEPARTMENT_HISTORY,
     renderCell: TranslateContent,
     headerName: "Department",
     align: "center",
@@ -615,7 +616,7 @@ export const historyDocColumns: GridColDef[] = [
     renderCell: TranslateContent
   },
   {
-    field: DEPARTMENT,
+    field: DEPARTMENT_HISTORY,
     headerName: "Department",
     align: "center",
     renderHeader: TranslateHeader,

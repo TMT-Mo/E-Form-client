@@ -34,7 +34,7 @@ function FacebookCircularProgress(props: CircularProgressProps) {
         variant="determinate"
         sx={{
           color: (theme) =>
-            theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+            theme.palette.grey[800],
         }}
         size={40}
         thickness={4}
@@ -46,12 +46,12 @@ function FacebookCircularProgress(props: CircularProgressProps) {
         disableShrink
         sx={{
           color: (theme) => (theme.palette.mode === 'light' ? '#1a90ff' : '#308fe8'),
-          animationDuration: '550ms',
+          animationDuration: '550ms                  ',
           position: 'absolute',
           left: 0,
-          [`& .${circularProgressClasses.circle}`]: {
-            strokeLinecap: 'round',
-          },
+          // [`& .${circularProgressClasses.circle}`]: {
+          //   strokeLinecap: 'round',
+          // },
         }}
         size={40}
         thickness={4}
@@ -66,7 +66,7 @@ export default function CustomizedProgressBars() {
     <Box sx={{ flexGrow: 1 }}>
       <FacebookCircularProgress />
       <br />
-      <BorderLinearProgress variant="determinate" value={30} />
+      {/* <BorderLinearProgress variant="determinate" value={30} /> */}
     </Box>
   );
 }

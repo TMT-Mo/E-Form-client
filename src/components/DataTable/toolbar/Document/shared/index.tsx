@@ -11,7 +11,7 @@ export const SharedDocumentToolBar = () => {
     return (
       <Stack justifyContent="space-between" padding={3} direction="row">
         <Paper
-            component="form"
+            // component="form"
             sx={{
               p: "2px 4px",
               display: "flex",

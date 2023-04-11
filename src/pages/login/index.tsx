@@ -66,8 +66,7 @@ const Login = () => {
             </p>
           </div>
         </div>
-        <form onSubmit={onLoginHandler}>
-          <div className="flex flex-col space-y-8 w-72  md:w-96">
+        <form onSubmit={onLoginHandler} className="flex flex-col space-y-8 w-72  md:w-96">
             <h1 className="text-4xl font-bold ">{t("Sign in")}</h1>
             <div className="flex flex-col space-y-2">
               <div className="">
@@ -124,11 +123,11 @@ const Login = () => {
               loadingIndicator={<CircularProgress color="primary" size={16} />}
               variant="outlined"
               onClick={onLoginHandler}
+              type="submit"
               disabled={!(values.password && username)}
             >
               {t("Sign in")}
             </SaveLoadingBtn>
-          </div>
         </form>
       </div>
     </div>

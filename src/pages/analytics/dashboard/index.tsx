@@ -4,6 +4,6 @@ import React from 'react'
 
 export const AnalyticsDashboard = () => {
   return (
-    <Container><CustomizedProgressBars/></Container>
+    <Container sx={{paddingY: '50px'}}><CustomizedProgressBars/></Container>
   )
 }

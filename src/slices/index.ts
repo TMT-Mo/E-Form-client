@@ -9,6 +9,7 @@ import filter from "./filter";
 import uiControl from "./ui-control";
 import notification from "./notification";
 import signalR from './signalR'
+import statistics from './statistics'
 
 export default {
   auth,
@@ -20,5 +21,6 @@ export default {
   document,
   filter,
   uiControl,
-  signalR
+  signalR,
+  statistics
 };

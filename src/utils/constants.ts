@@ -84,6 +84,7 @@ export enum DataTableHeader {
   IS_ENABLE = "isEnable",
   TYPE_TEMPLATE = "typeName",
   DEPARTMENT = "departmentName",
+  DEPARTMENT_HISTORY = "departmentNameHistory",
   TEMPLATE_NAME = "templateName",
   DESCRIPTION = "description",
   ACTION = "action",

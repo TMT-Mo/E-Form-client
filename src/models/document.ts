@@ -48,6 +48,7 @@ export interface Document {
   status: number;
   typeName: string;
   departmentName: string;
+  departmentNameHistory: string;
   signatoryList: IUser[] | null;
   link: string;
   createdBy: Creator;

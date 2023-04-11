@@ -27,7 +27,6 @@ const apiPaths = {
         editRole: `${apiHead}api/Role/updateRole`,
         createDepartment: `${apiHead}api/Department/createDepartment`,
         createRole: `${apiHead}api/Role/createRole`,
-
     },
     document:{
         createDocument: `${apiHead}api/Document/create`,
@@ -47,6 +46,12 @@ const apiPaths = {
     },
     signalR:{
         hubURL: `${apiHead}hubs/notifications`,
+    },
+    statistics:{
+        getStatisticsDocumentOfDepartment: `${apiHead}api/Statistics/getStatisticsDocumentOfDepartment`,
+        getStatisticsTemplateOfDepartment: `${apiHead}api/Statistics/getStatisticsTemplateOfDepartment`,
+        getStatisticsDocumentOfUser: `${apiHead}api/Statistics/getStatisticsDocumentOfUser`,
+        getStatisticsIncomingDocument: `${apiHead}api/Statistics/getStatisticsIncomingDocument`,
     }
 }
 

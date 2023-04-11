@@ -9,11 +9,10 @@ import SearchIcon from "@mui/icons-material/Search";
 export const TemplateManagementToolbar = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { innerWidth } = window;
   return (
     <Stack justifyContent="space-between" padding={3} direction="row">
       <Paper
-        component="form"
+        // component="form"
         sx={{
           p: "2px 4px",
           display: "flex",
@@ -28,7 +27,9 @@ export const TemplateManagementToolbar = () => {
         <InputBase
           sx={{ ml: 1, flex: 1 }}
           placeholder={t("Search Template")}
-          onChange={(e) => dispatch(searchTemplate({ value: e.target.value }))}
+          onChange={(e) => {
+            dispatch(searchTemplate({ value: e.target.value }))
+          }}
         />
       </Paper>
         <GridToolbarFilterButton />

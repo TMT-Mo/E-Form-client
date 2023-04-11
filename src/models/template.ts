@@ -23,6 +23,7 @@ export interface Template {
   status: number;
   typeName: string;
   departmentName: string;
+  departmentNameHistory: string;
   isEnable: boolean;
   signatoryList: IUser[];
   link: string;

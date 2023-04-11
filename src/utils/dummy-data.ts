@@ -1,5 +1,6 @@
 
-import { Permission, Statistics } from "models/system";
+import { Statistics } from "models/statistics";
+import { Permission } from "models/system";
 
 export const DummyPermissions: Permission[] = [
   {

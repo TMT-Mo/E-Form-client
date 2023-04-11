@@ -173,11 +173,3 @@ export interface EditDepartmentResponse {
   message: string
 }
 
-export interface Statistics{
-  total: number,
-  waiting: number,
-  rejected: number,
-  approved: number
-}
-
-
