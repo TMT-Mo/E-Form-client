@@ -138,9 +138,16 @@ const enableTemplate = createAsyncThunk(
 const addNewTemplate = createAsyncThunk(
   `${ACTION_TYPE}addNewTemplate`,
   async (args: AddTemplateToFirebaseArgs, { dispatch }) => {
+    let url
     try {
       const uploadTask = await uploadBytesResumable(args.storageRef, args.file);
-      const url = await getDownloadURL(uploadTask.ref);
+      url = await getDownloadURL(uploadTask.ref);
+    } catch (error) {
+      dispatch(handleError({ errorMessage: "Something went wrong with input file!" }));
+      throw error;
+    }
+    try {
+      
       const result = await templateServices.addNewTemplate({
         ...args.templateInfo,
         link: url,

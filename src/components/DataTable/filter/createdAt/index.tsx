@@ -98,7 +98,7 @@ function InputNumberInterval(props: GridFilterInputValueProps) {
     </Box>
   );
 }
-//
+
 export const createdAtOnlyOperators: GridFilterOperator[] = [
   {
     label: "Between",

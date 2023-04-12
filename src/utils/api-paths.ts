@@ -48,8 +48,8 @@ const apiPaths = {
         hubURL: `${apiHead}hubs/notifications`,
     },
     statistics:{
-        getStatisticsDocumentOfDepartment: `${apiHead}api/Statistics/getStatisticsDocumentOfDepartment`,
-        getStatisticsTemplateOfDepartment: `${apiHead}api/Statistics/getStatisticsTemplateOfDepartment`,
+        getStatisticsDocument: `${apiHead}api/Statistics/getStatisticsDocument`,
+        getStatisticsTemplate: `${apiHead}api/Statistics/getStatisticsTemplate`,
         getStatisticsDocumentOfUser: `${apiHead}api/Statistics/getStatisticsDocumentOfUser`,
         getStatisticsIncomingDocument: `${apiHead}api/Statistics/getStatisticsIncomingDocument`,
     }

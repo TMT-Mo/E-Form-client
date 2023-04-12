@@ -1,41 +1,39 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { ValidationErrors } from "models/alert";
-import { Statistics } from "models/statistics";
+import { StatisticsDocument, StatisticsTemplate } from "models/statistics";
 import { statisticsServices } from "services/statistics";
 import { handleError } from "slices/alert";
-import { getDepartmentList } from "slices/system";
 
 interface State {
-  statisticsDocumentOfDepartment?: Statistics;
-  statisticsTemplateOfDepartment?: Statistics;
-  statisticsDocumentOfUser?: Statistics;
-  statisticsIncomingDocument?: Statistics;
-  isGetStatisticsDocumentOfDepartment: boolean;
-  isGetStatisticsTemplateOfDepartment: boolean;
-  isGetStatisticsDocumentOfUser: boolean;
-  isGetStatisticsIncomingDocument: boolean;
+  statisticsDocument: StatisticsDocument[];
+  statisticsTemplate: StatisticsTemplate[];
+  // statisticsDocumentOfUser?: Statistics;
+  // statisticsIncomingDocument?: Statistics;
+  isGetStatisticsDocument: boolean;
+  isGetStatisticsTemplate: boolean;
+  // isGetStatisticsDocumentOfUser: boolean;
+  // isGetStatisticsIncomingDocument: boolean;
 }
 
 const initialState: State = {
-  statisticsDocumentOfDepartment: undefined,
-  statisticsTemplateOfDepartment: undefined,
-  statisticsDocumentOfUser: undefined,
-  statisticsIncomingDocument: undefined,
-  isGetStatisticsDocumentOfDepartment: false,
-  isGetStatisticsTemplateOfDepartment: false,
-  isGetStatisticsDocumentOfUser: false,
-  isGetStatisticsIncomingDocument: false,
+  statisticsDocument: [],
+  statisticsTemplate: [],
+  // statisticsDocumentOfUser: undefined,
+  // statisticsIncomingDocument: undefined,
+  isGetStatisticsDocument: false,
+  isGetStatisticsTemplate: false,
+  // isGetStatisticsDocumentOfUser: false,
+  // isGetStatisticsIncomingDocument: false,
 };
 
 const ACTION_TYPE = "statistics/";
 
-const getStatisticsDocumentOfDepartment = createAsyncThunk(
-  `${ACTION_TYPE}getStatisticsDocumentOfDepartment`,
+const getStatisticsDocument = createAsyncThunk(
+  `${ACTION_TYPE}getStatisticsDocument`,
   async (_, { dispatch }) => {
     try {
-      const result =
-        await statisticsServices.getStatisticsDocumentOfDepartment();
+      const result = await statisticsServices.getStatisticsDocument();
       return result;
     } catch (error) {
       const err = error as AxiosError;
@@ -58,21 +56,18 @@ const statistics = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getStatisticsDocumentOfDepartment.pending, (state) => ({
+    builder.addCase(getStatisticsDocument.pending, (state) => ({
       ...state,
-      isGetStatisticsDocumentOfDepartment: true,
+      isGetStatisticsDocument: true,
     }));
-    builder.addCase(
-      getStatisticsDocumentOfDepartment.fulfilled,
-      (state, { payload }) => ({
-        ...state,
-        isGetStatisticsDocumentOfDepartment: false,
-        statisticsDocumentOfDepartment: payload!,
-      })
-    );
-    builder.addCase(getStatisticsDocumentOfDepartment.rejected, (state) => ({
+    builder.addCase(getStatisticsDocument.fulfilled, (state, { payload }) => ({
       ...state,
-      isGetStatisticsDocumentOfDepartment: false,
+      isGetStatisticsDocument: false,
+      statisticsDocument: payload!,
+    }));
+    builder.addCase(getStatisticsDocument.rejected, (state) => ({
+      ...state,
+      isGetStatisticsDocument: false,
     }));
   },
 });

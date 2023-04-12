@@ -1,24 +1,24 @@
 import {
-  GetStatisticsDocumentOfDepartmentResponse,
+  GetStatisticsDocumentResponse,
   GetStatisticsDocumentOfUserResponse,
   GetStatisticsIncomingDocumentResponse,
-  GetStatisticsTemplateOfDepartmentResponse,
+  GetStatisticsTemplateResponse,
 } from "models/statistics";
 import { apiPaths, httpClient } from "utils";
 
-const getStatisticsDocumentOfDepartment =
-  async (): Promise<GetStatisticsDocumentOfDepartmentResponse> => {
+const getStatisticsDocument =
+  async (): Promise<GetStatisticsDocumentResponse[]> => {
     const response = await httpClient.get({
-      url: apiPaths.statistics.getStatisticsDocumentOfDepartment,
+      url: apiPaths.statistics.getStatisticsDocument,
     });
-    return response.data as GetStatisticsDocumentOfDepartmentResponse;
+    return response.data as GetStatisticsDocumentResponse[];
   };
-const getStatisticsTemplateOfDepartment =
-  async (): Promise<GetStatisticsTemplateOfDepartmentResponse> => {
+const getStatisticsTemplate =
+  async (): Promise<GetStatisticsTemplateResponse[]> => {
     const response = await httpClient.get({
-      url: apiPaths.statistics.getStatisticsTemplateOfDepartment,
+      url: apiPaths.statistics.getStatisticsTemplate,
     });
-    return response.data as GetStatisticsTemplateOfDepartmentResponse;
+    return response.data as GetStatisticsTemplateResponse[];
   };
 const getStatisticsDocumentOfUser =
   async (): Promise<GetStatisticsDocumentOfUserResponse> => {
@@ -36,8 +36,8 @@ const getStatisticsIncomingDocument =
   };
 
 export const statisticsServices = {
-  getStatisticsDocumentOfDepartment,
+  getStatisticsDocument,
   getStatisticsDocumentOfUser,
   getStatisticsIncomingDocument,
-  getStatisticsTemplateOfDepartment,
+  getStatisticsTemplate,
 };

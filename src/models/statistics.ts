@@ -1,10 +1,14 @@
-export interface GetStatisticsDocumentOfDepartmentResponse{
+export interface GetStatisticsDocumentResponse{
+    departmentId: number,
+    departmentName: string,
     total: number,
     waiting: number,
     approved: number,
     rejected: number
 }
-export interface GetStatisticsTemplateOfDepartmentResponse{
+export interface GetStatisticsTemplateResponse{
+    departmentId: number,
+    departmentName: string,
     total: number,
     waiting: number,
     approved: number,
@@ -23,7 +27,17 @@ export interface GetStatisticsIncomingDocumentResponse{
     rejected: number
 }
 
-export interface Statistics{
+export interface StatisticsDocument{
+    departmentId: number,
+    departmentName: string,
+    total: number,
+    waiting: number,
+    approved: number,
+    rejected: number
+}
+export interface StatisticsTemplate{
+    departmentId: number,
+    departmentName: string,
     total: number,
     waiting: number,
     approved: number,

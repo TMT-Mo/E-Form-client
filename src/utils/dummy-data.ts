@@ -1,5 +1,5 @@
 
-import { Statistics } from "models/statistics";
+import { StatisticsDocument } from "models/statistics";
 import { Permission } from "models/system";
 
 export const DummyPermissions: Permission[] = [
@@ -108,11 +108,13 @@ export const FixedDummyPermissions: Permission[] = [
   },
 ]
 
-export const DummyStatistics: Statistics[] = [
+export const DummyStatistics: StatisticsDocument[] = [
   {
     total: 100,
     waiting: 30,
     approved: 35,
-    rejected: 35
+    rejected: 35,
+    departmentId: 1,
+    departmentName: 'IT'
   },
 ]

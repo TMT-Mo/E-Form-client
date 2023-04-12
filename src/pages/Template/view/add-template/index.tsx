@@ -140,6 +140,7 @@ const ViewAddTemplate: React.FC = () => {
   // Handle file upload event and update state
   function handleChange(event: any) {
     const newFile: File = event.target.files[0];
+    if(!newFile) return
     setFile(newFile);
     setForm({ ...form, templateName: newFile.name, size: newFile.size });
   }
