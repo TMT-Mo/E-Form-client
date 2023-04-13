@@ -120,7 +120,9 @@ export enum Permissions {
   GROUP_VIEWER = 13,
   // ACCOUNT_MANAGEMENT = 16,
   SYSTEM_MANAGEMENT = 17,
-  
+  VIEW_ACCOUNT_LIST = 21,
+  VIEW_DOCUMENT_FILTER_STATISTICS = 22,
+  VIEW_DOCUMENT_STATISTICS = 23,
 }
 
 export enum PermissionTag {

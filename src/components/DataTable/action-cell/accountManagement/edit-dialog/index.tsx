@@ -17,13 +17,13 @@ import {
 import React, { useState } from "react";
 import { useDispatch, useSelector, useSignalR } from "hooks";
 import { Department, Permission, Role } from "models/system";
-import {
-  clearUserList,
-  editAccount,
-  getUserList,
-} from "slices/system";
+import { clearUserList, editAccount, getUserList } from "slices/system";
 import { PhotoCamera } from "@mui/icons-material";
-import { AccountStatus, AccountStatusTag } from "utils/constants";
+import {
+  AccountStatus,
+  AccountStatusTag,
+  LocationIndex,
+} from "utils/constants";
 import { DummyPermissions, FixedDummyPermissions } from "utils/dummy-data";
 import { TextFieldStyled, SaveLoadingBtn } from "components/CustomStyled";
 import RefreshIcon from "@mui/icons-material/Refresh";
@@ -63,6 +63,8 @@ const statusOptions: AccountStatusOptions[] = [
   },
 ];
 
+const { SYSTEM } = LocationIndex;
+
 export const EditDialog = (props: Props) => {
   const { t } = useTranslation();
   const { isOpen, handleToggleDialog } = props;
@@ -75,13 +77,14 @@ export const EditDialog = (props: Props) => {
     roleList,
     departmentList,
   } = useSelector((state) => state.system);
+  const { locationIndex } = useSelector((state) => state.location);
   const { signature, isGetSignatureLoading } = useSelector(
     (state) => state.auth
   );
   const [isDisabledSave, setIsDisabledSave] = useState(false);
   const dispatch = useDispatch();
   const { sendSignalREditSystem } = useSignalR();
-
+  const disableEditAccount = locationIndex !== SYSTEM;
   const currentPermissionList = (): Permission[] => {
     const list: Permission[] = [];
     const currentPermissions: number[] = [];
@@ -238,6 +241,7 @@ export const EditDialog = (props: Props) => {
                   // placeholder="Composed TextField"
                   label={t("First Name")}
                   value={account?.firstName}
+                  disabled={disableEditAccount}
                   onChange={(value) =>
                     setAccount({ ...account, firstName: value.target.value })
                   }
@@ -251,6 +255,7 @@ export const EditDialog = (props: Props) => {
                   id="component-outlined"
                   // placeholder="Composed TextField"
                   label={t("Last Name")}
+                  disabled={disableEditAccount}
                   value={account?.lastName}
                   onChange={(value) =>
                     setAccount({ ...account, lastName: value.target.value })
@@ -267,7 +272,7 @@ export const EditDialog = (props: Props) => {
                 disabled
               />
             </Stack>
-            <Stack direction="row" alignItems="center">
+            {!disableEditAccount && <Stack direction="row" alignItems="center">
               <Stack spacing={0.5} width="100%">
                 <Typography fontSize="0.75rem">{t("Password")}</Typography>
                 <TextField
@@ -281,7 +286,7 @@ export const EditDialog = (props: Props) => {
               <IconButton onClick={onRefreshPassword}>
                 <RefreshIcon />
               </IconButton>
-            </Stack>
+            </Stack>}
 
             {/* Department */}
             <Stack spacing={0.5}>
@@ -295,6 +300,7 @@ export const EditDialog = (props: Props) => {
                 getOptionLabel={(option) => t(option.departmentName)}
                 loading={isGetDepartmentsLoading}
                 value={selectedDepartment}
+                disabled={disableEditAccount}
                 options={departmentList.filter(
                   (department) => department.departmentName !== "All"
                 )}
@@ -346,6 +352,7 @@ export const EditDialog = (props: Props) => {
                 getOptionLabel={(option) => t(option.roleName)}
                 loading={isGetRoleLoading}
                 value={selectedRole}
+                disabled={disableEditAccount}
                 options={roleList}
                 sx={{
                   ".MuiAutocomplete-clearIndicator": {
@@ -395,6 +402,7 @@ export const EditDialog = (props: Props) => {
               options={DummyPermissions}
               loading={isGetPermissionLoading}
               value={permissions}
+              disableClearable={disableEditAccount}
               renderTags={(tagValue, getTagProps) =>
                 tagValue.map((option, index) => (
                   <Chip
@@ -405,6 +413,7 @@ export const EditDialog = (props: Props) => {
                 ))
               }
               limitTags={2}
+              readOnly={disableEditAccount}
               sx={{
                 ".MuiAutocomplete-clearIndicator": {
                   backgroundColor: "#000",
@@ -453,6 +462,7 @@ export const EditDialog = (props: Props) => {
                 option.statusId === value.statusId
               }
               options={statusOptions}
+              disabled={disableEditAccount}
               onChange={(e, value) => handleChangeStatus(value)}
               renderInput={(params) => (
                 <TextField
@@ -478,19 +488,21 @@ export const EditDialog = (props: Props) => {
               alignItems="center"
               minHeight="150px"
             >
-              <IconButton
-                color="primary"
-                aria-label="upload picture"
-                component="label"
-              >
-                <input
-                  hidden
-                  accept="image/*"
-                  type="file"
-                  onChange={(e) => handleUploadImage(e)}
-                />
-                <PhotoCamera />
-              </IconButton>
+              {!disableEditAccount && (
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="label"
+                >
+                  <input
+                    hidden
+                    accept="image/*"
+                    type="file"
+                    onChange={(e) => handleUploadImage(e)}
+                  />
+                  <PhotoCamera />
+                </IconButton>
+              )}
               {isGetSignatureLoading && <CircularProgress />}
               {signature && (
                 <img
@@ -502,13 +514,15 @@ export const EditDialog = (props: Props) => {
             </Stack>
             {/* <Stack width="100%" alignItems="center" justifyContent="center">
             </Stack> */}
-            <SaveLoadingBtn
-              loading={isEditAccountLoading}
-              disabled={isDisabledSave}
-              onClick={EditAccountHandle}
-            >
-              Save
-            </SaveLoadingBtn>
+            {!disableEditAccount && (
+              <SaveLoadingBtn
+                loading={isEditAccountLoading}
+                disabled={isDisabledSave}
+                onClick={EditAccountHandle}
+              >
+                Save
+              </SaveLoadingBtn>
+            )}
           </Stack>
         </Box>
       </DialogContent>

@@ -161,7 +161,6 @@ const DataTable: React.FC = () => {
           totalPages: Math.ceil(totalAccount! / 10),
           onChangePage: (e, value) => {
             dispatch(onChangeAccountPage({ selectedPage: --value }));
-            console.log(value);
           },
           columnVisible,
           toolbar: AccountManagementToolBar,
