@@ -5,22 +5,23 @@ import {
   Stack,
   IconButton,
   Autocomplete,
+  Dialog,
+  DialogActions,
+  DialogContent,
   TextField,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
-import { useDispatch, useSelector, useSignalR } from "hooks";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Dialog, DialogContent, DialogActions } from "@mui/material";
-import { t } from "i18next";
-import { SaveLoadingBtn, WhiteBtn } from "components/CustomStyled";
-import { Department } from "models/system";
+import { useDispatch, useSelector, useSignalR } from "hooks";
+import { TemplateType } from "models/template";
 import { useTranslation } from "react-i18next";
+import { WhiteBtn, SaveLoadingBtn } from "components/CustomStyled";
 import {
-  createDepartment,
-  editDepartment,
-  getDepartmentList,
+  //   createTemplateType,
+  //   editTemplateType,
+  getTemplateTypeList,
 } from "slices/system";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import CloseIcon from "@mui/icons-material/Close";
@@ -35,114 +36,121 @@ const CustomBox = styled(Box)({
     "drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06))",
 });
 
-export const DepartmentSystem = () => {
-  const dispatch = useDispatch();
-  const {
-    isGetDepartmentsLoading,
-    departmentList,
-    isEditDepartmentLoading,
-    isCreateDepartmentLoading,
-  } = useSelector((state) => state.system);
-  const [modifyDepartment, setModifyDepartment] = useState<Department>();
-  const [selectedDepartment, setSelectedDepartment] = useState<Department>();
-  const [newDepartment, setNewDepartment] = useState<string>();
-  const [isAddingDepartment, setIsAddingDepartment] = useState(false);
-  const [isEditingDepartment, setIsEditingDepartment] = useState(false);
-  const [isViewingDepartment, setIsViewingDepartment] = useState(false);
-  const { sendSignalREditSystem } = useSignalR();
+export const TypeTemplateSystem = () => {
   const { t } = useTranslation();
+  const {
+    isGetTemplateTypesLoading,
+    isEditTemplateTypeLoading,
+    isCreateTemplateTypeLoading,
+    templateTypeList,
+  } = useSelector((state) => state.system);
+  const [modifyTemplateType, setModifyTemplateType] = useState<TemplateType>();
+  const [selectedTemplateType, setSelectedTemplateType] =
+    useState<TemplateType>();
+  const [newTemplateType, setNewTemplateType] = useState<string>();
+  const [isAddingTemplateType, setIsAddingTemplateType] = useState(false);
+  const [isEditingTemplateType, setIsEditingTemplateType] = useState(false);
+  const [isViewingTemplateType, setIsViewingTemplateType] = useState(false);
+  const { sendSignalREditSystem } = useSignalR();
 
-  const onEditDepartment = async () => {
-    const { departmentName, id } = modifyDepartment!;
-    await dispatch(
-      editDepartment({ departmentId: id, departmentName })
-    ).unwrap();
-    sendSignalREditSystem({ departmentName: selectedDepartment?.departmentName });
-    await dispatch(getDepartmentList()).unwrap();
-    setIsEditingDepartment(false);
-  };
+  //   const onEditTemplateType = async () => {
+  //     const { typeName, id } = modifyTemplateType!;
+  //     const editTemplateTypeHandle = dispatch(
+  //       editTemplateType({ typeName })
+  //     );
+  //     await editTemplateTypeHandle.unwrap();
+  //     // sendSignalREditSystem({ typeName: selectedTemplateType?.typeName });
+  //     const getTemplateType = dispatch(getTemplateTypeList());
+  //     await getTemplateType.unwrap();
 
-  const onCreateDepartment = async () => {
-    await dispatch(
-      createDepartment({ departmentName: newDepartment! })
-    ).unwrap();
-    await dispatch(getDepartmentList()).unwrap();
-    setNewDepartment(undefined);
-    setIsAddingDepartment(false);
-  };
+  //     setIsEditingTemplateType(false);
+  //   };
+
+  //   const onCreateTemplateType = async () => {
+  //     const createTemplateTypeHandler = dispatch(
+  //       createTemplateType({ typeName: newTemplateType! })
+  //     );
+  //     await createTemplateTypeHandler.unwrap();
+
+  //     const getTemplateType = dispatch(getTemplateTypeList());
+  //     await getTemplateType.unwrap();
+
+  //     setIsAddingTemplateType(false);
+  //   };
 
   useEffect(() => {
-    if (!isEditingDepartment) {
-      setModifyDepartment(undefined);
+    if (!isEditingTemplateType) {
+      setModifyTemplateType(undefined);
     }
-  }, [isEditingDepartment]);
+  }, [isEditingTemplateType]);
 
   useEffect(() => {
-    if (!isAddingDepartment) {
-      setNewDepartment(undefined);
+    if (!isAddingTemplateType) {
+      setNewTemplateType(undefined);
     }
-  }, [isAddingDepartment]);
+  }, [isAddingTemplateType]);
 
   return (
     <>
-      <CustomBox sx={{w: 1/4}}>
-      <Stack
+      <CustomBox sx={{ w: 1 / 4 }}>
+        <Stack
           direction="row"
-          // spacing={25}
+        //   spacing={25}
           justifyContent="space-between"
           alignItems="center"
         >
-        <Stack
-          direction="column"
-          // justifyContent="space-between"
-          // alignItems="center"
-        >
-          <Typography
-            variant="h6"
-            component="h1"
-            style={{ paddingBottom: "10px" }}
-            fontWeight="bold"
+          <Stack
+            direction="column"
+            //   justifyContent="space-between"
+            //   alignItems="center"
           >
-            {t("Department")}
-          </Typography>
-          {!isGetDepartmentsLoading && (
-            <Typography variant="h2" component="h1">
-              {departmentList.length}
+            <Typography
+              variant="h6"
+              component="h1"
+              style={{ paddingBottom: "10px" }}
+              fontWeight="bold"
+              noWrap
+            >
+              Template Type
             </Typography>
-            
-          )}
-        </Stack>
 
-        {isGetDepartmentsLoading && <CircularProgress />}
-        
-          
-          {!isGetDepartmentsLoading && (
+            {!isGetTemplateTypesLoading && (
+              <Typography variant="h2" component="h1">
+                {templateTypeList?.length}
+              </Typography>
+            )}
+          </Stack>
+          {isGetTemplateTypesLoading && <CircularProgress />}
+
+          {!isGetTemplateTypesLoading && (
             <Stack direction="column">
               <IconButton
-                onClick={() => setIsAddingDepartment((prevState) => !prevState)}
                 type="button"
+                // sx={{ p: "10px" }}
                 aria-label="search"
-                sx={{ p: "10px" }}
+                onClick={() =>
+                  setIsAddingTemplateType((prevState) => !prevState)
+                }
               >
                 <AddBoxIcon sx={{ fill: "#fdcb6e" }} />
               </IconButton>
               <IconButton
-                onClick={() =>
-                  setIsEditingDepartment((prevState) => !prevState)
-                }
                 type="button"
-                sx={{ p: "10px" }}
+                // sx={{ p: "10px" }}
                 aria-label="search"
+                onClick={() =>
+                  setIsEditingTemplateType((prevState) => !prevState)
+                }
               >
                 <DriveFileRenameOutlineIcon sx={{ fill: "#00b894" }} />
               </IconButton>
               <IconButton
-                onClick={() =>
-                  setIsViewingDepartment((prevState) => !prevState)
-                }
                 type="button"
-                sx={{ p: "10px" }}
+                // sx={{ p: "10px" }}
                 aria-label="search"
+                onClick={() =>
+                  setIsViewingTemplateType((prevState) => !prevState)
+                }
               >
                 <ListAltIcon sx={{ fill: "#0984e3" }} />
               </IconButton>
@@ -150,24 +158,24 @@ export const DepartmentSystem = () => {
           )}
         </Stack>
       </CustomBox>
-      <Dialog open={isEditingDepartment}>
+      <Dialog open={isEditingTemplateType}>
         <DialogContent>
           <Box minWidth="500px">
             <Stack spacing={3}>
               <Typography variant="h5" component="h1" alignSelf="center">
-                {t("Edit Department")}
+                {t("Edit TemplateType")}
               </Typography>
               <Autocomplete
                 id="asynchronous-demo"
                 onChange={(e, value) => {
-                  setModifyDepartment(value!);
-                  setSelectedDepartment(value!);
+                  setModifyTemplateType(value!);
+                  setSelectedTemplateType(value!);
                 }}
                 isOptionEqualToValue={(option, value) =>
-                  option.departmentName === value.departmentName
+                  option.typeName === value.typeName
                 }
-                getOptionLabel={(option) => t(option.departmentName)}
-                options={departmentList}
+                getOptionLabel={(option) => t(option.typeName)}
+                options={templateTypeList}
                 sx={{
                   ".MuiAutocomplete-clearIndicator": {
                     backgroundColor: "#bdc3c7",
@@ -181,19 +189,18 @@ export const DepartmentSystem = () => {
                     backgroundColor: "#2563EB",
                     scale: "75%",
                   },
-                  color: "#000",
                 }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label={t("Select department")}
+                    label={t("Select Template Type")}
                     sx={{ color: "#000" }}
                     InputProps={{
                       ...params.InputProps,
 
                       startAdornment: (
                         <React.Fragment>
-                          {isGetDepartmentsLoading ? (
+                          {isGetTemplateTypesLoading ? (
                             <CircularProgress color="primary" size={20} />
                           ) : null}
                           {params.InputProps.startAdornment}
@@ -204,104 +211,99 @@ export const DepartmentSystem = () => {
                 )}
               />
               <Stack spacing={1}>
-                <Typography>{t("Modify department")}</Typography>
+                <Typography>{t("Modify Template Type")}</Typography>
                 <TextField
                   fullWidth
-                  value={modifyDepartment?.departmentName}
-                  disabled={!modifyDepartment}
+                  value={modifyTemplateType?.typeName}
+                  disabled={!modifyTemplateType}
                   onChange={(value) =>
-                    setModifyDepartment({
-                      ...modifyDepartment!,
-                      departmentName: value.target.value,
+                    setModifyTemplateType({
+                      ...modifyTemplateType!,
+                      typeName: value.target.value,
                     })
                   }
                 />
               </Stack>
               <DialogActions>
                 <WhiteBtn
-                  onClick={() => setIsEditingDepartment(false)}
+                  onClick={() => setIsEditingTemplateType(false)}
                   size="small"
                 >
                   {t("Cancel")}
                 </WhiteBtn>
-                <SaveLoadingBtn
+                {/* <SaveLoadingBtn
                   size="small"
-                  loading={isEditDepartmentLoading}
+                  loading={isEditTemplateTypeLoading}
                   loadingIndicator={
                     <CircularProgress color="inherit" size={16} />
                   }
                   variant="outlined"
-                  onClick={onEditDepartment}
-                  disabled={!modifyDepartment}
+                  //   onClick={onEditTemplateType}
+                  disabled={!modifyTemplateType}
                 >
                   {t("Save")}
-                </SaveLoadingBtn>
+                </SaveLoadingBtn> */}
               </DialogActions>
             </Stack>
           </Box>
         </DialogContent>
       </Dialog>
-      <Dialog open={isAddingDepartment}>
+      <Dialog open={isAddingTemplateType}>
         <DialogContent>
           <Box minWidth="500px">
             <Stack spacing={3}>
               <Typography variant="h5" component="h1" alignSelf="center">
-                {t("Add Department")}
+                {t("Add Template Type")}
               </Typography>
               <Stack spacing={1}>
-                <Typography>{t("Input department")}</Typography>
+                <Typography>{t("Input role")}</Typography>
                 <TextField
                   fullWidth
-                  value={newDepartment}
-                  onChange={(value) => setNewDepartment(value.target.value)}
+                  value={newTemplateType}
+                  onChange={(value) => setNewTemplateType(value.target.value)}
                 />
               </Stack>
               <DialogActions>
                 <WhiteBtn
-                  onClick={() => setIsAddingDepartment(false)}
+                  onClick={() => setIsAddingTemplateType(false)}
                   size="small"
                 >
                   {t("Cancel")}
                 </WhiteBtn>
-                <SaveLoadingBtn
+                {/* <SaveLoadingBtn
                   size="small"
-                  loading={isCreateDepartmentLoading}
+                  loading={isCreateTemplateTypeLoading}
                   loadingIndicator={
                     <CircularProgress color="inherit" size={16} />
                   }
                   variant="outlined"
-                  onClick={onCreateDepartment}
-                  disabled={!newDepartment}
+                  //   onClick={onCreateTemplateType}
                 >
                   {t("Save")}
-                </SaveLoadingBtn>
+                </SaveLoadingBtn> */}
               </DialogActions>
             </Stack>
           </Box>
         </DialogContent>
       </Dialog>
-      <Dialog open={isViewingDepartment}>
+      <Dialog open={isViewingTemplateType}>
         <DialogContent>
           <Box minWidth="500px">
             <Stack spacing={2}>
               <Stack direction="row" justifyContent="space-between">
                 <Typography variant="h5" component="h1" alignSelf="center">
-                  {t("Department List")}
+                  {t("Template Type List")}
                 </Typography>
-                <IconButton onClick={() => setIsViewingDepartment(false)}>
+                <IconButton onClick={() => setIsViewingTemplateType(false)}>
                   <CloseIcon />
                 </IconButton>
               </Stack>
-              {departmentList!.map((department) => (
-                <TextField
-                  key={department.id}
-                  value={department.departmentName}
-                  disabled
-                />
+              {templateTypeList?.map((type) => (
+                <TextField key={type.id} value={type.typeName} disabled />
               ))}
               <DialogActions>
                 <WhiteBtn
-                  onClick={() => setIsViewingDepartment(false)}
+                  onClick={() => setIsViewingTemplateType(false)}
                   size="small"
                 >
                   {t("Cancel")}

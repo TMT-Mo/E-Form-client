@@ -9,7 +9,6 @@ import {
   DialogContent,
 } from "@mui/material";
 import { useState } from "react";
-import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useSelector } from "hooks";
 import { DummyPermissions } from "utils/dummy-data";
@@ -17,7 +16,7 @@ import { WhiteBtn } from "components/CustomStyled";
 import { useTranslation } from "react-i18next";
 import TextField from "@mui/material/TextField/TextField";
 import CloseIcon from "@mui/icons-material/Close";
-
+import ListAltIcon from "@mui/icons-material/ListAlt";
 const CustomBox = styled(Box)({
   padding: "20px 40px",
   backgroundColor: "#fff",
@@ -35,7 +34,7 @@ export const PermissionSystem = () => {
   const [isOpenPermissionDialog, setIsOpenPermissionDialog] = useState(false);
   return (
     <>
-      <CustomBox>
+      <CustomBox sx={{w: 1/4}}>
         <Typography
           variant="h6"
           component="h2"
@@ -47,7 +46,7 @@ export const PermissionSystem = () => {
         {isGetPermissionLoading && <CircularProgress />}
         <Stack
           direction="row"
-          spacing={25}
+          // spacing={25}
           justifyContent="space-between"
           alignItems="center"
         >
@@ -63,7 +62,7 @@ export const PermissionSystem = () => {
               sx={{ p: "10px" }}
               aria-label="search"
             >
-              <DriveFileRenameOutlineIcon />
+              <ListAltIcon sx={{ fill: "#0984e3" }} />
             </IconButton>
           </Stack>
         </Stack>

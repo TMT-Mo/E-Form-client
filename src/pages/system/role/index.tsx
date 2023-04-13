@@ -80,11 +80,17 @@ export const RoleSystem = () => {
 
   return (
     <>
-      <CustomBox>
-        <Stack
+      <CustomBox sx={{width: '25%'}}>
+      <Stack
           direction="row"
+          // spacing={25}
           justifyContent="space-between"
           alignItems="center"
+        >
+        <Stack
+          direction="column"
+          // justifyContent="space-between"
+          // alignItems="center"
         >
           <Typography
             variant="h6"
@@ -95,7 +101,16 @@ export const RoleSystem = () => {
             Role
           </Typography>
           {!isGetRoleLoading && (
-            <Stack direction="row">
+            <Typography variant="h2" component="h1">
+              {roleList?.length}
+            </Typography>
+          )}
+        </Stack>
+        {isGetRoleLoading && <CircularProgress />}
+        
+          
+          {!isGetRoleLoading && (
+            <Stack direction="column">
               <IconButton
                 type="button"
                 sx={{ p: "10px" }}
@@ -121,19 +136,6 @@ export const RoleSystem = () => {
                 <ListAltIcon sx={{ fill: "#0984e3" }} />
               </IconButton>
             </Stack>
-          )}
-        </Stack>
-        {isGetRoleLoading && <CircularProgress />}
-        <Stack
-          direction="row"
-          spacing={25}
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          {!isGetRoleLoading && (
-            <Typography variant="h2" component="h1">
-              {roleList?.length}
-            </Typography>
           )}
         </Stack>
       </CustomBox>

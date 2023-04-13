@@ -47,6 +47,8 @@ interface State {
   isEditAccountLoading: boolean;
   isCreateRoleLoading: boolean;
   isEditRoleLoading: boolean;
+  isCreateTemplateTypeLoading: boolean;
+  isEditTemplateTypeLoading: boolean;
   isCreateDepartmentLoading: boolean;
   isEditDepartmentLoading: boolean;
 }
@@ -75,6 +77,8 @@ const initialState: State = {
   isEditAccountLoading: false,
   isCreateRoleLoading: false,
   isEditRoleLoading: false,
+  isCreateTemplateTypeLoading: false,
+  isEditTemplateTypeLoading: false,
   isCreateDepartmentLoading: false,
   isEditDepartmentLoading: false,
 };
