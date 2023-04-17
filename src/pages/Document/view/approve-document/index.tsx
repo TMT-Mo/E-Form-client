@@ -145,23 +145,31 @@ const ViewApproveDocument: React.FC = () => {
 
   useEffect(() => {
     if (annotationList?.length === 0) return;
-    
-    const checkCondition = i18n.language === 'en' ? "Signature" : "Chữ ký"
-    for (let i = 0; i < annotationList.length; i++) {
-      const currentAnnot = annotationList[i]
-      if (currentAnnot.Author !== userInfo?.userId!.toString()) continue
 
-      if(currentAnnot.Subject === checkCondition){
-        console.log('in')
-        setIsDisable(false)
+    const checkCondition = i18n.language === "en" ? "Signature" : "Chữ ký";
+    for (let i = 0; i < annotationList.length; i++) {
+      const currentAnnot = annotationList[i];
+
+      if (
+        currentAnnot.Subject === checkCondition &&
+        currentAnnot.Author === userInfo?.userId!.toString()
+      ) {
+        setIsDisable(false);
         break;
       }
 
-      if(!isDisable){
-        setIsDisable(true)
+      if (i === annotationList.length - 1) {
+        console.log("final check");
+        setIsDisable(true);
       }
     }
-  }, [annotationList, annotationList.length, i18n.language, isDisable, userInfo?.userId]);
+  }, [
+    annotationList,
+    annotationList.length,
+    i18n.language,
+    isDisable,
+    userInfo?.userId,
+  ]);
 
   useEffect(() => {
     signature &&
@@ -179,15 +187,14 @@ const ViewApproveDocument: React.FC = () => {
           ],
           annotationUser: userInfo?.userId!.toString(),
           css: "/webviewer/lib/ui/style.css",
-
         },
         viewer.current!
       ).then(async (inst) => {
         const { documentViewer, annotationManager } = inst.Core;
         inst.UI.setLanguage(i18n.language === "vn" ? "vi" : "en");
-          const iframeDoc = inst.UI.iframeWindow.document;
+        const iframeDoc = inst.UI.iframeWindow.document;
 
-        inst.UI.disableElements(['add-attachment'])
+        inst.UI.disableElements(["add-attachment"]);
         const signatureTool = documentViewer.getTool(
           "AnnotationCreateSignature"
         ) as Core.Tools.SignatureCreateTool;
@@ -233,7 +240,7 @@ const ViewApproveDocument: React.FC = () => {
 
               const annotList = annotationManager.getAnnotationsList();
               setAnnotationList(annotList);
-              console.log(annotList)
+              console.log(annotList);
             }
           );
         });
@@ -307,61 +314,61 @@ const ViewApproveDocument: React.FC = () => {
             </div>
             {signers}
             <RequiredPermission permission={Permissions.APPROVE_DOCUMENT}>
-            <Stack spacing={3}>
-            <div className="flex items-center">
-              <Switch
-                checked={isAccepting}
-                onClick={() => setIsAccepting((prevState) => !prevState)}
-                sx={{
-                  "& .MuiSwitch-track": {
-                    backgroundColor: "#ff5252",
-                  },
-                  "& .MuiSwitch-thumb": {
-                    backgroundColor: `${!isAccepting && "#ff5252"}`,
-                  },
-                }}
-              />
-              <h4>{isAccepting ? [t("Approve")] : [t("Reject")]}</h4>
-            </div>
-            {!isAccepting ? (
-              <div className="flex flex-col space-y-4">
-                <h4 className="whitespace-nowrap">{t("Reason")}:</h4>
-                <TextField
-                  id="outlined-multiline-flexible"
-                  sx={{
-                    border: "1px solid #fff",
-                    borderRadius: "5px",
-                    textarea: {
-                      color: "#fff",
-                    },
-                  }}
-                  multiline
-                  minRows={4}
-                  maxRows={4}
-                  color="primary"
-                  value={reason}
-                  onChange={(e) => setReason(e.target.value)}
-                />
-                <RejectBtn
-                  size="small"
-                  variant="outlined"
-                  onClick={() => setOpenDialog(true)}
-                  disabled={!reason}
-                >
-                  {t("Reject")}
-                </RejectBtn>
-              </div>
-            ) : (
-              <SaveLoadingBtn
-                size="small"
-                variant="outlined"
-                onClick={() => setOpenDialog(true)}
-                disabled={isDisable}
-              >
-                {t("Approve")}
-              </SaveLoadingBtn>
-            )}
-            </Stack>
+              <Stack spacing={3}>
+                <div className="flex items-center">
+                  <Switch
+                    checked={isAccepting}
+                    onClick={() => setIsAccepting((prevState) => !prevState)}
+                    sx={{
+                      "& .MuiSwitch-track": {
+                        backgroundColor: "#ff5252",
+                      },
+                      "& .MuiSwitch-thumb": {
+                        backgroundColor: `${!isAccepting && "#ff5252"}`,
+                      },
+                    }}
+                  />
+                  <h4>{isAccepting ? [t("Approve")] : [t("Reject")]}</h4>
+                </div>
+                {!isAccepting ? (
+                  <div className="flex flex-col space-y-4">
+                    <h4 className="whitespace-nowrap">{t("Reason")}:</h4>
+                    <TextField
+                      id="outlined-multiline-flexible"
+                      sx={{
+                        border: "1px solid #fff",
+                        borderRadius: "5px",
+                        textarea: {
+                          color: "#fff",
+                        },
+                      }}
+                      multiline
+                      minRows={4}
+                      maxRows={4}
+                      color="primary"
+                      value={reason}
+                      onChange={(e) => setReason(e.target.value)}
+                    />
+                    <RejectBtn
+                      size="small"
+                      variant="outlined"
+                      onClick={() => setOpenDialog(true)}
+                      disabled={!reason}
+                    >
+                      {t("Reject")}
+                    </RejectBtn>
+                  </div>
+                ) : (
+                  <SaveLoadingBtn
+                    size="small"
+                    variant="outlined"
+                    onClick={() => setOpenDialog(true)}
+                    disabled={isDisable}
+                  >
+                    {t("Approve")}
+                  </SaveLoadingBtn>
+                )}
+              </Stack>
             </RequiredPermission>
           </div>
         </div>

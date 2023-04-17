@@ -24,6 +24,9 @@ export interface IUser {
   lastName: string;
 }
 
+export interface ISigner extends IUser{
+  departmentNameHistory: string;
+}
 export interface GetUsersResponse {
   items: IUser[];
   total: number;

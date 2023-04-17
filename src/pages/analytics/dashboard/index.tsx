@@ -31,7 +31,7 @@ export const AnalyticsDashboard = () => {
   return (
     <Container sx={{ paddingY: "50px", mx: 0 }} maxWidth="xl">
       <Stack spacing={5}>
-      <Paper sx={{p:5}}>
+      <Paper sx={{p:5, maxHeight: '400px', borderRadius: 3}} elevation={3}>
       <ChartBar/>
       </Paper>
       <Stack direction="row" spacing={10}>

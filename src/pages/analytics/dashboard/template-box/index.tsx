@@ -153,15 +153,24 @@ export const TemplateBox = () => {
             Total: {DummyStatistics[0].total}
           </Typography>
           <Divider />
-          <Stack>
+          <Stack spacing={2}>
+            <Stack direction='row' justifyContent='space-between' alignItems='center'>
+            <Box sx={{px:3, py: 1, backgroundColor: '#E0F8EA', borderRadius: 3, width: '150px'}}>
             <Typography
               variant="h6"
               component="h1"
-              style={{ paddingBottom: "10px" }}
               fontWeight="semiBold"
+              sx={{color: "#22CFCF"}}
+              align="center"
             >
-              New: {DummyStatistics[0].waiting}
+              New
             </Typography>
+            </Box>
+            <Typography variant="h6"
+              component="h1">
+            {DummyStatistics[0].waiting}
+            </Typography>
+            </Stack>
             <Typography
               variant="h6"
               component="h1"

@@ -1,7 +1,7 @@
 
 import { StatusTemplate } from "./../utils/constants";
 import { StorageReference } from "firebase/storage";
-import { IUser } from "./system";
+import { ISigner, IUser } from "./system";
 
 interface Creator {
   id: number;
@@ -25,7 +25,7 @@ export interface Template {
   departmentName: string;
   departmentNameHistory: string;
   isEnable: boolean;
-  signatoryList: IUser[];
+  signatoryList: ISigner[];
   link: string;
   createdBy: Creator;
   reason?: string
