@@ -6,7 +6,7 @@ import { DateFilter } from "models/mui-data";
 import { getUserList } from "slices/system";
 import { DataTableHeader } from "utils/constants";
 
-const { TYPE, CREATED_AT, CREATED_BY } = DataTableHeader;
+const { TYPE, CREATED_AT, CREATED_BY, ROLE_NAME, DEPARTMENT, STATUS } = DataTableHeader;
 export const Account = () => {
   const dispatch = useDispatch();
   // const { userInfo } = useSelector((state) => state.auth);
@@ -17,10 +17,14 @@ export const Account = () => {
   useEffect(() => {
     const getUser = dispatch(
       getUserList({
-        userName_eq: searchItemValue,
+        userName_contains: searchItemValue,
         _page: currentPage,
         _size: 10,
         _sort: sorter ? `${sorter?.field}:${sorter?.sort}` : undefined,
+        roleId_eq: filter?.field === ROLE_NAME ? (filter.value as number) : undefined,
+        departmentId_eq: filter?.field === DEPARTMENT ? (filter.value as number) : undefined,
+        status_eq:
+          filter?.field === STATUS ? (filter.value as number) : undefined,
         type_eq: filter?.field === TYPE ? (filter.value as string) : undefined,
         createdBy_eq:
           filter?.field === CREATED_BY ? (filter.value as number) : undefined,

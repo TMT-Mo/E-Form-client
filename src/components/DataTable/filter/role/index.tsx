@@ -15,8 +15,19 @@ import {
   import { useEffect } from "react";
   import { useTranslation } from "react-i18next";
   import { useDispatch, useSelector } from "hooks";
-  import { getDepartmentList } from "slices/system";
+  import { getDepartmentList, getRoleList } from "slices/system";
   import { DataTableHeader } from "utils/constants";
+
+  const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
   
   const { ROLE_NAME } = DataTableHeader;
   const SelectRole = (props: GridFilterInputValueProps) => {
@@ -39,7 +50,7 @@ import {
   
     useEffect(() => {
       if (roleList.length !== 0) return;
-      dispatch(getDepartmentList()).unwrap();
+      dispatch(getRoleList()).unwrap();
     }, [roleList, dispatch]);
   
     return (
@@ -67,6 +78,7 @@ import {
               label="Age"
               value={filter?.value as string}
               onChange={handleChange}
+              MenuProps={MenuProps}
             >
               {roleList
                 .map((item) => (

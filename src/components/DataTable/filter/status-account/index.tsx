@@ -20,8 +20,8 @@ import {
   }
   const { ENABLE, DISABLE,  } = AccountStatus;
   const items: Items[] = [
-    { value: DISABLE, label: "Enable" },
-    { value: ENABLE, label: "Disabled" },
+    { value: ENABLE, label: "Enable" },
+    { value: DISABLE, label: "Disabled" },
   ];
   
   const { STATUS } = DataTableHeader;

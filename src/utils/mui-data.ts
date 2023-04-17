@@ -676,6 +676,7 @@ export const accountColumns: GridColDef[] = [
     flex: 0.3,
     renderHeader: TranslateHeader,
     renderCell: TranslateContent,
+    sortable: false,
     filterOperators: roleOnlyOperators
   },
   {
@@ -686,6 +687,7 @@ export const accountColumns: GridColDef[] = [
     flex: 0.3,
     minWidth: 100,
     renderHeader: TranslateHeader,
+    sortable: false,
     renderCell: TranslateContent,
     filterOperators: departmentOnlyOperators,
   },
