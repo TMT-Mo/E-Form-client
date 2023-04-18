@@ -46,7 +46,7 @@ export interface GetTemplateArgs {
   createdBy_eq?: number;
   type_eq?: string;
   typeName_eq?: string;
-  department_eq?: string;
+  departmentId_eq?: number;
   isEnable_eq?: boolean;
   signal?: AbortSignal;
   createdAt_gte?: string; //* gte: Greater than equal

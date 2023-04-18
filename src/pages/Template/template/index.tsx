@@ -49,8 +49,8 @@ const Template = () => {
             : undefined,
         isEnable_eq:
           checkEnablePermission(),
-        department_eq:
-          filter?.field === DEPARTMENT ? (filter.value as string) : undefined,
+        departmentId_eq:
+          filter?.field === DEPARTMENT ? (filter.value as number) : undefined,
         createdBy_eq:
           filter?.field === CREATED_BY ? (filter.value as number) : undefined,
       })

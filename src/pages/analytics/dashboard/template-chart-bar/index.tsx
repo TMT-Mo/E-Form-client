@@ -1,46 +1,94 @@
+import React, { useState } from "react";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
 import {
   LocalizationProvider,
   DesktopDatePicker,
-  DatePicker,
-  DesktopDateTimePicker,
 } from "@mui/x-date-pickers";
-import {
-  Autocomplete,
-  Box,
-  CircularProgress,
-  Divider,
-  Paper,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Autocomplete, CircularProgress, Paper, Stack, TextField } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs, { Dayjs } from "dayjs";
-import { t } from "i18next";
-import { DateFilter } from "models/mui-data";
-import React, { useState } from "react";
-import { useSelector } from "hooks";
-import { DummyStatistics } from "utils/dummy-data";
-import { TextFieldStyled } from "components/CustomStyled";
+import { Dayjs } from "dayjs";
 import { Department } from "models/system";
+import { useSelector } from "hooks";
 import { useTranslation } from "react-i18next";
 
-export const TemplateBox = () => {
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+export const options = {
+  plugins: {
+    title: {
+      display: true,
+      text: "Chart.js Bar Chart - Stacked",
+    },
+  },
+  responsive: true,
+  scales: {
+    x: {
+      stacked: true,
+    },
+    y: {
+      stacked: true,
+    },
+  },
+};
+
+const labels = [
+  "IT",
+  "Marketing",
+  "HR",
+  "Sales",
+  "System",
+  "Online",
+  "Production",
+];
+
+export const data = {
+  labels,
+  datasets: [
+    {
+      label: "Rejected",
+      //   data: labels.map(() => { min: -1000, max: 1000 }),
+      data: [12, 19, 3, 5, 2, 3],
+      backgroundColor: "rgb(255, 99, 132)",
+    },
+    {
+      label: "Approved",
+      //   data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+      data: [6, 19, 3, 5, 2, 3],
+      backgroundColor: "rgb(75, 192, 192)",
+    },
+    {
+      label: "Waiting",
+      //   data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+      data: [12, 19, 3, 5, 2, 3],
+      backgroundColor: "rgb(53, 162, 235)",
+    },
+  ],
+};
+
+export function TemplateChartBar() {
   const {t} = useTranslation()
-  const { approved, departmentName, rejected, total, waiting } =
-    DummyStatistics[0];
+  const [selectedDepartment, setSelectedDepartment] = useState<Department>();
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
-  const [selectedDepartment, setSelectedDepartment] = useState<Department>();
-  const { userInfo } = useSelector((state) => state.auth);
-  const {
-    isGetDepartmentsLoading,
-    departmentList,
-  } = useSelector((state) => state.system);
-
-  const handleFormatDate = (date: Dayjs | undefined) =>
-    date?.toISOString().replace("Z", "").replace("T17", "T00");
-
+  const { isGetDepartmentsLoading, departmentList } = useSelector(
+    (state) => state.system
+  );
   const handleChangeStartDate = (value: Dayjs) => {
     setStartDate(value.subtract(1, "day"));
   };
@@ -57,16 +105,8 @@ export const TemplateBox = () => {
   };
 
   return (
-    <Stack spacing={2} width="100%">
-      <h2>Template</h2>
-      <Paper
-        sx={{
-          p: 3,
-          // width: "50%",
-        }}
-      >
-        <Stack spacing={4}>
-          <Stack
+    <Paper sx={{ p: 10, maxHeight: "600px", borderRadius: 3, maxWidth: 'fit-content' }} elevation={3}>
+      <Stack
             direction="row"
             justifyContent="space-between"
             alignItems="end"
@@ -145,53 +185,7 @@ export const TemplateBox = () => {
               </Stack>
             </LocalizationProvider>
           </Stack>
-
-          <Typography
-            variant="h4"
-            component="h1"
-            style={{ paddingBottom: "10px" }}
-            fontWeight="600"
-          >
-            Total: {DummyStatistics[0].total}
-          </Typography>
-          <Divider />
-          <Stack spacing={2}>
-            <Stack direction='row' justifyContent='space-between' alignItems='center'>
-            <Box sx={{px:3, py: 1, backgroundColor: '#E0F8EA', borderRadius: 3, width: '150px'}}>
-            <Typography
-              variant="h6"
-              component="h1"
-              fontWeight="semiBold"
-              sx={{color: "#22CFCF"}}
-              align="center"
-            >
-              New
-            </Typography>
-            </Box>
-            <Typography variant="h6"
-              component="h1">
-            {DummyStatistics[0].waiting}
-            </Typography>
-            </Stack>
-            <Typography
-              variant="h6"
-              component="h1"
-              style={{ paddingBottom: "10px" }}
-              fontWeight="semiBold"
-            >
-              Approved: {DummyStatistics[0].approved}
-            </Typography>
-            <Typography
-              variant="h6"
-              component="h1"
-              style={{ paddingBottom: "10px" }}
-              fontWeight="semiBold"
-            >
-              Rejected: {DummyStatistics[0].rejected}
-            </Typography>
-          </Stack>
-        </Stack>
-      </Paper>
-    </Stack>
+      <Bar options={options} data={data} />
+    </Paper>
   );
-};
+}

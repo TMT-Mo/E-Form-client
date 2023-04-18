@@ -18,7 +18,7 @@ export interface GetDocumentsArgs {
   createdBy_eq?: number;
   type_eq?: string;
   typeName_eq?: string;
-  department_eq?: string;
+  departmentId_eq?: number;
   isLocked_eq?: boolean;
   documentName_contains?: string;
   signatoryList_contains?: number;

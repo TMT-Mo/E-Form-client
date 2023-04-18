@@ -51,7 +51,8 @@ const {
   IS_LOCKED,
   ID_USER,
   ROLE_NAME,
-  USERNAME
+  USERNAME,
+  VERSION
 } = DataTableHeader;
 
 const { checkHideColumnFromDevice, checkHideColumnFromPermission } = helpers;
@@ -83,13 +84,15 @@ export const templateColumns: GridColDef[] = [
     flex: 1,
     filterable: false,
     renderHeader: TranslateHeader,
+    sortable: false,
   },
   {
     field: TYPE_TEMPLATE,
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
     renderHeader: TranslateHeader,
-    renderCell: TranslateContent
+    renderCell: TranslateContent,
+    sortable: false,
   },
   {
     field: DEPARTMENT,
@@ -100,7 +103,8 @@ export const templateColumns: GridColDef[] = [
     renderHeader: TranslateHeader,
     renderCell: TranslateContent,
     headerAlign: 'center',
-    flex: .5
+    flex: .5,
+    sortable: false,
   },
   {
     field: CREATED_BY,
@@ -109,6 +113,7 @@ export const templateColumns: GridColDef[] = [
     flex: 0.5,
     filterOperators: createdByOnlyOperators,
     renderHeader: TranslateHeader,
+    sortable: false,
   },
   // {
   //   field: STATUS,
@@ -131,6 +136,7 @@ export const templateColumns: GridColDef[] = [
     filterable: checkHideColumnFromPermission(ENABLE_TEMPLATE),
     hideable: checkHideColumnFromPermission(ENABLE_TEMPLATE),
     renderHeader: TranslateHeader,
+    sortable: false,
   },
   {
     field: ACTION,
@@ -154,6 +160,7 @@ export const templateHistoryColumns: GridColDef[] = [
     renderCell: FileCell,
     align: "center",
     renderHeader: TranslateHeader,
+    sortable: false,
   },
   {
     field: TEMPLATE_NAME,
@@ -170,13 +177,15 @@ export const templateHistoryColumns: GridColDef[] = [
     flex: 1,
     filterable: false,
     renderHeader: TranslateHeader,
+    sortable: false,
   },
   {
     field: TYPE_TEMPLATE,
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
     renderHeader: TranslateHeader,
-    renderCell: TranslateContent
+    renderCell: TranslateContent,
+    sortable: false,
   },
   {
     field: DEPARTMENT_HISTORY,
@@ -187,6 +196,7 @@ export const templateHistoryColumns: GridColDef[] = [
     filterOperators: departmentOnlyOperators,
     flex: .5,
     renderHeader: TranslateHeader,
+    sortable: false,
   },
   {
     field: STATUS,
@@ -238,6 +248,7 @@ export const newTemplatesColumns: GridColDef[] = [
     renderCell: FileCell,
     align: "center",
     renderHeader: TranslateHeader,
+    sortable: false,
   },
   {
     field: TEMPLATE_NAME,
@@ -253,13 +264,15 @@ export const newTemplatesColumns: GridColDef[] = [
     flex: 1,
     filterable: false,
     renderHeader: TranslateHeader,
+    sortable: false,
   },
   {
     field: TYPE_TEMPLATE,
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
     renderHeader: TranslateHeader,
-    renderCell: TranslateContent
+    renderCell: TranslateContent,
+    sortable: false,
   },
   {
     field: DEPARTMENT,
@@ -270,6 +283,7 @@ export const newTemplatesColumns: GridColDef[] = [
     flex: .5,
     renderHeader: TranslateHeader,
     filterOperators: departmentOnlyOperators,
+    sortable: false,
   },
   {
     field: CREATED_BY,
@@ -310,6 +324,7 @@ export const awaitSigningColumns: GridColDef[] = [
     align: "center",
     hide: !checkHideColumnFromDevice(IPAD),
     renderHeader: TranslateHeader,
+    sortable: false,
   },
   {
     field: DOCUMENT_NAME,
@@ -352,13 +367,15 @@ export const awaitSigningColumns: GridColDef[] = [
     flex: .5,
     filterOperators: departmentOnlyOperators,
     renderHeader: TranslateHeader,
+    sortable: false,
   },
   {
     field: TYPE_DOCUMENT,
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
     renderHeader: TranslateHeader,
-    renderCell: TranslateContent
+    renderCell: TranslateContent,
+    sortable: false,
   },
   {
     field: CREATED_BY,
@@ -392,6 +409,7 @@ export const personalDocColumns: GridColDef[] = [
     align: "center",
     hide: !checkHideColumnFromDevice(IPAD),
     renderHeader: TranslateHeader,
+    sortable: false,
   },
   {
     field: DOCUMENT_NAME,
@@ -433,13 +451,15 @@ export const personalDocColumns: GridColDef[] = [
     flex: .5,
     filterOperators: departmentOnlyOperators,
     renderHeader: TranslateHeader,
+    sortable: false,
   },
   {
     field: TYPE_DOCUMENT,
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
     renderHeader: TranslateHeader,
-    renderCell: TranslateContent
+    renderCell: TranslateContent,
+    sortable: false,
   },
   {
     field: STATUS,
@@ -484,6 +504,7 @@ export const sharedDocColumns: GridColDef[] = [
     align: "center",
     hide: !checkHideColumnFromDevice(IPAD),
     renderHeader: TranslateHeader,
+    sortable: false,
   },
   {
     field: DOCUMENT_NAME,
@@ -527,13 +548,15 @@ export const sharedDocColumns: GridColDef[] = [
     flex: .5,
     filterOperators: departmentOnlyOperators,
     renderHeader: TranslateHeader,
+    sortable: false,
   },
   {
     field: TYPE_DOCUMENT,
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
     renderHeader: TranslateHeader,
-    renderCell: TranslateContent
+    renderCell: TranslateContent,
+    sortable: false,
   },
   {
     field: CREATED_BY,
@@ -574,6 +597,7 @@ export const historyDocColumns: GridColDef[] = [
     renderCell: FileCell,
     align: "center",
     renderHeader: TranslateHeader,
+    sortable: false,
   },
   {
     field: DOCUMENT_NAME,
@@ -613,7 +637,8 @@ export const historyDocColumns: GridColDef[] = [
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
     renderHeader: TranslateHeader,
-    renderCell: TranslateContent
+    renderCell: TranslateContent,
+    sortable: false,
   },
   {
     field: DEPARTMENT_HISTORY,
@@ -623,6 +648,7 @@ export const historyDocColumns: GridColDef[] = [
     headerAlign: 'center',
     flex: .5,
     filterOperators: departmentOnlyOperators,
+    sortable: false,
   },
   {
     field: STATUS,
@@ -631,10 +657,10 @@ export const historyDocColumns: GridColDef[] = [
     renderCell: StatusCell,
     headerAlign: "center",
     renderHeader: TranslateHeader,
-    filterOperators: statusDocumentOnlyOperators
+    filterOperators: statusDocumentOnlyOperators,
   },
   {
-    field: "version",
+    field: VERSION,
     headerName: "Version",
     renderHeader: TranslateHeader,
     align: 'center',

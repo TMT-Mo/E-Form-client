@@ -96,7 +96,8 @@ export enum DataTableHeader {
   TYPE_DOCUMENT = "typeName",
   ID_USER = 'id',
   USERNAME = 'userName',
-  ROLE_NAME = 'roleName'
+  ROLE_NAME = 'roleName',
+  VERSION = 'version'
 }
 
 export enum Permissions {
