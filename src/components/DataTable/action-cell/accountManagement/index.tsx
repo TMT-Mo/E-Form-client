@@ -42,7 +42,8 @@ export const AccountManagementActionCell = (
     setIsOpen(true);
   };
 
-  const handleToggleDialog = () => {
+  const handleToggleDialog = (event?: object, reason?: string) => {
+    if(reason === 'backdropClick') return
     setIsOpen((prevState) => !prevState)
     accountDetail && dispatch(clearAccountDetail());
   }

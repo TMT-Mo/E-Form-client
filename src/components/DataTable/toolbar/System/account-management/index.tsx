@@ -2,23 +2,21 @@ import { Stack, Paper, IconButton, InputBase } from "@mui/material";
 import { GridToolbarFilterButton } from "@mui/x-data-grid";
 import { StyledAddBtn } from "components/CustomStyled";
 import { RequiredPermission } from "components/RequiredPermission";
-import { useDispatch } from "hooks";
+import { useDispatch, useSelector } from "hooks";
 import { useTranslation } from "react-i18next";
 import { setLocation } from "slices/location";
-import {
-  LocationIndex,
-  Permissions,
-} from "utils/constants";
+import { LocationIndex, Permissions } from "utils/constants";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import { searchAccount } from "slices/system";
 
 const { ADD_TEMPLATE } = Permissions;
-
+const { SYSTEM } = LocationIndex;
 
 export const AccountManagementToolBar = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { locationIndex } = useSelector((state) => state.location);
   return (
     <Stack justifyContent="space-between" padding={3} direction="row">
       <Paper
@@ -43,7 +41,8 @@ export const AccountManagementToolBar = () => {
       </Paper>
       <Stack direction="row" spacing={3} alignItems="center">
         <GridToolbarFilterButton />
-        <RequiredPermission permission={ADD_TEMPLATE}>
+        {locationIndex === SYSTEM && (
+          <RequiredPermission permission={ADD_TEMPLATE}>
             <StyledAddBtn
               variant="outlined"
               size="small"
@@ -58,7 +57,8 @@ export const AccountManagementToolBar = () => {
               <AddIcon className="md:mr-2" />
               {t("Add")}
             </StyledAddBtn>
-        </RequiredPermission>
+          </RequiredPermission>
+        )}
       </Stack>
     </Stack>
   );

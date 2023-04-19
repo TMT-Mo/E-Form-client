@@ -3,7 +3,9 @@ import CustomizedProgressBars from "components/Statistics";
 import { useDispatch } from "hooks";
 import { Account } from "pages/analytics/dashboard/account-management";
 import { DocumentBox } from "pages/analytics/dashboard/document-box";
-import { TemplateBox } from "pages/analytics/dashboard/template-box";
+import { DocumentChartBar } from "pages/analytics/dashboard/document-chart-bar";
+import { TemplateBoxNoneFilter } from "pages/analytics/dashboard/template-box";
+import { TemplateBoxWithFilter } from "pages/analytics/dashboard/template-box-filter";
 import { TemplateChartBar } from "pages/analytics/dashboard/template-chart-bar";
 import React, { useEffect } from "react";
 import { getDepartmentList, getRoleList } from "slices/system";
@@ -75,10 +77,27 @@ export const AnalyticsDashboard = () => {
           </LocalizationProvider>
           <ChartBar />
         </Paper> */}
-        <TemplateChartBar/>
-        <Stack direction="row" spacing={10}>
-          <TemplateBox />
+        <Stack spacing={3}>
+          <h2>Template Statistics</h2>
+          <Stack direction="row" spacing={5}>
+            <TemplateChartBar />
+            <TemplateBoxWithFilter />
+          </Stack>
+        </Stack>
+        <Stack spacing={3}>
+          <h2>Document Statistics</h2>
+          <Stack direction="row" spacing={5}>
+            <TemplateChartBar />
+            <TemplateBoxWithFilter />
+          </Stack>
+        </Stack>
+        {/* <Stack direction="row" spacing={10}>
+          <DocumentChartBar />
           <DocumentBox />
+        </Stack> */}
+        <Stack direction="row" spacing={10}>
+          <TemplateBoxNoneFilter/>
+          <TemplateBoxNoneFilter/>
         </Stack>
         <Account />
       </Stack>
