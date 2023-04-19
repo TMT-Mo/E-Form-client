@@ -2,11 +2,12 @@ import { Container, Paper, Stack } from "@mui/material";
 import CustomizedProgressBars from "components/Statistics";
 import { useDispatch } from "hooks";
 import { Account } from "pages/analytics/dashboard/account-management";
-import { DocumentBox } from "pages/analytics/dashboard/document-box";
-import { DocumentChartBar } from "pages/analytics/dashboard/document-chart-bar";
-import { TemplateBoxNoneFilter } from "pages/analytics/dashboard/template-box";
-import { TemplateBoxWithFilter } from "pages/analytics/dashboard/template-box-filter";
-import { TemplateChartBar } from "pages/analytics/dashboard/template-chart-bar";
+import { DocumentBoxNoneFilter } from "pages/analytics/dashboard/document/document-box";
+import { DocumentBoxWithFilter } from "pages/analytics/dashboard/document/document-box-filter";
+import { DocumentChartBar } from "pages/analytics/dashboard/document/document-chart-bar";
+import { TemplateBoxNoneFilter } from "pages/analytics/dashboard/template/template-box";
+import { TemplateBoxWithFilter } from "pages/analytics/dashboard/template/template-box-filter";
+import { TemplateChartBar } from "pages/analytics/dashboard/template/template-chart-bar";
 import React, { useEffect } from "react";
 import { getDepartmentList, getRoleList } from "slices/system";
 
@@ -87,8 +88,8 @@ export const AnalyticsDashboard = () => {
         <Stack spacing={3}>
           <h2>Document Statistics</h2>
           <Stack direction="row" spacing={5}>
-            <TemplateChartBar />
-            <TemplateBoxWithFilter />
+            <DocumentChartBar />
+            <DocumentBoxWithFilter />
           </Stack>
         </Stack>
         {/* <Stack direction="row" spacing={10}>
@@ -97,7 +98,7 @@ export const AnalyticsDashboard = () => {
         </Stack> */}
         <Stack direction="row" spacing={10}>
           <TemplateBoxNoneFilter/>
-          <TemplateBoxNoneFilter/>
+          <DocumentBoxNoneFilter/>
         </Stack>
         <Account />
       </Stack>

@@ -24,7 +24,7 @@ import { Dayjs } from "dayjs";
 import { Department } from "models/system";
 import { useSelector } from "hooks";
 import { useTranslation } from "react-i18next";
-// import zoomPlugin from "chartjs-plugin-zoom";
+import zoomPlugin from "chartjs-plugin-zoom";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -32,7 +32,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  // zoomPlugin
+  zoomPlugin
 );
 
 export const options: ChartOptions<"bar"> = {
@@ -40,6 +40,21 @@ export const options: ChartOptions<"bar"> = {
     title: {
       display: true,
       text: "Stacked chart bar of all department in system",
+    },
+    zoom: {
+      pan: {
+        enabled: true,
+        mode: "x",
+      },
+      zoom: {
+        pinch: {
+          enabled: true, // Enable pinch zooming
+        },
+        wheel: {
+          enabled: true, // Enable wheel zooming
+        },
+        mode: "x",
+      },
     },
   },
   responsive: true,
@@ -77,30 +92,30 @@ export const data: ChartData<"bar"> = {
       //   data: labels.map(() => { min: -1000, max: 1000 }),
       data: [12, 19, 3, 5, 2, 3],
       backgroundColor: "rgb(255, 99, 132)",
-      // barThickness: 100,
-      barThickness: 100,
+      
+      barThickness: 60,
 
-      // minBarLength: 50
+      
     },
     {
       label: "Approved",
       //   data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
       data: [6, 19, 3, 5, 2, 3],
       backgroundColor: "rgb(75, 192, 192)",
-      // barThickness: 100,
-      barThickness: 100,
+      
+      barThickness: 60,
 
-      // minBarLength: 50
+      
     },
     {
       label: "Waiting",
       //   data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
       data: [12, 19, 3, 5, 2, 3],
       backgroundColor: "rgb(53, 162, 235)",
-      // barThickness: 100,
-      barThickness: 100,
+      
+      barThickness: 60,
 
-      // minBarLength: 50
+      
     },
   ],
 };
@@ -209,7 +224,13 @@ export function TemplateChartBar() {
             </Stack>
           </LocalizationProvider>
         </Stack>
-        <Bar options={options} data={data} style={{ maxWidth: "400px" }} />
+        <Bar
+          options={options}
+          data={data}
+          style={{
+            overflowX: 'scroll'
+          }}
+        />
       </Stack>
     </Paper>
   );

@@ -75,7 +75,7 @@ export const TemplateBoxNoneFilter = () => {
 
   return (
     <Stack spacing={2} width="100%">
-      <h2>Document</h2>
+      <h2>Template</h2>
       <Paper
         sx={{
           p: 3,
