@@ -597,7 +597,7 @@ export default function AfterLogin() {
         <DividerStyled />
 
         <Stack direction="row" alignItems="center" justifyContent="center">
-          <Typography sx={{ color: "#fff" }}>Help</Typography>
+          {open && <Typography sx={{ color: "#fff" }}>{t('Help')}</Typography>}
           <IconButton>
             <HelpOutline className="fill-white" />
           </IconButton>

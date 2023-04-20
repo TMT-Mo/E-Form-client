@@ -5,8 +5,6 @@ import {
   Input,
   InputAdornment,
   InputLabel,
-  OutlinedInput,
-  TextField,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { SaveLoadingBtn } from "components/CustomStyled";
@@ -15,6 +13,7 @@ import { changePassword } from "slices/auth";
 import { handleError } from "slices/alert";
 import { getDepartmentList, getRoleList } from "slices/system";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 interface Form {
   idUser: number;
@@ -23,25 +22,14 @@ interface Form {
   repeatNewPassword?: string;
 }
 
-interface AccountState {
-  idUser: number;
-  userName?: string;
-  password?: string;
-  signature?: string;
-  status?: number;
-  firstName: string;
-  lastName: string;
-  idRole: number;
-  idDepartment: number;
-}
-
 const ChangePassword = () => {
+  const { t } = useTranslation();
   const { userInfo, isChangePasswordLoading } = useSelector(
     (state) => state.auth
   );
   const [isDisable, setIsDisable] = useState(false);
   const [isPwErrorDisplay, setIsPwErrorDisplay] = useState(false);
-  const {logout} = useAuth()
+  const { logout } = useAuth();
   const dispatch = useDispatch();
   const [form, setForm] = useState<Form>({
     idUser: +userInfo?.userId!,
@@ -73,7 +61,7 @@ const ChangePassword = () => {
         password: newPassword!,
       })
     ).unwrap();
-    logout()
+    logout();
   };
 
   useEffect(() => {
@@ -121,7 +109,7 @@ const ChangePassword = () => {
     <div className={`h-screen flex items-center justify-center `}>
       <form>
         <div className="flex flex-col space-y-8 w-2/3 z-10 rounded-md bg-white shadow-md lg:w-96 lg:px-10 lg:py-10">
-          <h1 className="text-2xl font-bold z-10">Change password</h1>
+          <h1 className="text-2xl font-bold z-10">{t('Change password')}</h1>
           <FormControl
             variant="standard"
             error={
@@ -130,7 +118,7 @@ const ChangePassword = () => {
             }
           >
             <InputLabel htmlFor="outlined-adornment-password">
-              New password
+              {t('New password')}
             </InputLabel>
             <Input
               id="outlined-adornment-password"
@@ -139,10 +127,10 @@ const ChangePassword = () => {
               onChange={(value) =>
                 setForm({ ...form, newPassword: value.target.value })
               }
-              error={
-                form.newPassword !== form.repeatNewPassword &&
-                form.repeatNewPassword?.length !== 0
-              }
+              // error={
+              //   form.newPassword !== form.repeatNewPassword &&
+              //   form.repeatNewPassword?.length !== 0
+              // }
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -155,12 +143,12 @@ const ChangePassword = () => {
                 </InputAdornment>
               }
             />
-            {form.newPassword !== form.repeatNewPassword &&
+            {/* {form.newPassword !== form.repeatNewPassword &&
               form.repeatNewPassword?.length !== 0 && (
                 <FormHelperText id="component-error-text">
                   Repeat password must be match with New password!
                 </FormHelperText>
-              )}
+              )} */}
           </FormControl>
           <FormControl
             variant="standard"
@@ -170,7 +158,7 @@ const ChangePassword = () => {
             }
           >
             <InputLabel htmlFor="outlined-adornment-password">
-              Repeat new password
+              {t('Repeat new password')}
             </InputLabel>
             <Input
               id="outlined-adornment-password"
@@ -194,7 +182,7 @@ const ChangePassword = () => {
             {form.newPassword !== form.repeatNewPassword &&
               form.repeatNewPassword?.length !== 0 && (
                 <FormHelperText id="component-error-text">
-                  Repeat password must be match with New password!
+                  {t('Repeat password must be match with New password')}!
                 </FormHelperText>
               )}
           </FormControl>
@@ -205,10 +193,10 @@ const ChangePassword = () => {
             // disabled
             onClick={onChangePasswordHandler}
           >
-            Save
+            {t('Save')}
           </SaveLoadingBtn>
           <span className="text-gray-500 italic">
-            *Notice: After changing password, you have to login again!
+            *{t('Notice: After changing password, you have to login again')}!
           </span>
         </div>
       </form>
