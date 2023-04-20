@@ -1,9 +1,4 @@
-import {
-  LocalizationProvider,
-  DesktopDatePicker,
-  DatePicker,
-  DesktopDateTimePicker,
-} from "@mui/x-date-pickers";
+import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
 import {
   Autocomplete,
   Box,
@@ -15,33 +10,25 @@ import {
   Typography,
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs, { Dayjs } from "dayjs";
-import { t } from "i18next";
-import { DateFilter } from "models/mui-data";
+import { Dayjs } from "dayjs";
 import React, { useState } from "react";
 import { useSelector } from "hooks";
 import { DummyStatistics } from "utils/dummy-data";
-import { TextFieldStyled } from "components/CustomStyled";
 import { Department } from "models/system";
 import { useTranslation } from "react-i18next";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import PendingActionsIcon from "@mui/icons-material/PendingActions";
-import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
-import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import styled from "@emotion/styled";
+import { DoughnutChart } from "components/Chart/doughnut";
+import { ChartDataset } from "chart.js";
 
-const BoxStyled = styled(
-  Box,
-  {}
-)({
-  padding: 7,
-  borderRadius: 10,
-  // background: "#4BC0C0",
-  width: "fit-content",
-  height: "100%",
-  display: "flex",
-  alignItems: "center",
-});
+const labels = ["Rejected", "Processing", "Approved"];
+const datasets: ChartDataset<"doughnut">[] = [
+  {
+    label: "Value",
+    data: [20, 10, 3],
+    backgroundColor: ["#FF6384", "#35A2EB", "#22CFCF"],
+    borderColor: ["#FF6384", "#35A2EB", "#22CFCF"],
+  },
+];
 
 export const TemplateBoxWithFilter = () => {
   const { t } = useTranslation();
@@ -82,7 +69,7 @@ export const TemplateBoxWithFilter = () => {
       }}
       elevation={3}
     >
-      <Stack spacing={4}>
+      <Stack spacing={2} direction="column">
         <Stack direction="row" justifyContent="space-between" alignItems="end">
           <Autocomplete
             id="asynchronous-demo"
@@ -117,46 +104,46 @@ export const TemplateBoxWithFilter = () => {
             )}
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Stack direction="row" spacing={3}>
-                <DesktopDatePicker
-                  label="From"
-                  inputFormat="DD/MM/YYYY"
-                  value={startDate}
-                  onChange={(newValue: Dayjs | null) =>
-                    handleChangeStartDate(newValue!.add(1, "day"))
-                  }
-                  renderInput={(params: any) => (
-                    <TextField
-                      {...params}
-                      variant="standard"
-                      disabled
-                      sx={{ width: "130px" }}
-                      // value={null}
-                    />
-                  )}
-                  disableFuture
-                  maxDate={endDate ?? undefined}
-                />
-                <DesktopDatePicker
-                  label="To"
-                  inputFormat="DD/MM/YYYY"
-                  value={endDate}
-                  onChange={(newValue: Dayjs | null) =>
-                    handleChangeEndDate(newValue!.add(2, "day"))
-                  }
-                  renderInput={(params: any) => (
-                    <TextField
-                      {...params}
-                      sx={{ width: "130px" }}
-                      variant="standard"
-                      disabled
-                    />
-                  )}
-                  disableFuture
-                  minDate={startDate ?? undefined}
-                />
-              </Stack>
-            </LocalizationProvider>
+            <Stack direction="row" spacing={3}>
+              <DesktopDatePicker
+                label={t("From")}
+                inputFormat="DD/MM/YYYY"
+                value={startDate}
+                onChange={(newValue: Dayjs | null) =>
+                  handleChangeStartDate(newValue!.add(1, "day"))
+                }
+                renderInput={(params: any) => (
+                  <TextField
+                    {...params}
+                    variant="standard"
+                    disabled
+                    sx={{ width: "130px" }}
+                    // value={null}
+                  />
+                )}
+                disableFuture
+                maxDate={endDate ?? undefined}
+              />
+              <DesktopDatePicker
+                label={t("To")}
+                inputFormat="DD/MM/YYYY"
+                value={endDate}
+                onChange={(newValue: Dayjs | null) =>
+                  handleChangeEndDate(newValue!.add(2, "day"))
+                }
+                renderInput={(params: any) => (
+                  <TextField
+                    {...params}
+                    sx={{ width: "130px" }}
+                    variant="standard"
+                    disabled
+                  />
+                )}
+                disableFuture
+                minDate={startDate ?? undefined}
+              />
+            </Stack>
+          </LocalizationProvider>
         </Stack>
 
         <Typography
@@ -165,187 +152,37 @@ export const TemplateBoxWithFilter = () => {
           style={{ paddingBottom: "10px" }}
           fontWeight="600"
         >
-          Total: {DummyStatistics[0].total}
+          {t("Total")}: {DummyStatistics[0].total}
         </Typography>
-        <Stack spacing={2}>
+        <DoughnutChart labels={labels} datasets={datasets} />
+        <Stack spacing={4}>
           <Divider />
-          <Stack direction="row" justifyContent="space-around">
-            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Stack direction="row" spacing={3}>
-                <DesktopDatePicker
-                  label="From"
-                  inputFormat="DD/MM/YYYY"
-                  value={startDate}
-                  onChange={(newValue: Dayjs | null) =>
-                    handleChangeStartDate(newValue!.add(1, "day"))
-                  }
-                  renderInput={(params: any) => (
-                    <TextField
-                      {...params}
-                      variant="standard"
-                      disabled
-                      sx={{ width: "150px" }}
-                      // value={null}
-                    />
-                  )}
-                  disableFuture
-                  maxDate={endDate ?? undefined}
-                />
-                <DesktopDatePicker
-                  label="To"
-                  inputFormat="DD/MM/YYYY"
-                  value={endDate}
-                  onChange={(newValue: Dayjs | null) =>
-                    handleChangeEndDate(newValue!.add(2, "day"))
-                  }
-                  renderInput={(params: any) => (
-                    <TextField
-                      {...params}
-                      sx={{ width: "150px" }}
-                      variant="standard"
-                      disabled
-                    />
-                  )}
-                  disableFuture
-                  minDate={startDate ?? undefined}
-                />
-              </Stack>
-            </LocalizationProvider> */}
-          </Stack>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              New ( Unhandled )
-            </Typography>
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              {DummyStatistics[0].approved}
-            </Typography>
-          </Stack>
-
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              New ( Handled )
-            </Typography>
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              {DummyStatistics[0].approved}
-            </Typography>
-          </Stack>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              Approved
-            </Typography>
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              {DummyStatistics[0].approved}
-            </Typography>
-          </Stack>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              Rejected
-            </Typography>
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              {DummyStatistics[0].approved}
-            </Typography>
-          </Stack>
-          <Divider />
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              Remaining
-            </Typography>
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              {DummyStatistics[0].approved}
-            </Typography>
-          </Stack>
-
-          {/* <Stack
-            direction="row"
-            alignItems="end"
-            justifyContent="space-between"
-          >
-            <Stack direction="row" alignItems="end" spacing={3}>
-              <BoxStyled sx={{ background: "#049BFF" }}>
-                <MoreHorizIcon style={{ color: "#fff" }} fontSize="large" />
-              </BoxStyled>
-              <Stack>
-                <Typography variant="h6" component="h1" fontWeight="semiBold">
-                  New
-                </Typography>
-                <Typography sx={{ color: "#b2bec3" }} fontWeight="bold">
-                  Template created in selected time
-                </Typography>
-              </Stack>
+          <Stack spacing={2}>
+            <Stack direction="row" justifyContent="space-between">
+              <Typography variant="h6" component="h1" fontWeight="semiBold">
+                {t("Processing")}
+              </Typography>
+              <Typography variant="h6" component="h1" fontWeight="semiBold">
+                {DummyStatistics[0].approved}
+              </Typography>
             </Stack>
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              {DummyStatistics[0].approved}
-            </Typography>
-          </Stack> */}
-          {/* <Stack
-            direction="row"
-            alignItems="end"
-            justifyContent="space-between"
-          >
-            <Stack direction="row" alignItems="end" spacing={3}>
-              <BoxStyled sx={{ background: "#4BC0C0" }}>
-                <CheckOutlinedIcon style={{ color: "#fff" }} fontSize="large" />
-              </BoxStyled>
-              <Stack>
-                <Typography variant="h6" component="h1" fontWeight="semiBold">
-                  Approved
-                </Typography>
-                <Typography sx={{ color: "#b2bec3" }} fontWeight="bold">
-                  Approved template in selected time
-                </Typography>
-              </Stack>
+            <Stack direction="row" justifyContent="space-between">
+              <Typography variant="h6" component="h1" fontWeight="semiBold">
+                {t("Approved")}
+              </Typography>
+              <Typography variant="h6" component="h1" fontWeight="semiBold">
+                {DummyStatistics[0].approved}
+              </Typography>
             </Stack>
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              {DummyStatistics[0].approved}
-            </Typography>
+            <Stack direction="row" justifyContent="space-between">
+              <Typography variant="h6" component="h1" fontWeight="semiBold">
+                {t("Rejected")}
+              </Typography>
+              <Typography variant="h6" component="h1" fontWeight="semiBold">
+                {DummyStatistics[0].approved}
+              </Typography>
+            </Stack>
           </Stack>
-          <Stack
-            direction="row"
-            alignItems="end"
-            justifyContent="space-between"
-          >
-            <Stack direction="row" alignItems="end" spacing={3}>
-              <BoxStyled sx={{ background: "#FF6384" }}>
-                <CloseOutlinedIcon style={{ color: "#fff" }} fontSize="large" />
-              </BoxStyled>
-              <Stack>
-                <Typography variant="h6" component="h1" fontWeight="semiBold">
-                  Rejected
-                </Typography>
-                <Typography sx={{ color: "#b2bec3" }} fontWeight="bold">
-                  Rejected template in selected time
-                </Typography>
-              </Stack>
-            </Stack>
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              {DummyStatistics[0].approved}
-            </Typography>
-          </Stack>
-          <Stack
-            direction="row"
-            alignItems="end"
-            justifyContent="space-between"
-          >
-            <Stack direction="row" alignItems="end" spacing={3}>
-              <BoxStyled sx={{ background: "#d63031" }}>
-                <PendingActionsIcon
-                  style={{ color: "#fff" }}
-                  fontSize="large"
-                />
-              </BoxStyled>
-              <Stack>
-                <Typography variant="h6" component="h1" fontWeight="semiBold">
-                  Remaining
-                </Typography>
-                <Typography sx={{ color: "#b2bec3" }} fontWeight="bold">
-                  Non-handled template before selected time
-                </Typography>
-              </Stack>
-            </Stack>
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              {DummyStatistics[0].approved}
-            </Typography>
-          </Stack> */}
         </Stack>
       </Stack>
     </Paper>

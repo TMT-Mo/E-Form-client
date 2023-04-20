@@ -1,6 +1,5 @@
-import { Container, Paper, Stack } from "@mui/material";
+import { Container, Stack } from "@mui/material";
 import { RequiredPermission } from "components/RequiredPermission";
-import CustomizedProgressBars from "components/Statistics";
 import { useDispatch } from "hooks";
 import { Account } from "pages/analytics/dashboard/account-management";
 import { DocumentBoxNoneFilter } from "pages/analytics/dashboard/document/document-box";
@@ -9,7 +8,7 @@ import { DocumentChartBar } from "pages/analytics/dashboard/document/document-ch
 import { TemplateBoxNoneFilter } from "pages/analytics/dashboard/template/template-box";
 import { TemplateBoxWithFilter } from "pages/analytics/dashboard/template/template-box-filter";
 import { TemplateChartBar } from "pages/analytics/dashboard/template/template-chart-bar";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { getDepartmentList, getRoleList } from "slices/system";
 import { Permissions } from "utils/constants";
 
@@ -87,7 +86,7 @@ export const AnalyticsDashboard = () => {
         </Paper> */}
         <RequiredPermission permission={VIEW_DOCUMENT_OVERALL_STATISTICS}>
           <Stack spacing={3}>
-            <h2>Template Statistics</h2>
+            <h2>Template Overall Statistics</h2>
             <Stack direction="row" spacing={5}>
               <TemplateChartBar />
               <TemplateBoxWithFilter />
@@ -95,8 +94,8 @@ export const AnalyticsDashboard = () => {
           </Stack>
         </RequiredPermission>
         <RequiredPermission permission={VIEW_DOCUMENT_OVERALL_STATISTICS}>
-          <Stack spacing={3}>
-            <h2>Document Statistics</h2>
+          <Stack spacing={3} maxHeight='600px' height='100%'>
+            <h2>Document Overall Statistics</h2>
             <Stack direction="row" spacing={5}>
               <DocumentChartBar />
               <DocumentBoxWithFilter />

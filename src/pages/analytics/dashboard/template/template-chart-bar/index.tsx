@@ -1,16 +1,7 @@
 import React, { useState } from "react";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  ChartData,
-  ChartOptions,
+  ChartDataset,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
 import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
 import {
   Autocomplete,
@@ -24,52 +15,7 @@ import { Dayjs } from "dayjs";
 import { Department } from "models/system";
 import { useSelector } from "hooks";
 import { useTranslation } from "react-i18next";
-import zoomPlugin from "chartjs-plugin-zoom";
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  zoomPlugin
-);
-
-export const options: ChartOptions<"bar"> = {
-  plugins: {
-    title: {
-      display: true,
-      text: "Stacked chart bar of all department in system",
-    },
-    zoom: {
-      pan: {
-        enabled: true,
-        mode: "x",
-      },
-      zoom: {
-        pinch: {
-          enabled: true, // Enable pinch zooming
-        },
-        wheel: {
-          enabled: true, // Enable wheel zooming
-        },
-        mode: "x",
-      },
-    },
-  },
-  responsive: true,
-  scales: {
-    x: {
-      stacked: true,
-    },
-    y: {
-      stacked: true,
-    },
-  },
-  elements: {
-    bar: {},
-  },
-};
+import { ChartBar } from "components/Chart/bar";
 
 const labels = [
   "IT",
@@ -84,41 +30,26 @@ const labels = [
   "Production",
 ];
 
-export const data: ChartData<"bar"> = {
-  labels,
-  datasets: [
-    {
-      label: "Rejected",
-      //   data: labels.map(() => { min: -1000, max: 1000 }),
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: "rgb(255, 99, 132)",
-      
-      barThickness: 60,
-
-      
-    },
-    {
-      label: "Approved",
-      //   data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-      data: [6, 19, 3, 5, 2, 3],
-      backgroundColor: "rgb(75, 192, 192)",
-      
-      barThickness: 60,
-
-      
-    },
-    {
-      label: "Waiting",
-      //   data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: "rgb(53, 162, 235)",
-      
-      barThickness: 60,
-
-      
-    },
-  ],
-};
+const datasets: ChartDataset<'bar'>[] = [
+  {
+    label: "Rejected",
+    data: [12, 19, 3, 5, 2, 3],
+    backgroundColor: "rgb(255, 99, 132)",
+    barThickness: 60,
+  },
+  {
+    label: "Approved",
+    data: [6, 19, 3, 5, 2, 3],
+    backgroundColor: "rgb(75, 192, 192)",
+    barThickness: 60,
+  },
+  {
+    label: "Processing",
+    data: [12, 19, 3, 5, 2, 3],
+    backgroundColor: "rgb(53, 162, 235)",
+    barThickness: 60,
+  },
+];
 
 export function TemplateChartBar() {
   const { t } = useTranslation();
@@ -224,13 +155,7 @@ export function TemplateChartBar() {
             </Stack>
           </LocalizationProvider>
         </Stack>
-        <Bar
-          options={options}
-          data={data}
-          style={{
-            overflowX: 'scroll'
-          }}
-        />
+        <ChartBar datasets={datasets} labels={labels}/>
       </Stack>
     </Paper>
   );
