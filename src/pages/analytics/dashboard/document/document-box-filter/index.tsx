@@ -4,7 +4,6 @@ import {
 } from "@mui/x-date-pickers";
 import {
   Autocomplete,
-  Box,
   CircularProgress,
   Divider,
   Paper,
@@ -19,7 +18,6 @@ import { useSelector } from "hooks";
 import { DummyStatistics } from "utils/dummy-data";
 import { Department } from "models/system";
 import { useTranslation } from "react-i18next";
-import styled from "@emotion/styled";
 import { DoughnutChart } from "components/Chart/doughnut";
 import { ChartDataset } from "chart.js";
 
