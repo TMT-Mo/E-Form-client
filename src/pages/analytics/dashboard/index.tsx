@@ -1,4 +1,5 @@
 import { Container, Paper, Stack } from "@mui/material";
+import { RequiredPermission } from "components/RequiredPermission";
 import CustomizedProgressBars from "components/Statistics";
 import { useDispatch } from "hooks";
 import { Account } from "pages/analytics/dashboard/account-management";
@@ -10,7 +11,13 @@ import { TemplateBoxWithFilter } from "pages/analytics/dashboard/template/templa
 import { TemplateChartBar } from "pages/analytics/dashboard/template/template-chart-bar";
 import React, { useEffect } from "react";
 import { getDepartmentList, getRoleList } from "slices/system";
+import { Permissions } from "utils/constants";
 
+const {
+  VIEW_DOCUMENT_OVERALL_STATISTICS,
+  VIEW_ACCOUNT_LIST,
+  VIEW_DOCUMENT_STATISTICS,
+} = Permissions;
 export const AnalyticsDashboard = () => {
   const dispatch = useDispatch();
 
@@ -78,29 +85,38 @@ export const AnalyticsDashboard = () => {
           </LocalizationProvider>
           <ChartBar />
         </Paper> */}
-        <Stack spacing={3}>
-          <h2>Template Statistics</h2>
-          <Stack direction="row" spacing={5}>
-            <TemplateChartBar />
-            <TemplateBoxWithFilter />
+        <RequiredPermission permission={VIEW_DOCUMENT_OVERALL_STATISTICS}>
+          <Stack spacing={3}>
+            <h2>Template Statistics</h2>
+            <Stack direction="row" spacing={5}>
+              <TemplateChartBar />
+              <TemplateBoxWithFilter />
+            </Stack>
           </Stack>
-        </Stack>
-        <Stack spacing={3}>
-          <h2>Document Statistics</h2>
-          <Stack direction="row" spacing={5}>
-            <DocumentChartBar />
-            <DocumentBoxWithFilter />
+        </RequiredPermission>
+        <RequiredPermission permission={VIEW_DOCUMENT_OVERALL_STATISTICS}>
+          <Stack spacing={3}>
+            <h2>Document Statistics</h2>
+            <Stack direction="row" spacing={5}>
+              <DocumentChartBar />
+              <DocumentBoxWithFilter />
+            </Stack>
           </Stack>
-        </Stack>
+        </RequiredPermission>
+
         {/* <Stack direction="row" spacing={10}>
           <DocumentChartBar />
           <DocumentBox />
         </Stack> */}
-        <Stack direction="row" spacing={10}>
-          <TemplateBoxNoneFilter/>
-          <DocumentBoxNoneFilter/>
-        </Stack>
-        <Account />
+        <RequiredPermission permission={VIEW_DOCUMENT_STATISTICS}>
+          <Stack direction="row" spacing={10}>
+            <TemplateBoxNoneFilter />
+            <DocumentBoxNoneFilter />
+          </Stack>
+        </RequiredPermission>
+        <RequiredPermission permission={VIEW_ACCOUNT_LIST}>
+          <Account />
+        </RequiredPermission>
       </Stack>
     </Container>
   );

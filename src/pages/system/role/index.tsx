@@ -80,7 +80,7 @@ export const RoleSystem = () => {
 
   return (
     <>
-      <CustomBox sx={{width: '25%'}}>
+      <CustomBox sx={{w: 1/4}}>
       <Stack
           direction="row"
           // spacing={25}
@@ -105,8 +105,8 @@ export const RoleSystem = () => {
               {roleList?.length}
             </Typography>
           )}
-        </Stack>
         {isGetRoleLoading && <CircularProgress />}
+        </Stack>
         
           
           {!isGetRoleLoading && (

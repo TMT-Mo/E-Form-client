@@ -6,12 +6,13 @@ import { DateFilter } from "models/mui-data";
 import { getDocuments } from "slices/document";
 import { DataTableHeader } from "utils/constants";
 
-const { TYPE, CREATED_AT,CREATED_BY } = DataTableHeader;
+const { TYPE, CREATED_AT, CREATED_BY, DEPARTMENT, TYPE_DOCUMENT } =
+  DataTableHeader;
 const AwaitSigning = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
-  const {filter, sorter} = useSelector(state => state.filter)
-  const { searchItemValue, currentPage} = useSelector(
+  const { filter, sorter } = useSelector((state) => state.filter);
+  const { searchItemValue, currentPage } = useSelector(
     (state) => state.document
   );
   const { t } = useTranslation();
@@ -35,6 +36,12 @@ const AwaitSigning = () => {
           filter?.field === CREATED_AT
             ? (filter?.value as DateFilter).startDate
             : undefined,
+        departmentId_eq:
+          filter?.field === DEPARTMENT ? (filter.value as number) : undefined,
+        typeName_eq:
+          filter?.field === TYPE_DOCUMENT
+            ? (filter.value as string)
+            : undefined,
       })
     );
 
@@ -42,7 +49,15 @@ const AwaitSigning = () => {
     return () => {
       getDocumentList.abort();
     };
-  }, [currentPage, dispatch, filter?.field, filter?.value, searchItemValue, sorter, userInfo?.userId]);
+  }, [
+    currentPage,
+    dispatch,
+    filter?.field,
+    filter?.value,
+    searchItemValue,
+    sorter,
+    userInfo?.userId,
+  ]);
 
   return (
     <div className="flex flex-col py-10 space-y-6">

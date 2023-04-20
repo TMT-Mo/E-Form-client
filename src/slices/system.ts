@@ -402,6 +402,17 @@ const system = createSlice({
       size: 10,
       currentPage: 0,
     }),
+    clearSystem: (state: State) => ({
+      ...state,
+      userList: [],
+      searchItemValue: undefined,
+      total: undefined,
+      size: 10,
+      currentPage: 0,
+      permissionList: [],
+      roleList: [],
+      templateTypeList: [],
+    }),
     clearAccountDetail: (state: State) => ({
       ...state,
       accountDetail: undefined,
@@ -593,5 +604,6 @@ export const {
   clearAccountPagination,
   getAccountDetail,
   clearAccountDetail,
+  clearSystem
 } = system.actions;
 export default system.reducer;

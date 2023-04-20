@@ -52,7 +52,20 @@ const SelectType = (props: GridFilterInputValueProps) => {
 
   return (
     <>
-      {userList && (
+      {isGetUserListLoading ? (
+        <Box
+          sx={{
+            display: "inline-flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            height: 48,
+          }}
+          className="flex justify-center items-center w-full"
+        >
+          <CircularProgress size={20} />
+        </Box>
+      ) : (
         <FormControl variant="standard" sx={{ minWidth: 120 }}>
           <InputLabel id="demo-simple-select-standard-label">
             {t("Filter value")}
@@ -71,20 +84,6 @@ const SelectType = (props: GridFilterInputValueProps) => {
             ))}
           </Select>
         </FormControl>
-      )}
-      {isGetUserListLoading && (
-        <Box
-          sx={{
-            display: "inline-flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            height: 48,
-          }}
-          className="flex justify-center items-center w-full"
-        >
-          <CircularProgress size={20} />
-        </Box>
       )}
     </>
   );

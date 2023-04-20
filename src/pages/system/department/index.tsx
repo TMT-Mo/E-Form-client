@@ -111,9 +111,9 @@ export const DepartmentSystem = () => {
             </Typography>
             
           )}
+        {isGetDepartmentsLoading && <CircularProgress />}
         </Stack>
 
-        {isGetDepartmentsLoading && <CircularProgress />}
         
           
           {!isGetDepartmentsLoading && (

@@ -52,7 +52,9 @@ const {
   ID_USER,
   ROLE_NAME,
   USERNAME,
-  VERSION
+  VERSION,
+  TYPE_TEMPLATE_HISTORY,
+  TYPE_DOCUMENT_HISTORY
 } = DataTableHeader;
 
 const { checkHideColumnFromDevice, checkHideColumnFromPermission } = helpers;
@@ -267,7 +269,7 @@ export const newTemplatesColumns: GridColDef[] = [
     sortable: false,
   },
   {
-    field: TYPE_TEMPLATE,
+    field: TYPE_TEMPLATE_HISTORY,
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
     renderHeader: TranslateHeader,
@@ -609,18 +611,18 @@ export const historyDocColumns: GridColDef[] = [
     minWidth: 200,
     renderHeader: TranslateHeader,
   },
-  {
-    field: CREATED_AT,
-    headerName: "Date Published",
-    renderCell: DateCell,
-    align: "center",
-    headerAlign: "center",
-    flex: 0.3,
-    filterOperators: createdAtOnlyOperators,
-    minWidth: 100,
-    renderHeader: TranslateHeader,
-    hide: !checkHideColumnFromDevice(IPAD),
-  },
+  // {
+  //   field: CREATED_AT,
+  //   headerName: "Date Published",
+  //   renderCell: DateCell,
+  //   align: "center",
+  //   headerAlign: "center",
+  //   flex: 0.3,
+  //   filterOperators: createdAtOnlyOperators,
+  //   minWidth: 100,
+  //   renderHeader: TranslateHeader,
+  //   hide: !checkHideColumnFromDevice(IPAD),
+  // },
   {
     field: UPDATED_AT,
     headerName: "Date Modified",
@@ -633,7 +635,7 @@ export const historyDocColumns: GridColDef[] = [
     renderHeader: TranslateHeader,
   },
   {
-    field: TYPE_DOCUMENT,
+    field: TYPE_DOCUMENT_HISTORY,
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
     renderHeader: TranslateHeader,

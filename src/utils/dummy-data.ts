@@ -79,6 +79,18 @@ export const DummyPermissions: Permission[] = [
     id: 20,
     permissionName: 'SHARE_DOCUMENT'
   },
+  {
+    id: 21,
+    permissionName: 'VIEW_ACCOUNT_LIST'
+  },
+  {
+    id: 22,
+    permissionName: 'VIEW_DOCUMENT_STATISTICS'
+  },
+  {
+    id: 23,
+    permissionName: 'VIEW_DOCUMENT_OVERALL_STATISTICS'
+  },
 ]
 
 export const FixedDummyPermissions: Permission[] = [

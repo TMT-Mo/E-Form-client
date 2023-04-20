@@ -23,6 +23,7 @@ import {
   AccountStatus,
   AccountStatusTag,
   LocationIndex,
+  Permissions,
 } from "utils/constants";
 import { DummyPermissions, FixedDummyPermissions } from "utils/dummy-data";
 import { TextFieldStyled, SaveLoadingBtn } from "components/CustomStyled";
@@ -64,7 +65,7 @@ const statusOptions: AccountStatusOptions[] = [
 ];
 
 const { SYSTEM } = LocationIndex;
-
+const {VIEW_DOCUMENT_OVERALL_STATISTICS, VIEW_DOCUMENT_STATISTICS} = Permissions
 export const EditDialog = (props: Props) => {
   const { t } = useTranslation();
   const { isOpen, handleToggleDialog } = props;
@@ -131,6 +132,13 @@ export const EditDialog = (props: Props) => {
   ]);
 
   const onChangeSelectedPermissions = (value: Permission[]) => {
+    const hasOverallStatistics = value.find(v => v.id === VIEW_DOCUMENT_OVERALL_STATISTICS)
+    const hasNormalStatistics = value.find(v => v.id === VIEW_DOCUMENT_STATISTICS)
+    if(hasOverallStatistics && hasNormalStatistics){
+      dispatch(handleError({errorMessage: 'You can only select VIEW_DOCUMENT_OVERALL_STATISTICS or VIEW_DOCUMENT_STATISTICS'}))
+      return
+    }
+    
     setPermissions([
       // ...FixedDummyPermissions,
       // ...value.filter((option) => FixedDummyPermissions.indexOf(option) === -1),
@@ -272,21 +280,23 @@ export const EditDialog = (props: Props) => {
                 disabled
               />
             </Stack>
-            {!disableEditAccount && <Stack direction="row" alignItems="center">
-              <Stack spacing={0.5} width="100%">
-                <Typography fontSize="0.75rem">{t("Password")}</Typography>
-                <TextField
-                  id="component-outlined"
-                  sx={{ color: "#000" }}
-                  disabled
-                  value={account.password}
-                />
-                {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
+            {!disableEditAccount && (
+              <Stack direction="row" alignItems="center">
+                <Stack spacing={0.5} width="100%">
+                  <Typography fontSize="0.75rem">{t("Password")}</Typography>
+                  <TextField
+                    id="component-outlined"
+                    sx={{ color: "#000" }}
+                    disabled
+                    value={account.password}
+                  />
+                  {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
+                </Stack>
+                <IconButton onClick={onRefreshPassword}>
+                  <RefreshIcon />
+                </IconButton>
               </Stack>
-              <IconButton onClick={onRefreshPassword}>
-                <RefreshIcon />
-              </IconButton>
-            </Stack>}
+            )}
 
             {/* Department */}
             <Stack spacing={0.5}>

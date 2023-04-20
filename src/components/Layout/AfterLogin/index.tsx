@@ -408,7 +408,7 @@ export default function AfterLogin() {
                 <ListTextStyled primary={t("Dashboard")} />
               </StyledListBtn>
             </RequiredPermission>
-            <RequiredPermission permission={ANALYTICS_ACTIVITIES_MANAGEMENT}>
+            {/* <RequiredPermission permission={ANALYTICS_ACTIVITIES_MANAGEMENT}>
               <StyledListBtn
                 selected={locationIndex === ACTIVITIES}
                 onClick={(event) => handleListItemClick(event, ACTIVITIES)}
@@ -425,7 +425,7 @@ export default function AfterLogin() {
                 </StyledTooltip>
                 <ListTextStyled primary={t("Activities")} />
               </StyledListBtn>
-            </RequiredPermission>
+            </RequiredPermission> */}
           </Stack>
         </StyledList>
         <RequiredPermission permission={SYSTEM_MANAGEMENT}>

@@ -119,8 +119,8 @@ export const TypeTemplateSystem = () => {
                 {templateTypeList?.length}
               </Typography>
             )}
-          </Stack>
           {isGetTemplateTypesLoading && <CircularProgress />}
+          </Stack>
 
           {!isGetTemplateTypesLoading && (
             <Stack direction="column">

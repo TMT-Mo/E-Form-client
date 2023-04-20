@@ -1,11 +1,11 @@
 export enum SessionStorage {
   LOCATION = "location",
-  TOKEN_NAME = "token"
+  TOKEN_NAME = "token",
 }
 export enum AlertStatus {
   SUCCESS = "success",
   ERROR = "error",
-  INFO = "info"
+  INFO = "info",
 }
 
 export enum ResponseStatus {
@@ -43,7 +43,6 @@ export enum ViewerLocationIndex {
   VIEW_DOCUMENT_HISTORY_INDEX = 6,
   VIEW_TEMPLATE_HISTORY_INDEX = 7,
   VIEW_SHARED_DOCUMENT_INDEX = 8,
- 
 }
 
 export enum TypeFile {
@@ -83,6 +82,7 @@ export enum DataTableHeader {
   STATUS = "status",
   IS_ENABLE = "isEnable",
   TYPE_TEMPLATE = "typeName",
+  TYPE_TEMPLATE_HISTORY = "typeNameHistory",
   DEPARTMENT = "departmentName",
   DEPARTMENT_HISTORY = "departmentNameHistory",
   TEMPLATE_NAME = "templateName",
@@ -94,10 +94,11 @@ export enum DataTableHeader {
   DOCUMENT_NAME = "documentName",
   IS_LOCKED = "isLocked",
   TYPE_DOCUMENT = "typeName",
-  ID_USER = 'id',
-  USERNAME = 'userName',
-  ROLE_NAME = 'roleName',
-  VERSION = 'version'
+  TYPE_DOCUMENT_HISTORY = "typeNameHistory",
+  ID_USER = "id",
+  USERNAME = "userName",
+  ROLE_NAME = "roleName",
+  VERSION = "version",
 }
 
 export enum Permissions {
@@ -113,7 +114,6 @@ export enum Permissions {
   VIEW_AWAIT_SIGNING_DOCUMENT = 9,
   VIEW_PERSONAL_DOCUMENT = 11,
   VIEW_SHARED_DOCUMENT = 14,
-  SHARE_DOCUMENT = 20,
   VIEW_DOCUMENT_HISTORY = 15,
   CREATE_DOCUMENT = 5,
   APPROVE_DOCUMENT = 10,
@@ -121,9 +121,10 @@ export enum Permissions {
   GROUP_VIEWER = 13,
   // ACCOUNT_MANAGEMENT = 16,
   SYSTEM_MANAGEMENT = 17,
+  SHARE_DOCUMENT = 20,
   VIEW_ACCOUNT_LIST = 21,
-  VIEW_DOCUMENT_FILTER_STATISTICS = 22,
-  VIEW_DOCUMENT_STATISTICS = 23,
+  VIEW_DOCUMENT_STATISTICS = 22,
+  VIEW_DOCUMENT_OVERALL_STATISTICS = 23,
 }
 
 export enum PermissionTag {
@@ -143,9 +144,12 @@ export enum PermissionTag {
   VIEW_SHARED_DOCUMENT_TAG = "View Shared Document",
   VIEW_DOCUMENT_HISTORY_TAG = "View Document History",
   SYSTEM_MANAGEMENT_TAG = "System Management",
-  ANALYTICS_DASHBOARD_MANAGEMENT_TAG = 'Analytics Dashboard Management',
-  ANALYTICS_ACTIVITIES_MANAGEMENT_TAG = 'Analytics Activities Management',
-  SHARE_DOCUMENT_TAG = 'Share Document'
+  ANALYTICS_DASHBOARD_MANAGEMENT_TAG = "Analytics Dashboard Management",
+  ANALYTICS_ACTIVITIES_MANAGEMENT_TAG = "Analytics Activities Management",
+  SHARE_DOCUMENT_TAG = "Share Document",
+  VIEW_ACCOUNT_LIST_TAG = "View Account List",
+  VIEW_DOCUMENT_STATISTICS_TAG = "View Document Statistics",
+  VIEW_DOCUMENT_OVERALL_STATISTICS_TAG = "View Document Overall Statistics",
 }
 
 export enum DeviceType {
@@ -160,20 +164,20 @@ export enum DeviceWidth {
   LAPTOP_WIDTH = 1440,
 }
 
-export enum ShareTabIndex{
+export enum ShareTabIndex {
   DEPARTMENT = 0,
-  USER = 1
+  USER = 1,
 }
 
-export enum AccountStatus{
+export enum AccountStatus {
   ENABLE = 1,
-  DISABLE = 2
+  DISABLE = 2,
 }
-export enum AccountStatusTag{
-  ENABLE = 'Enable',
-  DISABLE = 'Disable'
+export enum AccountStatusTag {
+  ENABLE = "Enable",
+  DISABLE = "Disable",
 }
 
-export enum DefaultValue{
-  PASSWORD = 'P@ssw0rd'
-} 
+export enum DefaultValue {
+  PASSWORD = "P@ssw0rd",
+}
