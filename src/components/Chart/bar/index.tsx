@@ -97,7 +97,6 @@ export function ChartBar(props: Props) {
     <Bar
       options={options}
       data={data}
-      
       style={{
         overflowX: "scroll",
       }}

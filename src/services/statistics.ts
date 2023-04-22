@@ -1,43 +1,25 @@
 import {
-  GetStatisticsDocumentResponse,
-  GetStatisticsDocumentOfUserResponse,
-  GetStatisticsIncomingDocumentResponse,
-  GetStatisticsTemplateResponse,
+  StatisticsDocument,
+  StatisticsTemplate,
 } from "models/statistics";
 import { apiPaths, httpClient } from "utils";
 
 const getStatisticsDocument =
-  async (): Promise<GetStatisticsDocumentResponse[]> => {
+  async (): Promise<StatisticsDocument[]> => {
     const response = await httpClient.get({
       url: apiPaths.statistics.getStatisticsDocument,
     });
-    return response.data as GetStatisticsDocumentResponse[];
+    return response.data as StatisticsDocument[];
   };
 const getStatisticsTemplate =
-  async (): Promise<GetStatisticsTemplateResponse[]> => {
+  async (): Promise<StatisticsTemplate[]> => {
     const response = await httpClient.get({
       url: apiPaths.statistics.getStatisticsTemplate,
     });
-    return response.data as GetStatisticsTemplateResponse[];
-  };
-const getStatisticsDocumentOfUser =
-  async (): Promise<GetStatisticsDocumentOfUserResponse> => {
-    const response = await httpClient.get({
-      url: apiPaths.statistics.getStatisticsDocumentOfUser,
-    });
-    return response.data as GetStatisticsDocumentOfUserResponse;
-  };
-const getStatisticsIncomingDocument =
-  async (): Promise<GetStatisticsIncomingDocumentResponse> => {
-    const response = await httpClient.get({
-      url: apiPaths.statistics.getStatisticsIncomingDocument,
-    });
-    return response.data as GetStatisticsIncomingDocumentResponse;
+    return response.data as StatisticsTemplate[];
   };
 
 export const statisticsServices = {
   getStatisticsDocument,
-  getStatisticsDocumentOfUser,
-  getStatisticsIncomingDocument,
   getStatisticsTemplate,
 };

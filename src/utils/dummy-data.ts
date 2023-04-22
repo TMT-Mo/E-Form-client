@@ -123,7 +123,7 @@ export const FixedDummyPermissions: Permission[] = [
 export const DummyStatistics: StatisticsDocument[] = [
   {
     total: 100,
-    waiting: 30,
+    processing: 30,
     approved: 35,
     rejected: 35,
     departmentId: 1,

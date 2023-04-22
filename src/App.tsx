@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Route, Routes, } from "react-router-dom";
 import Login from "pages/login";
-import Unauthorized from "pages/unauthorized";
 import Introduction from "pages/introduction";
 // import { Roles } from "./utils/constants";
 import BeforeLogin from "components/Layout/BeforeLogin";
@@ -21,7 +20,6 @@ function App() {
       {/* Public Routes */}
       <Route path="/" element={<BeforeLogin />}>
         <Route path="" element={<Introduction />} />
-        <Route path="unauthorized" element={<Unauthorized />} />
 
         <Route path="login" element={<Login />} />
       </Route>

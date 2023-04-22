@@ -8,23 +8,15 @@ import { handleError } from "slices/alert";
 interface State {
   statisticsDocument: StatisticsDocument[];
   statisticsTemplate: StatisticsTemplate[];
-  // statisticsDocumentOfUser?: Statistics;
-  // statisticsIncomingDocument?: Statistics;
   isGetStatisticsDocument: boolean;
   isGetStatisticsTemplate: boolean;
-  // isGetStatisticsDocumentOfUser: boolean;
-  // isGetStatisticsIncomingDocument: boolean;
 }
 
 const initialState: State = {
   statisticsDocument: [],
   statisticsTemplate: [],
-  // statisticsDocumentOfUser: undefined,
-  // statisticsIncomingDocument: undefined,
   isGetStatisticsDocument: false,
   isGetStatisticsTemplate: false,
-  // isGetStatisticsDocumentOfUser: false,
-  // isGetStatisticsIncomingDocument: false,
 };
 
 const ACTION_TYPE = "statistics/";

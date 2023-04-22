@@ -32,7 +32,7 @@ const datasets: ChartDataset<'doughnut'>[] = [
 
 export const DocumentBoxNoneFilter = () => {
   const { t } = useTranslation();
-  const { approved, departmentName, rejected, total, waiting } =
+  const { approved, departmentName, rejected, total, processing } =
     DummyStatistics[0];
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
