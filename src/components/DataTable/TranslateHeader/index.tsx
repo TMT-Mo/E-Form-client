@@ -6,7 +6,7 @@ export const TranslateHeader = (params: GridColumnHeaderParams) => {
   const { t } = useTranslation();
   const header = params.colDef.headerName!
   return (
-    <>{header}</>
+    <>{t(header)}</>
     // <>{t(header)}</>
   );
 };

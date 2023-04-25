@@ -26,7 +26,7 @@ export function DoughnutChart(props: Props) {
     plugins: {
       title: {
         display: false,
-        text: "Stacked chart bar of all department in system",
+        text: t("Stacked chart bar of all department in system"),
       },
       legend: {
         position: "bottom",

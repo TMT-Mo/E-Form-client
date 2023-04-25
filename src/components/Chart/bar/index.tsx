@@ -25,59 +25,6 @@ ChartJS.register(
   zoomPlugin
 );
 
-const footer = (tooltipItems: TooltipItem<'bar'>[]) => {
-  let sum = 0;
-
-  tooltipItems.forEach(function(tooltipItem) {
-    sum += tooltipItem.parsed.y;
-  });
-  return 'Sum: ' + sum;
-};
-
-export const options: ChartOptions<"bar"> = {
-  plugins: {
-    title: {
-      display: true,
-      text: "Stacked chart bar of all department in system",
-    },
-
-    zoom: {
-      pan: {
-        enabled: true,
-        mode: "x",
-      },
-      zoom: {
-        pinch: {
-          enabled: true, // Enable pinch zooming
-        },
-        wheel: {
-          enabled: true, // Enable wheel zooming
-        },
-        mode: "x",
-      },
-    },
-    tooltip: {
-      callbacks: {
-        footer: footer,
-      }
-    }
-  
-  },
-  interaction: {
-    intersect: false,
-    mode: 'index',
-  },
-  responsive: true,
-  scales: {
-    x: {
-      stacked: true,
-    },
-    y: {
-      stacked: true,
-    },
-  },
-};
-
 interface Props {
   labels: string[];
   datasets: ChartDataset<"bar">[];
@@ -90,7 +37,59 @@ export function ChartBar(props: Props) {
   const data: ChartData<"bar"> = {
     labels: labels.map((label) => t(label)),
     datasets,
+  };
 
+  const footer = (tooltipItems: TooltipItem<'bar'>[]) => {
+    let sum = 0;
+  
+    tooltipItems.forEach(function(tooltipItem) {
+      sum += tooltipItem.parsed.y;
+    });
+    return `${t('Sum')}: ` + sum;
+  };
+  
+  const options: ChartOptions<"bar"> = {
+    plugins: {
+      title: {
+        display: true,
+        text: t("Stacked chart bar of all department in system"),
+      },
+  
+      zoom: {
+        pan: {
+          enabled: true,
+          mode: "x",
+        },
+        zoom: {
+          pinch: {
+            enabled: true, // Enable pinch zooming
+          },
+          wheel: {
+            enabled: true, // Enable wheel zooming
+          },
+          mode: "x",
+        },
+      },
+      tooltip: {
+        callbacks: {
+          footer: footer,
+        }
+      }
+    
+    },
+    interaction: {
+      intersect: false,
+      mode: 'index',
+    },
+    responsive: true,
+    scales: {
+      x: {
+        stacked: true,
+      },
+      y: {
+        stacked: true,
+      },
+    },
   };
 
   return (

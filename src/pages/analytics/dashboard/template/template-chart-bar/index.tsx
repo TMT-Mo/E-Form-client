@@ -30,26 +30,7 @@ const labels = [
   "Production",
 ];
 
-const datasets: ChartDataset<'bar'>[] = [
-  {
-    label: "Rejected",
-    data: [12, 19, 3, 5, 2, 3],
-    backgroundColor: "rgb(255, 99, 132)",
-    barThickness: 60,
-  },
-  {
-    label: "Approved",
-    data: [6, 19, 3, 5, 2, 3],
-    backgroundColor: "rgb(75, 192, 192)",
-    barThickness: 60,
-  },
-  {
-    label: "Processing",
-    data: [12, 19, 3, 5, 2, 3],
-    backgroundColor: "rgb(53, 162, 235)",
-    barThickness: 60,
-  },
-];
+
 
 export function TemplateChartBar() {
   const { t } = useTranslation();
@@ -73,6 +54,27 @@ export function TemplateChartBar() {
     }
     setSelectedDepartment(value);
   };
+
+  const datasets: ChartDataset<'bar'>[] = [
+    {
+      label: t("Rejected"),
+      data: [12, 19, 3, 5, 2, 3],
+      backgroundColor: "rgb(255, 99, 132)",
+      barThickness: 60,
+    },
+    {
+      label: t("Approved"),
+      data: [6, 19, 3, 5, 2, 3],
+      backgroundColor: "rgb(75, 192, 192)",
+      barThickness: 60,
+    },
+    {
+      label: t("Processing"),
+      data: [12, 19, 3, 5, 2, 3],
+      backgroundColor: "rgb(53, 162, 235)",
+      barThickness: 60,
+    },
+  ];
 
   return (
     <Paper
@@ -116,7 +118,7 @@ export function TemplateChartBar() {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Stack direction="row" spacing={2}>
               <DesktopDatePicker
-                label="From"
+                label={t("From")}
                 inputFormat="DD/MM/YYYY"
                 value={startDate}
                 onChange={(newValue: Dayjs | null) =>
@@ -135,7 +137,7 @@ export function TemplateChartBar() {
                 maxDate={endDate ?? undefined}
               />
               <DesktopDatePicker
-                label="To"
+                label={t("To")}
                 inputFormat="DD/MM/YYYY"
                 value={endDate}
                 onChange={(newValue: Dayjs | null) =>

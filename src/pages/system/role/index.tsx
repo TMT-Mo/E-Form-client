@@ -98,7 +98,7 @@ export const RoleSystem = () => {
             style={{ paddingBottom: "10px" }}
             fontWeight="bold"
           >
-            Role
+            {t('Role')}
           </Typography>
           {!isGetRoleLoading && (
             <Typography variant="h2" component="h1">

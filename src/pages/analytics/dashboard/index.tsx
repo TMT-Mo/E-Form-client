@@ -9,6 +9,7 @@ import { TemplateBoxNoneFilter } from "pages/analytics/dashboard/template/templa
 import { TemplateBoxWithFilter } from "pages/analytics/dashboard/template/template-box-filter";
 import { TemplateChartBar } from "pages/analytics/dashboard/template/template-chart-bar";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { getDepartmentList, getRoleList } from "slices/system";
 import { Permissions } from "utils/constants";
 
@@ -18,6 +19,7 @@ const {
   VIEW_DOCUMENT_STATISTICS,
 } = Permissions;
 export const AnalyticsDashboard = () => {
+  const {t} = useTranslation()
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -86,7 +88,7 @@ export const AnalyticsDashboard = () => {
         </Paper> */}
         <RequiredPermission permission={VIEW_DOCUMENT_OVERALL_STATISTICS}>
           <Stack spacing={3}>
-            <h2>Template Overall Statistics</h2>
+            <h2>{t('Template Overall Statistics')}</h2>
             <Stack direction="row" spacing={5}>
               <TemplateChartBar />
               <TemplateBoxWithFilter />
@@ -95,7 +97,7 @@ export const AnalyticsDashboard = () => {
         </RequiredPermission>
         <RequiredPermission permission={VIEW_DOCUMENT_OVERALL_STATISTICS}>
           <Stack spacing={3} maxHeight='600px' height='100%'>
-            <h2>Document Overall Statistics</h2>
+            <h2>{t('Document Overall Statistics')}</h2>
             <Stack direction="row" spacing={5}>
               <DocumentChartBar />
               <DocumentBoxWithFilter />

@@ -111,7 +111,7 @@ export const TypeTemplateSystem = () => {
               fontWeight="bold"
               noWrap
             >
-              Template Type
+              {t('Template Type')}
             </Typography>
 
             {!isGetTemplateTypesLoading && (
@@ -163,7 +163,7 @@ export const TypeTemplateSystem = () => {
           <Box minWidth="500px">
             <Stack spacing={3}>
               <Typography variant="h5" component="h1" alignSelf="center">
-                {t("Edit TemplateType")}
+                {t("Edit Template Type")}
               </Typography>
               <Autocomplete
                 id="asynchronous-demo"

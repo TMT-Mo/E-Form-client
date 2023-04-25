@@ -1,7 +1,4 @@
-import {
-  LocalizationProvider,
-  DesktopDatePicker,
-} from "@mui/x-date-pickers";
+import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
 import {
   Autocomplete,
   CircularProgress,
@@ -21,16 +18,6 @@ import { useTranslation } from "react-i18next";
 import { DoughnutChart } from "components/Chart/doughnut";
 import { ChartDataset } from "chart.js";
 
-const labels = ["Rejected", "Processing", "Approved"];
-const datasets: ChartDataset<'doughnut'>[] = [
-  {
-    label: "Value",
-    data: [20, 10, 3],
-    backgroundColor: ["#FF6384", "#35A2EB", "#22CFCF"],
-    borderColor: ["#FF6384", "#35A2EB", "#22CFCF"],
-  },
-];
-
 export const DocumentBoxWithFilter = () => {
   const { t } = useTranslation();
   const { approved, departmentName, rejected, total, processing } =
@@ -42,6 +29,16 @@ export const DocumentBoxWithFilter = () => {
   const { isGetDepartmentsLoading, departmentList } = useSelector(
     (state) => state.system
   );
+
+  const labels = [t("Rejected"), t("Processing"), t("Approved")];
+  const datasets: ChartDataset<"doughnut">[] = [
+    {
+      label: t("Value"),
+      data: [20, 10, 3],
+      backgroundColor: ["#FF6384", "#35A2EB", "#22CFCF"],
+      borderColor: ["#FF6384", "#35A2EB", "#22CFCF"],
+    },
+  ];
 
   const handleFormatDate = (date: Dayjs | undefined) =>
     date?.toISOString().replace("Z", "").replace("T17", "T00");
@@ -153,36 +150,36 @@ export const DocumentBoxWithFilter = () => {
           style={{ paddingBottom: "10px" }}
           fontWeight="600"
         >
-          {t('Total')}: {DummyStatistics[0].total}
+          {t("Total")}: {DummyStatistics[0].total}
         </Typography>
         <DoughnutChart labels={labels} datasets={datasets} />
         <Stack spacing={4}>
           <Divider />
           <Stack spacing={2}>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              {t('Processing')}
-            </Typography>
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              {DummyStatistics[0].approved}
-            </Typography>
-          </Stack>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              {t('Approved')}
-            </Typography>
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              {DummyStatistics[0].approved}
-            </Typography>
-          </Stack>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              {t('Rejected')}
-            </Typography>
-            <Typography variant="h6" component="h1" fontWeight="semiBold">
-              {DummyStatistics[0].approved}
-            </Typography>
-          </Stack>
+            <Stack direction="row" justifyContent="space-between">
+              <Typography variant="h6" component="h1" fontWeight="semiBold">
+                {t("Processing")}
+              </Typography>
+              <Typography variant="h6" component="h1" fontWeight="semiBold">
+                {DummyStatistics[0].approved}
+              </Typography>
+            </Stack>
+            <Stack direction="row" justifyContent="space-between">
+              <Typography variant="h6" component="h1" fontWeight="semiBold">
+                {t("Approved")}
+              </Typography>
+              <Typography variant="h6" component="h1" fontWeight="semiBold">
+                {DummyStatistics[0].approved}
+              </Typography>
+            </Stack>
+            <Stack direction="row" justifyContent="space-between">
+              <Typography variant="h6" component="h1" fontWeight="semiBold">
+                {t("Rejected")}
+              </Typography>
+              <Typography variant="h6" component="h1" fontWeight="semiBold">
+                {DummyStatistics[0].approved}
+              </Typography>
+            </Stack>
           </Stack>
         </Stack>
       </Stack>

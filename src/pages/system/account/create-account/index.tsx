@@ -24,7 +24,7 @@ import {
   DummyPermissions,
   FixedDummyPermissions,
 } from "utils/dummy-data";
-import { DefaultValue } from "utils/constants";
+import { DefaultValue, Permissions } from "utils/constants";
 
 interface AccountState {
   userName?: string;
@@ -34,6 +34,8 @@ interface AccountState {
   firstName?: string;
   lastName?: string;
 }
+
+const {VIEW_DOCUMENT_OVERALL_STATISTICS, VIEW_DOCUMENT_STATISTICS} = Permissions
 
 export const CreateAccount = () => {
   const { t } = useTranslation();
@@ -133,6 +135,12 @@ export const CreateAccount = () => {
   };
 
   const onChangeSelectedPermissions = (value: Permission[]) => {
+    const hasOverallStatistics = value.find(v => v.id === VIEW_DOCUMENT_OVERALL_STATISTICS)
+    const hasNormalStatistics = value.find(v => v.id === VIEW_DOCUMENT_STATISTICS)
+    if(hasOverallStatistics && hasNormalStatistics){
+      dispatch(handleError({errorMessage: 'You can only select VIEW_DOCUMENT_OVERALL_STATISTICS or VIEW_DOCUMENT_STATISTICS'}))
+      return
+    }
     setPermissions([
       ...FixedDummyPermissions,
       ...value.filter((option) => FixedDummyPermissions.indexOf(option) === -1),

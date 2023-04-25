@@ -20,16 +20,6 @@ import styled from "@emotion/styled";
 import { DoughnutChart } from "components/Chart/doughnut";
 import { ChartDataset } from "chart.js";
 
-const labels = ["Rejected", "Processing", "Approved"];
-const datasets: ChartDataset<"doughnut">[] = [
-  {
-    label: "Value",
-    data: [20, 10, 3],
-    backgroundColor: ["#FF6384", "#35A2EB", "#22CFCF"],
-    borderColor: ["#FF6384", "#35A2EB", "#22CFCF"],
-  },
-];
-
 export const TemplateBoxWithFilter = () => {
   const { t } = useTranslation();
   const { approved, departmentName, rejected, total, processing } =
@@ -59,6 +49,16 @@ export const TemplateBoxWithFilter = () => {
     }
     setSelectedDepartment(value);
   };
+
+  const labels = [t("Rejected"), t("Processing"), t("Approved")];
+  const datasets: ChartDataset<"doughnut">[] = [
+    {
+      label: t("Value"),
+      data: [20, 10, 3],
+      backgroundColor: ["#FF6384", "#35A2EB", "#22CFCF"],
+      borderColor: ["#FF6384", "#35A2EB", "#22CFCF"],
+    },
+  ];
 
   return (
     <Paper
