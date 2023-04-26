@@ -8,7 +8,7 @@ import {
   getUserList,
   onChangeAccountPage,
 } from "slices/system";
-import { DataTableHeader } from "utils/constants";
+import { DataTableHeader, LocationIndex } from "utils/constants";
 import {
   DataGrid,
   viVN,
@@ -27,6 +27,7 @@ import React from "react";
 const getRowId = (params: GetRowIdParams) => {
   return params.id;
 };
+
 
 const { TYPE, CREATED_AT, CREATED_BY, ROLE_NAME, STATUS } = DataTableHeader;
 export const Account = () => {
@@ -70,9 +71,9 @@ export const Account = () => {
     );
 
     getUser.unwrap();
-    return () => {
-      getUser.abort();
-    };
+    // return () => {
+    //   getUser.abort();
+    // };
   }, [
     currentPage,
     dispatch,

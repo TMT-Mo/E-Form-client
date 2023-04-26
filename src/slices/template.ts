@@ -84,7 +84,7 @@ const getTemplates = createAsyncThunk(
   `${ACTION_TYPE}getTemplates`,
   async (args: GetTemplateArgs, { dispatch }) => {
     try {
-      const result = await templateServices.getTemplates(args)
+      const result = await templateServices.getTemplates(args);
       return result;
     } catch (error) {
       const err = error as AxiosError;
@@ -94,17 +94,11 @@ const getTemplates = createAsyncThunk(
       }
       const errorMessage = (err.response?.data as ValidationErrors)
         .errorMessage;
-      // if(errorMessage === 'Unauthorized'){
-      //   window.location = '/login' as unknown as Location
-      //   helpers.clearToken()
-      // }
       dispatch(
         handleError({
           errorMessage,
         })
       );
-
-      // throw err;
     }
   }
 );
@@ -138,16 +132,37 @@ const enableTemplate = createAsyncThunk(
 const addNewTemplate = createAsyncThunk(
   `${ACTION_TYPE}addNewTemplate`,
   async (args: AddTemplateToFirebaseArgs, { dispatch }) => {
-    let url
+    const { file } = args;
+    let url;
+
     try {
+      const read = (): Promise<FileReader> => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          try {
+            if(!event.target){
+              throw new Error()
+            }
+            resolve(event.target)
+          } catch (error) {
+            
+          }
+        };
+        reader.onerror = reject;
+        reader.readAsText(file);
+      });
+
+      await read()
       const uploadTask = await uploadBytesResumable(args.storageRef, args.file);
       url = await getDownloadURL(uploadTask.ref);
+
     } catch (error) {
-      dispatch(handleError({ errorMessage: "Something went wrong with input file!" }));
+      dispatch(
+        handleError({ errorMessage: "Something went wrong with input file!" })
+      );
       throw error;
     }
     try {
-      
       const result = await templateServices.addNewTemplate({
         ...args.templateInfo,
         link: url,

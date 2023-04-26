@@ -386,11 +386,11 @@ export default function AfterLogin() {
             </StyledListBtn>
           </Stack>
         </StyledList>
+            <RequiredPermission permission={ANALYTICS_DASHBOARD_MANAGEMENT}>
         <StyledList aria-label="main mailbox folders">
           <h5 className="pb-3 text-blue-config">{t("Analytics")}</h5>
 
           <Stack spacing={0.5}>
-            <RequiredPermission permission={ANALYTICS_DASHBOARD_MANAGEMENT}>
               <StyledListBtn
                 selected={locationIndex === DASHBOARD}
                 onClick={(event) => handleListItemClick(event, DASHBOARD)}
@@ -407,7 +407,7 @@ export default function AfterLogin() {
                 </StyledTooltip>
                 <ListTextStyled primary={t("Dashboard")} />
               </StyledListBtn>
-            </RequiredPermission>
+            
             {/* <RequiredPermission permission={ANALYTICS_ACTIVITIES_MANAGEMENT}>
               <StyledListBtn
                 selected={locationIndex === ACTIVITIES}
@@ -428,6 +428,7 @@ export default function AfterLogin() {
             </RequiredPermission> */}
           </Stack>
         </StyledList>
+        </RequiredPermission>
         <RequiredPermission permission={SYSTEM_MANAGEMENT}>
           <StyledList aria-label="main mailbox folders">
             <h5 className="pb-3 text-blue-config">{t("System")}</h5>

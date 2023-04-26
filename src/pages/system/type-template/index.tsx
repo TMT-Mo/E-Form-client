@@ -256,7 +256,7 @@ export const TypeTemplateSystem = () => {
                 {t("Add Template Type")}
               </Typography>
               <Stack spacing={1}>
-                <Typography>{t("Input role")}</Typography>
+                <Typography>{t("Input type")}</Typography>
                 <TextField
                   fullWidth
                   value={newTemplateType}

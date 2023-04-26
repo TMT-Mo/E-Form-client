@@ -6,22 +6,19 @@ import {
   DialogActions,
   Box,
   Typography,
+  TextField,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector, useSignalR } from "hooks";
-import {
-  clearSharedInfo,
-  getSharedUser,
-  shareUsers,
-} from "slices/document";
+import { clearSharedInfo, getSharedUser, shareUsers } from "slices/document";
 import {
   TextFieldStyled,
   WhiteBtn,
   SaveLoadingBtn,
 } from "components/CustomStyled";
 import { SharedUser } from "models/document";
-import { clearUserList, getUserList } from "slices/system";
+import { clearUserList, getUserList, searchAccount } from "slices/system";
 import Stack from "@mui/material/Stack";
 interface Props {
   onOpen: () => void;
@@ -64,11 +61,11 @@ const UserTab = (props: Props) => {
   );
   const { isGetSharedUserLoading, sharedUser, isShareUserLoading } =
     useSelector((state) => state.document);
-    const {userInfo} = useSelector(state => state.auth)
+  const { userInfo } = useSelector((state) => state.auth);
   const { onOpen, value, idDocument } = props;
   const [selectedUser, setSelectedUser] = useState<SharedUser[]>([]);
-  const {sendSignalNotification} = useSignalR()
-
+  const { sendSignalNotification } = useSignalR();
+  const { searchItemValue } = useSelector((state) => state.system);
   const onAddSelectedUser = (value: SharedUser[]) => {
     setSelectedUser(value);
   };
@@ -80,10 +77,13 @@ const UserTab = (props: Props) => {
         userIdList: selectedUser.map((user) => user.id),
       })
     ).unwrap();
-    sendSignalNotification({userIds: selectedUser.map(u => u.id), notify:{
-      isChecked: false,
-      description: `You has been shared to view a document by ${userInfo?.userName}!`
-    }})
+    sendSignalNotification({
+      userIds: selectedUser.map((u) => u.id),
+      notify: {
+        isChecked: false,
+        description: `You has been shared to view a document by ${userInfo?.userName}!`,
+      },
+    });
     onOpen();
   };
 
@@ -96,11 +96,18 @@ const UserTab = (props: Props) => {
   }, [dispatch, idDocument]);
 
   useEffect(() => {
-    const getUsers = dispatch(getUserList({}));
+    const getUsers = dispatch(
+      getUserList({ userName_contains: searchItemValue })
+    );
     getUsers.unwrap();
 
     return () => getUsers.abort();
-  }, [dispatch]);
+  }, [dispatch, searchItemValue]);
+
+  useEffect(() => {
+    if(sharedUser.length === 0) return
+    setSelectedUser(sharedUser)
+  }, [sharedUser]);
 
   useEffect(() => {
     return () => {
@@ -116,7 +123,7 @@ const UserTab = (props: Props) => {
           <Stack
             spacing={2}
             sx={{
-              width: '100%',
+              width: "100%",
               color: "#000",
             }}
           >
@@ -128,6 +135,9 @@ const UserTab = (props: Props) => {
               isOptionEqualToValue={(option, value) =>
                 option.userName === value.userName
               }
+              onInputChange={(event, newInputValue) => {
+                dispatch(searchAccount({ value: newInputValue }));
+              }}
               getOptionLabel={(option) => t(option.userName)}
               options={userList}
               value={selectedUser}
@@ -135,25 +145,27 @@ const UserTab = (props: Props) => {
               limitTags={2}
               sx={{
                 ".MuiAutocomplete-clearIndicator": {
-                  backgroundColor: "#000",
-                  scale: '75%'
+                  // backgroundColor: "#000",
+                  scale: "75%",
                 },
                 ".MuiAutocomplete-popupIndicator": {
                   backgroundColor: "#DBEAFE",
-                  scale: '75%'
+                  scale: "75%",
                 },
-                ".MuiAutocomplete-popupIndicatorOpen":{
+                ".MuiAutocomplete-popupIndicatorOpen": {
                   backgroundColor: "#2563EB",
-                  scale: '75%'
+                  scale: "75%",
                 },
                 "& .MuiChip-deleteIcon": {
-                  fill: "#000",
+                  // fill: "#000",
                 },
+                // color: "#000",
               }}
               renderInput={(params) => (
-                <TextFieldStyled
+                <TextField
                   {...params}
                   label="To:"
+                  sx={{ color: "#000 !important" }}
                   InputProps={{
                     ...params.InputProps,
                     endAdornment: (
@@ -170,15 +182,15 @@ const UserTab = (props: Props) => {
             />
             <Autocomplete
               multiple
-              options={sharedUser.map((user) => user.userName)}
-              value={sharedUser.map((user) => user.userName)}
+              options={sharedUser}
+              value={sharedUser}
               limitTags={2}
               readOnly
               loading={isGetSharedUserLoading}
               renderInput={(params) => (
                 <TextFieldStyled
                   {...params}
-                  label="Current Sharing:"
+                  label={t("Current Sharing:")}
                   variant="standard"
                   InputProps={{
                     ...params.InputProps,

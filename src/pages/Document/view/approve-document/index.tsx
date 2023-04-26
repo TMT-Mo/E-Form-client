@@ -399,7 +399,7 @@ const ViewApproveDocument: React.FC = () => {
             variant="outlined"
             onClick={onApproveDocument}
           >
-            Save
+            {t('Save')}
           </SaveLoadingBtn>
         </DialogActions>
       </Dialog>

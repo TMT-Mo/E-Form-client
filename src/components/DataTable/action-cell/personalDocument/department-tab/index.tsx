@@ -6,6 +6,7 @@ import {
   DialogActions,
   Box,
   Typography,
+  TextField,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -70,7 +71,7 @@ const DepartmentTab = (props: Props) => {
     isShareDepartmentLoading,
   } = useSelector((state) => state.document);
   const [selectedDepartment, setSelectedDepartment] = useState<Department[]>(
-    []
+    sharedDepartment
   );
   const { onOpen, value, idDocument } = props;
   const {sendSignalNotification} = useSignalR()
@@ -124,6 +125,11 @@ const DepartmentTab = (props: Props) => {
   }, [dispatch, idDocument]);
 
   useEffect(() => {
+    if(sharedDepartment.length === 0) return
+    setSelectedDepartment(sharedDepartment)
+  }, [sharedDepartment]);
+
+  useEffect(() => {
     return () => {
       dispatch(clearSharedInfo());
     };
@@ -149,13 +155,13 @@ const DepartmentTab = (props: Props) => {
                 option.departmentName === value.departmentName
               }
               getOptionLabel={(option) => t(option.departmentName)}
-              options={departmentList}
+              options={departmentList.filter(d => d.departmentName !== 'All')}
               loading={isGetDepartmentsLoading}
               value={selectedDepartment}
               limitTags={2}
               sx={{
                 ".MuiAutocomplete-clearIndicator": {
-                  backgroundColor: "#000",
+                  // backgroundColor: "#000",
                   scale: "75%",
                 },
                 ".MuiAutocomplete-popupIndicator": {
@@ -167,11 +173,11 @@ const DepartmentTab = (props: Props) => {
                   scale: "75%",
                 },
                 "& .MuiChip-deleteIcon": {
-                  fill: "#000",
+                  // fill: "#000",
                 },
               }}
               renderInput={(params) => (
-                <TextFieldStyled
+                <TextField
                   {...params}
                   label={t("To:")}
                   sx={{
@@ -195,17 +201,14 @@ const DepartmentTab = (props: Props) => {
 
             <Autocomplete
               multiple
-              options={sharedDepartment.map(
-                (department) => department.departmentName
-              )}
-              value={sharedDepartment.map(
-                (department) => department.departmentName
-              )}
+              options={sharedDepartment}
+              value={sharedDepartment}
               limitTags={2}
+              getOptionLabel={(option) => t(option.departmentName)}
               readOnly
               loading={isGetSharedDepartmentLoading}
               renderInput={(params) => (
-                <TextFieldStyled
+                <TextField
                   {...params}
                   label={t("Current Sharing:")}
                   variant="standard"
