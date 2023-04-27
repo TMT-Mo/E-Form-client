@@ -181,3 +181,9 @@ export enum AccountStatusTag {
 export enum DefaultValue {
   PASSWORD = "P@ssw0rd",
 }
+
+export enum StatisticsColor {
+  PROCESSING_COLOR = "#FF6384",
+  APPROVED_COLOR = "#35A2EB",
+  REJECTED_COLOR = "#22CFCF",
+}

@@ -10,6 +10,7 @@ import { TemplateBoxWithFilter } from "pages/analytics/dashboard/template/templa
 import { TemplateChartBar } from "pages/analytics/dashboard/template/template-chart-bar";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { getStatisticsDocument } from "slices/statistics";
 import { getDepartmentList, getRoleList } from "slices/system";
 import { Permissions } from "utils/constants";
 
@@ -25,11 +26,12 @@ export const AnalyticsDashboard = () => {
   useEffect(() => {
     const getDepartment = dispatch(getDepartmentList());
     const getRole = dispatch(getRoleList());
-
+    // const onGetStatisticsDocument = dispatch(getStatisticsDocument({departmentId: 1}))
     // const getPermission = dispatch(getPermissionList());
 
     getDepartment.unwrap();
     getRole.unwrap();
+    // onGetStatisticsDocument.unwrap();
     // getPermission.unwrap();
 
     return () => {
