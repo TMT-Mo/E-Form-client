@@ -182,8 +182,8 @@ const UserTab = (props: Props) => {
             />
             <Autocomplete
               multiple
-              options={sharedUser}
-              value={sharedUser}
+              options={sharedUser.map((user) => user.userName)}
+              value={sharedUser.map((user) => user.userName)}
               limitTags={2}
               readOnly
               loading={isGetSharedUserLoading}
@@ -207,12 +207,12 @@ const UserTab = (props: Props) => {
               )}
             />
             <DialogActions>
-              <WhiteBtn onClick={() => onOpen()}>Cancel</WhiteBtn>
+              <WhiteBtn onClick={() => onOpen()}>{t('Cancel')}</WhiteBtn>
               <SaveLoadingBtn
                 loading={isShareUserLoading}
                 onClick={onShareUser}
               >
-                Save
+                {t('Save')}
               </SaveLoadingBtn>
             </DialogActions>
           </Stack>

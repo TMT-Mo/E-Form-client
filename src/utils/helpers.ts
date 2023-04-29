@@ -1,6 +1,7 @@
 import { UserInfo } from "models/auth";
 import jwtDecode from "jwt-decode";
 import { DeviceType, DeviceWidth, Permissions, SessionStorage } from "./constants";
+import { Dayjs } from "dayjs";
 
 const {TOKEN_NAME, LOCATION} = SessionStorage
 
@@ -64,6 +65,10 @@ const checkHideColumnFromPermission = (permission: Permissions) => {
   return permissions?.includes(permission!) ;
 };
 
+// *-------------------------------------------- HANDLE DAYJS --------------------------------------------
+const handleFormatDateJS = (date: Dayjs | undefined) =>
+date?.toISOString().replace("Z", "").replace("T17", "T00");
+
 // *-------------------------------------------- HANDLE NOTIFICATIONS --------------------------------------------
 // export handleNotification =
 
@@ -74,7 +79,8 @@ const helpers = {
   addHours,
   checkHideColumnFromDevice,
   checkHideColumnFromPermission,
-  getLocation
+  getLocation,
+  handleFormatDateJS
 };
 
 export default helpers;

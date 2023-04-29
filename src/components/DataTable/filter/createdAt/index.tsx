@@ -13,6 +13,7 @@ import { useState } from "react";
 import { DataTableHeader } from "utils/constants";
 import { DateFilter } from "models/mui-data";
 import { useSelector } from "hooks";
+import { helpers } from "utils";
 
 const { CREATED_AT } = DataTableHeader;
 function InputNumberInterval(props: GridFilterInputValueProps) {
@@ -22,15 +23,15 @@ function InputNumberInterval(props: GridFilterInputValueProps) {
   const toDate = (filter?.value as DateFilter)?.endDate
   const [startDate, setStartDate] = useState<Dayjs | null>(fromDate ? dayjs(fromDate) : null);
   const [endDate, setEndDate] = useState<Dayjs | null>(toDate ? dayjs(toDate) : null);
-  const handleFormatDate = (date: Dayjs | undefined) =>
-    date?.toISOString().replace("Z", "").replace("T17", "T00");
+  const { handleFormatDateJS} = helpers
 
   const handleChangeStartDate = (value: Dayjs) => {
+    console.log(value)
     applyValue({
       ...item,
       value: {
-        startDate: handleFormatDate(value),
-        endDate: handleFormatDate(endDate?.add(2, "day")),
+        startDate: handleFormatDateJS(value),
+        endDate: handleFormatDateJS(endDate?.add(2, "day")),
       } as DateFilter,
       columnField: CREATED_AT,
     });
@@ -41,8 +42,8 @@ function InputNumberInterval(props: GridFilterInputValueProps) {
     applyValue({
       ...item,
       value: {
-        startDate: handleFormatDate(startDate?.add(1, "day")),
-        endDate: handleFormatDate(value),
+        startDate: handleFormatDateJS(startDate?.add(1, "day")),
+        endDate: handleFormatDateJS(value),
       } as DateFilter,
       columnField: CREATED_AT,
     });

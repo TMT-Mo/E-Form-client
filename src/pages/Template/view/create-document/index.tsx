@@ -7,7 +7,7 @@ import AlertPopup from "components/AlertPopup";
 import { useDispatch, useSelector, useSignalR } from "hooks";
 import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from "uuid";
-import { SaveLoadingBtn } from "components/CustomStyled";
+import { SaveLoadingBtn, TextFieldStyled } from "components/CustomStyled";
 import { createDocument } from "slices/document";
 
 const ViewCreateDocument: React.FC = () => {
@@ -67,7 +67,7 @@ const ViewCreateDocument: React.FC = () => {
           "toolbarGroup-Forms",
           "downloadButton",
           "languageButton",
-          "signatureToolGroupButton"
+          "signatureToolGroupButton",
         ],
         annotationUser: userInfo?.userId!.toString(),
       },
@@ -155,7 +155,7 @@ const ViewCreateDocument: React.FC = () => {
         description: `You have a new document waiting for an approval!`,
       },
     });
-    navigate("/user", {replace: true});
+    navigate("/user", { replace: true });
   };
 
   return (
@@ -193,6 +193,20 @@ const ViewCreateDocument: React.FC = () => {
               <span className="text-white text-base break-words w-60">
                 {t(departmentName)}
               </span>
+            </div>
+            <div className="flex flex-col space-y-3">
+              <h4 className="whitespace-nowrap">
+                {t("Describe the purpose of use")}:
+              </h4>
+              <TextFieldStyled
+                sx={{
+                  border: "1px solid #fff",
+                  borderRadius: 1,
+                  ".MuiInputBase-input": { color: "#fff" },
+                }}
+                multiline
+                rows={4}
+              />
             </div>
             <Divider className="bg-white" />
             <div className="flex justify-center">

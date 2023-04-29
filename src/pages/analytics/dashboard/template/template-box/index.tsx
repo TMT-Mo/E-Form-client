@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "hooks";
 import { useTranslation } from "react-i18next";
@@ -16,11 +16,26 @@ import { DoughnutChart } from "components/Chart/doughnut";
 import { ChartDataset } from "chart.js";
 import { getStatisticsTemplate } from "slices/statistics";
 import { StatisticsColor } from "utils/constants";
+import { helpers } from "utils";
 
-const { APPROVED_COLOR, PROCESSING_COLOR, REJECTED_COLOR} = StatisticsColor
+const { APPROVED_COLOR, PROCESSING_COLOR, REJECTED_COLOR } = StatisticsColor;
+const { handleFormatDateJS } = helpers;
+interface DefaultDate {
+  fromDate: string;
+  toDate: string;
+}
+const defaultDate: DefaultDate = {
+  fromDate: handleFormatDateJS(
+    dayjs(new Date("Tue Oct 11 2022 00:00:00 GMT+0700 (Indochina Time)")).add(
+      1,
+      "day"
+    )
+  )!,
+  toDate: handleFormatDateJS(dayjs(new Date()))!,
+};
 
 export const TemplateBoxNoneFilter = () => {
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
@@ -30,17 +45,6 @@ const { t } = useTranslation();
   const { isGetStatisticsTemplateLoading, statisticsTemplate } = useSelector(
     (state) => state.statistics
   );
-
-  useEffect(() => {
-    const getDepartment = departmentList.find(
-      (d) => d.departmentName === userInfo?.departmentName
-    );
-    const onGetStatisticsTemplate = dispatch(
-      getStatisticsTemplate({ departmentId: getDepartment?.id })
-    );
-
-    onGetStatisticsTemplate.unwrap();
-  }, [departmentList, dispatch, userInfo?.departmentName]);
 
   const labels = [t("Processing"), t("Approved"), t("Rejected")];
   const datasets: ChartDataset<"doughnut">[] = [
@@ -63,6 +67,24 @@ const { t } = useTranslation();
   const handleChangeEndDate = (value: Dayjs) => {
     setEndDate(value.subtract(2, "day"));
   };
+
+  useEffect(() => {
+    const getDepartment = departmentList.find(
+      (d) => d.departmentName === userInfo?.departmentName
+    );
+    
+    const onGetStatisticsTemplate = dispatch(
+      getStatisticsTemplate({
+        departmentId: getDepartment?.id,
+        fromDate: startDate
+          ? handleFormatDateJS(startDate.add(1, 'day'))
+          : defaultDate.fromDate,
+        toDate: endDate ? handleFormatDateJS(endDate.add(2, 'day')) : defaultDate.toDate,
+      })
+    );
+
+    onGetStatisticsTemplate.unwrap();
+  }, [departmentList, dispatch, endDate, startDate, userInfo?.departmentName]);
 
   return (
     <Stack spacing={3} width={1 / 2}>
