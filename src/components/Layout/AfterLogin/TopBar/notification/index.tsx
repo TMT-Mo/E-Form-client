@@ -15,8 +15,6 @@ import { helpers } from "utils";
 import { useTranslation } from "react-i18next";
 import { checkNotification } from "slices/notification";
 
-
-
 interface Props {
   open: boolean;
   handleClose: () => void;
@@ -32,8 +30,12 @@ export const BoxCustom = styled(Box)({
 export const Notification = (props: Props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { notificationList, isGetNotification, isCheckNotificationLoading, hasNewNotification } =
-    useSelector((state) => state.notification);
+  const {
+    notificationList,
+    isGetNotification,
+    isCheckNotificationLoading,
+    hasNewNotification,
+  } = useSelector((state) => state.notification);
   const { userInfo } = useSelector((state) => state.auth);
   const { open, anchorEl, handleClose } = props;
 
@@ -74,7 +76,11 @@ export const Notification = (props: Props) => {
             onClick={handleCheckNotifications}
             disabled={!hasNewNotification}
           >
-            <Typography fontWeight={600} component="h1" color={`${hasNewNotification ? "#407AFF" : '#707070'}`}>
+            <Typography
+              fontWeight={600}
+              component="h1"
+              color={`${hasNewNotification ? "#407AFF" : "#707070"}`}
+            >
               {t("Mark read all")}
             </Typography>
           </Button>
@@ -111,7 +117,7 @@ export const Notification = (props: Props) => {
                   fontWeight: `${!notification.isChecked ? "bold" : ""}`,
                 }}
               >
-                {notification.description}
+                {t(notification.description)}
               </Typography>
               <Typography
                 color="GrayText"

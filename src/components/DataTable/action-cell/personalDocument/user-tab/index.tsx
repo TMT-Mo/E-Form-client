@@ -164,7 +164,7 @@ const UserTab = (props: Props) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="To:"
+                  label={t("To")}
                   sx={{ color: "#000 !important" }}
                   InputProps={{
                     ...params.InputProps,

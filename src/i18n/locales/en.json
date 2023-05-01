@@ -252,5 +252,13 @@
   "Select Role":"Select Role",
   "Select signature": "Select signature",
   "Sum":"Sum",
-  "equal":"equal"
+  "equal":"equal",
+  "Welcome back, ":"Welcome back, ",
+  "Template Type":"Template Type",
+  "Input type":"Input type",
+  "Select Template Type":"Select Template Type",
+  "You can only select VIEW_DOCUMENT_OVERALL_STATISTICS or VIEW_DOCUMENT_STATISTICS": "You can only select VIEW_DOCUMENT_OVERALL_STATISTICS or VIEW_DOCUMENT_STATISTICS",
+  "Notice: After changing password, you have to login again!": "Notice: After changing password, you have to login again!",
+  "Something went wrong with uploading image!": "Something went wrong with uploading image!",
+  "Your account just got edited by Admin. Please login again or contact Admin for more information!": "Your account just got edited by Admin. Please login again or contact Admin for more information!"
 }

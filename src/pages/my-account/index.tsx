@@ -97,7 +97,7 @@ export const MyAccount = () => {
               justifyContent="end"
               sx={{ width: "fit-content" }}
             >
-              <Typography variant="h4" whiteSpace="nowrap">{t(`Welcome back, ${userInfo?.firstName} ${userInfo?.lastName}`)}</Typography>
+              <Typography variant="h4" whiteSpace="nowrap">{t(`Welcome back, `)}{userInfo?.firstName} {userInfo?.lastName}</Typography>
               <Typography whiteSpace="nowrap">
                 {t('Update your photo and personal detail')}
               </Typography>
@@ -270,7 +270,7 @@ export const MyAccount = () => {
                 id="component-outlined"
                 // placeholder="Composed TextField"
                 label={t("Department")}
-                helperText='Please contact to admin to make any changes!'
+                helperText={t('Please contact to admin to make any changes!')}
                 sx={{ width: "50%" }}
                 value={userInfo?.departmentName}
                 disabled
@@ -291,7 +291,7 @@ export const MyAccount = () => {
                 id="component-outlined"
                 // placeholder="Composed TextField"
                 label={t("Role")}
-                helperText='Please contact to admin to make any changes!'
+                helperText={t('Please contact to admin to make any changes!')}
                 sx={{ width: "50%" }}
                 value={userInfo?.roleName}
                 disabled

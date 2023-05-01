@@ -3,7 +3,6 @@ import LanguageSelect from "../../../LanguageSelect";
 import LockPersonIcon from "@mui/icons-material/LockPerson";
 import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Avatar from "@mui/material/Avatar/Avatar";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
@@ -22,10 +21,10 @@ import { setLocation } from "slices/location";
 import { LocationIndex } from "utils/constants";
 import { Notification } from "./notification";
 import {
-  checkNotification,
   getNotification,
 } from "slices/notification";
 import Badge from "@mui/material/Badge";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   handleDrawerOpen: () => void;
@@ -33,6 +32,7 @@ interface Props {
 }
 
 const TopBar: React.FC<Props> = (props) => {
+  const { t} = useTranslation()
   const { handleDrawerOpen, isOpen } = props;
   const dispatch = useDispatch();
   const { logout } = useAuth();
@@ -48,11 +48,6 @@ const TopBar: React.FC<Props> = (props) => {
   };
   const handleClose = () => {
     setAnchorEl(null);
-    // dispatch(
-    //   checkNotification({
-    //     notificationId: notificationList.map((noti) => noti.id),
-    //   })
-    // ).unwrap();
   };
 
   const signOutHandler = () => {
@@ -136,7 +131,7 @@ const TopBar: React.FC<Props> = (props) => {
                           )
                         }
                       >
-                        Change password
+                        {t('Change password')}
                       </ListItemText>
                     </MenuItem>
                     <Divider />
@@ -144,7 +139,7 @@ const TopBar: React.FC<Props> = (props) => {
                       <ListItemIcon>
                         <LogoutIcon fontSize="small" />
                       </ListItemIcon>
-                      <ListItemText>Sign out</ListItemText>
+                      <ListItemText>{t('Sign out')}</ListItemText>
                     </MenuItem>
                   </MenuList>
                 </Paper>

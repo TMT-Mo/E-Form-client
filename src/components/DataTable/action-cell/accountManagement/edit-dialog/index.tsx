@@ -530,7 +530,7 @@ export const EditDialog = (props: Props) => {
                 disabled={isDisabledSave}
                 onClick={EditAccountHandle}
               >
-                Save
+                {t('Save')}
               </SaveLoadingBtn>
             )}
           </Stack>

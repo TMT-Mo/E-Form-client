@@ -196,7 +196,7 @@ const ChangePassword = () => {
             {t('Save')}
           </SaveLoadingBtn>
           <span className="text-gray-500 italic">
-            *{t('Notice: After changing password, you have to login again')}!
+            *{t('Notice: After changing password, you have to login again!')}
           </span>
         </div>
       </form>

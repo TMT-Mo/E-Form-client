@@ -11,8 +11,10 @@ import {
   receiveSignalNotification,
   receiveSignalNotificationByPermission,
 } from "./signalR-model";
+import { useTranslation } from "react-i18next";
 
 export const SignalR = () => {
+  const { t } = useTranslation();
   const { userInfo } = useSelector((state) => state.auth);
   const { connection } = useSelector((state) => state.signalR);
   const { message } = useSelector((state) => state.alert);
@@ -47,7 +49,7 @@ export const SignalR = () => {
                 response.userIds?.includes(+userInfo?.userId!) ||
                 response.departmentNames?.includes(userInfo?.departmentName!)
               ) {
-                dispatch(handleInfo({ message: response.notify.description }));
+                dispatch(handleInfo({ message: t(response.notify.description) }));
                 dispatch(getNewNotification({ hasNewNotification: true }));
                 await dispatch(
                   getNotification({ userId: +userInfo?.userId! })
@@ -66,7 +68,7 @@ export const SignalR = () => {
                 response.userIds?.includes(+userInfo?.userId!) ||
                 response.departmentNames?.includes(userInfo?.departmentName!)
               ) {
-                dispatch(handleInfo({ message: response.notify.description }));
+                dispatch(handleInfo({ message: t(response.notify.description) }));
                 dispatch(getNewNotification({ hasNewNotification: true }));
                 await dispatch(
                   getNotification({ userId: +userInfo?.userId! })
@@ -77,18 +79,36 @@ export const SignalR = () => {
 
           // * EditSystem
           connection.on(editSystem, async (response: editSystemSignalR) => {
-            console.log(response)
+            console.log(response);
             const { departmentName, idUser, roleName } = response;
             if (idUser === userInfo?.userId) {
-              dispatch(handleInfo({ message: 'Your account just got edited by Admin. Please login again or contact Admin for more information!' }));
+              dispatch(
+                handleInfo({
+                  message: t(
+                    "Your account just got edited by Admin. Please login again or contact Admin for more information!"
+                  ),
+                })
+              );
               logout();
             }
             if (departmentName === userInfo?.departmentName) {
-              dispatch(handleInfo({ message: 'Your account just got edited by Admin. Please login again or contact Admin for more information!' }));
+              dispatch(
+                handleInfo({
+                  message: t(
+                    "Your account just got edited by Admin. Please login again or contact Admin for more information!"
+                  ),
+                })
+              );
               logout();
             }
             if (roleName === userInfo?.roleName) {
-              dispatch(handleInfo({ message: 'Your account just got edited by Admin. Please login again or contact Admin for more information!' }));
+              dispatch(
+                handleInfo({
+                  message: t(
+                    "Your account just got edited by Admin. Please login again or contact Admin for more information!"
+                  ),
+                })
+              );
               logout();
             }
           });
@@ -105,6 +125,7 @@ export const SignalR = () => {
     message,
     receiveNotification,
     receiveNotificationByPermission,
+    t,
     userInfo?.departmentName,
     userInfo?.roleName,
     userInfo?.userId,

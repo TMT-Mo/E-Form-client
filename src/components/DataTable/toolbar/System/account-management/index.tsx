@@ -17,6 +17,7 @@ export const AccountManagementToolBar = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { locationIndex } = useSelector((state) => state.location);
+  const {searchItemValue} = useSelector(state => state.system)
   return (
     <Stack justifyContent="space-between" padding={3} direction="row">
       <Paper
@@ -36,6 +37,7 @@ export const AccountManagementToolBar = () => {
           sx={{ ml: 1, flex: 1 }}
           placeholder={t("Search Account")}
           inputProps={{ "aria-label": "search google maps" }}
+          value={searchItemValue}
           onChange={(e) => dispatch(searchAccount({ value: e.target.value }))}
         />
       </Paper>

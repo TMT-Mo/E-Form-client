@@ -179,7 +179,7 @@ const DepartmentTab = (props: Props) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label={t("To:")}
+                  label={t("To")}
                   sx={{
                     border: "1px solid #fff",
                     borderRadius: "5px",

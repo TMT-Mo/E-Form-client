@@ -114,6 +114,7 @@ const onChangeAccountPageCR: CR<{ selectedPage: number }> = (
 const searchAccountCR: CR<{ value: string }> = (state, { payload }) => ({
   ...state,
   searchItemValue: payload.value!,
+  currentPage: 0
 });
 
 const getAccountDetailCR: CR<{ account: IUser }> = (state, { payload }) => ({

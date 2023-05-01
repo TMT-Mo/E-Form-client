@@ -40,9 +40,9 @@ export const Account = () => {
     );
 
     getUser.unwrap();
-    // return () => {
-    //   getUser.abort();
-    // };
+    return () => {
+      getUser.abort();
+    };
   }, [
     currentPage,
     dispatch,

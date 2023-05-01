@@ -94,7 +94,7 @@ export const CreateAccount = () => {
     if (!e.target.files) {
       dispatch(
         handleError({
-          errorMessage: "Something went wrong with uploading image!",
+          errorMessage: t("Something went wrong with uploading image!"),
         })
       );
       return;
@@ -138,7 +138,7 @@ export const CreateAccount = () => {
     const hasOverallStatistics = value.find(v => v.id === VIEW_DOCUMENT_OVERALL_STATISTICS)
     const hasNormalStatistics = value.find(v => v.id === VIEW_DOCUMENT_STATISTICS)
     if(hasOverallStatistics && hasNormalStatistics){
-      dispatch(handleError({errorMessage: 'You can only select VIEW_DOCUMENT_OVERALL_STATISTICS or VIEW_DOCUMENT_STATISTICS'}))
+      dispatch(handleError({errorMessage: t('You can only select VIEW_DOCUMENT_OVERALL_STATISTICS or VIEW_DOCUMENT_STATISTICS')}))
       return
     }
     setPermissions([
@@ -405,7 +405,7 @@ export const CreateAccount = () => {
                 />
               )}
             />
-            <Typography>Select signature</Typography>
+            <Typography>{t('Select signature')}</Typography>
             <Stack
               direction="row"
               justifyContent="start"

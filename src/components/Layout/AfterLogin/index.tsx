@@ -599,8 +599,8 @@ export default function AfterLogin() {
 
         <Stack direction="row" alignItems="center" justifyContent="center">
           {open && <Typography sx={{ color: "#fff" }}>{t('Help')}</Typography>}
-          <IconButton>
-            <HelpOutline className="fill-white" />
+          <IconButton type="button">
+            <a href="https://vanlangunivn.sharepoint.com/:w:/s/CapstoneProjectK25_CAP/ETZmXz713bJNgLkka9waUfoB9yLewvZ6_tilGfe2rTz7BQ?e=6qwgLX" rel="noreferrer" target="_blank"><HelpOutline className="fill-white" /></a>
           </IconButton>
         </Stack>
 
