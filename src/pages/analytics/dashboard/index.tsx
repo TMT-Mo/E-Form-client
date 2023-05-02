@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getDepartmentList, getRoleList } from "slices/system";
 import { Permissions } from "utils/constants";
+import CryptoJs from "crypto-js";
 
 const {
   VIEW_DOCUMENT_OVERALL_STATISTICS,
@@ -40,6 +41,10 @@ export const AnalyticsDashboard = () => {
     };
   }, [dispatch]);
 
+  // console.log(CryptoJs.AES.encrypt(JSON.stringify("text"), "abc").toString());
+  // console.log(
+  //   JSON.parse(CryptoJs.AES.decrypt("text", "abc").toString(CryptoJs.enc.Utf8))
+  // );
   return (
     <Container sx={{ paddingY: "50px", mx: 0 }} maxWidth="xl">
       <Stack spacing={5}>

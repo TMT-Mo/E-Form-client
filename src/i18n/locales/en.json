@@ -261,5 +261,8 @@
   "Notice: After changing password, you have to login again!": "Notice: After changing password, you have to login again!",
   "Something went wrong with uploading image!": "Something went wrong with uploading image!",
   "Your account just got edited by Admin. Please login again or contact Admin for more information!": "Your account just got edited by Admin. Please login again or contact Admin for more information!",
-  "Stacked Bar Chart": "Stacked Bar Chart"
+  "Stacked Bar Chart": "Stacked Bar Chart",
+  "Repeat password must be match with New password": "Repeat password must be match with New password.",
+  "Old password": "Old password",
+  "New password must have at least 8 characters includes a special character, one uppercase and one number": "New password must have at least 8 characters includes a special character, one uppercase and one number."
 }

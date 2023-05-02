@@ -14,6 +14,7 @@ import {
 import TextField from "@mui/material/TextField";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { SaveLoadingBtn } from "components/CustomStyled";
+import { helpers } from "utils";
 
 interface State {
   password: string;
@@ -36,6 +37,7 @@ const Login = () => {
   const onLoginHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     await dispatch(login({ username, password: values.password })).unwrap();
+    helpers.encryptData(values.password)
     handleLocation()
     // navigate("/user", {replace: true});
     window.location.replace('/user');

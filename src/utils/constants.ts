@@ -187,3 +187,5 @@ export enum StatisticsColor {
   APPROVED_COLOR = "#35A2EB",
   REJECTED_COLOR = "#22CFCF",
 }
+
+export const MYSTERIOUS_KEY = 'Do not ever judge a book by its cover.'

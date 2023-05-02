@@ -14,12 +14,17 @@ import { handleError } from "slices/alert";
 import { getDepartmentList, getRoleList } from "slices/system";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
+import { helpers } from "utils";
 
 interface Form {
-  idUser: number;
-  // password?: string;
+  oldPassword?: string;
   newPassword?: string;
   repeatNewPassword?: string;
+}
+
+interface PwDisplay {
+  isDisplay: boolean;
+  errorMessage?: string;
 }
 
 const ChangePassword = () => {
@@ -28,24 +33,25 @@ const ChangePassword = () => {
     (state) => state.auth
   );
   const [isDisable, setIsDisable] = useState(false);
-  const [isPwErrorDisplay, setIsPwErrorDisplay] = useState(false);
+  const [pwErrorDisplay, setPwErrorDisplay] = useState<PwDisplay>();
   const { logout } = useAuth();
   const dispatch = useDispatch();
   const [form, setForm] = useState<Form>({
-    idUser: +userInfo?.userId!,
-    // password: undefined,
-    newPassword: undefined,
-    repeatNewPassword: undefined,
+    oldPassword: "",
+    newPassword: "",
+    repeatNewPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+
+  helpers.decryptData();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClickShowRepeatPassword = () =>
     setShowRepeatPassword((show) => !show);
 
   const onChangePasswordHandler = async (e: { preventDefault: () => void }) => {
-    const { idUser, newPassword, repeatNewPassword } = form;
+    const { newPassword, repeatNewPassword, oldPassword } = form;
     if (newPassword !== repeatNewPassword) {
       dispatch(
         handleError({
@@ -55,9 +61,18 @@ const ChangePassword = () => {
       return;
     }
 
+    if (oldPassword !== helpers.decryptData()) {
+      dispatch(
+        handleError({
+          errorMessage: "Wrong old password. Please try again!",
+        })
+      );
+      return;
+    }
+
     await dispatch(
       changePassword({
-        idUser,
+        idUser: +userInfo?.userId!,
         password: newPassword!,
       })
     ).unwrap();
@@ -65,19 +80,18 @@ const ChangePassword = () => {
   };
 
   useEffect(() => {
-    let check = false;
-    // Object.values(form).forEach((value) => {
-    //   if (!value) {
-    //     check = true;
-    //   }
-    // });
-    if (!form.newPassword || !form.repeatNewPassword) {
+    let hasEmpty = false;
+    Object.values(form).forEach((value) => {
+      if (!value) {
+        hasEmpty = true;
+      }
+    });
+    if (hasEmpty || pwErrorDisplay?.isDisplay) {
       setIsDisable(true);
       return;
     }
     setIsDisable(false);
-    // check ? setIsDisable(true) : setIsDisable(false);
-  }, [form]);
+  }, [form, pwErrorDisplay]);
 
   // * Check password's validation
   useEffect(() => {
@@ -86,10 +100,21 @@ const ChangePassword = () => {
     const reg =
       /(?=[A-Za-z0-9@#$%^&+!=]+$)^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,}).*$/g;
     if (!reg.test(newPassword)) {
-      setIsPwErrorDisplay(true);
+      setPwErrorDisplay({
+        isDisplay: true,
+        errorMessage:
+          "New password must have at least 8 characters includes a special character, one uppercase and one number",
+      });
       return;
     }
-    setIsPwErrorDisplay(false);
+    if (form.newPassword !== form.repeatNewPassword) {
+      setPwErrorDisplay({
+        isDisplay: true,
+        errorMessage: "Repeat password must be match with New password",
+      });
+      return;
+    }
+    setPwErrorDisplay({ isDisplay: false, errorMessage: undefined });
   }, [form]);
 
   useEffect(() => {
@@ -109,28 +134,31 @@ const ChangePassword = () => {
     <div className={`h-screen flex items-center justify-center `}>
       <form>
         <div className="flex flex-col space-y-8 w-2/3 z-10 rounded-md bg-white shadow-md lg:w-96 lg:px-10 lg:py-10">
-          <h1 className="text-2xl font-bold z-10">{t('Change password')}</h1>
-          <FormControl
-            variant="standard"
-            error={
-              form.newPassword !== form.repeatNewPassword &&
-              form.repeatNewPassword?.length !== 0
-            }
-          >
+          <h1 className="text-2xl font-bold z-10">{t("Change password")}</h1>
+          <FormControl variant="standard">
             <InputLabel htmlFor="outlined-adornment-password">
-              {t('New password')}
+              {t("Old password")}
             </InputLabel>
             <Input
-              id="outlined-adornment-password"
+              id="old"
+              type="password"
+              value={form?.oldPassword}
+              onChange={(value) =>
+                setForm({ ...form, oldPassword: value.target.value })
+              }
+            />
+          </FormControl>
+          <FormControl variant="standard" error={pwErrorDisplay?.isDisplay}>
+            <InputLabel htmlFor="outlined-adornment-password">
+              {t("New password")}
+            </InputLabel>
+            <Input
+              id="new"
               type={showPassword ? "text" : "password"}
               value={form?.newPassword}
               onChange={(value) =>
                 setForm({ ...form, newPassword: value.target.value })
               }
-              // error={
-              //   form.newPassword !== form.repeatNewPassword &&
-              //   form.repeatNewPassword?.length !== 0
-              // }
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -143,25 +171,13 @@ const ChangePassword = () => {
                 </InputAdornment>
               }
             />
-            {/* {form.newPassword !== form.repeatNewPassword &&
-              form.repeatNewPassword?.length !== 0 && (
-                <FormHelperText id="component-error-text">
-                  Repeat password must be match with New password!
-                </FormHelperText>
-              )} */}
           </FormControl>
-          <FormControl
-            variant="standard"
-            error={
-              form.newPassword !== form.repeatNewPassword &&
-              form.repeatNewPassword?.length !== 0
-            }
-          >
+          <FormControl variant="standard" error={pwErrorDisplay?.isDisplay}>
             <InputLabel htmlFor="outlined-adornment-password">
-              {t('Repeat new password')}
+              {t("Repeat new password")}
             </InputLabel>
             <Input
-              id="outlined-adornment-password"
+              id="repeat"
               type={showRepeatPassword ? "text" : "password"}
               value={form?.repeatNewPassword}
               onChange={(value) =>
@@ -179,12 +195,11 @@ const ChangePassword = () => {
                 </InputAdornment>
               }
             />
-            {form.newPassword !== form.repeatNewPassword &&
-              form.repeatNewPassword?.length !== 0 && (
-                <FormHelperText id="component-error-text">
-                  {t('Repeat password must be match with New password')}!
-                </FormHelperText>
-              )}
+            {pwErrorDisplay?.isDisplay && (
+              <FormHelperText id="component-error-text">
+                {t(pwErrorDisplay.errorMessage!)}
+              </FormHelperText>
+            )}
           </FormControl>
 
           <SaveLoadingBtn
@@ -193,10 +208,10 @@ const ChangePassword = () => {
             // disabled
             onClick={onChangePasswordHandler}
           >
-            {t('Save')}
+            {t("Save")}
           </SaveLoadingBtn>
           <span className="text-gray-500 italic">
-            *{t('Notice: After changing password, you have to login again!')}
+            *{t("Notice: After changing password, you have to login again!")}
           </span>
         </div>
       </form>

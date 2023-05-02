@@ -1,8 +1,8 @@
 import { UserInfo } from "models/auth";
 import jwtDecode from "jwt-decode";
-import { DeviceType, DeviceWidth, Permissions, SessionStorage } from "./constants";
+import { DeviceType, DeviceWidth, MYSTERIOUS_KEY, Permissions, SessionStorage } from "./constants";
 import { Dayjs } from "dayjs";
-
+import CryptoJS from "crypto-js";
 const {TOKEN_NAME, LOCATION} = SessionStorage
 
 // *-------------------------------------------- HANDLE AUTHENTICATE --------------------------------------------
@@ -81,6 +81,22 @@ const handlePercentageValue = (value: number, total: number): string => {
   return `(${percent}%)`
 };
 
+// *-------------------------------------------- HANDLE PASSWORD --------------------------------------------
+const encryptData = (input: string) => {
+  const data = CryptoJS.AES.encrypt(
+    JSON.stringify(input),
+    MYSTERIOUS_KEY
+  ).toString();
+  sessionStorage.setItem('Unknown', data)
+};
+
+const decryptData = () => {
+  const encryptedData = sessionStorage.getItem('Unknown')!
+  const bytes = CryptoJS.AES.decrypt(encryptedData, MYSTERIOUS_KEY);
+  const data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+  return data
+};
+
 const helpers = {
   setToken,
   getToken,
@@ -90,7 +106,9 @@ const helpers = {
   checkHideColumnFromPermission,
   getLocation,
   handleFormatDateJS,
-  handlePercentageValue
+  handlePercentageValue,
+  encryptData,
+  decryptData
 };
 
 export default helpers;
