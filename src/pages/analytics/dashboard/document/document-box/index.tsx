@@ -20,7 +20,7 @@ import { helpers } from "utils";
 
 const { APPROVED_COLOR, PROCESSING_COLOR, REJECTED_COLOR } = StatisticsColor;
 
-const { handleFormatDateJS } = helpers;
+const { handleFormatDateJS, handlePercentageValue } = helpers;
 interface DefaultDate {
   fromDate: string;
   toDate: string;
@@ -38,8 +38,8 @@ export const DocumentBoxNoneFilter = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const [startDate, setStartDate] = useState<Dayjs | null>(null);
-  const [endDate, setEndDate] = useState<Dayjs | null>(null);
+  const [startDate, setStartDate] = useState<Dayjs>(dayjs(defaultDate.fromDate));
+  const [endDate, setEndDate] = useState<Dayjs>(dayjs(defaultDate.toDate));
   const { userInfo } = useSelector((state) => state.auth);
   const { departmentList } = useSelector((state) => state.system);
   const { isGetStatisticsDocumentLoading, statisticsDocument } = useSelector(
@@ -75,10 +75,8 @@ export const DocumentBoxNoneFilter = () => {
     const onGetStatisticsDocument = dispatch(
       getStatisticsDocument({
         departmentId: getDepartment?.id,
-        fromDate: startDate
-          ? handleFormatDateJS(startDate)
-          : defaultDate.fromDate,
-        toDate: endDate ? handleFormatDateJS(endDate) : defaultDate.toDate,
+        fromDate: handleFormatDateJS(startDate),
+        toDate: handleFormatDateJS(endDate),
       })
     );
 
@@ -87,7 +85,7 @@ export const DocumentBoxNoneFilter = () => {
 
   return (
     <Stack spacing={3} width={1 / 2}>
-      <h2>{t("Template Statistics")}</h2>
+      <h2>{t("Document Statistics")}</h2>
       <Paper
         sx={{
           p: 3,
@@ -148,7 +146,7 @@ export const DocumentBoxNoneFilter = () => {
             </LocalizationProvider>
           </Stack>
 
-          {isGetStatisticsDocumentLoading ? (
+          {isGetStatisticsDocumentLoading && (
             <Stack
               width="100%"
               minHeight={300}
@@ -157,8 +155,9 @@ export const DocumentBoxNoneFilter = () => {
             >
               <CircularProgress />
             </Stack>
-          ) : (
-            <Stack spacing={2}>
+          ) }
+
+          {statisticsDocument && !isGetStatisticsDocumentLoading && <Stack spacing={2}>
               <Typography
                 variant="h4"
                 component="h1"
@@ -175,7 +174,7 @@ export const DocumentBoxNoneFilter = () => {
                     {t("Processing")}
                   </Typography>
                   <Typography variant="h6" component="h1" fontWeight="semiBold">
-                    {statisticsDocument?.processing}
+                    {statisticsDocument?.processing} {handlePercentageValue(statisticsDocument?.processing, statisticsDocument?.total)}
                   </Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
@@ -183,7 +182,7 @@ export const DocumentBoxNoneFilter = () => {
                     {t("Approved")}
                   </Typography>
                   <Typography variant="h6" component="h1" fontWeight="semiBold">
-                    {statisticsDocument?.approved}
+                    {statisticsDocument?.approved} {handlePercentageValue(statisticsDocument?.approved, statisticsDocument?.total)}
                   </Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
@@ -191,12 +190,11 @@ export const DocumentBoxNoneFilter = () => {
                     {t("Rejected")}
                   </Typography>
                   <Typography variant="h6" component="h1" fontWeight="semiBold">
-                    {statisticsDocument?.rejected}
+                    {statisticsDocument?.rejected} {handlePercentageValue(statisticsDocument?.rejected, statisticsDocument?.total)}
                   </Typography>
                 </Stack>
               </Stack>
-            </Stack>
-          )}
+            </Stack>}
         </Stack>
       </Paper>
     </Stack>

@@ -34,3 +34,10 @@ export interface GetStatisticsTemplateList{
     fromDate?: string,
     toDate?: string,
 }
+
+export interface ArrangedStatistics{
+    approvedList: number[],
+    rejectedList: number[],
+    processingList: number[],
+    labels: string[]
+}

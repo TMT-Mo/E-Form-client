@@ -1,7 +1,5 @@
-import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
 import {
   Autocomplete,
-  Box,
   CircularProgress,
   Divider,
   Paper,
@@ -9,56 +7,73 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { Dayjs } from "dayjs";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "hooks";
-import { DummyStatistics } from "utils/dummy-data";
 import { Department } from "models/system";
 import { useTranslation } from "react-i18next";
-import styled from "@emotion/styled";
 import { DoughnutChart } from "components/Chart/doughnut";
 import { ChartDataset } from "chart.js";
+import { StatisticsTemplate } from "models/statistics";
+import { helpers } from "utils";
+
+const { handlePercentageValue } = helpers;
 
 export const TemplateBoxWithFilter = () => {
   const { t } = useTranslation();
-  const { approved, departmentName, rejected, total, processing } =
-    DummyStatistics[0];
-  const [startDate, setStartDate] = useState<Dayjs | null>(null);
-  const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [selectedDepartment, setSelectedDepartment] = useState<Department>();
   const { userInfo } = useSelector((state) => state.auth);
   const { isGetDepartmentsLoading, departmentList } = useSelector(
     (state) => state.system
   );
+  const { isGetStatisticsTemplateListLoading, statisticsTemplateList } =
+    useSelector((state) => state.statistics);
+  const [selectedStatistics, setSelectedStatistics] =
+    useState<StatisticsTemplate>();
 
-  const handleFormatDate = (date: Dayjs | undefined) =>
-    date?.toISOString().replace("Z", "").replace("T17", "T00");
-
-  const handleChangeStartDate = (value: Dayjs) => {
-    setStartDate(value.subtract(1, "day"));
-  };
-
-  const handleChangeEndDate = (value: Dayjs) => {
-    setEndDate(value.subtract(2, "day"));
-  };
+  const labels = [t("Rejected"), t("Processing"), t("Approved")];
+  const datasets: ChartDataset<"doughnut">[] = [
+    {
+      label: t("Value"),
+      data: [
+        selectedStatistics?.rejected || 0,
+        selectedStatistics?.processing || 0,
+        selectedStatistics?.approved || 0,
+      ],
+      backgroundColor: ["#FF6384", "#35A2EB", "#22CFCF"],
+      borderColor: ["#FF6384", "#35A2EB", "#22CFCF"],
+    },
+  ];
 
   const onChangeSelectedDepartment = (value: Department | null) => {
     if (!value) {
       return;
     }
     setSelectedDepartment(value);
+    setSelectedStatistics(
+      statisticsTemplateList.find(
+        (statistics) => statistics.departmentId === value.id
+      )
+    );
   };
 
-  const labels = [t("Rejected"), t("Processing"), t("Approved")];
-  const datasets: ChartDataset<"doughnut">[] = [
-    {
-      label: t("Value"),
-      data: [20, 10, 3],
-      backgroundColor: ["#FF6384", "#35A2EB", "#22CFCF"],
-      borderColor: ["#FF6384", "#35A2EB", "#22CFCF"],
-    },
-  ];
+  useEffect(() => {
+    if (!statisticsTemplateList) return;
+    const defaultSelectedStatistics = statisticsTemplateList.find(
+      (statistics) => statistics.departmentName === userInfo?.departmentName
+    );
+    setSelectedStatistics(defaultSelectedStatistics);
+    setSelectedDepartment({
+      departmentName: defaultSelectedStatistics?.departmentName!,
+      id: defaultSelectedStatistics?.departmentId!,
+    });
+  }, [statisticsTemplateList, userInfo?.departmentName]);
+
+  // useEffect(() => {
+  //   if(!departmentList) return
+  //   if(!selectedDepartment) return
+  //   const currentDepartment = departmentList.find(d => d.departmentName === userInfo?.departmentName)
+  //   setSelectedDepartment(currentDepartment) 
+  // }, [departmentList, selectedDepartment, userInfo?.departmentName]);
 
   return (
     <Paper
@@ -70,18 +85,21 @@ export const TemplateBoxWithFilter = () => {
       elevation={3}
     >
       <Stack spacing={2} direction="column">
-        <Stack direction="row" justifyContent="space-between" alignItems="end">
+        {selectedStatistics && <Stack direction="row" justifyContent="space-between" alignItems="end">
           <Autocomplete
             id="asynchronous-demo"
             sx={{
-              width: 150,
+              width: 250,
             }}
             onChange={(e, value) => onChangeSelectedDepartment(value)}
             isOptionEqualToValue={(option, value) =>
               option.departmentName === value.departmentName
             }
+            disableClearable
             getOptionLabel={(option) => t(option.departmentName)}
-            options={departmentList}
+            options={departmentList.filter(
+              (department) => department.departmentName !== "All"
+            )}
             loading={isGetDepartmentsLoading}
             value={selectedDepartment}
             renderInput={(params) => (
@@ -103,87 +121,68 @@ export const TemplateBoxWithFilter = () => {
               />
             )}
           />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Stack direction="row" spacing={3}>
-              <DesktopDatePicker
-                label={t("From")}
-                inputFormat="DD/MM/YYYY"
-                value={startDate}
-                onChange={(newValue: Dayjs | null) =>
-                  handleChangeStartDate(newValue!.add(1, "day"))
-                }
-                renderInput={(params: any) => (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    disabled
-                    sx={{ width: "130px" }}
-                    // value={null}
-                  />
-                )}
-                disableFuture
-                maxDate={endDate ?? undefined}
-              />
-              <DesktopDatePicker
-                label={t("To")}
-                inputFormat="DD/MM/YYYY"
-                value={endDate}
-                onChange={(newValue: Dayjs | null) =>
-                  handleChangeEndDate(newValue!.add(2, "day"))
-                }
-                renderInput={(params: any) => (
-                  <TextField
-                    {...params}
-                    sx={{ width: "130px" }}
-                    variant="standard"
-                    disabled
-                  />
-                )}
-                disableFuture
-                minDate={startDate ?? undefined}
-              />
-            </Stack>
-          </LocalizationProvider>
-        </Stack>
-
-        <Typography
-          variant="h4"
-          component="h1"
-          style={{ paddingBottom: "10px" }}
-          fontWeight="600"
-        >
-          {t("Total")}: {DummyStatistics[0].total}
-        </Typography>
-        <DoughnutChart labels={labels} datasets={datasets} />
-        <Stack spacing={4}>
-          <Divider />
+        </Stack>}
+        {isGetStatisticsTemplateListLoading && (
+          <Stack minHeight={300} justifyContent="center" alignItems="center">
+            <CircularProgress />
+          </Stack>
+        )}
+        {selectedStatistics && !isGetStatisticsTemplateListLoading && (
           <Stack spacing={2}>
-            <Stack direction="row" justifyContent="space-between">
-              <Typography variant="h6" component="h1" fontWeight="semiBold">
-                {t("Processing")}
-              </Typography>
-              <Typography variant="h6" component="h1" fontWeight="semiBold">
-                {DummyStatistics[0].approved}
-              </Typography>
-            </Stack>
-            <Stack direction="row" justifyContent="space-between">
-              <Typography variant="h6" component="h1" fontWeight="semiBold">
-                {t("Approved")}
-              </Typography>
-              <Typography variant="h6" component="h1" fontWeight="semiBold">
-                {DummyStatistics[0].approved}
-              </Typography>
-            </Stack>
-            <Stack direction="row" justifyContent="space-between">
-              <Typography variant="h6" component="h1" fontWeight="semiBold">
-                {t("Rejected")}
-              </Typography>
-              <Typography variant="h6" component="h1" fontWeight="semiBold">
-                {DummyStatistics[0].approved}
-              </Typography>
+            <Typography
+              variant="h4"
+              component="h1"
+              style={{ paddingBottom: "10px" }}
+              fontWeight="600"
+            >
+              {t("Total")}: {selectedStatistics.total}
+            </Typography>
+
+            <DoughnutChart labels={labels} datasets={datasets} />
+
+            <Stack spacing={4}>
+              <Divider />
+              <Stack spacing={2}>
+                <Stack direction="row" justifyContent="space-between">
+                  <Typography variant="h6" component="h1" fontWeight="semiBold">
+                    {t("Processing")}
+                  </Typography>
+                  <Typography variant="h6" component="h1" fontWeight="semiBold">
+                    {selectedStatistics.processing}{" "}
+                    {handlePercentageValue(
+                      selectedStatistics.processing,
+                      selectedStatistics.total
+                    )}
+                  </Typography>
+                </Stack>
+                <Stack direction="row" justifyContent="space-between">
+                  <Typography variant="h6" component="h1" fontWeight="semiBold">
+                    {t("Approved")}
+                  </Typography>
+                  <Typography variant="h6" component="h1" fontWeight="semiBold">
+                    {selectedStatistics.approved}{" "}
+                    {handlePercentageValue(
+                      selectedStatistics.approved,
+                      selectedStatistics.total
+                    )}
+                  </Typography>
+                </Stack>
+                <Stack direction="row" justifyContent="space-between">
+                  <Typography variant="h6" component="h1" fontWeight="semiBold">
+                    {t("Rejected")}
+                  </Typography>
+                  <Typography variant="h6" component="h1" fontWeight="semiBold">
+                    {selectedStatistics.rejected}{" "}
+                    {handlePercentageValue(
+                      selectedStatistics.rejected,
+                      selectedStatistics.total
+                    )}
+                  </Typography>
+                </Stack>
+              </Stack>
             </Stack>
           </Stack>
-        </Stack>
+        )}
       </Stack>
     </Paper>
   );

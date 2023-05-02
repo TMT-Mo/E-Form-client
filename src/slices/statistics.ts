@@ -8,6 +8,7 @@ import {
   GetStatisticsTemplate,
   GetStatisticsDocumentList,
   GetStatisticsTemplateList,
+  ArrangedStatistics,
 } from "models/statistics";
 import { statisticsServices } from "services/statistics";
 import { handleError } from "slices/alert";
@@ -21,6 +22,8 @@ interface State {
   isGetStatisticsTemplateLoading: boolean;
   isGetStatisticsDocumentListLoading: boolean;
   isGetStatisticsTemplateListLoading: boolean;
+  arrangedDocumentStatistics?: ArrangedStatistics;
+  arrangedTemplateStatistics?: ArrangedStatistics;
 }
 
 const initialState: State = {
@@ -32,6 +35,8 @@ const initialState: State = {
   isGetStatisticsTemplateLoading: false,
   isGetStatisticsDocumentListLoading: false,
   isGetStatisticsTemplateListLoading: false,
+  arrangedDocumentStatistics: undefined,
+  arrangedTemplateStatistics: undefined,
 };
 
 const ACTION_TYPE = "statistics/";
@@ -159,11 +164,29 @@ const statistics = createSlice({
     }));
     builder.addCase(
       getStatisticsDocumentList.fulfilled,
-      (state, { payload }) => ({
-        ...state,
-        isGetStatisticsDocumentListLoading: false,
-        statisticsDocumentList: payload!,
-      })
+      (state, { payload }) => {
+        state.isGetStatisticsDocumentListLoading = false;
+        const emptyStatistics: StatisticsDocument[] = payload.filter(statistics => !statistics.total)
+        const noneEmptyStatistics: StatisticsDocument[] = payload.filter(statistics => statistics.total && statistics.departmentName !== 'All')
+        const sortedStatisticsList: StatisticsDocument[] = [...noneEmptyStatistics, ...emptyStatistics]
+        state.statisticsDocumentList = sortedStatisticsList;
+        const approvedList: number[] = [],
+          rejectedList: number[] = [],
+          labels: string[] = [],
+          processingList: number[] = [];
+        sortedStatisticsList.forEach((statistics) => {
+          approvedList.push(statistics.approved);
+          rejectedList.push(statistics.rejected);
+          processingList.push(statistics.processing);
+          labels.push(statistics.departmentName);
+        });
+        state.arrangedDocumentStatistics = {
+          approvedList,
+          labels,
+          processingList,
+          rejectedList,
+        };
+      }
     );
     builder.addCase(getStatisticsDocumentList.rejected, (state) => ({
       ...state,
@@ -175,11 +198,29 @@ const statistics = createSlice({
     }));
     builder.addCase(
       getStatisticsTemplateList.fulfilled,
-      (state, { payload }) => ({
-        ...state,
-        isGetStatisticsTemplateListLoading: false,
-        statisticsTemplateList: payload!,
-      })
+      (state, { payload }) => {
+        state.isGetStatisticsTemplateListLoading = false;
+        const emptyStatistics: StatisticsTemplate[] = payload.filter(statistics => !statistics.total)
+        const noneEmptyStatistics: StatisticsTemplate[] = payload.filter(statistics => statistics.total && statistics.departmentName !== 'All')
+        const sortedStatisticsList: StatisticsTemplate[] = [...noneEmptyStatistics, ...emptyStatistics]
+        state.statisticsTemplateList = sortedStatisticsList;
+        const approvedList: number[] = [],
+          rejectedList: number[] = [],
+          labels: string[] = [],
+          processingList: number[] = [];
+        sortedStatisticsList.forEach((statistics) => {
+          approvedList.push(statistics.approved);
+          rejectedList.push(statistics.rejected);
+          processingList.push(statistics.processing);
+          labels.push(statistics.departmentName);
+        });
+        state.arrangedTemplateStatistics = {
+          approvedList,
+          labels,
+          processingList,
+          rejectedList,
+        };
+      }
     );
     builder.addCase(getStatisticsTemplateList.rejected, (state) => ({
       ...state,

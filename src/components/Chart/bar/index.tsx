@@ -69,14 +69,15 @@ export function ChartBar(props: Props) {
           },
           mode: "x",
         },
+
       },
       tooltip: {
         callbacks: {
           footer: footer,
         }
       }
-    
     },
+    
     interaction: {
       intersect: false,
       mode: 'index',
@@ -90,6 +91,7 @@ export function ChartBar(props: Props) {
         stacked: true,
       },
     },
+    
   };
 
   return (

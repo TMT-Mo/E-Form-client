@@ -1,60 +1,68 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChartDataset } from "chart.js";
 import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
 import {
-  Autocomplete,
   CircularProgress,
   Paper,
   Stack,
   TextField,
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { Dayjs } from "dayjs";
-import { Department } from "models/system";
-import { useSelector } from "hooks";
+import dayjs, { Dayjs } from "dayjs";
+import { useDispatch, useSelector } from "hooks";
 import { useTranslation } from "react-i18next";
 import { ChartBar } from "components/Chart/bar";
+import { helpers } from "utils";
+import {
+  getStatisticsDocumentList,
+} from "slices/statistics";
 
-const labels = [
-  "IT",
-  "Marketing",
-  "HR",
-  "Sales",
-  "System",
-  "Online",
-  "Production",
-  "Production",
-  "Production",
-  "Production",
-];
+const { handleFormatDateJS } = helpers;
+interface DefaultDate {
+  fromDate: string;
+  toDate: string;
+}
+const defaultDate: DefaultDate = {
+  fromDate: handleFormatDateJS(
+    dayjs(new Date("Tue Oct 11 2022 00:00:00 GMT+0700 (Indochina Time)")).add(
+      1,
+      "day"
+    )
+  )!,
+  toDate: handleFormatDateJS(dayjs(new Date()))!,
+};
 
 export function DocumentChartBar() {
   const { t } = useTranslation();
-  const [selectedDepartment, setSelectedDepartment] = useState<Department>();
-  const [startDate, setStartDate] = useState<Dayjs | null>(null);
-  const [endDate, setEndDate] = useState<Dayjs | null>(null);
-  const { isGetDepartmentsLoading, departmentList } = useSelector(
+  const dispatch = useDispatch();
+  const [startDate, setStartDate] = useState<Dayjs>(dayjs(defaultDate.fromDate));
+  const [endDate, setEndDate] = useState<Dayjs>(dayjs(defaultDate.toDate));
+  const { departmentList } = useSelector(
     (state) => state.system
+  );
+  const { userInfo } = useSelector((state) => state.auth);
+  const { isGetStatisticsDocumentListLoading, arrangedDocumentStatistics } = useSelector(
+    (state) => state.statistics
   );
 
   const datasets: ChartDataset<"bar">[] = [
     {
       label: t("Rejected"),
-      data: [12, 19, 3, 5, 2, 3],
+      data: arrangedDocumentStatistics?.rejectedList || [],
       backgroundColor: "rgb(255, 99, 132)",
-      barThickness: 60,
+      barThickness: 35,
     },
     {
       label: t("Approved"),
-      data: [6, 19, 3, 5, 2, 3],
+      data: arrangedDocumentStatistics?.approvedList || [],
       backgroundColor: "rgb(75, 192, 192)",
-      barThickness: 60,
+      barThickness: 35,
     },
     {
       label: t("Processing"),
-      data: [12, 19, 3, 5, 2, 3],
+      data: arrangedDocumentStatistics?.processingList || [],
       backgroundColor: "rgb(53, 162, 235)",
-      barThickness: 60,
+      barThickness: 35,
     },
   ];
 
@@ -66,49 +74,23 @@ export function DocumentChartBar() {
     setEndDate(value.subtract(2, "day"));
   };
 
-  const onChangeSelectedDepartment = (value: Department | null) => {
-    if (!value) {
-      return;
-    }
-    setSelectedDepartment(value);
-  };
+  useEffect(() => {
+    const onGetStatisticsDocumentList = dispatch(
+      getStatisticsDocumentList({
+        fromDate: handleFormatDateJS(startDate),
+        toDate: handleFormatDateJS(endDate),
+      })
+    );
+
+    onGetStatisticsDocumentList.unwrap();
+  }, [departmentList, dispatch, endDate, startDate, userInfo?.departmentName]);
 
   return (
     <Paper sx={{ p: 3, borderRadius: 3, width: "70%" }} elevation={3}>
-      <Stack spacing={5}>
+      
+       <Stack spacing={5}>
         <Stack direction="row" justifyContent="space-between" alignItems="end">
-          <Autocomplete
-            id="asynchronous-demo"
-            sx={{
-              width: 200,
-            }}
-            onChange={(e, value) => onChangeSelectedDepartment(value)}
-            isOptionEqualToValue={(option, value) =>
-              option.departmentName === value.departmentName
-            }
-            getOptionLabel={(option) => t(option.departmentName)}
-            options={departmentList}
-            loading={isGetDepartmentsLoading}
-            value={selectedDepartment}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="standard"
-                sx={{ borderBottom: "none" }}
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <React.Fragment>
-                      {isGetDepartmentsLoading ? (
-                        <CircularProgress color="primary" size={20} />
-                      ) : null}
-                      {params.InputProps.endAdornment}
-                    </React.Fragment>
-                  ),
-                }}
-              />
-            )}
-          />
+          <h2>{t('Stacked Bar Chart')}</h2>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Stack direction="row" spacing={2}>
               <DesktopDatePicker
@@ -151,7 +133,12 @@ export function DocumentChartBar() {
             </Stack>
           </LocalizationProvider>
         </Stack>
-        <ChartBar datasets={datasets} labels={labels} />
+        {isGetStatisticsDocumentListLoading && (
+          <Stack minHeight={300} justifyContent="center" alignItems="center">
+            <CircularProgress />
+          </Stack>
+        )}
+         {arrangedDocumentStatistics && !isGetStatisticsDocumentListLoading &&<ChartBar datasets={datasets} labels={arrangedDocumentStatistics!.labels} />}
       </Stack>
     </Paper>
   );

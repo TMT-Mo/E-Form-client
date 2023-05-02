@@ -260,6 +260,7 @@
   "You can only select VIEW_DOCUMENT_OVERALL_STATISTICS or VIEW_DOCUMENT_STATISTICS": "Bạn chỉ được chọn VIEW_DOCUMENT_OVERALL_STATISTICS hoặc VIEW_DOCUMENT_STATISTICS",
   "Notice: After changing password, you have to login again!": "Chú ý: Sau khi đổi mật khẩu, bạn phải đăng nhập lại!",
   "Something went wrong with uploading image!": "Có sự cố khi tải file lên!",
-  "Your account just got edited by Admin. Please login again or contact Admin for more information!": "Tài khoản của bạn vừa bị chỉnh sửa bởi Admin. Vui lòng đăng nhập lại hoặc liên hệ Admin để biết thêm thông tin chi tiết!"
+  "Your account just got edited by Admin. Please login again or contact Admin for more information!": "Tài khoản của bạn vừa bị chỉnh sửa bởi Admin. Vui lòng đăng nhập lại hoặc liên hệ Admin để biết thêm thông tin chi tiết!",
+  "Stacked Bar Chart": "Biểu đồ cột chồng"
 
 } 

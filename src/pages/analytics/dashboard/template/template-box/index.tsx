@@ -19,7 +19,7 @@ import { StatisticsColor } from "utils/constants";
 import { helpers } from "utils";
 
 const { APPROVED_COLOR, PROCESSING_COLOR, REJECTED_COLOR } = StatisticsColor;
-const { handleFormatDateJS } = helpers;
+const { handleFormatDateJS, handlePercentageValue } = helpers;
 interface DefaultDate {
   fromDate: string;
   toDate: string;
@@ -38,8 +38,8 @@ export const TemplateBoxNoneFilter = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const [startDate, setStartDate] = useState<Dayjs | null>(null);
-  const [endDate, setEndDate] = useState<Dayjs | null>(null);
+  const [startDate, setStartDate] = useState<Dayjs >(dayjs(defaultDate.fromDate));
+  const [endDate, setEndDate] = useState<Dayjs >(dayjs(defaultDate.toDate));
   const { userInfo } = useSelector((state) => state.auth);
   const { departmentList } = useSelector((state) => state.system);
   const { isGetStatisticsTemplateLoading, statisticsTemplate } = useSelector(
@@ -76,10 +76,8 @@ export const TemplateBoxNoneFilter = () => {
     const onGetStatisticsTemplate = dispatch(
       getStatisticsTemplate({
         departmentId: getDepartment?.id,
-        fromDate: startDate
-          ? handleFormatDateJS(startDate.add(1, 'day'))
-          : defaultDate.fromDate,
-        toDate: endDate ? handleFormatDateJS(endDate.add(2, 'day')) : defaultDate.toDate,
+        fromDate: handleFormatDateJS(startDate),
+        toDate: handleFormatDateJS(endDate),
       })
     );
 
@@ -149,7 +147,7 @@ export const TemplateBoxNoneFilter = () => {
             </LocalizationProvider>
           </Stack>
 
-          {isGetStatisticsTemplateLoading ? (
+          {isGetStatisticsTemplateLoading && (
             <Stack
               width="100%"
               minHeight={300}
@@ -158,8 +156,8 @@ export const TemplateBoxNoneFilter = () => {
             >
               <CircularProgress />
             </Stack>
-          ) : (
-            <Stack spacing={2}>
+          )}
+          {!isGetStatisticsTemplateLoading && statisticsTemplate && <Stack spacing={2}>
               <Typography
                 variant="h4"
                 component="h1"
@@ -173,10 +171,10 @@ export const TemplateBoxNoneFilter = () => {
               <Stack spacing={2}>
                 <Stack direction="row" justifyContent="space-between">
                   <Typography variant="h6" component="h1" fontWeight="semiBold">
-                    {t("Processing")}
+                    {t("Processing")} 
                   </Typography>
                   <Typography variant="h6" component="h1" fontWeight="semiBold">
-                    {statisticsTemplate?.processing}
+                    {statisticsTemplate?.processing} {handlePercentageValue(statisticsTemplate?.processing, statisticsTemplate?.total)}
                   </Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
@@ -184,7 +182,7 @@ export const TemplateBoxNoneFilter = () => {
                     {t("Approved")}
                   </Typography>
                   <Typography variant="h6" component="h1" fontWeight="semiBold">
-                    {statisticsTemplate?.approved}
+                    {statisticsTemplate?.approved} {handlePercentageValue(statisticsTemplate?.approved, statisticsTemplate?.total)}
                   </Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
@@ -192,12 +190,11 @@ export const TemplateBoxNoneFilter = () => {
                     {t("Rejected")}
                   </Typography>
                   <Typography variant="h6" component="h1" fontWeight="semiBold">
-                    {statisticsTemplate?.rejected}
+                    {statisticsTemplate?.rejected} {handlePercentageValue(statisticsTemplate?.rejected, statisticsTemplate?.total)}
                   </Typography>
                 </Stack>
               </Stack>
-            </Stack>
-          )}
+            </Stack>}
         </Stack>
       </Paper>
     </Stack>

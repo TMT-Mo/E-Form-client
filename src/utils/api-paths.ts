@@ -50,6 +50,8 @@ const apiPaths = {
     statistics:{
         getStatisticsDocument: `${apiHead}api/Document/getStatisticsDocument`,
         getStatisticsTemplate: `${apiHead}api/Template/getStatisticsTemplate`,
+        getStatisticsDocumentList: `${apiHead}api/Document/getStatisticsDocumentList`,
+        getStatisticsTemplateList: `${apiHead}api/Template/getStatisticsTemplateList`,
     }
 }
 

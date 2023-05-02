@@ -72,6 +72,15 @@ date?.toISOString().replace("Z", "").replace("T17", "T00");
 // *-------------------------------------------- HANDLE NOTIFICATIONS --------------------------------------------
 // export handleNotification =
 
+// *-------------------------------------------- HANDLE PERCENTAGE VALUE --------------------------------------------
+const handlePercentageValue = (value: number, total: number): string => {
+  const percent = Math.floor((value / total) * 100)
+  if(isNaN(percent)){
+    return ''
+  }
+  return `(${percent}%)`
+};
+
 const helpers = {
   setToken,
   getToken,
@@ -80,7 +89,8 @@ const helpers = {
   checkHideColumnFromDevice,
   checkHideColumnFromPermission,
   getLocation,
-  handleFormatDateJS
+  handleFormatDateJS,
+  handlePercentageValue
 };
 
 export default helpers;
