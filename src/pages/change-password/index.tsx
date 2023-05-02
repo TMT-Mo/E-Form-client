@@ -51,16 +51,7 @@ const ChangePassword = () => {
     setShowRepeatPassword((show) => !show);
 
   const onChangePasswordHandler = async (e: { preventDefault: () => void }) => {
-    const { newPassword, repeatNewPassword, oldPassword } = form;
-    if (newPassword !== repeatNewPassword) {
-      dispatch(
-        handleError({
-          errorMessage: "Wrong repeat password. Please try again!",
-        })
-      );
-      return;
-    }
-
+    const { newPassword, oldPassword } = form;
     if (oldPassword !== helpers.decryptData()) {
       dispatch(
         handleError({
