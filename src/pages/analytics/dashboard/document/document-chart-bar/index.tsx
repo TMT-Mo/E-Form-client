@@ -1,31 +1,22 @@
 import { useEffect, useState } from "react";
 import { ChartDataset } from "chart.js";
 import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
-import {
-  CircularProgress,
-  Paper,
-  Stack,
-  TextField,
-} from "@mui/material";
+import { CircularProgress, Paper, Stack, TextField } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import { useDispatch, useSelector } from "hooks";
 import { useTranslation } from "react-i18next";
 import { ChartBar } from "components/Chart/bar";
-import {
-  getStatisticsDocumentList,
-} from "slices/statistics";
+import { getStatisticsDocumentList } from "slices/statistics";
 
 interface DefaultDate {
   fromDate: Dayjs;
   toDate: Dayjs;
 }
 const defaultDate: DefaultDate = {
-  fromDate: 
-    dayjs(new Date("Tue Oct 11 2022 00:00:00 GMT+0700 (Indochina Time)")).add(
-      1,
-      "day"
-    ),
+  fromDate: dayjs(
+    new Date("Tue Oct 11 2022 00:00:00 GMT+0700 (Indochina Time)")
+  ),
   toDate: dayjs(new Date()),
 };
 
@@ -34,13 +25,10 @@ export function DocumentChartBar() {
   const dispatch = useDispatch();
   const [startDate, setStartDate] = useState<Dayjs>(defaultDate.fromDate);
   const [endDate, setEndDate] = useState<Dayjs>(defaultDate.toDate);
-  const { departmentList } = useSelector(
-    (state) => state.system
-  );
+  const { departmentList } = useSelector((state) => state.system);
   const { userInfo } = useSelector((state) => state.auth);
-  const { isGetStatisticsDocumentListLoading, arrangedDocumentStatistics } = useSelector(
-    (state) => state.statistics
-  );
+  const { isGetStatisticsDocumentListLoading, arrangedDocumentStatistics } =
+    useSelector((state) => state.statistics);
 
   const datasets: ChartDataset<"bar">[] = [
     {
@@ -74,7 +62,9 @@ export function DocumentChartBar() {
   useEffect(() => {
     const onGetStatisticsDocumentList = dispatch(
       getStatisticsDocumentList({
-        fromDate: startDate.toDate(),
+        fromDate: new Date(
+          startDate.add(1, "day").toISOString().replace("T17", "T00")
+        ),
         toDate: endDate.toDate(),
       })
     );
@@ -84,10 +74,9 @@ export function DocumentChartBar() {
 
   return (
     <Paper sx={{ p: 3, borderRadius: 3, width: "70%" }} elevation={3}>
-      
-       <Stack spacing={5}>
+      <Stack spacing={5}>
         <Stack direction="row" justifyContent="space-between" alignItems="end">
-          <h2>{t('Stacked Bar Chart')}</h2>
+          <h2>{t("Stacked Bar Chart")}</h2>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Stack direction="row" spacing={2}>
               <DesktopDatePicker
@@ -135,7 +124,12 @@ export function DocumentChartBar() {
             <CircularProgress />
           </Stack>
         )}
-         {arrangedDocumentStatistics && !isGetStatisticsDocumentListLoading &&<ChartBar datasets={datasets} labels={arrangedDocumentStatistics!.labels} />}
+        {arrangedDocumentStatistics && !isGetStatisticsDocumentListLoading && (
+          <ChartBar
+            datasets={datasets}
+            labels={arrangedDocumentStatistics!.labels}
+          />
+        )}
       </Stack>
     </Paper>
   );

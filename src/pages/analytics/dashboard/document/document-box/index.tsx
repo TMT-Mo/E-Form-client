@@ -28,7 +28,7 @@ interface DefaultDate {
 const defaultDate: DefaultDate = {
   fromDate: dayjs(
     new Date("Tue Oct 11 2022 00:00:00 GMT+0700 (Indochina Time)")
-  ).add(1, "day"),
+  ),
   toDate: dayjs(new Date()),
 };
 export const DocumentBoxNoneFilter = () => {
@@ -72,7 +72,7 @@ export const DocumentBoxNoneFilter = () => {
     const onGetStatisticsDocument = dispatch(
       getStatisticsDocument({
         departmentId: getDepartment?.id,
-        fromDate: startDate.toDate(),
+        fromDate: new Date(startDate.add(1,'day').toISOString().replace('T17', 'T00')),
         toDate: endDate.toDate(),
       })
     );
