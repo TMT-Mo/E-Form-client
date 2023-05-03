@@ -46,6 +46,7 @@ const ViewPersonalDocument: React.FC = () => {
     createdAt,
     createdBy,
     description,
+    documentDescription,
     documentName,
     xfdfString,
     signatoryList,
@@ -109,17 +110,18 @@ const ViewPersonalDocument: React.FC = () => {
     ).then(async (instance) => {
       const { documentViewer, annotationManager } = instance.Core;
       instance.UI.setLanguage(i18n.language === "vn" ? "vi" : "en");
-      status !== StatusDocument.REJECTED_DOCUMENT && instance.UI.setHeaderItems(function (header) {
-        header.push({
-          type: "actionButton",
-          img: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20"><path d="M19 9h-4V3H9v6H5l7 8zM4 19h16v2H4z"></path></svg>',
-          onClick: async () =>
-            await instance.UI.downloadPdf({
-              filename: documentName.replace(/.docx|.doc/g, ""),
-              xfdfString,
-            }),
+      status !== StatusDocument.REJECTED_DOCUMENT &&
+        instance.UI.setHeaderItems(function (header) {
+          header.push({
+            type: "actionButton",
+            img: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20"><path d="M19 9h-4V3H9v6H5l7 8zM4 19h16v2H4z"></path></svg>',
+            onClick: async () =>
+              await instance.UI.downloadPdf({
+                filename: documentName.replace(/.docx|.doc/g, ""),
+                xfdfString,
+              }),
+          });
         });
-      });
       documentViewer.addEventListener("documentLoaded", async () => {
         await documentViewer.getDocument().getDocumentCompletePromise();
         await annotationManager.importAnnotations(xfdfString);
@@ -134,7 +136,15 @@ const ViewPersonalDocument: React.FC = () => {
         });
       });
     });
-  }, [documentName, link, userInfo?.userId, userInfo?.userName, xfdfString, i18n, status]);
+  }, [
+    documentName,
+    link,
+    userInfo?.userId,
+    userInfo?.userName,
+    xfdfString,
+    i18n,
+    status,
+  ]);
 
   useEffect(() => {
     return () => {
@@ -164,6 +174,12 @@ const ViewPersonalDocument: React.FC = () => {
               <h4 className="whitespace-nowrap">{t("Description")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {description}
+              </span>
+            </div>
+            <div className="flex flex-col space-y-2">
+              <h4 className="whitespace-nowrap">{t("The purpose of use")}:</h4>
+              <span className="text-white text-base break-words w-60">
+                {documentDescription}
               </span>
             </div>
             <div className="flex items-center space-x-1">
@@ -237,7 +253,7 @@ const ViewPersonalDocument: React.FC = () => {
                   variant="outlined"
                   onClick={onCancelChangeSigner}
                 >
-                  {t('Cancel')}
+                  {t("Cancel")}
                 </TransparentBtn>
                 <SaveLoadingBtn
                   size="small"
@@ -248,7 +264,7 @@ const ViewPersonalDocument: React.FC = () => {
                   variant="outlined"
                   onClick={() => setOpenDialog(true)}
                 >
-                  {t('Save')}
+                  {t("Save")}
                 </SaveLoadingBtn>
               </div>
             )}

@@ -265,5 +265,7 @@
   "Repeat password must be match with New password": "Repeat password must be match with New password.",
   "Old password": "Old password",
   "New password must have at least 8 characters includes a special character, one uppercase and one number": "New password must have at least 8 characters includes a special character, one uppercase and one number.",
-  "Wrong old password. Please try again!": "Wrong old password. Please try again!"
+  "Wrong old password. Please try again!": "Wrong old password. Please try again!",
+  "Describe the purpose of use": "Describe the purpose of use",
+  "The purpose of use": "The purpose of use"
 }

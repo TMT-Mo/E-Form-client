@@ -25,6 +25,7 @@ const ViewHistoryDocument: React.FC = () => {
     version,
     status,
     reason,
+    documentDescription
   } = documentDetail!;
   const {t, i18n} = useTranslation();
   // if using a class, equivalent of componentDidMount
@@ -89,6 +90,12 @@ const ViewHistoryDocument: React.FC = () => {
               <h4 className="whitespace-nowrap">{t("Description")}:</h4>
               <span className="text-white text-base break-words w-60">
                 {description}
+              </span>
+            </div>
+            <div className="flex flex-col space-y-2">
+              <h4 className="whitespace-nowrap">{t("The purpose of use")}:</h4>
+              <span className="text-white text-base break-words w-60">
+                {documentDescription}
               </span>
             </div>
             <div className="flex items-center space-x-1">

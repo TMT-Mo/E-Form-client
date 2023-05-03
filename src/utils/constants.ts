@@ -87,6 +87,7 @@ export enum DataTableHeader {
   DEPARTMENT_HISTORY = "departmentNameHistory",
   TEMPLATE_NAME = "templateName",
   DESCRIPTION = "description",
+  DOCUMENT_DESCRIPTION = "documentDescription",
   ACTION = "action",
   CREATED_AT = "createdAt",
   UPDATED_AT = "updateAt",

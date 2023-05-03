@@ -33,6 +33,7 @@ import StatusTag from "components/StatusTag";
       departmentName,
       typeName,
       signatoryList,
+      documentDescription
     } = documentDetail!;
     // if using a class, equivalent of componentDidMount
   
@@ -134,6 +135,12 @@ import StatusTag from "components/StatusTag";
                   {description}
                 </span>
               </div>
+              <div className="flex flex-col space-y-2">
+              <h4 className="whitespace-nowrap">{t("The purpose of use")}:</h4>
+              <span className="text-white text-base break-words w-60">
+                {documentDescription}
+              </span>
+            </div>
               <div className="flex items-center space-x-1">
                 <h4 className="whitespace-nowrap">{t("Type")}:</h4>
                 <span className="text-white text-base break-words w-60">

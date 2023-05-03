@@ -28,6 +28,7 @@ const ViewCreateDocument: React.FC = () => {
     signatoryList,
     isEnable,
   } = templateDetail!;
+  const [purpose, setPurpose] = useState('')
   const [xfdfString, setXfdfString] = useState<string | undefined>();
   const { t, i18n } = useTranslation();
 
@@ -146,6 +147,7 @@ const ViewCreateDocument: React.FC = () => {
         createdBy: +userInfo?.userId!,
         idTemplate: id,
         xfdfString: xfdfString!,
+        documentDescription: purpose!
       })
     ).unwrap();
     sendSignalNotification({
@@ -206,6 +208,7 @@ const ViewCreateDocument: React.FC = () => {
                 }}
                 multiline
                 rows={4}
+                onChange={(value) => setPurpose(value.target.value)}
               />
             </div>
             <Divider className="bg-white" />
@@ -222,7 +225,7 @@ const ViewCreateDocument: React.FC = () => {
                 }
                 variant="outlined"
                 onClick={onCreateDocument}
-                disabled={false}
+                disabled={!purpose}
               >
                 {t("Send")}
               </SaveLoadingBtn>

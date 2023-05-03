@@ -177,4 +177,19 @@ export interface EditDepartmentArgs {
 export interface EditDepartmentResponse {
   message: string
 }
+export interface CreateTemplateTypeArgs {
+  typeName: string;
+  status: 1;
+}
+export interface CreateTemplateTypeResponse {
+  message: string
+}
+export interface EditTemplateTypeArgs {
+  id: number;
+  typeName: string;
+  status?: number;
+}
+export interface EditTemplateTypeResponse {
+  message: string
+}
 

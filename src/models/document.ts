@@ -4,6 +4,7 @@ export interface CreateDocumentArgs {
   idTemplate: number;
   createdBy: number;
   xfdfString: string;
+  documentDescription: string;
 }
 
 export interface CreateDocumentResponse {
@@ -44,6 +45,7 @@ export interface Document {
   documentName: string;
   type: string;
   description: string;
+  documentDescription: string;
   size: number;
   status: number;
   typeName: string;
