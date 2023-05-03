@@ -1,6 +1,11 @@
-import { ValidationErrors } from 'models/alert';
+import { ValidationErrors } from "models/alert";
 import { authServices } from "services/auth";
-import { UserInfo, LoginArgument, GetSignatureArgs, ChangePasswordArgument} from "models/auth";
+import {
+  UserInfo,
+  LoginArgument,
+  GetSignatureArgs,
+  ChangePasswordArgument,
+} from "models/auth";
 import {
   CaseReducer,
   createAsyncThunk,
@@ -23,7 +28,7 @@ interface State {
 
 type CR<T> = CaseReducer<State, PayloadAction<T>>;
 
-const ACTION_TYPE = 'auth/'
+const ACTION_TYPE = "auth/";
 
 const initialState: State = {
   checkAuthenticated: undefined,
@@ -34,20 +39,14 @@ const initialState: State = {
   isChangePasswordLoading: false,
 };
 
-const setUserInfoCR: CR<{ user: UserInfo}> = (
-  state,
-  { payload }
-) => ({
+const setUserInfoCR: CR<{ user: UserInfo }> = (state, { payload }) => ({
   ...state,
   userInfo: payload.user!,
 });
 
-const checkAuthenticationCR: CR<{value: boolean}> = (
-  state,
-  { payload }
-) => ({
+const checkAuthenticationCR: CR<{ value: boolean }> = (state, { payload }) => ({
   ...state,
-  checkAuthenticated: payload.value!
+  checkAuthenticated: payload.value!,
 });
 
 const login = createAsyncThunk(
@@ -57,14 +56,17 @@ const login = createAsyncThunk(
       const result = await authServices.login(args as LoginArgument);
       return result;
     } catch (error) {
-      const err = error as AxiosError
-      if(err.response?.data){
-        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
-      }
-      else{
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
         dispatch(handleError({ errorMessage: err.message }));
       }
-      throw err
+      throw err;
     }
   }
 );
@@ -77,14 +79,17 @@ const changePassword = createAsyncThunk(
       dispatch(handleSuccess({ message: result.message }));
       return result;
     } catch (error) {
-      const err = error as AxiosError
-      if(err.response?.data){
-        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
-      }
-      else{
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
         dispatch(handleError({ errorMessage: err.message }));
       }
-      throw err
+      throw err;
     }
   }
 );
@@ -96,14 +101,17 @@ const getSignature = createAsyncThunk(
       const result = await authServices.getSignature(args as GetSignatureArgs);
       return result;
     } catch (error) {
-      const err = error as AxiosError
-      if(err.response?.data){
-        dispatch(handleError({ errorMessage: (err.response?.data as ValidationErrors).errorMessage }));
-      }
-      else{
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
         dispatch(handleError({ errorMessage: err.message }));
       }
-      throw err
+      throw err;
     }
   }
 );
@@ -113,7 +121,7 @@ const auth = createSlice({
   initialState,
   reducers: {
     setUserInfo: setUserInfoCR,
-    checkAuthentication: checkAuthenticationCR
+    checkAuthentication: checkAuthenticationCR,
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => ({
@@ -121,18 +129,18 @@ const auth = createSlice({
       isLoginLoading: true,
     }));
     builder.addCase(login.fulfilled, (state, { payload }) => {
-      if(payload?.token){
-        return{
+      if (payload?.token) {
+        return {
           ...state,
           isLoginLoading: false,
-          userInfo: jwtDecode(payload.token)
-        }
+          userInfo: jwtDecode(payload.token),
+        };
       }
-      return{
+      return {
         ...state,
         isLoginLoading: false,
-        userInfo: undefined
-      }
+        userInfo: undefined,
+      };
     });
     builder.addCase(login.rejected, (state) => ({
       ...state,
@@ -154,11 +162,14 @@ const auth = createSlice({
       ...state,
       isGetSignatureLoading: true,
     }));
-    builder.addCase(getSignature.fulfilled, (state, { payload }) => ({
-      ...state,
-      isGetSignatureLoading: false,
-      signature: payload.signature
-    }));
+    builder.addCase(getSignature.fulfilled, (state, { payload }) => {
+      const { signature, avatar } = payload;
+      state.isGetSignatureLoading = false;
+      state.signature = signature;
+      if (avatar) {
+        state.userInfo!.avatar = avatar;
+      }
+    });
     builder.addCase(getSignature.rejected, (state) => ({
       ...state,
       isGetSignatureLoading: false,
@@ -166,8 +177,8 @@ const auth = createSlice({
   },
 });
 
-export { login, getSignature, changePassword};
+export { login, getSignature, changePassword };
 
-export const { setUserInfo, checkAuthentication} = auth.actions;
+export const { setUserInfo, checkAuthentication } = auth.actions;
 
 export default auth.reducer;

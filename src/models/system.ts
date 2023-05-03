@@ -111,6 +111,7 @@ export interface CreateAccountResponse {
 export interface EditAccountArgs {
   idUser?: number,
   userName?: string;
+  avatar?: string;
   password?: string;
   idPermissions: number[];
   idDepartment?: number;
@@ -118,7 +119,7 @@ export interface EditAccountArgs {
   signature?: string;
   firstName?: string,
   lastName?: string,
-  status: boolean
+  status?: boolean
 }
 
 export interface EditAccountResponse {

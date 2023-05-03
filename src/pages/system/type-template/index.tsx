@@ -14,15 +14,13 @@ import React, { useEffect, useState } from "react";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useDispatch, useSelector, useSignalR } from "hooks";
+import { useDispatch, useSelector } from "hooks";
 import { TemplateType } from "models/template";
 import { useTranslation } from "react-i18next";
 import { WhiteBtn, SaveLoadingBtn } from "components/CustomStyled";
 import {
   createTemplateType,
   editTemplateType,
-  //   createTemplateType,
-  //   editTemplateType,
   getTemplateTypeList,
 } from "slices/system";
 import ListAltIcon from "@mui/icons-material/ListAlt";

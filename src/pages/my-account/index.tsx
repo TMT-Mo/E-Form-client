@@ -7,65 +7,140 @@ import {
   Container,
   Avatar,
   Paper,
+  IconButton,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SaveLoadingBtn } from "../../components/CustomStyled";
 import { useDispatch, useSelector } from "../../hooks";
-import { LocationIndex } from "../../utils/constants";
+import { AccountStatus, LocationIndex } from "../../utils/constants";
 import Divider from "@mui/material/Divider";
 import styled from "@emotion/styled";
 import { getSignature } from "slices/auth";
 import { setLocation } from "slices/location";
-
-
+import { PhotoCamera } from "@mui/icons-material";
+import Resizer from "react-image-file-resizer";
+import { handleError } from "slices/alert";
+import { editAccount, clearUserList, getUserList, getDepartmentList, getRoleList } from "slices/system";
 
 interface AccountState {
   idUser: number;
   userName?: string;
+  avatar?: string;
   idDepartment?: number;
   idRole?: number;
   firstName: string;
   lastName: string;
+  idPermissions: number[];
+  signature?: string;
 }
 
 const TypographyStyled = styled(Typography)({
   color: "#6F7276",
 });
 
-
 export const MyAccount = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const {
-    departmentList,
-    roleList,
-    isCreateAccountLoading,
-  } = useSelector((state) => state.system);
-  const { userInfo, signature, isGetSignatureLoading } = useSelector((state) => state.auth);
+  const { departmentList, roleList, isEditAccountLoading } = useSelector(
+    (state) => state.system
+  );
+  const { userInfo, signature, isGetSignatureLoading } = useSelector(
+    (state) => state.auth
+  );
   const [account, setAccount] = useState<AccountState>({
-    idUser: userInfo?.userId!,
+    idUser: +userInfo?.userId!,
     userName: userInfo?.userName,
+    avatar: userInfo?.avatar,
     firstName: userInfo?.firstName!,
     lastName: userInfo?.lastName!,
     idDepartment: departmentList.find(
-      (department) =>
-        department.departmentName === userInfo?.departmentName
+      (department) => department.departmentName === userInfo?.departmentName
     )?.id,
-    idRole: roleList.find((role) => role.roleName === userInfo?.roleName)
-      ?.id,
+    idRole: roleList.find((role) => role.roleName === userInfo?.roleName)?.id,
+    idPermissions: userInfo?.idPermissions.split(",").map((p) => +p)!,
+    signature,
   });
   const [isDisabledSave, setIsDisabledSave] = useState(false);
 
+  const resizeFile = (file: File) =>
+    new Promise((resolve) => {
+      const maxWidth = 130;
+      const minWidth = 130;
+      const minHeight = 100;
+      const maxHeight = 100;
+
+      const fileName = file.name.slice(file.name.lastIndexOf(".") + 1);
+      Resizer.imageFileResizer(
+        file,
+        maxWidth,
+        maxHeight,
+        fileName,
+        100,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        "base64",
+        minWidth,
+        minHeight
+      );
+    });
+
+  const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) {
+      dispatch(
+        handleError({
+          errorMessage: t("Something went wrong with uploading image!"),
+        })
+      );
+      return;
+    }
+    let file = e.target.files[0];
+    const image = await resizeFile(file);
+    setAccount({
+      ...account!,
+      avatar: image as string,
+    });
+    e.target.value = "";
+  };
+
+  const EditAccountHandler = async () => {
+    const onEditAccount = dispatch(
+      editAccount({
+        ...account,
+        idDepartment: departmentList.find(
+          (department) => department.departmentName === userInfo?.departmentName
+        )?.id,
+        idRole: roleList.find((role) => role.roleName === userInfo?.roleName)?.id,
+      })
+    );
+    await onEditAccount.unwrap();
+
+    return () => onEditAccount.abort();
+  };
+
   useEffect(() => {
-    if(!userInfo?.userId) return
-    dispatch(getSignature({userId: +userInfo?.userId})).unwrap()
+    if (!userInfo?.userId) return;
+    dispatch(getSignature({ userId: +userInfo?.userId })).unwrap();
   }, [dispatch, userInfo?.userId]);
-  
+
+  useEffect(() => {
+    const getDepartment = dispatch(getDepartmentList());
+    const getRole = dispatch(getRoleList());
+    // const getPermission = dispatch(getPermissionList());
+
+    getDepartment.unwrap();
+    getRole.unwrap();
+  }, [dispatch]);
+
   return (
     <Container sx={{ py: 10 }}>
-        <Paper elevation={3} sx={{ background: "#fff", borderRadius: "15px", p: 5 }}>
-      <Stack spacing={3} >
+      <Paper
+        elevation={3}
+        sx={{ background: "#fff", borderRadius: "15px", p: 5 }}
+      >
+        <Stack spacing={3}>
           {/* <TypographyStyled>Create account</TypographyStyled> */}
           <Box
             sx={{
@@ -84,22 +159,25 @@ export const MyAccount = () => {
               padding: "30px 30px 0 30px",
             }}
           >
-            <Avatar
+             <Avatar
               sx={{
                 width: 150,
                 height: 150,
               }}
               alt="Cindy Baker"
-              src="https://mui.com/static/images/avatar/1.jpg"
+              src={account.avatar ?? userInfo?.avatar}
             />
             <Stack
               spacing={1}
               justifyContent="end"
               sx={{ width: "fit-content" }}
             >
-              <Typography variant="h4" whiteSpace="nowrap">{t(`Welcome back, `)}{userInfo?.firstName} {userInfo?.lastName}</Typography>
+              <Typography variant="h4" whiteSpace="nowrap">
+                {t(`Welcome back, `)}
+                {userInfo?.firstName} {userInfo?.lastName}
+              </Typography>
               <Typography whiteSpace="nowrap">
-                {t('Update your photo and personal detail')}
+                {t("Update your photo and personal detail")}
               </Typography>
             </Stack>
             <Stack
@@ -109,12 +187,12 @@ export const MyAccount = () => {
               alignItems="end"
             >
               <SaveLoadingBtn
-                loading={isCreateAccountLoading}
+                loading={isEditAccountLoading}
                 disabled={isDisabledSave}
                 sx={{ height: "fit-content", width: "fit-content" }}
-                // onClick={onCreateAccount}
+                onClick={EditAccountHandler}
               >
-                {t('Save')}
+                {t("Save")}
               </SaveLoadingBtn>
             </Stack>
           </Stack>
@@ -143,7 +221,7 @@ export const MyAccount = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <TypographyStyled>{t('First name')}</TypographyStyled>
+              <TypographyStyled>{t("First name")}</TypographyStyled>
               <TextField
                 id="component-outlined"
                 // placeholder="Composed TextField"
@@ -166,7 +244,7 @@ export const MyAccount = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <TypographyStyled>{t('Last name')}</TypographyStyled>
+              <TypographyStyled>{t("Last name")}</TypographyStyled>
               <TextField
                 id="component-outlined"
                 sx={{ width: "50%" }}
@@ -190,7 +268,7 @@ export const MyAccount = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <TypographyStyled>{t('Username')}</TypographyStyled>
+              <TypographyStyled>{t("Username")}</TypographyStyled>
               {/* <TextField
                 id="component-outlined"
                 value={userInfo?.userName}
@@ -199,7 +277,7 @@ export const MyAccount = () => {
                 sx={{ width: "50%" }}
               /> */}
               <Typography id="component-outlined" sx={{ width: "50%" }}>
-              {userInfo?.userName}
+                {userInfo?.userName}
               </Typography>
             </Stack>
             <Divider />
@@ -209,10 +287,9 @@ export const MyAccount = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <TypographyStyled>{t('Password')}</TypographyStyled>
+              <TypographyStyled>{t("Password")}</TypographyStyled>
               <Box width="50%">
                 <SaveLoadingBtn
-                  loading={isCreateAccountLoading}
                   disabled={isDisabledSave}
                   sx={{ height: "fit-content", width: "fit-content", px: 3 }}
                   onClick={() =>
@@ -223,7 +300,7 @@ export const MyAccount = () => {
                     )
                   }
                 >
-                  {t('Change Password')}
+                  {t("Change Password")}
                 </SaveLoadingBtn>
               </Box>
             </Stack>
@@ -235,7 +312,7 @@ export const MyAccount = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <TypographyStyled>{t('Your avatar')}</TypographyStyled>
+              <TypographyStyled>{t("Your avatar")}</TypographyStyled>
               <Stack width="50%" direction="row" justifyContent="space-between">
                 <Avatar
                   sx={{
@@ -243,16 +320,21 @@ export const MyAccount = () => {
                     height: 50,
                   }}
                   alt="Cindy Baker"
-                  src="https://mui.com/static/images/avatar/1.jpg"
+                  src={account.avatar ?? userInfo?.avatar}
                 />
-                <SaveLoadingBtn
-                  loading={isCreateAccountLoading}
-                  disabled={isDisabledSave}
-                  sx={{ height: "fit-content", width: "fit-content", px: 2 }}
-                  // onClick={onCreateAccount}
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="label"
                 >
-                  {t('Upload')}
-                </SaveLoadingBtn>
+                  <input
+                    hidden
+                    accept="image/*"
+                    type="file"
+                    onChange={(e) => handleUploadImage(e)}
+                  />
+                  <PhotoCamera />
+                </IconButton>
               </Stack>
               {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
             </Stack>
@@ -265,17 +347,16 @@ export const MyAccount = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <TypographyStyled>{t('Department')}</TypographyStyled>
+              <TypographyStyled>{t("Department")}</TypographyStyled>
               <TextField
                 id="component-outlined"
                 // placeholder="Composed TextField"
                 label={t("Department")}
-                helperText={t('Please contact to admin to make any changes!')}
+                helperText={t("Please contact to admin to make any changes!")}
                 sx={{ width: "50%" }}
                 value={userInfo?.departmentName}
                 disabled
               />
-              
             </Stack>
             <Divider />
 
@@ -286,12 +367,12 @@ export const MyAccount = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <TypographyStyled>{t('Role')}</TypographyStyled>
+              <TypographyStyled>{t("Role")}</TypographyStyled>
               <TextField
                 id="component-outlined"
                 // placeholder="Composed TextField"
                 label={t("Role")}
-                helperText={t('Please contact to admin to make any changes!')}
+                helperText={t("Please contact to admin to make any changes!")}
                 sx={{ width: "50%" }}
                 value={userInfo?.roleName}
                 disabled
@@ -304,13 +385,17 @@ export const MyAccount = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <TypographyStyled>{t('Signature')}</TypographyStyled>
-              {isGetSignatureLoading && <CircularProgress/>}
-              {signature && <Box width='50%'><img src={signature} alt=''/></Box>}
+              <TypographyStyled>{t("Signature")}</TypographyStyled>
+              {isGetSignatureLoading && <CircularProgress />}
+              {signature && (
+                <Box width="50%">
+                  <img src={signature} alt="" />
+                </Box>
+              )}
             </Stack>
           </Stack>
         </Stack>
-        </Paper>
+      </Paper>
     </Container>
   );
 };

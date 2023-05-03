@@ -352,7 +352,7 @@ export default function AfterLogin() {
               height: 50,
             }}
             alt="Cindy Baker"
-            src="https://mui.com/static/images/avatar/1.jpg"
+            src={userInfo?.avatar}
           />
           {open && (
             <Stack spacing={1} textAlign='center'>

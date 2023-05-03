@@ -32,6 +32,7 @@ export interface UserInfo {
   departmentName: string,
   firstName: string,
   lastName: string,
+  avatar: string
 }
 
 export interface GetSignatureArgs{
@@ -40,6 +41,7 @@ export interface GetSignatureArgs{
 
 export interface GetSignatureResponse{
   signature: string
+  avatar?: string
 }
 
 

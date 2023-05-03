@@ -102,7 +102,7 @@ const TopBar: React.FC<Props> = (props) => {
                     height: 30,
                   }}
                   alt="Cindy Baker"
-                  src="https://mui.com/static/images/avatar/1.jpg"
+                  src={userInfo?.avatar}
                 />
               </IconButton>
               <Popover
