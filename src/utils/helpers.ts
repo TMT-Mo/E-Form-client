@@ -1,9 +1,15 @@
 import { UserInfo } from "models/auth";
 import jwtDecode from "jwt-decode";
-import { DeviceType, DeviceWidth, MYSTERIOUS_KEY, Permissions, SessionStorage } from "./constants";
+import {
+  DeviceType,
+  DeviceWidth,
+  MYSTERIOUS_KEY,
+  Permissions,
+  SessionStorage,
+} from "./constants";
 import { Dayjs } from "dayjs";
 import CryptoJS from "crypto-js";
-const {TOKEN_NAME, LOCATION} = SessionStorage
+const { TOKEN_NAME, LOCATION } = SessionStorage;
 
 // *-------------------------------------------- HANDLE AUTHENTICATE --------------------------------------------
 const setToken = (tokenValue: string) => {
@@ -16,19 +22,21 @@ const clearToken = () => {
 };
 
 const getToken = (): string => {
-  const token = sessionStorage.getItem(TOKEN_NAME)?.replace(/(['"])/g, "") as string;
+  const token = sessionStorage
+    .getItem(TOKEN_NAME)
+    ?.replace(/(['"])/g, "") as string;
   return token;
 };
 
-const getLocation = (): number =>{
-  const location = sessionStorage.getItem(LOCATION)!
+const getLocation = (): number => {
+  const location = sessionStorage.getItem(LOCATION)!;
   return +location;
-}
+};
 
 // *-------------------------------------------- HANDLE TIME  --------------------------------------------
 const addHours = (date: string | null, hours: number = 7): string => {
   // 👇 Make copy with "Date" constructor.
-  if (!date) return '---'
+  if (!date) return "---";
   const dateCopy = new Date(date);
 
   dateCopy.setHours(dateCopy.getHours() + hours);
@@ -59,26 +67,29 @@ const checkHideColumnFromDevice = (hideDevice: DeviceType) => {
 };
 
 const checkHideColumnFromPermission = (permission: Permissions) => {
-  const permissions = getToken() ? (jwtDecode(getToken()) as UserInfo)?.idPermissions
-    .split(",")
-    .map((id) => +id) : undefined;
-  return permissions?.includes(permission!) ;
+  const permissions = getToken()
+    ? (jwtDecode(getToken()) as UserInfo)?.idPermissions
+        .split(",")
+        .map((id) => +id)
+    : undefined;
+  return permissions?.includes(permission!);
 };
 
 // *-------------------------------------------- HANDLE DAYJS --------------------------------------------
-const handleFormatDateJS = (date: Dayjs | undefined) =>
-date?.toISOString().replace("Z", "").replace("T17", "T00");
+const handleFormatDateJS = (date: Dayjs | undefined) =>{
+  // console.log(date)
+  return date?.toDate()};
 
 // *-------------------------------------------- HANDLE NOTIFICATIONS --------------------------------------------
 // export handleNotification =
 
 // *-------------------------------------------- HANDLE PERCENTAGE VALUE --------------------------------------------
 const handlePercentageValue = (value: number, total: number): string => {
-  const percent = Math.floor((value / total) * 100)
-  if(isNaN(percent)){
-    return ''
+  const percent = Math.floor((value / total) * 100);
+  if (isNaN(percent)) {
+    return "";
   }
-  return `(${percent}%)`
+  return `(${percent}%)`;
 };
 
 // *-------------------------------------------- HANDLE PASSWORD --------------------------------------------
@@ -87,14 +98,14 @@ const encryptData = (input: string) => {
     JSON.stringify(input),
     MYSTERIOUS_KEY
   ).toString();
-  sessionStorage.setItem('Unknown', data)
+  sessionStorage.setItem("Unknown", data);
 };
 
 const decryptData = () => {
-  const encryptedData = sessionStorage.getItem('Unknown')!
+  const encryptedData = sessionStorage.getItem("Unknown")!;
   const bytes = CryptoJS.AES.decrypt(encryptedData, MYSTERIOUS_KEY);
   const data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-  return data
+  return data;
 };
 
 const helpers = {
@@ -108,7 +119,7 @@ const helpers = {
   handleFormatDateJS,
   handlePercentageValue,
   encryptData,
-  decryptData
+  decryptData,
 };
 
 export default helpers;

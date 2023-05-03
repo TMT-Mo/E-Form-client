@@ -19,27 +19,27 @@ import { StatisticsColor } from "utils/constants";
 import { helpers } from "utils";
 
 const { APPROVED_COLOR, PROCESSING_COLOR, REJECTED_COLOR } = StatisticsColor;
-const { handleFormatDateJS, handlePercentageValue } = helpers;
+const { handlePercentageValue } = helpers;
 interface DefaultDate {
-  fromDate: string;
-  toDate: string;
+  fromDate: Dayjs;
+  toDate: Dayjs;
 }
 const defaultDate: DefaultDate = {
-  fromDate: handleFormatDateJS(
+  fromDate: 
     dayjs(new Date("Tue Oct 11 2022 00:00:00 GMT+0700 (Indochina Time)")).add(
       1,
       "day"
     )
-  )!,
-  toDate: handleFormatDateJS(dayjs(new Date()))!,
+  ,
+  toDate: dayjs(new Date()),
 };
 
 export const TemplateBoxNoneFilter = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const [startDate, setStartDate] = useState<Dayjs >(dayjs(defaultDate.fromDate));
-  const [endDate, setEndDate] = useState<Dayjs >(dayjs(defaultDate.toDate));
+  const [startDate, setStartDate] = useState<Dayjs >(defaultDate.fromDate);
+  const [endDate, setEndDate] = useState<Dayjs >(defaultDate.toDate);
   const { userInfo } = useSelector((state) => state.auth);
   const { departmentList } = useSelector((state) => state.system);
   const { isGetStatisticsTemplateLoading, statisticsTemplate } = useSelector(
@@ -76,8 +76,8 @@ export const TemplateBoxNoneFilter = () => {
     const onGetStatisticsTemplate = dispatch(
       getStatisticsTemplate({
         departmentId: getDepartment?.id,
-        fromDate: handleFormatDateJS(startDate),
-        toDate: handleFormatDateJS(endDate),
+        fromDate: startDate.toDate(),
+        toDate: endDate.toDate(),
       })
     );
 

@@ -1,49 +1,34 @@
 import { useEffect, useState } from "react";
 import { ChartDataset } from "chart.js";
 import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
-import {
-  CircularProgress,
-  Paper,
-  Stack,
-  TextField,
-} from "@mui/material";
+import { CircularProgress, Paper, Stack, TextField } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import { useDispatch, useSelector } from "hooks";
 import { useTranslation } from "react-i18next";
 import { ChartBar } from "components/Chart/bar";
-import { helpers } from "utils";
-import {
-  getStatisticsTemplateList,
-} from "slices/statistics";
+import { getStatisticsTemplateList } from "slices/statistics";
 
-const { handleFormatDateJS } = helpers;
 interface DefaultDate {
-  fromDate: string;
-  toDate: string;
+  fromDate: Dayjs;
+  toDate: Dayjs;
 }
 const defaultDate: DefaultDate = {
-  fromDate: handleFormatDateJS(
-    dayjs(new Date("Tue Oct 11 2022 00:00:00 GMT+0700 (Indochina Time)")).add(
-      1,
-      "day"
-    )
-  )!,
-  toDate: handleFormatDateJS(dayjs(new Date()))!,
+  fromDate: dayjs(
+    new Date("Tue Oct 11 2022 00:00:00 GMT+0700 (Indochina Time)")
+  ).add(1, "day"),
+  toDate: dayjs(new Date()),
 };
 
 export function TemplateChartBar() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [startDate, setStartDate] = useState<Dayjs>(dayjs(defaultDate.fromDate));
-  const [endDate, setEndDate] = useState<Dayjs>(dayjs(defaultDate.toDate));
-  const { departmentList } = useSelector(
-    (state) => state.system
-  );
+  const [startDate, setStartDate] = useState<Dayjs>(defaultDate.fromDate);
+  const [endDate, setEndDate] = useState<Dayjs>(defaultDate.toDate);
+  const { departmentList } = useSelector((state) => state.system);
   const { userInfo } = useSelector((state) => state.auth);
-  const { isGetStatisticsTemplateListLoading, arrangedTemplateStatistics } = useSelector(
-    (state) => state.statistics
-  );
+  const { isGetStatisticsTemplateListLoading, arrangedTemplateStatistics } =
+    useSelector((state) => state.statistics);
 
   const datasets: ChartDataset<"bar">[] = [
     {
@@ -77,8 +62,8 @@ export function TemplateChartBar() {
   useEffect(() => {
     const onGetStatisticsTemplateList = dispatch(
       getStatisticsTemplateList({
-        fromDate: handleFormatDateJS(startDate),
-        toDate: handleFormatDateJS(endDate),
+        fromDate: startDate.toDate(),
+        toDate: endDate.toDate(),
       })
     );
 
@@ -87,10 +72,9 @@ export function TemplateChartBar() {
 
   return (
     <Paper sx={{ p: 3, borderRadius: 3, width: "70%" }} elevation={3}>
-      
-       <Stack spacing={5}>
+      <Stack spacing={5}>
         <Stack direction="row" justifyContent="space-between" alignItems="end">
-          <h2>{t('Stacked Bar Chart')}</h2>
+          <h2>{t("Stacked Bar Chart")}</h2>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Stack direction="row" spacing={2}>
               <DesktopDatePicker
@@ -138,7 +122,12 @@ export function TemplateChartBar() {
             <CircularProgress />
           </Stack>
         )}
-         {arrangedTemplateStatistics && !isGetStatisticsTemplateListLoading &&<ChartBar datasets={datasets} labels={arrangedTemplateStatistics!.labels} />}
+        {arrangedTemplateStatistics && !isGetStatisticsTemplateListLoading && (
+          <ChartBar
+            datasets={datasets}
+            labels={arrangedTemplateStatistics!.labels}
+          />
+        )}
       </Stack>
     </Paper>
   );

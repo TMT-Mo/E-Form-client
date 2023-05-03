@@ -26,7 +26,6 @@ function InputNumberInterval(props: GridFilterInputValueProps) {
   const { handleFormatDateJS} = helpers
 
   const handleChangeStartDate = (value: Dayjs) => {
-    console.log(value)
     applyValue({
       ...item,
       value: {

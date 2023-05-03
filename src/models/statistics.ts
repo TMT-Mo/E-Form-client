@@ -18,21 +18,21 @@ export interface StatisticsTemplate{
 
 export interface GetStatisticsDocument{
     departmentId?: number,
-    fromDate?: string,
-    toDate?: string,
+    fromDate?: Date,
+    toDate?: Date,
 }
 export interface GetStatisticsTemplate{
     departmentId?: number,
-    fromDate?: string,
-    toDate?: string,
+    fromDate?: Date,
+    toDate?: Date,
 }
 export interface GetStatisticsDocumentList{
-    fromDate?: string,
-    toDate?: string,
+    fromDate?: Date,
+    toDate?: Date,
 }
 export interface GetStatisticsTemplateList{
-    fromDate?: string,
-    toDate?: string,
+    fromDate?: Date,
+    toDate?: Date,
 }
 
 export interface ArrangedStatistics{

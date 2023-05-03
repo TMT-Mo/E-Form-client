@@ -20,26 +20,23 @@ import { helpers } from "utils";
 
 const { APPROVED_COLOR, PROCESSING_COLOR, REJECTED_COLOR } = StatisticsColor;
 
-const { handleFormatDateJS, handlePercentageValue } = helpers;
+const {  handlePercentageValue } = helpers;
 interface DefaultDate {
-  fromDate: string;
-  toDate: string;
+  fromDate: Dayjs;
+  toDate: Dayjs;
 }
 const defaultDate: DefaultDate = {
-  fromDate: handleFormatDateJS(
-    dayjs(new Date("Tue Oct 11 2022 00:00:00 GMT+0700 (Indochina Time)")).add(
-      1,
-      "day"
-    )
-  )!,
-  toDate: handleFormatDateJS(dayjs(new Date()))!,
+  fromDate: dayjs(
+    new Date("Tue Oct 11 2022 00:00:00 GMT+0700 (Indochina Time)")
+  ).add(1, "day"),
+  toDate: dayjs(new Date()),
 };
 export const DocumentBoxNoneFilter = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const [startDate, setStartDate] = useState<Dayjs>(dayjs(defaultDate.fromDate));
-  const [endDate, setEndDate] = useState<Dayjs>(dayjs(defaultDate.toDate));
+  const [startDate, setStartDate] = useState<Dayjs>(defaultDate.fromDate);
+  const [endDate, setEndDate] = useState<Dayjs>(defaultDate.toDate);
   const { userInfo } = useSelector((state) => state.auth);
   const { departmentList } = useSelector((state) => state.system);
   const { isGetStatisticsDocumentLoading, statisticsDocument } = useSelector(
@@ -75,8 +72,8 @@ export const DocumentBoxNoneFilter = () => {
     const onGetStatisticsDocument = dispatch(
       getStatisticsDocument({
         departmentId: getDepartment?.id,
-        fromDate: handleFormatDateJS(startDate),
-        toDate: handleFormatDateJS(endDate),
+        fromDate: startDate.toDate(),
+        toDate: endDate.toDate(),
       })
     );
 
@@ -155,9 +152,10 @@ export const DocumentBoxNoneFilter = () => {
             >
               <CircularProgress />
             </Stack>
-          ) }
+          )}
 
-          {statisticsDocument && !isGetStatisticsDocumentLoading && <Stack spacing={2}>
+          {statisticsDocument && !isGetStatisticsDocumentLoading && (
+            <Stack spacing={2}>
               <Typography
                 variant="h4"
                 component="h1"
@@ -174,7 +172,11 @@ export const DocumentBoxNoneFilter = () => {
                     {t("Processing")}
                   </Typography>
                   <Typography variant="h6" component="h1" fontWeight="semiBold">
-                    {statisticsDocument?.processing} {handlePercentageValue(statisticsDocument?.processing, statisticsDocument?.total)}
+                    {statisticsDocument?.processing}{" "}
+                    {handlePercentageValue(
+                      statisticsDocument?.processing,
+                      statisticsDocument?.total
+                    )}
                   </Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
@@ -182,7 +184,11 @@ export const DocumentBoxNoneFilter = () => {
                     {t("Approved")}
                   </Typography>
                   <Typography variant="h6" component="h1" fontWeight="semiBold">
-                    {statisticsDocument?.approved} {handlePercentageValue(statisticsDocument?.approved, statisticsDocument?.total)}
+                    {statisticsDocument?.approved}{" "}
+                    {handlePercentageValue(
+                      statisticsDocument?.approved,
+                      statisticsDocument?.total
+                    )}
                   </Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
@@ -190,11 +196,16 @@ export const DocumentBoxNoneFilter = () => {
                     {t("Rejected")}
                   </Typography>
                   <Typography variant="h6" component="h1" fontWeight="semiBold">
-                    {statisticsDocument?.rejected} {handlePercentageValue(statisticsDocument?.rejected, statisticsDocument?.total)}
+                    {statisticsDocument?.rejected}{" "}
+                    {handlePercentageValue(
+                      statisticsDocument?.rejected,
+                      statisticsDocument?.total
+                    )}
                   </Typography>
                 </Stack>
               </Stack>
-            </Stack>}
+            </Stack>
+          )}
         </Stack>
       </Paper>
     </Stack>

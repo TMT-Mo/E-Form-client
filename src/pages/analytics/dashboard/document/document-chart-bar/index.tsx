@@ -12,31 +12,28 @@ import dayjs, { Dayjs } from "dayjs";
 import { useDispatch, useSelector } from "hooks";
 import { useTranslation } from "react-i18next";
 import { ChartBar } from "components/Chart/bar";
-import { helpers } from "utils";
 import {
   getStatisticsDocumentList,
 } from "slices/statistics";
 
-const { handleFormatDateJS } = helpers;
 interface DefaultDate {
-  fromDate: string;
-  toDate: string;
+  fromDate: Dayjs;
+  toDate: Dayjs;
 }
 const defaultDate: DefaultDate = {
-  fromDate: handleFormatDateJS(
+  fromDate: 
     dayjs(new Date("Tue Oct 11 2022 00:00:00 GMT+0700 (Indochina Time)")).add(
       1,
       "day"
-    )
-  )!,
-  toDate: handleFormatDateJS(dayjs(new Date()))!,
+    ),
+  toDate: dayjs(new Date()),
 };
 
 export function DocumentChartBar() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [startDate, setStartDate] = useState<Dayjs>(dayjs(defaultDate.fromDate));
-  const [endDate, setEndDate] = useState<Dayjs>(dayjs(defaultDate.toDate));
+  const [startDate, setStartDate] = useState<Dayjs>(defaultDate.fromDate);
+  const [endDate, setEndDate] = useState<Dayjs>(defaultDate.toDate);
   const { departmentList } = useSelector(
     (state) => state.system
   );
@@ -77,8 +74,8 @@ export function DocumentChartBar() {
   useEffect(() => {
     const onGetStatisticsDocumentList = dispatch(
       getStatisticsDocumentList({
-        fromDate: handleFormatDateJS(startDate),
-        toDate: handleFormatDateJS(endDate),
+        fromDate: startDate.toDate(),
+        toDate: endDate.toDate(),
       })
     );
 
