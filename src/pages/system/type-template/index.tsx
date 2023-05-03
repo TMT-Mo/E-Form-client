@@ -19,6 +19,8 @@ import { TemplateType } from "models/template";
 import { useTranslation } from "react-i18next";
 import { WhiteBtn, SaveLoadingBtn } from "components/CustomStyled";
 import {
+  createTemplateType,
+  editTemplateType,
   //   createTemplateType,
   //   editTemplateType,
   getTemplateTypeList,
@@ -38,6 +40,7 @@ const CustomBox = styled(Box)({
 
 export const TypeTemplateSystem = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch()
   const {
     isGetTemplateTypesLoading,
     isEditTemplateTypeLoading,
@@ -51,32 +54,31 @@ export const TypeTemplateSystem = () => {
   const [isAddingTemplateType, setIsAddingTemplateType] = useState(false);
   const [isEditingTemplateType, setIsEditingTemplateType] = useState(false);
   const [isViewingTemplateType, setIsViewingTemplateType] = useState(false);
-  const { sendSignalREditSystem } = useSignalR();
 
-  //   const onEditTemplateType = async () => {
-  //     const { typeName, id } = modifyTemplateType!;
-  //     const editTemplateTypeHandle = dispatch(
-  //       editTemplateType({ typeName })
-  //     );
-  //     await editTemplateTypeHandle.unwrap();
-  //     // sendSignalREditSystem({ typeName: selectedTemplateType?.typeName });
-  //     const getTemplateType = dispatch(getTemplateTypeList());
-  //     await getTemplateType.unwrap();
+    const onEditTemplateType = async () => {
+      const { typeName, id } = modifyTemplateType!;
+      const editTemplateTypeHandle = dispatch(
+        editTemplateType({ typeName, id })
+      );
+      await editTemplateTypeHandle.unwrap();
+      // sendSignalREditSystem({ typeName: selectedTemplateType?.typeName });
+      const getTemplateType = dispatch(getTemplateTypeList());
+      await getTemplateType.unwrap();
 
-  //     setIsEditingTemplateType(false);
-  //   };
+      setIsEditingTemplateType(false);
+    };
 
-  //   const onCreateTemplateType = async () => {
-  //     const createTemplateTypeHandler = dispatch(
-  //       createTemplateType({ typeName: newTemplateType! })
-  //     );
-  //     await createTemplateTypeHandler.unwrap();
+    const onCreateTemplateType = async () => {
+      const createTemplateTypeHandler = dispatch(
+        createTemplateType({ typeName: newTemplateType!, status: 1 })
+      );
+      await createTemplateTypeHandler.unwrap();
 
-  //     const getTemplateType = dispatch(getTemplateTypeList());
-  //     await getTemplateType.unwrap();
+      const getTemplateType = dispatch(getTemplateTypeList());
+      await getTemplateType.unwrap();
 
-  //     setIsAddingTemplateType(false);
-  //   };
+      setIsAddingTemplateType(false);
+    };
 
   useEffect(() => {
     if (!isEditingTemplateType) {
@@ -231,18 +233,18 @@ export const TypeTemplateSystem = () => {
                 >
                   {t("Cancel")}
                 </WhiteBtn>
-                {/* <SaveLoadingBtn
+                <SaveLoadingBtn
                   size="small"
                   loading={isEditTemplateTypeLoading}
                   loadingIndicator={
                     <CircularProgress color="inherit" size={16} />
                   }
                   variant="outlined"
-                  //   onClick={onEditTemplateType}
+                    onClick={onEditTemplateType}
                   disabled={!modifyTemplateType}
                 >
                   {t("Save")}
-                </SaveLoadingBtn> */}
+                </SaveLoadingBtn>
               </DialogActions>
             </Stack>
           </Box>
@@ -270,17 +272,17 @@ export const TypeTemplateSystem = () => {
                 >
                   {t("Cancel")}
                 </WhiteBtn>
-                {/* <SaveLoadingBtn
+                <SaveLoadingBtn
                   size="small"
                   loading={isCreateTemplateTypeLoading}
                   loadingIndicator={
                     <CircularProgress color="inherit" size={16} />
                   }
                   variant="outlined"
-                  //   onClick={onCreateTemplateType}
+                    onClick={onCreateTemplateType}
                 >
                   {t("Save")}
-                </SaveLoadingBtn> */}
+                </SaveLoadingBtn>
               </DialogActions>
             </Stack>
           </Box>
@@ -299,7 +301,7 @@ export const TypeTemplateSystem = () => {
                 </IconButton>
               </Stack>
               {templateTypeList?.map((type) => (
-                <TextField key={type.id} value={type.typeName} disabled />
+                <TextField key={type.id} value={t(type.typeName)} disabled />
               ))}
               <DialogActions>
                 <WhiteBtn

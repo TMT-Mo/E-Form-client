@@ -20,6 +20,10 @@ import {
   EditRoleResponse,
   GetSignersArgs,
   GetSignersResponse,
+  CreateTemplateTypeArgs,
+  CreateTemplateTypeResponse,
+  EditTemplateTypeArgs,
+  EditTemplateTypeResponse,
 } from "models/system";
 
 const getDepartmentList = async (): Promise<DepartmentListResponse[]> => {
@@ -109,6 +113,26 @@ const getTemplateTypeList = async (): Promise<GetTemplateTypeListResponse> => {
   return response.data as GetTemplateTypeListResponse;
 };
 
+const createTemplateType = async (
+  data: CreateTemplateTypeArgs
+): Promise<CreateTemplateTypeResponse> => {
+  const response = await httpClient.post({
+    url: `${apiPaths.system.createTemplateType}`,
+    data,
+  });
+  return response.data as CreateTemplateTypeResponse;
+};
+
+const editTemplateType = async (
+  data: EditTemplateTypeArgs
+): Promise<EditTemplateTypeResponse> => {
+  const response = await httpClient.patch({
+    url: `${apiPaths.system.editTemplateType}`,
+    data,
+  });
+  return response.data as EditTemplateTypeResponse;
+};
+
 const getPermissionList = async (): Promise<GetPermissionListResponse> => {
   const response = await httpClient.get({
     url: `${apiPaths.system.getPermissionList}`,
@@ -136,4 +160,6 @@ export const systemServices = {
   createRole,
   editDepartment,
   editRole,
+  editTemplateType,
+  createTemplateType
 };

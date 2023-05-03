@@ -193,7 +193,6 @@ const ViewApproveDocument: React.FC = () => {
       ).then(async (inst) => {
         const { documentViewer, annotationManager } = inst.Core;
         inst.UI.setLanguage(i18n.language === "vn" ? "vi" : "en");
-        const iframeDoc = inst.UI.iframeWindow.document;
 
         inst.UI.disableElements(["add-attachment"]);
         const signatureTool = documentViewer.getTool(

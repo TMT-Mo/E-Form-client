@@ -27,6 +27,8 @@ const apiPaths = {
         editRole: `${apiHead}api/Role/updateRole`,
         createDepartment: `${apiHead}api/Department/createDepartment`,
         createRole: `${apiHead}api/Role/createRole`,
+        createTemplateType: `${apiHead}api/Category/createCategory`,
+        editTemplateType: `${apiHead}api/Category/updateCategory`,
     },
     document:{
         createDocument: `${apiHead}api/Document/create`,

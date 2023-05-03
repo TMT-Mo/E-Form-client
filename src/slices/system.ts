@@ -3,10 +3,12 @@ import {
   CreateAccountArgs,
   CreateDepartmentArgs,
   CreateRoleArgs,
+  CreateTemplateTypeArgs,
   Department,
   EditAccountArgs,
   EditDepartmentArgs,
   EditRoleArgs,
+  EditTemplateTypeArgs,
   GetUsersArgs,
   IUser,
   Permission,
@@ -388,6 +390,51 @@ const editRole = createAsyncThunk(
     }
   }
 );
+const createTemplateType = createAsyncThunk(
+  `${ACTION_TYPE}createTemplateType`,
+  async (args: CreateTemplateTypeArgs, { dispatch }) => {
+    try {
+      const result = await systemServices.createTemplateType(args);
+      dispatch(handleSuccess({ message: result.message }));
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
+
+const editTemplateType = createAsyncThunk(
+  `${ACTION_TYPE}editTemplateType`,
+  async (args: EditTemplateTypeArgs, { dispatch }) => {
+    try {
+      const result = await systemServices.editTemplateType(args);
+      dispatch(handleSuccess({ message: result.message }));
+      return result;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.data) {
+        dispatch(
+          handleError({
+            errorMessage: (err.response?.data as ValidationErrors).errorMessage,
+          })
+        );
+      } else {
+        dispatch(handleError({ errorMessage: err.message }));
+      }
+      throw err;
+    }
+  }
+);
 
 const system = createSlice({
   name: "system",
@@ -578,6 +625,30 @@ const system = createSlice({
       ...state,
       isEditRoleLoading: false,
     }));
+    builder.addCase(createTemplateType.pending, (state) => ({
+      ...state,
+      isCreateTemplateTypeLoading: true,
+    }));
+    builder.addCase(createTemplateType.fulfilled, (state, { payload }) => ({
+      ...state,
+      isCreateTemplateTypeLoading: false,
+    }));
+    builder.addCase(createTemplateType.rejected, (state) => ({
+      ...state,
+      isCreateTemplateTypeLoading: false,
+    }));
+    builder.addCase(editTemplateType.pending, (state) => ({
+      ...state,
+      isEditTemplateTypeLoading: true,
+    }));
+    builder.addCase(editTemplateType.fulfilled, (state, { payload }) => ({
+      ...state,
+      isEditTemplateTypeLoading: false,
+    }));
+    builder.addCase(editTemplateType.rejected, (state) => ({
+      ...state,
+      isEditTemplateTypeLoading: false,
+    }));
   },
 });
 
@@ -592,6 +663,8 @@ export {
   editDepartment,
   editRole,
   createRole,
+  editTemplateType,
+  createTemplateType,
   createDepartment,
   getRoleList
 };
