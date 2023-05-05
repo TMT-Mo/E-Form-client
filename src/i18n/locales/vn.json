@@ -264,8 +264,11 @@
   "Stacked Bar Chart": "Biểu đồ cột chồng",
   "Repeat password must be match with New password": "Mật khẩu nhập lại phải trùng với mật khẩu mới.",
   "Old password": "Mật khẩu cũ",
-  "New password must have at least 8 characters includes a special character, one uppercase and one number": "Mật khẩu mới phải có ít nhất 8 ký tự bao gồm 1 ký tự đặc biệt, 1 ký số và 1 ký tự viết hoa.",
+  "New password must have at least 8 characters includes a special character, one uppercase and one number": "Mật khẩu mới phải có ít nhất 8 ký tự bao gồm 1 ký tự đặc biệt, 1 ký số, 1 ký tự viết hoa và 1 ký tự viết thường",
   "Wrong old password. Please try again!": "Sai mật khẩu cũ. Vui lòng nhập lại!",
   "Describe the purpose of use": "Mục đích sử dụng",
-  "The purpose of use": "Mục đích sử dụng"
+  "The purpose of use": "Mục đích sử dụng",
+  "Order of signers will be followed from top to bottom": "Người ký tên sẽ ký theo thứ tự từ trên xuống",
+  "Input username and password to join us and get fully accessible!": "Nhập tài khoản và mật khẩu để đăng nhập và được toàn quyền truy cập!",
+  "Maximum length": "Độ dài tối đa"
 } 

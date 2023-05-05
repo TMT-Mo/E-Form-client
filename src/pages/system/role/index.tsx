@@ -9,6 +9,7 @@ import {
   DialogActions,
   DialogContent,
   TextField,
+  FormHelperText,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AddBoxIcon from "@mui/icons-material/AddBox";
@@ -43,7 +44,7 @@ export const RoleSystem = () => {
   const [isAddingRole, setIsAddingRole] = useState(false);
   const [isEditingRole, setIsEditingRole] = useState(false);
   const [isViewingRole, setIsViewingRole] = useState(false);
-  const {sendSignalREditSystem} = useSignalR()
+  const { sendSignalREditSystem } = useSignalR();
 
   const onEditRole = async () => {
     const { roleName, id } = modifyRole!;
@@ -80,35 +81,34 @@ export const RoleSystem = () => {
 
   return (
     <>
-      <CustomBox sx={{w: 1/4}}>
-      <Stack
+      <CustomBox sx={{ w: 1 / 4 }}>
+        <Stack
           direction="row"
           // spacing={25}
           justifyContent="space-between"
           alignItems="center"
         >
-        <Stack
-          direction="column"
-          // justifyContent="space-between"
-          // alignItems="center"
-        >
-          <Typography
-            variant="h6"
-            component="h1"
-            style={{ paddingBottom: "10px" }}
-            fontWeight="bold"
+          <Stack
+            direction="column"
+            // justifyContent="space-between"
+            // alignItems="center"
           >
-            {t('Role')}
-          </Typography>
-          {!isGetRoleLoading && (
-            <Typography variant="h2" component="h1">
-              {roleList?.length}
+            <Typography
+              variant="h6"
+              component="h1"
+              style={{ paddingBottom: "10px" }}
+              fontWeight="bold"
+            >
+              {t("Role")}
             </Typography>
-          )}
-        {isGetRoleLoading && <CircularProgress />}
-        </Stack>
-        
-          
+            {!isGetRoleLoading && (
+              <Typography variant="h2" component="h1">
+                {roleList?.length}
+              </Typography>
+            )}
+            {isGetRoleLoading && <CircularProgress />}
+          </Stack>
+
           {!isGetRoleLoading && (
             <Stack direction="column">
               <IconButton
@@ -197,13 +197,15 @@ export const RoleSystem = () => {
                   fullWidth
                   value={modifyRole?.roleName}
                   disabled={!modifyRole}
-                  onChange={(value) =>
+                  onChange={(value) => {
+                    if (value.target.value.length > 30) return;
                     setModifyRole({
                       ...modifyRole!,
                       roleName: value.target.value,
-                    })
-                  }
+                    });
+                  }}
                 />
+                <FormHelperText id="component-error-text">{t('Maximum length')}: 30</FormHelperText>
               </Stack>
               <DialogActions>
                 <WhiteBtn onClick={() => setIsEditingRole(false)} size="small">
@@ -238,8 +240,12 @@ export const RoleSystem = () => {
                 <TextField
                   fullWidth
                   value={newRole}
-                  onChange={(value) => setNewRole(value.target.value)}
+                  onChange={(value) => {
+                    if (value.target.value.length > 30) return;
+                    setNewRole(value.target.value);
+                  }}
                 />
+                <FormHelperText id="component-error-text">{t('Maximum length')}: 30</FormHelperText>
               </Stack>
               <DialogActions>
                 <WhiteBtn onClick={() => setIsAddingRole(false)} size="small">
@@ -288,5 +294,3 @@ export const RoleSystem = () => {
     </>
   );
 };
-
-

@@ -28,7 +28,7 @@ const ViewCreateDocument: React.FC = () => {
     signatoryList,
     isEnable,
   } = templateDetail!;
-  const [purpose, setPurpose] = useState('')
+  const [purpose, setPurpose] = useState("");
   const [xfdfString, setXfdfString] = useState<string | undefined>();
   const { t, i18n } = useTranslation();
 
@@ -147,7 +147,7 @@ const ViewCreateDocument: React.FC = () => {
         createdBy: +userInfo?.userId!,
         idTemplate: id,
         xfdfString: xfdfString!,
-        documentDescription: purpose!
+        documentDescription: purpose!,
       })
     ).unwrap();
     sendSignalNotification({
@@ -208,8 +208,13 @@ const ViewCreateDocument: React.FC = () => {
                 }}
                 multiline
                 rows={4}
-                onChange={(value) => setPurpose(value.target.value)}
+                onChange={(value) => {
+                  if (value.target.value.length > 100) return;
+                  setPurpose(value.target.value);
+                }}
+                value={purpose}
               />
+              <h4>{t("Maximum length")}: 100</h4>
             </div>
             <Divider className="bg-white" />
             <div className="flex justify-center">

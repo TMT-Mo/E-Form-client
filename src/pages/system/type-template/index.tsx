@@ -9,6 +9,7 @@ import {
   DialogActions,
   DialogContent,
   TextField,
+  FormHelperText,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AddBoxIcon from "@mui/icons-material/AddBox";
@@ -38,7 +39,7 @@ const CustomBox = styled(Box)({
 
 export const TypeTemplateSystem = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const {
     isGetTemplateTypesLoading,
     isEditTemplateTypeLoading,
@@ -53,30 +54,28 @@ export const TypeTemplateSystem = () => {
   const [isEditingTemplateType, setIsEditingTemplateType] = useState(false);
   const [isViewingTemplateType, setIsViewingTemplateType] = useState(false);
 
-    const onEditTemplateType = async () => {
-      const { typeName, id } = modifyTemplateType!;
-      const editTemplateTypeHandle = dispatch(
-        editTemplateType({ typeName, id })
-      );
-      await editTemplateTypeHandle.unwrap();
-      // sendSignalREditSystem({ typeName: selectedTemplateType?.typeName });
-      const getTemplateType = dispatch(getTemplateTypeList());
-      await getTemplateType.unwrap();
+  const onEditTemplateType = async () => {
+    const { typeName, id } = modifyTemplateType!;
+    const editTemplateTypeHandle = dispatch(editTemplateType({ typeName, id }));
+    await editTemplateTypeHandle.unwrap();
+    // sendSignalREditSystem({ typeName: selectedTemplateType?.typeName });
+    const getTemplateType = dispatch(getTemplateTypeList());
+    await getTemplateType.unwrap();
 
-      setIsEditingTemplateType(false);
-    };
+    setIsEditingTemplateType(false);
+  };
 
-    const onCreateTemplateType = async () => {
-      const createTemplateTypeHandler = dispatch(
-        createTemplateType({ typeName: newTemplateType!, status: 1 })
-      );
-      await createTemplateTypeHandler.unwrap();
+  const onCreateTemplateType = async () => {
+    const createTemplateTypeHandler = dispatch(
+      createTemplateType({ typeName: newTemplateType!, status: 1 })
+    );
+    await createTemplateTypeHandler.unwrap();
 
-      const getTemplateType = dispatch(getTemplateTypeList());
-      await getTemplateType.unwrap();
+    const getTemplateType = dispatch(getTemplateTypeList());
+    await getTemplateType.unwrap();
 
-      setIsAddingTemplateType(false);
-    };
+    setIsAddingTemplateType(false);
+  };
 
   useEffect(() => {
     if (!isEditingTemplateType) {
@@ -95,7 +94,7 @@ export const TypeTemplateSystem = () => {
       <CustomBox sx={{ w: 1 / 4 }}>
         <Stack
           direction="row"
-        //   spacing={25}
+          //   spacing={25}
           justifyContent="space-between"
           alignItems="center"
         >
@@ -111,7 +110,7 @@ export const TypeTemplateSystem = () => {
               fontWeight="bold"
               noWrap
             >
-              {t('Template Type')}
+              {t("Template Type")}
             </Typography>
 
             {!isGetTemplateTypesLoading && (
@@ -119,7 +118,7 @@ export const TypeTemplateSystem = () => {
                 {templateTypeList?.length}
               </Typography>
             )}
-          {isGetTemplateTypesLoading && <CircularProgress />}
+            {isGetTemplateTypesLoading && <CircularProgress />}
           </Stack>
 
           {!isGetTemplateTypesLoading && (
@@ -216,13 +215,15 @@ export const TypeTemplateSystem = () => {
                   fullWidth
                   value={modifyTemplateType?.typeName}
                   disabled={!modifyTemplateType}
-                  onChange={(value) =>
+                  onChange={(value) => {
+                    if (value.target.value.length > 30) return;
                     setModifyTemplateType({
                       ...modifyTemplateType!,
                       typeName: value.target.value,
-                    })
-                  }
+                    });
+                  }}
                 />
+                <FormHelperText id="component-error-text">{t('Maximum length')}: 30</FormHelperText>
               </Stack>
               <DialogActions>
                 <WhiteBtn
@@ -238,7 +239,7 @@ export const TypeTemplateSystem = () => {
                     <CircularProgress color="inherit" size={16} />
                   }
                   variant="outlined"
-                    onClick={onEditTemplateType}
+                  onClick={onEditTemplateType}
                   disabled={!modifyTemplateType}
                 >
                   {t("Save")}
@@ -260,8 +261,12 @@ export const TypeTemplateSystem = () => {
                 <TextField
                   fullWidth
                   value={newTemplateType}
-                  onChange={(value) => setNewTemplateType(value.target.value)}
+                  onChange={(value) => {
+                    if (value.target.value.length > 30) return;
+                    setNewTemplateType(value.target.value);
+                  }}
                 />
+                <FormHelperText id="component-error-text">{t('Maximum length')}: 30</FormHelperText>
               </Stack>
               <DialogActions>
                 <WhiteBtn
@@ -277,7 +282,7 @@ export const TypeTemplateSystem = () => {
                     <CircularProgress color="inherit" size={16} />
                   }
                   variant="outlined"
-                    onClick={onCreateTemplateType}
+                  onClick={onCreateTemplateType}
                 >
                   {t("Save")}
                 </SaveLoadingBtn>

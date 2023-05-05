@@ -205,6 +205,7 @@ const ViewAddTemplate: React.FC = () => {
       className="flex flex-col space-y-3 rounded-md border border-solid border-white p-4"
       key={index}
     >
+      
       <div className="flex space-x-2 items-center ">
         <h4>{t("Signer")}:</h4>
         <span className="text-white text-base break-words">
@@ -212,7 +213,7 @@ const ViewAddTemplate: React.FC = () => {
         </span>
       </div>
       <div className="flex space-x-2 items-center">
-        <h4>{t('Department:')}</h4>
+        <h4>{t('Department')}:</h4>
         <span className="text-white text-base break-words">
           {signer.departmentName}
         </span>
@@ -277,9 +278,12 @@ const ViewAddTemplate: React.FC = () => {
                 color="primary"
                 value={form.description}
                 onChange={(e) =>
-                  setForm({ ...form, description: e.target.value })
+                  {
+                    if (e.target.value.length > 100) return;
+                    setForm({ ...form, description: e.target.value })}
                 }
               />
+              <h4>{t('Maximum length')}: 100</h4>
             </div>
             <div className="flex flex-col space-y-4">
               <h4>{t("Type")}</h4>
@@ -399,6 +403,7 @@ const ViewAddTemplate: React.FC = () => {
                 />
               )}
             </div>
+            {form.signatoryList && <h4>{t('Order of signers will be followed from top to bottom')}:</h4>}
             {signers}
             <SaveLoadingBtn
               disabled={!isEnableSave}

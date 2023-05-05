@@ -11,6 +11,7 @@ import {
   Typography,
   TextField,
   Chip,
+  FormHelperText,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -191,12 +192,15 @@ export const CreateAccount = () => {
                   value={account?.firstName}
                   label={t("First Name")}
                   onChange={(value) =>
-                    setAccount({
+                    {
+                      if(value.target.value.length === 20) return
+                      setAccount({
                       ...account!,
                       firstName: value.target.value,
-                    })
+                    })}
                   }
                 />
+                <FormHelperText id="component-error-text">{t('Maximum length')}: 20</FormHelperText>
               </FormControl>
               <FormControl fullWidth>
                 <InputLabel htmlFor="component-outlined">
@@ -207,12 +211,15 @@ export const CreateAccount = () => {
                   value={account?.lastName}
                   label={t("Last Name")}
                   onChange={(value) =>
-                    setAccount({
+                    {
+                      if(value.target.value.length > 20) return
+                      setAccount({
                       ...account!,
                       lastName: value.target.value,
-                    })
+                    })}
                   }
                 />
+                <FormHelperText id="component-error-text">{t('Maximum length')}: 20</FormHelperText>
               </FormControl>
             </Stack>
             <FormControl>
@@ -223,14 +230,17 @@ export const CreateAccount = () => {
                 id="component-outlined"
                 value={account?.userName}
                 label={t("Username")}
+                
                 onChange={(value) =>
-                  setAccount({
+                  {
+                    if(value.target.value.length > 20) return
+                    setAccount({
                     ...account!,
                     userName: value.target.value,
-                  })
+                  })}
                 }
               />
-              {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
+              <FormHelperText id="component-error-text">{t('Maximum length')}: 20</FormHelperText>
             </FormControl>
             <FormControl>
               <InputLabel htmlFor="component-outlined">

@@ -63,7 +63,7 @@ const Login = () => {
             </h1>
             <p className="text-md text-gray-config text-center">
               {t(
-                "Input your Email and password to join us and get fully accessible"
+                "Input username and password to join us and get fully accessible!"
               )}
             </p>
           </div>
@@ -72,12 +72,12 @@ const Login = () => {
             <h1 className="text-4xl font-bold ">{t("Sign in")}</h1>
             <div className="flex flex-col space-y-2">
               <div className="">
-                {t("Email address")} <span className="text-red-500">*</span>
+                {t("Username")} <span className="text-red-500">*</span>
               </div>
               <TextField
                 id="outlined-basic"
                 className="bg-white "
-                label={t("example@")}
+                label={t("example")}
                 variant="outlined"
                 onChange={(e) => setUsername(e.target.value)}
               />

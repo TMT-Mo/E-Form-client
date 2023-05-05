@@ -6,6 +6,7 @@ import {
   IconButton,
   Autocomplete,
   TextField,
+  FormHelperText,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AddBoxIcon from "@mui/icons-material/AddBox";
@@ -13,7 +14,6 @@ import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutli
 import { useDispatch, useSelector, useSignalR } from "hooks";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Dialog, DialogContent, DialogActions } from "@mui/material";
-import { t } from "i18next";
 import { SaveLoadingBtn, WhiteBtn } from "components/CustomStyled";
 import { Department } from "models/system";
 import { useTranslation } from "react-i18next";
@@ -57,7 +57,9 @@ export const DepartmentSystem = () => {
     await dispatch(
       editDepartment({ departmentId: id, departmentName })
     ).unwrap();
-    sendSignalREditSystem({ departmentName: selectedDepartment?.departmentName });
+    sendSignalREditSystem({
+      departmentName: selectedDepartment?.departmentName,
+    });
     await dispatch(getDepartmentList()).unwrap();
     setIsEditingDepartment(false);
   };
@@ -85,37 +87,34 @@ export const DepartmentSystem = () => {
 
   return (
     <>
-      <CustomBox sx={{w: 1/4}}>
-      <Stack
+      <CustomBox sx={{ w: 1 / 4 }}>
+        <Stack
           direction="row"
           // spacing={25}
           justifyContent="space-between"
           alignItems="center"
         >
-        <Stack
-          direction="column"
-          // justifyContent="space-between"
-          // alignItems="center"
-        >
-          <Typography
-            variant="h6"
-            component="h1"
-            style={{ paddingBottom: "10px" }}
-            fontWeight="bold"
+          <Stack
+            direction="column"
+            // justifyContent="space-between"
+            // alignItems="center"
           >
-            {t("Department")}
-          </Typography>
-          {!isGetDepartmentsLoading && (
-            <Typography variant="h2" component="h1">
-              {departmentList.length}
+            <Typography
+              variant="h6"
+              component="h1"
+              style={{ paddingBottom: "10px" }}
+              fontWeight="bold"
+            >
+              {t("Department")}
             </Typography>
-            
-          )}
-        {isGetDepartmentsLoading && <CircularProgress />}
-        </Stack>
+            {!isGetDepartmentsLoading && (
+              <Typography variant="h2" component="h1">
+                {departmentList.length}
+              </Typography>
+            )}
+            {isGetDepartmentsLoading && <CircularProgress />}
+          </Stack>
 
-        
-          
           {!isGetDepartmentsLoading && (
             <Stack direction="column">
               <IconButton
@@ -209,13 +208,15 @@ export const DepartmentSystem = () => {
                   fullWidth
                   value={modifyDepartment?.departmentName}
                   disabled={!modifyDepartment}
-                  onChange={(value) =>
+                  onChange={(value) => {
+                    if (value.target.value.length > 30) return;
                     setModifyDepartment({
                       ...modifyDepartment!,
                       departmentName: value.target.value,
-                    })
-                  }
+                    });
+                  }}
                 />
+                <FormHelperText id="component-error-text">{t('Maximum length')}: 30</FormHelperText>
               </Stack>
               <DialogActions>
                 <WhiteBtn
@@ -253,8 +254,11 @@ export const DepartmentSystem = () => {
                 <TextField
                   fullWidth
                   value={newDepartment}
-                  onChange={(value) => setNewDepartment(value.target.value)}
+                  onChange={(value) => {
+                    if (value.target.value.length > 30) return;
+                    setNewDepartment(value.target.value)}}
                 />
+                <FormHelperText id="component-error-text">{t('Maximum length')}: 30</FormHelperText>
               </Stack>
               <DialogActions>
                 <WhiteBtn
