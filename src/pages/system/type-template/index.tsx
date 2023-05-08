@@ -283,6 +283,7 @@ export const TypeTemplateSystem = () => {
                   }
                   variant="outlined"
                   onClick={onCreateTemplateType}
+                  disabled={!newTemplateType}
                 >
                   {t("Save")}
                 </SaveLoadingBtn>

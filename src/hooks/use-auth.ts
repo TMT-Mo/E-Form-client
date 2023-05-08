@@ -9,7 +9,7 @@ import { helpers } from "../utils";
 import jwtDecode from "jwt-decode";
 import { setLocation } from "../slices/location";
 import { LocationIndex, Permissions } from "utils/constants";
-
+import { logout as logoutSlice } from "../slices/auth";
 interface UseAuth {
   logout: () => void;
   authenticate: () => void;
@@ -25,14 +25,16 @@ export const useAuth = (): UseAuth => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { getToken, clearToken, getLocation } = helpers;
+  
   // const auth = useSelector(state => state)
 
   const logout = useCallback((): void => {
     clearToken();
     // rootReducer(auth.auth, {type: 'Reset'})
     // store.dispatch({ type: 'Reset' });
+    dispatch(logoutSlice())
     navigate("/login", { replace: true });
-  }, [clearToken, navigate]);
+  }, [clearToken, dispatch, navigate]);
 
   const handleLocation = useCallback(() => {
     const location = getLocation();

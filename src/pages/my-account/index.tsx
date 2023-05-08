@@ -121,17 +121,17 @@ export const MyAccount = () => {
   };
 
   useEffect(() => {
-    if (!userInfo?.userId) return;
-    dispatch(getSignature({ userId: +userInfo?.userId })).unwrap();
-  }, [dispatch, userInfo?.userId]);
+  //   if (!userInfo?.userId) return;
+  //   dispatch(getSignature({ userId: +userInfo?.userId })).unwrap();
+  // }, [dispatch, userInfo?.userId]);
 
-  useEffect(() => {
-    const getDepartment = dispatch(getDepartmentList());
-    const getRole = dispatch(getRoleList());
-    // const getPermission = dispatch(getPermissionList());
+  // useEffect(() => {
+  //   const getDepartment = dispatch(getDepartmentList());
+  //   const getRole = dispatch(getRoleList());
+  //   // const getPermission = dispatch(getPermissionList());
 
-    getDepartment.unwrap();
-    getRole.unwrap();
+  //   getDepartment.unwrap();
+  //   getRole.unwrap();
   }, [dispatch]);
 
   return (
@@ -186,14 +186,14 @@ export const MyAccount = () => {
               justifyContent="end"
               alignItems="end"
             >
-              <SaveLoadingBtn
+              {/* <SaveLoadingBtn
                 loading={isEditAccountLoading}
                 disabled={isDisabledSave}
                 sx={{ height: "fit-content", width: "fit-content" }}
                 onClick={EditAccountHandler}
               >
                 {t("Save")}
-              </SaveLoadingBtn>
+              </SaveLoadingBtn> */}
             </Stack>
           </Stack>
           <Stack

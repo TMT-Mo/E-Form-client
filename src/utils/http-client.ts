@@ -1,9 +1,8 @@
-import store from "store/index";
+import { useDispatch } from './../hooks/use-dispatch';
 import axios, { Method, AxiosResponse, ResponseType, AxiosError } from "axios";
 import jwtDecode from "jwt-decode";
 import { UserInfo } from "models/auth";
 import { helpers } from "utils";
-import { handleSuccess } from "slices/alert";
 
 interface Options {
   url: string;
@@ -18,6 +17,9 @@ interface Options {
 interface FullOptions extends Options {
   method: Method;
 }
+
+const controller = new AbortController();
+
 const axiosConfig = axios.create();
 axiosConfig.interceptors.request.use(
   function (config) {
@@ -25,13 +27,17 @@ axiosConfig.interceptors.request.use(
     // cancelToken.cancel()
     // console.log(cancelToken)
     // Do something before request is sent
-    // const token = helpers.getToken()
-    // const user = jwtDecode(token) as UserInfo;
-    // if (user.exp * 1000 < Date.now()) {
-    //   //* Check if token has been expired
-    //   console.log('expired')
-    //   return;
-    // }
+    const token = helpers.getToken()
+    if(!token) return config
+    const user = jwtDecode(token) as UserInfo;
+    if (user.exp * 1000 < Date.now()) {
+      //* Check if token has been expired
+      controller.abort()
+      helpers.clearToken();
+      !window.location.toString().includes('login') && window.location.replace("/login");
+      
+      return;
+    }
     return config;
   },
   function (error) {
@@ -72,7 +78,7 @@ const request = (args: FullOptions): Promise<AxiosResponse> => {
     params,
     responseType = "json",
     data,
-    // signal,
+    // signal
   } = args;
 
   // const source = axios.CancelToken.source();
@@ -93,25 +99,25 @@ const request = (args: FullOptions): Promise<AxiosResponse> => {
     data,
     responseType,
     params,
-    // cancelToken: source.token,
+    // signal
   });
 };
 
 const httpClient = {
   get: (args: Options): Promise<AxiosResponse> => {
-    return request({ ...args, method: "GET" });
+    return request({ ...args, method: "GET",  signal: controller?.signal });
   },
   put: (args: Options): Promise<AxiosResponse> => {
-    return request({ ...args, method: "PUT" });
+    return request({ ...args, method: "PUT",  signal: controller?.signal });
   },
   post: (args: Options): Promise<AxiosResponse> => {
-    return request({ ...args, method: "POST" });
+    return request({ ...args, method: "POST",  signal: controller?.signal });
   },
   patch: (args: Options): Promise<AxiosResponse> => {
-    return request({ ...args, method: "PATCH" });
+    return request({ ...args, method: "PATCH",  signal: controller?.signal });
   },
   delete: (args: Options): Promise<AxiosResponse> => {
-    return request({ ...args, method: "DELETE" });
+    return request({ ...args, method: "DELETE",  signal: controller?.signal });
   },
 };
 

@@ -259,6 +259,7 @@ export const RoleSystem = () => {
                   }
                   variant="outlined"
                   onClick={onCreateRole}
+                  disabled={!newRole}
                 >
                   {t("Save")}
                 </SaveLoadingBtn>

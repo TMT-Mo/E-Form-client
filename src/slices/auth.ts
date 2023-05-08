@@ -49,6 +49,10 @@ const checkAuthenticationCR: CR<{ value: boolean }> = (state, { payload }) => ({
   checkAuthenticated: payload.value!,
 });
 
+const logoutCR: CR<void> = () => ({
+  ...initialState,
+});
+
 const login = createAsyncThunk(
   `${ACTION_TYPE}login`,
   async (args: LoginArgument, { dispatch }) => {
@@ -122,6 +126,7 @@ const auth = createSlice({
   reducers: {
     setUserInfo: setUserInfoCR,
     checkAuthentication: checkAuthenticationCR,
+    logout: logoutCR,
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => ({
@@ -179,6 +184,6 @@ const auth = createSlice({
 
 export { login, getSignature, changePassword };
 
-export const { setUserInfo, checkAuthentication } = auth.actions;
+export const { setUserInfo, checkAuthentication, logout } = auth.actions;
 
 export default auth.reducer;
