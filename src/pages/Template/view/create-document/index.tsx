@@ -2,13 +2,14 @@ import { CircularProgress, Divider } from "@mui/material";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import WebViewer from "@pdftron/webviewer";
+import WebViewer, { WebViewerInstance } from "@pdftron/webviewer";
 import AlertPopup from "components/AlertPopup";
 import { useDispatch, useSelector, useSignalR } from "hooks";
 import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from "uuid";
 import { SaveLoadingBtn, TextFieldStyled } from "components/CustomStyled";
 import { createDocument } from "slices/document";
+import { handleError } from "slices/alert";
 
 const ViewCreateDocument: React.FC = () => {
   const viewer = useRef(null);
@@ -74,7 +75,7 @@ const ViewCreateDocument: React.FC = () => {
       },
       viewer.current!
     ).then(async (instance) => {
-      const { documentViewer, annotationManager, Annotations } = instance.Core;
+      const { documentViewer, annotationManager } = instance.Core;
       instance.UI.setLanguage(i18n.language === "vn" ? "vi" : "en");
       instance.UI.setHeaderItems(function (header) {
         header.push({
@@ -90,37 +91,37 @@ const ViewCreateDocument: React.FC = () => {
       documentViewer.addEventListener("documentLoaded", async () => {
         await documentViewer.getDocument().getDocumentCompletePromise();
         documentViewer.updateView();
-        documentViewer.addEventListener("annotationsLoaded", () => {
-          const annot = new Annotations.FreeTextAnnotation(
-            Annotations.FreeTextAnnotation.Intent.FreeText,
-            {
-              PageNumber: 1,
-              TextColor: new Annotations.Color(255, 0, 0, 1),
-              StrokeColor: new Annotations.Color(0, 255, 0, 0),
-            }
-          );
-          annot.ReadOnly = true;
-          annot.setPathPoint(0, 300, 20); // Callout ending (start)
-          // annot.setPathPoint(1, 425, 75);  // Callout knee
-          // annot.setPathPoint(2, 300, 75);  // Callout joint
-          // annot.setPathPoint(3, 100, 50);  // Top-left point
-          // annot.setPathPoint(4, 300, 100); // Bottom-right point
+        // documentViewer.addEventListener("annotationsLoaded", () => {
+        //   const annot = new Annotations.FreeTextAnnotation(
+        //     Annotations.FreeTextAnnotation.Intent.FreeText,
+        //     {
+        //       PageNumber: 1,
+        //       TextColor: new Annotations.Color(255, 0, 0, 1),
+        //       StrokeColor: new Annotations.Color(0, 255, 0, 0),
+        //     }
+        //   );
+        //   annot.ReadOnly = true;
+        //   annot.setPathPoint(0, 300, 20); // Callout ending (start)
+        //   // annot.setPathPoint(1, 425, 75);  // Callout knee
+        //   // annot.setPathPoint(2, 300, 75);  // Callout joint
+        //   // annot.setPathPoint(3, 100, 50);  // Top-left point
+        //   // annot.setPathPoint(4, 300, 100); // Bottom-right point
 
-          annot.setContents(`${typeName}_${departmentName}_1`);
-          annot.Author = uuidv4();
+        //   annot.setContents(`${typeName}_${departmentName}_1`);
+        //   annot.Author = uuidv4();
 
-          annotationManager.addAnnotation(annot);
-          annotationManager.redrawAnnotation(annot);
-        });
-        annotationManager.setAnnotationDisplayAuthorMap((userId) => {
-          if (userId === userInfo?.userId!.toString()) {
-            return userInfo?.userName!;
-          }
-          return "System";
-        });
+        //   annotationManager.addAnnotation(annot);
+        //   annotationManager.redrawAnnotation(annot);
+        // });
+        // annotationManager.setAnnotationDisplayAuthorMap((userId) => {
+        //   if (userId === userInfo?.userId!.toString()) {
+        //     return userInfo?.userName!;
+        //   }
+        //   return "System";
+        // });
         annotationManager.addEventListener(
           "annotationChanged",
-          async (annotations, action, { imported }) => {
+          async (annotations, action) => {
             const annots = (
               await annotationManager.exportAnnotations({
                 useDisplayAuthor: true,
@@ -142,6 +143,10 @@ const ViewCreateDocument: React.FC = () => {
   ]);
 
   const onCreateDocument = async () => {
+    if(!xfdfString){
+      dispatch(handleError({errorMessage: t('Please edit something before creating a new document')}))
+      return
+    }
     await dispatch(
       createDocument({
         createdBy: +userInfo?.userId!,
