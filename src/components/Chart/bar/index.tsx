@@ -35,7 +35,7 @@ export function ChartBar(props: Props) {
   const { t } = useTranslation();
 
   const data: ChartData<"bar"> = {
-    labels: labels.map((label) => t(label)),
+    labels: labels,
     datasets,
   };
 

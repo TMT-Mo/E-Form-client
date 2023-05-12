@@ -70,7 +70,7 @@ const SelectType = (props: GridFilterInputValueProps) => {
           >
             {templateTypeList.map((item) => (
               <MenuItem value={item.typeName} key={item.id}>
-                {t(item.typeName)}
+                {item.typeName}
               </MenuItem>
             ))}
           </Select>

@@ -47,7 +47,7 @@ const SelectDepartment = (props: GridFilterInputValueProps) => {
     if (locationIndex === SYSTEM || locationIndex === DASHBOARD) {
       return departmentList.map((item) => (
         <MenuItem value={item.id} key={item.id}>
-          {t(item.departmentName)}
+          {item.departmentName}
         </MenuItem>
       ));
     }
@@ -60,7 +60,7 @@ const SelectDepartment = (props: GridFilterInputValueProps) => {
       )
       .map((item) => (
         <MenuItem value={item.id} key={item.id}>
-          {t(item.departmentName)}
+          {item.departmentName}
         </MenuItem>
       ));
   };

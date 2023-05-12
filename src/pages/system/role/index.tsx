@@ -219,7 +219,7 @@ export const RoleSystem = () => {
                   }
                   variant="outlined"
                   onClick={onEditRole}
-                  disabled={!modifyRole}
+                  disabled={modifyRole?.roleName.length === 0 || !modifyRole}
                 >
                   {t("Save")}
                 </SaveLoadingBtn>

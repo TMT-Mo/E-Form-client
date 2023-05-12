@@ -2,11 +2,10 @@ import { CircularProgress, Divider } from "@mui/material";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import WebViewer, { WebViewerInstance } from "@pdftron/webviewer";
+import WebViewer from "@pdftron/webviewer";
 import AlertPopup from "components/AlertPopup";
 import { useDispatch, useSelector, useSignalR } from "hooks";
 import { useTranslation } from "react-i18next";
-import { v4 as uuidv4 } from "uuid";
 import { SaveLoadingBtn, TextFieldStyled } from "components/CustomStyled";
 import { createDocument } from "slices/document";
 import { handleError } from "slices/alert";
@@ -47,13 +46,13 @@ const ViewCreateDocument: React.FC = () => {
       <div className="flex space-x-2 items-center">
         <h4>{t("Department")}:</h4>
         <span className="text-white text-base break-words">
-          {t(signer.departmentName)}
+          {signer.departmentName}
         </span>
       </div>
       <div className="flex space-x-2 items-center">
         <h4>{t("Role")}:</h4>
         <span className="text-white text-base break-words">
-          {t(signer.roleName)}
+          {signer.roleName}
         </span>
       </div>
     </div>
@@ -192,13 +191,13 @@ const ViewCreateDocument: React.FC = () => {
             <div className="flex items-center space-x-1">
               <h4 className="whitespace-nowrap">{t("Type")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {t(typeName)}
+                {typeName}
               </span>
             </div>
             <div className="flex items-center space-x-1">
               <h4 className="whitespace-nowrap">{t("Department")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {t(departmentName)}
+                {departmentName}
               </span>
             </div>
             <div className="flex flex-col space-y-3">

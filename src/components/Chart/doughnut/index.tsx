@@ -39,7 +39,7 @@ export function DoughnutChart(props: Props) {
   };
 
   const data: ChartData<'doughnut'> = {
-    labels: labels.map(label => t(label)),
+    labels: labels,
     datasets,
   };
   return (

@@ -104,7 +104,7 @@ export const templateColumns: GridColDef[] = [
     filterOperators: departmentOnlyOperators,
     // filterable: false,
     renderHeader: TranslateHeader,
-    renderCell: TranslateContent,
+    // renderCell: TranslateContent,
     headerAlign: 'center',
     flex: .5,
     sortable: false,
@@ -192,7 +192,7 @@ export const templateHistoryColumns: GridColDef[] = [
   },
   {
     field: DEPARTMENT_HISTORY,
-    renderCell: TranslateContent,
+    // renderCell: TranslateContent,
     headerName: "Department",
     align: "center",
     headerAlign: 'center',
@@ -279,7 +279,7 @@ export const newTemplatesColumns: GridColDef[] = [
   },
   {
     field: DEPARTMENT,
-    renderCell: TranslateContent,
+    // renderCell: TranslateContent,
     headerName: "Department",
     align: "center",
     headerAlign: 'center',
@@ -374,7 +374,7 @@ export const awaitSigningColumns: GridColDef[] = [
   },
   {
     field: DEPARTMENT,
-    renderCell: TranslateContent,
+    // renderCell: TranslateContent,
     headerName: "Department",
     headerAlign: 'center',
     align: 'center',
@@ -468,7 +468,7 @@ export const personalDocColumns: GridColDef[] = [
   },
   {
     field: DEPARTMENT,
-    renderCell: TranslateContent,
+    // renderCell: TranslateContent,
     headerName: "Department",
     headerAlign: 'center',
     align: 'center',
@@ -482,7 +482,7 @@ export const personalDocColumns: GridColDef[] = [
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
     renderHeader: TranslateHeader,
-    renderCell: TranslateContent,
+    // renderCell: TranslateContent,
     sortable: false,
   },
   {
@@ -575,7 +575,7 @@ export const sharedDocColumns: GridColDef[] = [
   },
   {
     field: DEPARTMENT,
-    renderCell: TranslateContent,
+    // renderCell: TranslateContent,
     headerName: "Department",
     headerAlign: 'center',
     align: 'center',
@@ -589,7 +589,7 @@ export const sharedDocColumns: GridColDef[] = [
     headerName: "Type",
     filterOperators: typeTemplateOnlyOperators,
     renderHeader: TranslateHeader,
-    renderCell: TranslateContent,
+    // renderCell: TranslateContent,
     sortable: false,
   },
   {
@@ -758,7 +758,7 @@ export const accountColumns: GridColDef[] = [
     minWidth: 100,
     renderHeader: TranslateHeader,
     sortable: false,
-    renderCell: TranslateContent,
+    // renderCell: TranslateContent,
     filterOperators: departmentOnlyOperators,
   },
   {

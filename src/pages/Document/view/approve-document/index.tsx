@@ -79,13 +79,13 @@ const ViewApproveDocument: React.FC = () => {
       <div className="flex space-x-2 items-center">
         <h4>{t("Department")}:</h4>
         <span className="text-white text-base break-words">
-          {t(signer.departmentName)}
+          {signer.departmentName}
         </span>
       </div>
       <div className="flex space-x-2 items-center">
         <h4>{t("Role")}:</h4>
         <span className="text-white text-base break-words">
-          {t(signer.roleName)}
+          {signer.roleName}
         </span>
       </div>
       <div className="flex space-x-2 items-center">
@@ -293,13 +293,13 @@ const ViewApproveDocument: React.FC = () => {
             <div className="flex items-center space-x-1">
               <h4 className="whitespace-nowrap">{t("Type")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {t(typeName)}
+                {typeName}
               </span>
             </div>
             <div className="flex items-center space-x-1">
               <h4 className="whitespace-nowrap">{t("Department")}:</h4>
               <span className="text-white text-base break-words w-60">
-                {t(departmentName)}
+                {departmentName}
               </span>
             </div>
             <div className="flex flex-col space-y-2">

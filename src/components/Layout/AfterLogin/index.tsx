@@ -358,7 +358,7 @@ export default function AfterLogin() {
             <Stack spacing={1} textAlign='center'>
               <Typography maxWidth='200px' color='#fff' whiteSpace='normal' fontWeight='bold'>{userInfo?.userName}</Typography>
               <Typography maxWidth='200px' color='#fff' whiteSpace='normal' fontWeight='bold'>
-                {t(userInfo?.roleName!)} {t('from')} {t(userInfo?.departmentName!)}
+                {userInfo?.roleName!} {t('from')} {userInfo?.departmentName!}
               </Typography>
             </Stack>
           )}

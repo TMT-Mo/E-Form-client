@@ -15,7 +15,7 @@ import {
   import { useEffect } from "react";
   import { useTranslation } from "react-i18next";
   import { useDispatch, useSelector } from "hooks";
-  import { getDepartmentList, getRoleList } from "slices/system";
+  import { getRoleList } from "slices/system";
   import { DataTableHeader } from "utils/constants";
 
   const ITEM_HEIGHT = 48;
@@ -83,7 +83,7 @@ const MenuProps = {
               {roleList
                 .map((item) => (
                   <MenuItem value={item.id} key={item.id}>
-                    {t(item.roleName)}
+                    {item.roleName}
                   </MenuItem>
                 ))}
             </Select>

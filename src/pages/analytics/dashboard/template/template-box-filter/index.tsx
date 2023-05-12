@@ -96,7 +96,7 @@ export const TemplateBoxWithFilter = () => {
               option.departmentName === value.departmentName
             }
             disableClearable
-            getOptionLabel={(option) => t(option.departmentName)}
+            getOptionLabel={(option) => option.departmentName}
             options={departmentList.filter(
               (department) => department.departmentName !== "All"
             )}

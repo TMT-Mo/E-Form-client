@@ -266,7 +266,7 @@ export const CreateAccount = () => {
               // isOptionEqualToValue={(option, value) =>
               //   option.departmentName === value.departmentName
               // }
-              getOptionLabel={(option) => t(option.departmentName)}
+              getOptionLabel={(option) => option.departmentName}
               options={departmentList.filter((d) => d.departmentName !== "All")}
               loading={isGetDepartmentsLoading}
               sx={{

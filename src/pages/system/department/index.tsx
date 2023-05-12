@@ -165,7 +165,7 @@ export const DepartmentSystem = () => {
                 isOptionEqualToValue={(option, value) =>
                   option.departmentName === value.departmentName
                 }
-                getOptionLabel={(option) => t(option.departmentName)}
+                getOptionLabel={(option) => option.departmentName}
                 options={departmentList}
                 sx={{
                   ".MuiAutocomplete-clearIndicator": {
@@ -216,7 +216,9 @@ export const DepartmentSystem = () => {
                     });
                   }}
                 />
-                <FormHelperText id="component-error-text">{t('Maximum length')}: 30</FormHelperText>
+                <FormHelperText id="component-error-text">
+                  {t("Maximum length")}: 30
+                </FormHelperText>
               </Stack>
               <DialogActions>
                 <WhiteBtn
@@ -233,7 +235,7 @@ export const DepartmentSystem = () => {
                   }
                   variant="outlined"
                   onClick={onEditDepartment}
-                  disabled={!modifyDepartment}
+                  disabled={modifyDepartment?.departmentName.length === 0 || !modifyDepartment}
                 >
                   {t("Save")}
                 </SaveLoadingBtn>
@@ -256,9 +258,12 @@ export const DepartmentSystem = () => {
                   value={newDepartment}
                   onChange={(value) => {
                     if (value.target.value.length > 30) return;
-                    setNewDepartment(value.target.value)}}
+                    setNewDepartment(value.target.value);
+                  }}
                 />
-                <FormHelperText id="component-error-text">{t('Maximum length')}: 30</FormHelperText>
+                <FormHelperText id="component-error-text">
+                  {t("Maximum length")}: 30
+                </FormHelperText>
               </Stack>
               <DialogActions>
                 <WhiteBtn

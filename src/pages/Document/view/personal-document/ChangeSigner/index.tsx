@@ -51,11 +51,11 @@ const ChangeSigner: React.FC<Props> = ({
       </div>
       <div className="flex space-x-2 items-center">
         <h4>{t("Department")}:</h4>
-        <span className="text-white text-base break-words">{t(signer.departmentName)}</span>
+        <span className="text-white text-base break-words">{signer.departmentName}</span>
       </div>
       <div className="flex space-x-2 items-center">
         <h4>{t("Role")}:</h4>
-        <Typography className="text-white">{t(signer.roleName)}</Typography>
+        <Typography className="text-white">{signer.roleName}</Typography>
       </div>
       <div className="flex space-x-2 items-center">
         <h4>{t("Status")}:</h4>

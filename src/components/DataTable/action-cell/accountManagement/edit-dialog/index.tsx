@@ -65,7 +65,8 @@ const statusOptions: AccountStatusOptions[] = [
 ];
 
 const { SYSTEM } = LocationIndex;
-const {VIEW_DOCUMENT_OVERALL_STATISTICS, VIEW_DOCUMENT_STATISTICS} = Permissions
+const { VIEW_DOCUMENT_OVERALL_STATISTICS, VIEW_DOCUMENT_STATISTICS } =
+  Permissions;
 export const EditDialog = (props: Props) => {
   const { t } = useTranslation();
   const { isOpen, handleToggleDialog } = props;
@@ -132,13 +133,22 @@ export const EditDialog = (props: Props) => {
   ]);
 
   const onChangeSelectedPermissions = (value: Permission[]) => {
-    const hasOverallStatistics = value.find(v => v.id === VIEW_DOCUMENT_OVERALL_STATISTICS)
-    const hasNormalStatistics = value.find(v => v.id === VIEW_DOCUMENT_STATISTICS)
-    if(hasOverallStatistics && hasNormalStatistics){
-      dispatch(handleError({errorMessage: 'You can only select VIEW_DOCUMENT_OVERALL_STATISTICS or VIEW_DOCUMENT_STATISTICS'}))
-      return
+    const hasOverallStatistics = value.find(
+      (v) => v.id === VIEW_DOCUMENT_OVERALL_STATISTICS
+    );
+    const hasNormalStatistics = value.find(
+      (v) => v.id === VIEW_DOCUMENT_STATISTICS
+    );
+    if (hasOverallStatistics && hasNormalStatistics) {
+      dispatch(
+        handleError({
+          errorMessage:
+            "You can only select VIEW_DOCUMENT_OVERALL_STATISTICS or VIEW_DOCUMENT_STATISTICS",
+        })
+      );
+      return;
     }
-    
+
     setPermissions([
       // ...FixedDummyPermissions,
       // ...value.filter((option) => FixedDummyPermissions.indexOf(option) === -1),
@@ -307,7 +317,7 @@ export const EditDialog = (props: Props) => {
                 isOptionEqualToValue={(option, value) =>
                   option.departmentName === value.departmentName
                 }
-                getOptionLabel={(option) => t(option.departmentName)}
+                getOptionLabel={(option) => option.departmentName}
                 loading={isGetDepartmentsLoading}
                 value={selectedDepartment}
                 disabled={disableEditAccount}
@@ -359,7 +369,7 @@ export const EditDialog = (props: Props) => {
                 isOptionEqualToValue={(option, value) =>
                   option.roleName === value.roleName
                 }
-                getOptionLabel={(option) => t(option.roleName)}
+                getOptionLabel={(option) => option.roleName}
                 loading={isGetRoleLoading}
                 value={selectedRole}
                 disabled={disableEditAccount}
@@ -408,7 +418,7 @@ export const EditDialog = (props: Props) => {
               isOptionEqualToValue={(option, value) =>
                 option.permissionName === value.permissionName
               }
-              getOptionLabel={(option) => t(option.permissionName)}
+              getOptionLabel={(option) => option.permissionName}
               options={DummyPermissions}
               loading={isGetPermissionLoading}
               value={permissions}
@@ -530,7 +540,7 @@ export const EditDialog = (props: Props) => {
                 disabled={isDisabledSave}
                 onClick={EditAccountHandle}
               >
-                {t('Save')}
+                {t("Save")}
               </SaveLoadingBtn>
             )}
           </Stack>

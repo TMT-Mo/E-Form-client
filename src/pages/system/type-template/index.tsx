@@ -240,7 +240,7 @@ export const TypeTemplateSystem = () => {
                   }
                   variant="outlined"
                   onClick={onEditTemplateType}
-                  disabled={!modifyTemplateType}
+                  disabled={modifyTemplateType?.typeName.length === 0 || !modifyTemplateType}
                 >
                   {t("Save")}
                 </SaveLoadingBtn>

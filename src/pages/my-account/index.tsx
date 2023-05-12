@@ -121,9 +121,9 @@ export const MyAccount = () => {
   };
 
   useEffect(() => {
-  //   if (!userInfo?.userId) return;
-  //   dispatch(getSignature({ userId: +userInfo?.userId })).unwrap();
-  // }, [dispatch, userInfo?.userId]);
+    if (!userInfo?.userId) return;
+    dispatch(getSignature({ userId: +userInfo?.userId })).unwrap();
+  }, [dispatch, userInfo?.userId]);
 
   // useEffect(() => {
   //   const getDepartment = dispatch(getDepartmentList());
@@ -132,7 +132,7 @@ export const MyAccount = () => {
 
   //   getDepartment.unwrap();
   //   getRole.unwrap();
-  }, [dispatch]);
+  // }, [dispatch]);
 
   return (
     <Container sx={{ py: 10 }}>

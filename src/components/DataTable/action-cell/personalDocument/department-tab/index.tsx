@@ -19,7 +19,6 @@ import {
 } from "slices/document";
 import { getDepartmentList } from "slices/system";
 import {
-  TextFieldStyled,
   WhiteBtn,
   SaveLoadingBtn,
 } from "components/CustomStyled";
@@ -154,7 +153,7 @@ const DepartmentTab = (props: Props) => {
               isOptionEqualToValue={(option, value) =>
                 option.departmentName === value.departmentName
               }
-              getOptionLabel={(option) => t(option.departmentName)}
+              getOptionLabel={(option) => option.departmentName}
               options={departmentList.filter(d => d.departmentName !== 'All')}
               loading={isGetDepartmentsLoading}
               value={selectedDepartment}
@@ -204,7 +203,7 @@ const DepartmentTab = (props: Props) => {
               options={sharedDepartment}
               value={sharedDepartment}
               limitTags={2}
-              getOptionLabel={(option) => t(option.departmentName)}
+              getOptionLabel={(option) => option.departmentName}
               readOnly
               loading={isGetSharedDepartmentLoading}
               renderInput={(params) => (
@@ -227,12 +226,12 @@ const DepartmentTab = (props: Props) => {
               )}
             />
             <DialogActions>
-              <WhiteBtn onClick={() => onOpen()}>Cancel</WhiteBtn>
+              <WhiteBtn onClick={() => onOpen()}>{t('Cancel')}</WhiteBtn>
               <SaveLoadingBtn
                 loading={isShareDepartmentLoading}
                 onClick={onShareDepartment}
               >
-                Save
+                {t('Save')}
               </SaveLoadingBtn>
             </DialogActions>
           </Stack>
