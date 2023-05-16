@@ -41,7 +41,7 @@ function TabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-      style={{ minWidth: "600px" }}
+      style={{ minWidth: `${window.innerWidth < 720 ? '350px' : '600px'}` }}
       {...other}
     >
       {value === index && (
@@ -211,6 +211,7 @@ const UserTab = (props: Props) => {
               <SaveLoadingBtn
                 loading={isShareUserLoading}
                 onClick={onShareUser}
+                disabled={selectedUser.length === 0}
               >
                 {t('Save')}
               </SaveLoadingBtn>

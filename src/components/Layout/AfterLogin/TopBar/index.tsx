@@ -69,13 +69,13 @@ const TopBar: React.FC<Props> = (props) => {
   }, [notificationList]);
 
   return (
-    <div className="flex py-6 px-4 justify-between items-center  md:px-20">
+    <div className="flex py-6 px-8 justify-between items-center  md:px-36">
       <IconButton
         aria-label="open drawer"
         onClick={handleDrawerOpen}
         edge="end"
         sx={{
-          marginLeft: 15,
+          // marginLeft: 15,
           ...(isOpen && { opacity: "0", cursor: "unset" }),
           fill: "#000",
           scale: '120%'

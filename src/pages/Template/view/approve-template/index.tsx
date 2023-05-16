@@ -227,7 +227,7 @@ const ViewApproveTemplate: React.FC = () => {
             )}
           </div>
         </div>
-        <div className="webviewer w-full min-h-screen" ref={viewer}></div>
+        <div className="webviewer w-full h-screen" ref={viewer}></div>
       </div>
       <Dialog
         open={openDialog}

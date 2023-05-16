@@ -1,4 +1,13 @@
-import { Box, Dialog, DialogTitle, IconButton, Tab, Tabs } from "@mui/material";
+import {
+  Box,
+  Container,
+  Dialog,
+  DialogTitle,
+  IconButton,
+  Stack,
+  Tab,
+  Tabs,
+} from "@mui/material";
 import { TouchRippleActions } from "@mui/material/ButtonBase/TouchRipple";
 import { GridRenderCellParams } from "@mui/x-data-grid";
 import React, { useState } from "react";
@@ -23,6 +32,9 @@ import { RequiredPermission } from "components/RequiredPermission";
 
 const StyledDialog = styled(Dialog)({
   width: "100vw",
+  '& .MuiPaper-root': {
+    overflow: 'hidden'
+  }
 });
 
 function a11yProps(index: number) {
@@ -43,7 +55,7 @@ export const PersonalDocumentActionCell = (
   const dispatch = useDispatch();
   const [value, setValue] = React.useState(0);
   const { id, status } = row as Document;
-  const {DEPARTMENT, USER} = ShareTabIndex
+  const { DEPARTMENT, USER } = ShareTabIndex;
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -61,20 +73,24 @@ export const PersonalDocumentActionCell = (
   const createTab = () => {
     switch (value) {
       case DEPARTMENT:
-        return <DepartmentTab
-        onOpen={() => setOpen((prevState) => !prevState)}
-        value={value}
-        idDocument={id}
-      />
-    
+        return (
+          <DepartmentTab
+            onOpen={() => setOpen((prevState) => !prevState)}
+            value={value}
+            idDocument={id}
+          />
+        );
+
       default:
-        return <UserTab
-        onOpen={() => setOpen((prevState) => !prevState)}
-        value={value}
-        idDocument={id}
-      />
+        return (
+          <UserTab
+            onOpen={() => setOpen((prevState) => !prevState)}
+            value={value}
+            idDocument={id}
+          />
+        );
     }
-  }
+  };
 
   // * Clear data
 
@@ -92,18 +108,18 @@ export const PersonalDocumentActionCell = (
           );
         }}
       >
-        <Link to="/viewer" >
+        <Link to="/viewer">
           <BorderColorIcon fontSize="small" />
         </Link>
       </IconButton>
       {status === StatusDocument.APPROVED_DOCUMENT && (
         <RequiredPermission permission={Permissions.SHARE_DOCUMENT}>
           <IconButton
-          aria-label="delete"
-          onClick={() => setOpen((prevState) => !prevState)}
-        >
-          <ShareIcon fontSize="small" />
-        </IconButton>
+            aria-label="delete"
+            onClick={() => setOpen((prevState) => !prevState)}
+          >
+            <ShareIcon fontSize="small" />
+          </IconButton>
         </RequiredPermission>
       )}
       <StyledDialog
@@ -112,21 +128,22 @@ export const PersonalDocumentActionCell = (
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <DialogTitle id="alert-dialog-title">{t('Share Document')}</DialogTitle>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-          >
-            <Tab label="Department" {...a11yProps(DEPARTMENT)} />
-            <Tab label="User" {...a11yProps(USER)} />
-            {/* <Tab label="User" {...a11yProps(2)} /> */}
-          </Tabs>
-        </Box>
+          <Stack sx={{ borderBottom: 1, borderColor: "divider",  }}>
+            <DialogTitle id="alert-dialog-title">
+              {t("Share Document")}
+            </DialogTitle>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="basic tabs example"
+            >
+              <Tab label="Department" {...a11yProps(DEPARTMENT)} />
+              <Tab label="User" {...a11yProps(USER)} />
+              {/* <Tab label="User" {...a11yProps(2)} /> */}
+            </Tabs>
+          </Stack>
 
-        {createTab()}
-        
+          {createTab()}
       </StyledDialog>
     </div>
   );

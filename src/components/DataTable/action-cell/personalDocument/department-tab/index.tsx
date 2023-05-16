@@ -7,6 +7,8 @@ import {
   Box,
   Typography,
   TextField,
+  Theme,
+  SxProps,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -34,6 +36,7 @@ interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
+  sx?: SxProps<Theme>;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -45,7 +48,7 @@ function TabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-      style={{ minWidth: "600px" }}
+      style={{ minWidth: `${window.innerWidth < 720 ? '350px' : '600px'}` }}
       {...other}
     >
       {value === index && (
@@ -135,15 +138,16 @@ const DepartmentTab = (props: Props) => {
   }, [dispatch]);
 
   return (
-    <TabPanel value={value} index={0}>
+    <TabPanel value={value} index={0} >
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
           <Stack
             spacing={2}
             sx={{
-              width: "100%",
+              // width: "100%",
               color: "#000",
             }}
+            // width= '100%'
           >
             <h4>{t("Share Department")}</h4>
             <Autocomplete
@@ -230,6 +234,7 @@ const DepartmentTab = (props: Props) => {
               <SaveLoadingBtn
                 loading={isShareDepartmentLoading}
                 onClick={onShareDepartment}
+                disabled={selectedDepartment.length === 0}
               >
                 {t('Save')}
               </SaveLoadingBtn>

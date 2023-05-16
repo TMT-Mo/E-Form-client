@@ -414,7 +414,7 @@ const ViewAddTemplate: React.FC = () => {
             </SaveLoadingBtn>
           </div>
         </div>
-        <div className="webviewer w-full min-h-screen" ref={viewer}></div>
+        <div className="webviewer w-full h-screen" ref={viewer}></div>
       </div>
       <AlertPopup
         anchorOrigin={{ vertical: "top", horizontal: "right" }}

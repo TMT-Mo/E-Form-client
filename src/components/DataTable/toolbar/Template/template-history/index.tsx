@@ -18,7 +18,7 @@ export const TemplateHistoryToolBar = () => {
           p: "2px 4px",
           display: "flex",
           alignItems: "center",
-          width: 300,
+          width: `${window.innerWidth < 720 ? '200px' : '300px'}`,
         }}
         variant="outlined"
       >
