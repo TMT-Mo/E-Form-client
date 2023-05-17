@@ -22,6 +22,7 @@ import { WhiteBtn, SaveLoadingBtn } from "components/CustomStyled";
 import { createRole, editRole, getRoleList } from "slices/system";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import CloseIcon from "@mui/icons-material/Close";
+import { DeviceWidth } from "utils/constants";
 
 const CustomBox = styled(Box)({
   padding: "20px 40px",
@@ -81,7 +82,7 @@ export const RoleSystem = () => {
 
   return (
     <>
-      <CustomBox sx={{ w: 1 / 4 }}>
+      <CustomBox>
         <Stack
           direction="row"
           // spacing={25}
@@ -141,7 +142,7 @@ export const RoleSystem = () => {
       </CustomBox>
       <Dialog open={isEditingRole}>
         <DialogContent>
-          <Box minWidth="500px">
+          <Box sx={{minWidth: window.innerWidth > DeviceWidth.IPAD_WIDTH ? "500px" : ''}}>
             <Stack spacing={3}>
               <Typography variant="h5" component="h1" alignSelf="center">
                 {t("Edit Role")}
@@ -230,7 +231,7 @@ export const RoleSystem = () => {
       </Dialog>
       <Dialog open={isAddingRole}>
         <DialogContent>
-          <Box minWidth="500px">
+          <Box sx={{minWidth: window.innerWidth > DeviceWidth.IPAD_WIDTH ? "500px" : ''}}>
             <Stack spacing={3}>
               <Typography variant="h5" component="h1" alignSelf="center">
                 {t("Add Role")}
@@ -270,7 +271,7 @@ export const RoleSystem = () => {
       </Dialog>
       <Dialog open={isViewingRole}>
         <DialogContent>
-          <Box minWidth="500px">
+          <Box sx={{minWidth: window.innerWidth > DeviceWidth.IPAD_WIDTH ? "500px" : ''}}>
             <Stack spacing={2}>
               <Stack direction="row" justifyContent="space-between">
                 <Typography variant="h5" component="h1" alignSelf="center">

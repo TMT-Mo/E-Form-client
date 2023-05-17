@@ -637,7 +637,7 @@ export default function AfterLogin() {
             component="main"
             sx={{
               flexGrow: 1,
-              p: 3,
+              pt: 3,
               background: "#EBF1F9",
               // height: 100,
               mt: 5,

@@ -13,6 +13,7 @@ import {
 } from "slices/system";
 import { Account } from "./account";
 import { TypeTemplateSystem } from "pages/system/type-template";
+import { DeviceWidth } from "utils/constants";
 
 export const System = () => {
   const dispatch = useDispatch();
@@ -44,7 +45,7 @@ export const System = () => {
   return (
     <div className="flex flex-col py-10 space-y-6">
       <h2>{t("System Management")}</h2>
-      <Stack direction="row" justifyContent="space-evenly" spacing={5}>
+      <Stack direction={`${window.innerWidth < DeviceWidth.IPAD_WIDTH ? 'column' : 'row'}`} justifyContent="space-evenly" spacing={5}>
         <DepartmentSystem />
         <RoleSystem />
         <PermissionSystem />

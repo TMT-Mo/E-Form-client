@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import TextField from "@mui/material/TextField/TextField";
 import CloseIcon from "@mui/icons-material/Close";
 import ListAltIcon from "@mui/icons-material/ListAlt";
+import { DeviceWidth } from "utils/constants";
 const CustomBox = styled(Box)({
   padding: "20px 40px",
   backgroundColor: "#fff",
@@ -34,7 +35,7 @@ export const PermissionSystem = () => {
   const [isOpenPermissionDialog, setIsOpenPermissionDialog] = useState(false);
   return (
     <>
-      <CustomBox sx={{w: 1/4}}>
+      <CustomBox >
         <Typography
           variant="h6"
           component="h2"
@@ -69,7 +70,7 @@ export const PermissionSystem = () => {
       </CustomBox>
       <Dialog open={isOpenPermissionDialog}>
         <DialogContent>
-          <Box minWidth="500px">
+          <Box sx={{minWidth: window.innerWidth > DeviceWidth.IPAD_WIDTH ? "500px" : ''}}>
             <Stack spacing={2}>
               <Stack direction="row" justifyContent="space-between">
                 <Typography variant="h5" component="h1" alignSelf="center">
