@@ -56,7 +56,7 @@ const {
 } = LocationIndex;
 
 const { ENABLE_TEMPLATE } = Permissions;
-const { IPAD } = DeviceType;
+const { IPAD, MOBILE } = DeviceType;
 const { checkHideColumnFromDevice } = helpers;
 
 const DataTable: React.FC = () => {
@@ -146,8 +146,7 @@ const DataTable: React.FC = () => {
     description: checkHideColumnFromDevice(IPAD),
     createdAt: checkHideColumnFromDevice(IPAD),
     updateAt: checkHideColumnFromDevice(IPAD),
-    createdBy:
-      usePermission(ENABLE_TEMPLATE) && checkHideColumnFromDevice(IPAD),
+    createdBy: checkHideColumnFromDevice(IPAD),
   };
 
   const data = (): Data => {
@@ -212,6 +211,7 @@ const DataTable: React.FC = () => {
           onChangePage: (e, value) =>
             dispatch(onChangeDocumentPage({ selectedPage: --value })),
           toolbar: AwaitSigningDocumentToolBar,
+          columnVisible
         };
       case TEMPLATE_HISTORY:
         return {
@@ -235,6 +235,7 @@ const DataTable: React.FC = () => {
           onChangePage: (e, value) =>
             dispatch(onChangeDocumentPage({ selectedPage: --value })),
           toolbar: PersonalDocumentToolBar,
+          columnVisible
         };
       case SHARED:
         return {
@@ -246,6 +247,7 @@ const DataTable: React.FC = () => {
           onChangePage: (e, value) =>
             dispatch(onChangeDocumentPage({ selectedPage: --value })),
           toolbar: SharedDocumentToolBar,
+          columnVisible
         };
       case DOCUMENT_HISTORY:
         return {
@@ -257,6 +259,7 @@ const DataTable: React.FC = () => {
           onChangePage: (e, value) =>
             dispatch(onChangeDocumentPage({ selectedPage: --value })),
           toolbar: HistoryDocumentToolBar,
+          columnVisible
         };
       default:
         return { table: [] };
@@ -295,6 +298,7 @@ const DataTable: React.FC = () => {
         }
         hideFooterPagination
         hideFooter
+        
         components={{
           NoRowsOverlay: CustomNoRow,
           Toolbar: data().toolbar,
@@ -310,6 +314,18 @@ const DataTable: React.FC = () => {
               },
             }
           },
+          filterPanel:{
+            sx:{
+              '& .MuiDataGrid-filterForm':{
+                // scale: '80%',
+                maxWidth: `${window.innerWidth < 720 ? '270px' : '500px'}`
+              },
+              '& .MuiDataGrid-filterFormOperatorInput': {
+                display: 'flex',
+                justifyContent: 'center'
+              }
+            }
+          }
         }}
         sx={{
           borderTop: "none",

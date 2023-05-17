@@ -65,7 +65,7 @@ const SelectType = (props: GridFilterInputValueProps) => {
 
 export const typeOnlyOperators: GridFilterOperator[] = [
   {
-    label: "Equal",
+    label: "=",
     value: "equal",
     getApplyFilterFn: (filterItem: GridFilterItem) => {
       return filterItem.value;
