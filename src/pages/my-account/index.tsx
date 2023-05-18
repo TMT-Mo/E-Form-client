@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SaveLoadingBtn } from "../../components/CustomStyled";
 import { useDispatch, useSelector } from "../../hooks";
-import { AccountStatus, LocationIndex } from "../../utils/constants";
+import { AccountStatus, DeviceWidth, LocationIndex } from "../../utils/constants";
 import Divider from "@mui/material/Divider";
 import styled from "@emotion/styled";
 import { getSignature } from "slices/auth";
@@ -37,6 +37,7 @@ interface AccountState {
 
 const TypographyStyled = styled(Typography)({
   color: "#6F7276",
+  width: '100%'
 });
 
 export const MyAccount = () => {
@@ -135,14 +136,14 @@ export const MyAccount = () => {
   // }, [dispatch]);
 
   return (
-    <Container sx={{ py: 10 }}>
+    <Container sx={{ py: 15 }}>
       <Paper
         elevation={3}
-        sx={{ background: "#fff", borderRadius: "15px", p: 5 }}
+        sx={{ background: "#fff", borderRadius: "15px", p: window.innerWidth < DeviceWidth.IPAD_WIDTH ? 2 : 5 }}
       >
         <Stack spacing={3}>
           {/* <TypographyStyled>Create account</TypographyStyled> */}
-          <Box
+          {window.innerWidth > DeviceWidth.IPAD_WIDTH  && <Box
             sx={{
               borderRadius: "15px",
               height: "200px",
@@ -150,12 +151,12 @@ export const MyAccount = () => {
                 "linear-gradient(159deg, rgba(233,241,255,1) 9%, rgba(115,152,221,1) 95%)",
               position: "relative",
             }}
-          ></Box>
+          ></Box>}
           <Stack
-            direction="row"
-            spacing={5}
+            direction={`${window.innerWidth < DeviceWidth.IPAD_WIDTH ? "column" : "row"}`}
+            spacing={window.innerWidth < DeviceWidth.IPAD_WIDTH ? 0 : 5}
             sx={{
-              transform: "translate(0, -60%)",
+              transform: `${window.innerWidth < DeviceWidth.IPAD_WIDTH ? "" : "translate(0, -60%)"}`,
               padding: "30px 30px 0 30px",
             }}
           >
@@ -167,7 +168,7 @@ export const MyAccount = () => {
               alt="Cindy Baker"
               src={account.avatar ?? userInfo?.avatar}
             />
-            <Stack
+            {window.innerWidth > DeviceWidth.IPAD_WIDTH  && <Stack
               spacing={1}
               justifyContent="end"
               sx={{ width: "fit-content" }}
@@ -179,45 +180,32 @@ export const MyAccount = () => {
               <Typography whiteSpace="nowrap">
                 {t("Update your photo and personal detail")}
               </Typography>
-            </Stack>
-            <Stack
-              sx={{ width: "100%" }}
-              direction="row"
-              justifyContent="end"
-              alignItems="end"
-            >
-              {/* <SaveLoadingBtn
-                loading={isEditAccountLoading}
-                disabled={isDisabledSave}
-                sx={{ height: "fit-content", width: "fit-content" }}
-                onClick={EditAccountHandler}
-              >
-                {t("Save")}
-              </SaveLoadingBtn> */}
-            </Stack>
+            </Stack>}
           </Stack>
           <Stack
             spacing={3}
-            sx={{ transform: "translateY(-10%)", paddingRight: "100px" }}
+            // sx={{ transform: "translateY(-10%)", paddingRight: "100px" }}
           >
             <Stack
-              direction="row"
-              width="100%"
+              direction={`${window.innerWidth < DeviceWidth.IPAD_WIDTH ? "column" : "row"}`}
+              spacing={3}
+              // width="100%"
               justifyContent="space-between"
               alignItems="center"
             >
               <TypographyStyled>ID</TypographyStyled>
 
-              <Typography id="component-outlined" sx={{ width: "50%" }}>
+              <TypographyStyled id="component-outlined" >
                 {userInfo?.userId}
-              </Typography>
+              </TypographyStyled>
               {/* <FormHelperText id="component-error-text">Error</FormHelperText> */}
             </Stack>
             <Divider />
 
             <Stack
-              direction="row"
-              width="100%"
+              direction={`${window.innerWidth < DeviceWidth.IPAD_WIDTH ? "column" : "row"}`}
+              spacing={3}
+              // width="100%"
               justifyContent="space-between"
               alignItems="center"
             >
@@ -225,8 +213,8 @@ export const MyAccount = () => {
               <TextField
                 id="component-outlined"
                 // placeholder="Composed TextField"
-                label={t("Username")}
-                sx={{ width: "50%" }}
+                label={t("First name")}
+                sx={{ width: "100%" }}
                 value={userInfo?.firstName}
                 onChange={(value) =>
                   setAccount({
@@ -239,17 +227,18 @@ export const MyAccount = () => {
             <Divider />
 
             <Stack
-              direction="row"
-              width="100%"
+              direction={`${window.innerWidth < DeviceWidth.IPAD_WIDTH ? "column" : "row"}`}
+              spacing={3}
+              // width="100%"
               justifyContent="space-between"
               alignItems="center"
             >
               <TypographyStyled>{t("Last name")}</TypographyStyled>
               <TextField
                 id="component-outlined"
-                sx={{ width: "50%" }}
+                sx={{ width: "100%" }}
                 // placeholder="Composed TextField"
-                label={t("Password")}
+                label={t("Last name")}
                 value={userInfo?.lastName}
                 onChange={(value) =>
                   setAccount({
@@ -263,8 +252,9 @@ export const MyAccount = () => {
             <Divider />
 
             <Stack
-              direction="row"
-              width="100%"
+              direction={`${window.innerWidth < DeviceWidth.IPAD_WIDTH ? "column" : "row"}`}
+              spacing={3}
+              // width="100%"
               justifyContent="space-between"
               alignItems="center"
             >
@@ -282,13 +272,14 @@ export const MyAccount = () => {
             </Stack>
             <Divider />
             <Stack
-              direction="row"
-              width="100%"
+              direction={`${window.innerWidth < DeviceWidth.IPAD_WIDTH ? "column" : "row"}`}
+              spacing={3}
+              // width="100%"
               justifyContent="space-between"
               alignItems="center"
             >
               <TypographyStyled>{t("Password")}</TypographyStyled>
-              <Box width="50%">
+              <Box width="100%">
                 <SaveLoadingBtn
                   disabled={isDisabledSave}
                   sx={{ height: "fit-content", width: "fit-content", px: 3 }}
@@ -307,13 +298,14 @@ export const MyAccount = () => {
             <Divider />
 
             <Stack
-              direction="row"
-              width="100%"
+              direction={`${window.innerWidth < DeviceWidth.IPAD_WIDTH ? "column" : "row"}`}
+              spacing={3}
+              // width="100%"
               justifyContent="space-between"
               alignItems="center"
             >
               <TypographyStyled>{t("Your avatar")}</TypographyStyled>
-              <Stack width="50%" direction="row" justifyContent="space-between">
+              <Stack width="100%" direction={`${window.innerWidth < DeviceWidth.IPAD_WIDTH ? "column" : "row"}`} justifyContent="space-between">
                 <Avatar
                   sx={{
                     width: 50,
@@ -342,8 +334,9 @@ export const MyAccount = () => {
 
             {/* Department */}
             <Stack
-              direction="row"
-              width="100%"
+              direction={`${window.innerWidth < DeviceWidth.IPAD_WIDTH ? "column" : "row"}`}
+              spacing={3}
+              // width="100%"
               justifyContent="space-between"
               alignItems="center"
             >
@@ -353,7 +346,7 @@ export const MyAccount = () => {
                 // placeholder="Composed TextField"
                 label={t("Department")}
                 helperText={t("Please contact to admin to make any changes!")}
-                sx={{ width: "50%" }}
+                sx={{ width: "100%" }}
                 value={userInfo?.departmentName}
                 disabled
               />
@@ -362,8 +355,9 @@ export const MyAccount = () => {
 
             {/* Role */}
             <Stack
-              direction="row"
-              width="100%"
+              direction={`${window.innerWidth < DeviceWidth.IPAD_WIDTH ? "column" : "row"}`}
+              spacing={3}
+              // width="100%"
               justifyContent="space-between"
               alignItems="center"
             >
@@ -373,22 +367,23 @@ export const MyAccount = () => {
                 // placeholder="Composed TextField"
                 label={t("Role")}
                 helperText={t("Please contact to admin to make any changes!")}
-                sx={{ width: "50%" }}
+                sx={{ width: "100%" }}
                 value={userInfo?.roleName}
                 disabled
               />
             </Stack>
             <Divider />
             <Stack
-              direction="row"
-              width="100%"
+              direction={`${window.innerWidth < DeviceWidth.IPAD_WIDTH ? "column" : "row"}`}
+              spacing={3}
+              // width="100%"
               justifyContent="space-between"
               alignItems="center"
             >
               <TypographyStyled>{t("Signature")}</TypographyStyled>
               {isGetSignatureLoading && <CircularProgress />}
               {signature && (
-                <Box width="50%">
+                <Box width="100%">
                   <img src={signature} alt="" />
                 </Box>
               )}
