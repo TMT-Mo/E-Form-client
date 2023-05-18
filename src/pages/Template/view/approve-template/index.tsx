@@ -17,7 +17,7 @@ import WebViewer from "@pdftron/webviewer";
 import AlertPopup from "components/AlertPopup";
 import { useDispatch, useSelector, useSignalR } from "hooks";
 import { approveTemplate } from "slices/template";
-import { StatusTemplate } from "utils/constants";
+import { DeviceWidth, StatusTemplate } from "utils/constants";
 import { useTranslation } from "react-i18next";
 import { helpers } from "utils";
 import { WhiteBtn, SaveLoadingBtn, RejectBtn } from "components/CustomStyled";
@@ -82,6 +82,7 @@ const ViewApproveTemplate: React.FC = () => {
     ).then(async (instance) => {
       const { documentViewer } = instance.Core;
       instance.UI.setLanguage(i18n.language === 'vn' ? 'vi' : 'en');
+      window.innerWidth < DeviceWidth.IPAD_WIDTH && instance.UI.disableElements([ 'textSelectButton', 'panToolButton' ]);
       const annotManager = documentViewer.getAnnotationManager();
       instance.UI.setHeaderItems(function (header) {
         header.push({

@@ -42,6 +42,7 @@ import {
   TextFieldStyled,
 } from "../../../../components/CustomStyled";
 import { IUser } from "../../../../models/system";
+import { DeviceWidth } from "utils/constants";
 
 interface Form {
   templateName?: string;
@@ -158,6 +159,7 @@ const ViewAddTemplate: React.FC = () => {
       instance.current = inst;
       const { documentViewer } = inst.Core;
       inst.UI.setLanguage(i18n.language === 'vn' ? 'vi' : 'en');
+      window.innerWidth < DeviceWidth.IPAD_WIDTH && inst.UI.disableElements([ 'textSelectButton', 'panToolButton' ]);
       const annotManager = documentViewer.getAnnotationManager();
       annotManager.enableReadOnlyMode();
       const UIEvents = inst.UI.Events;

@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { SaveLoadingBtn, TextFieldStyled } from "components/CustomStyled";
 import { createDocument } from "slices/document";
 import { handleError } from "slices/alert";
+import { DeviceWidth } from "utils/constants";
 
 const ViewCreateDocument: React.FC = () => {
   const viewer = useRef(null);
@@ -76,6 +77,7 @@ const ViewCreateDocument: React.FC = () => {
     ).then(async (instance) => {
       const { documentViewer, annotationManager } = instance.Core;
       instance.UI.setLanguage(i18n.language === "vn" ? "vi" : "en");
+      window.innerWidth < DeviceWidth.IPAD_WIDTH && instance.UI.disableElements([ 'textSelectButton', 'panToolButton' ]);
       instance.UI.setHeaderItems(function (header) {
         header.push({
           type: "actionButton",

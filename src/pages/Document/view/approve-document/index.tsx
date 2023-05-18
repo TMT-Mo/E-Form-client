@@ -22,7 +22,7 @@ import { useDispatch, useSelector, useSignalR } from "hooks";
 import { useTranslation } from "react-i18next";
 import { helpers } from "utils";
 import { approveDocument } from "slices/document";
-import { Permissions, StatusDocument } from "utils/constants";
+import { DeviceWidth, Permissions, StatusDocument } from "utils/constants";
 import { getSignature } from "slices/auth";
 import { WhiteBtn, SaveLoadingBtn, RejectBtn } from "components/CustomStyled";
 import StatusTag from "components/StatusTag";
@@ -193,7 +193,7 @@ const ViewApproveDocument: React.FC = () => {
       ).then(async (inst) => {
         const { documentViewer, annotationManager } = inst.Core;
         inst.UI.setLanguage(i18n.language === "vn" ? "vi" : "en");
-
+        window.innerWidth < DeviceWidth.IPAD_WIDTH && inst.UI.disableElements([ 'textSelectButton', 'panToolButton' ]);
         inst.UI.disableElements(["add-attachment"]);
         const signatureTool = documentViewer.getTool(
           "AnnotationCreateSignature"
