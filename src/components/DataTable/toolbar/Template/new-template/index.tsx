@@ -6,10 +6,12 @@ import { searchTemplate } from "slices/template";
 import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
 import { DeviceWidth } from "utils/constants";
+import { useSelector } from "hooks";
 
 export const NewTemplateToolBar = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const {searchItemValue} = useSelector(state => state.template)
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -62,6 +64,7 @@ export const NewTemplateToolBar = () => {
           <InputBase
             sx={{ ml: 1, flex: 1 }}
             placeholder={t("Search Template")}
+            value={searchItemValue}
             onChange={(e) =>
               dispatch(searchTemplate({ value: e.target.value }))
             }
@@ -82,6 +85,7 @@ export const NewTemplateToolBar = () => {
         <TextField
           placeholder={t("Search Template")}
           onChange={(e) => dispatch(searchTemplate({ value: e.target.value }))}
+          value={searchItemValue}
         />
       </Popover>
       <GridToolbarFilterButton sx={{

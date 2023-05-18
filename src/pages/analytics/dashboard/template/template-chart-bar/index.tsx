@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "hooks";
 import { useTranslation } from "react-i18next";
 import { ChartBar } from "components/Chart/bar";
 import { getStatisticsTemplateList } from "slices/statistics";
+import { DeviceWidth } from "utils/constants";
 
 interface DefaultDate {
   fromDate: Dayjs;
@@ -35,19 +36,19 @@ export function TemplateChartBar() {
       label: t("Rejected"),
       data: arrangedTemplateStatistics?.rejectedList || [],
       backgroundColor: "rgb(255, 99, 132)",
-      barThickness: 35,
+      barThickness: 60,
     },
     {
       label: t("Approved"),
       data: arrangedTemplateStatistics?.approvedList || [],
       backgroundColor: "rgb(75, 192, 192)",
-      barThickness: 35,
+      barThickness: 60,
     },
     {
       label: t("Processing"),
       data: arrangedTemplateStatistics?.processingList || [],
       backgroundColor: "rgb(53, 162, 235)",
-      barThickness: 35,
+      barThickness: 60,
     },
   ];
 
@@ -62,7 +63,9 @@ export function TemplateChartBar() {
   useEffect(() => {
     const onGetStatisticsTemplateList = dispatch(
       getStatisticsTemplateList({
-        fromDate: new Date(startDate.add(1,'day').toISOString().replace('T17', 'T00')),
+        fromDate: new Date(
+          startDate.add(1, "day").toISOString().replace("T17", "T00")
+        ),
         toDate: endDate.toDate(),
       })
     );
@@ -71,12 +74,25 @@ export function TemplateChartBar() {
   }, [departmentList, dispatch, endDate, startDate, userInfo?.departmentName]);
 
   return (
-    <Paper sx={{ p: 3, borderRadius: 3, width: "70%" }} elevation={3}>
+    <Paper sx={{ p: 3, borderRadius: 3, width: "100%" }} elevation={3}>
       <Stack spacing={5}>
-        <Stack direction="row" justifyContent="space-between" alignItems="end">
+        <Stack
+          direction={`${
+            window.innerWidth < DeviceWidth.IPAD_WIDTH ? "column" : "row"
+          }`}
+          justifyContent="space-between"
+          alignItems={`${
+            window.innerWidth < DeviceWidth.MOBILE_WIDTH ? "start" : "end"
+          }`}
+        >
           <h2>{t("Stacked Bar Chart")}</h2>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Stack direction="row" spacing={2}>
+            <Stack
+              direction={`${
+                window.innerWidth < DeviceWidth.IPAD_WIDTH ? "column" : "row"
+              }`}
+              spacing={2}
+            >
               <DesktopDatePicker
                 label={t("From")}
                 inputFormat="DD/MM/YYYY"

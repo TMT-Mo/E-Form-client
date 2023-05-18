@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 import { DoughnutChart } from "components/Chart/doughnut";
 import { ChartDataset } from "chart.js";
 import { getStatisticsTemplate } from "slices/statistics";
-import { StatisticsColor } from "utils/constants";
+import { DeviceWidth, StatisticsColor } from "utils/constants";
 import { helpers } from "utils";
 
 const { APPROVED_COLOR, PROCESSING_COLOR, REJECTED_COLOR } = StatisticsColor;
@@ -82,7 +82,7 @@ export const TemplateBoxNoneFilter = () => {
   }, [departmentList, dispatch, endDate, startDate, userInfo?.departmentName]);
 
   return (
-    <Stack spacing={3} width={1 / 2}>
+    <Stack spacing={3} width='100%'>
       <h2>{t("Template Statistics")}</h2>
       <Paper
         sx={{
@@ -94,15 +94,15 @@ export const TemplateBoxNoneFilter = () => {
       >
         <Stack spacing={2} direction="column">
           <Stack
-            direction="row"
+            direction={`${window.innerWidth < DeviceWidth.MOBILE_WIDTH ? "column" : "row"}`}
             justifyContent="space-between"
-            alignItems="end"
+            alignItems={`${window.innerWidth < DeviceWidth.MOBILE_WIDTH ? "start" : "end"}`}
           >
             <Typography variant="h5" component="h1" fontWeight="600">
               {userInfo?.departmentName}
             </Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Stack direction="row" spacing={3}>
+              <Stack direction={`${window.innerWidth < DeviceWidth.MOBILE_WIDTH ? "column" : "row"}`} spacing={3}>
                 <DesktopDatePicker
                   label={t("From")}
                   inputFormat="DD/MM/YYYY"

@@ -4,21 +4,20 @@ import {
   IconButton,
   InputBase,
   Popover,
-  Typography,
   TextField,
 } from "@mui/material";
 import { GridToolbarFilterButton } from "@mui/x-data-grid";
-import { useDispatch } from "hooks";
+import { useDispatch, useSelector } from "hooks";
 import { useTranslation } from "react-i18next";
 import { searchTemplate } from "slices/template";
 import SearchIcon from "@mui/icons-material/Search";
-import { useState } from "react";
 import React from "react";
 import { DeviceWidth } from "utils/constants";
 
 export const TemplateHistoryToolBar = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const {searchItemValue} = useSelector(state => state.template)
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -74,6 +73,7 @@ export const TemplateHistoryToolBar = () => {
             onChange={(e) =>
               dispatch(searchTemplate({ value: e.target.value }))
             }
+            value={searchItemValue}
           />
         </Paper>
       )}
@@ -90,6 +90,7 @@ export const TemplateHistoryToolBar = () => {
       >
         <TextField
           placeholder={t("Search Template")}
+          value={searchItemValue}
           onChange={(e) => dispatch(searchTemplate({ value: e.target.value }))}
         />
       </Popover>

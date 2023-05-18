@@ -11,7 +11,7 @@ import { TemplateChartBar } from "pages/analytics/dashboard/template/template-ch
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getDepartmentList, getRoleList } from "slices/system";
-import { Permissions } from "utils/constants";
+import { DeviceWidth, Permissions } from "utils/constants";
 
 const {
   VIEW_DOCUMENT_OVERALL_STATISTICS,
@@ -41,8 +41,8 @@ export const AnalyticsDashboard = () => {
   }, [dispatch]);
 
   return (
-    <Container sx={{ paddingY: "50px", mx: 0 }} maxWidth="xl">
-      <Stack spacing={5}>
+    <Container sx={{ paddingY: "50px", mx: 0 }} maxWidth="xl" disableGutters>
+      <Stack spacing={5} direction='column'>
         {/* <Paper sx={{ p: 5, maxHeight: "400px", borderRadius: 3 }} elevation={3}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Stack direction="row" spacing={2}>
@@ -90,16 +90,18 @@ export const AnalyticsDashboard = () => {
         <RequiredPermission permission={VIEW_DOCUMENT_OVERALL_STATISTICS}>
           <Stack spacing={3}>
             <h2>{t("Template Overall Statistics")}</h2>
-            <Stack direction="row" spacing={5}>
+            <Stack direction={`${
+                window.innerWidth < DeviceWidth.IPAD_WIDTH ? "column" : "row"
+              }`} spacing={5}>
               <TemplateChartBar />
               <TemplateBoxWithFilter />
             </Stack>
           </Stack>
         </RequiredPermission>
         <RequiredPermission permission={VIEW_DOCUMENT_OVERALL_STATISTICS}>
-          <Stack spacing={3} maxHeight="600px" height="100%">
+          <Stack spacing={3}>
             <h2>{t("Document Overall Statistics")}</h2>
-            <Stack direction="row" spacing={5}>
+            <Stack direction={`${window.innerWidth < DeviceWidth.IPAD_WIDTH ? "column" : "row"}`} spacing={5}>
               <DocumentChartBar />
               <DocumentBoxWithFilter />
             </Stack>
@@ -111,7 +113,7 @@ export const AnalyticsDashboard = () => {
           <DocumentBox />
         </Stack> */}
         <RequiredPermission permission={VIEW_DOCUMENT_STATISTICS}>
-          <Stack direction="row" spacing={10}>
+          <Stack direction={`${window.innerWidth < DeviceWidth.IPAD_WIDTH ? "column" : "row"}`} spacing={10}>
             <TemplateBoxNoneFilter />
             <DocumentBoxNoneFilter />
           </Stack>

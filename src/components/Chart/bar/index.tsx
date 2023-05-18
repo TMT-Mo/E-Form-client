@@ -14,6 +14,7 @@ import {
 import { Bar } from "react-chartjs-2";
 import { useTranslation } from "react-i18next";
 import zoomPlugin from "chartjs-plugin-zoom";
+import { DeviceWidth } from "utils/constants";
 
 ChartJS.register(
   CategoryScale,
@@ -86,21 +87,37 @@ export function ChartBar(props: Props) {
     scales: {
       x: {
         stacked: true,
+        ticks: {
+          // maxTicksLimit: 3
+        },
+        max: window.innerWidth < DeviceWidth.MOBILE_WIDTH ? 1 : 10
       },
       y: {
         stacked: true,
       },
     },
-    
+    maintainAspectRatio: false
   };
 
   return (
-    <Bar
-      options={options}
-      data={data}
-      style={{
-        overflowX: "scroll",
-      }}
-    />
+    <div id="canvas-container">
+
+      <Bar
+        options={options}
+        data={data}
+        style={{
+          // overflowX: "scroll",
+          // maxWidth: `${
+          //   window.innerWidth < DeviceWidth.MOBILE_WIDTH ? "220px" : ""
+          // }`,
+          // height: 300
+        }}
+        
+        height={
+          window.innerWidth < DeviceWidth.MOBILE_WIDTH ? '' : 500
+        }
+        // height={500}
+      />
+    </div>
   );
 }

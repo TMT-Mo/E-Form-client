@@ -14,11 +14,13 @@ import {
 } from "utils/constants";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
+import { useSelector } from "hooks";
 
 const { IPAD_WIDTH } = DeviceWidth;
 export const TemplateManagementToolbar = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const {searchItemValue} = useSelector(state => state.template)
   const { innerWidth } = window;
 
   const { ADD_TEMPLATE } = Permissions;
@@ -76,6 +78,7 @@ export const TemplateManagementToolbar = () => {
           <InputBase
             sx={{ ml: 1, flex: 1 }}
             placeholder={t("Search Template")}
+            value={searchItemValue}
             onChange={(e) =>
               dispatch(searchTemplate({ value: e.target.value }))
             }
@@ -95,6 +98,7 @@ export const TemplateManagementToolbar = () => {
       >
         <TextField
           placeholder={t("Search Template")}
+          value={searchItemValue}
           onChange={(e) => dispatch(searchTemplate({ value: e.target.value }))}
         />
       </Popover>

@@ -15,6 +15,7 @@ import { DoughnutChart } from "components/Chart/doughnut";
 import { ChartDataset } from "chart.js";
 import { StatisticsDocument } from "models/statistics";
 import { helpers } from "utils";
+import { DeviceWidth } from "utils/constants";
 
 const { handlePercentageValue } = helpers;
 
@@ -80,7 +81,7 @@ export const DocumentBoxWithFilter = () => {
       sx={{
         p: 3,
         borderRadius: 3,
-        width: 600,
+        width: `${window.innerWidth < DeviceWidth.IPAD_WIDTH ? "100%" : "600px"}`,
       }}
       elevation={3}
     >
@@ -89,7 +90,7 @@ export const DocumentBoxWithFilter = () => {
           <Autocomplete
             id="asynchronous-demo"
             sx={{
-              width: 250,
+              width: `${window.innerWidth < DeviceWidth.MOBILE_WIDTH ? "100%" : "250px"}`,
             }}
             onChange={(e, value) => onChangeSelectedDepartment(value)}
             isOptionEqualToValue={(option, value) =>

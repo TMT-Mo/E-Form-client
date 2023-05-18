@@ -6,9 +6,11 @@ import { useDispatch } from 'react-redux';
 import { searchDocument } from 'slices/document';
 import SearchIcon from "@mui/icons-material/Search";
 import { DeviceWidth } from 'utils/constants';
+import { useSelector } from 'hooks';
 export const SharedDocumentToolBar = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
+    const { searchItemValue } = useSelector((state) => state.document);
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
       null
     );
@@ -60,6 +62,7 @@ export const SharedDocumentToolBar = () => {
           <InputBase
             sx={{ ml: 1, flex: 1 }}
             placeholder={t("Search Document")}
+            value={searchItemValue}
           onChange={(e) => dispatch(searchDocument({ value: e.target.value }))}
           />
         </Paper>
@@ -76,6 +79,7 @@ export const SharedDocumentToolBar = () => {
       >
         <TextField
           placeholder={t("Search Document")}
+          value={searchItemValue}
           onChange={(e) => dispatch(searchDocument({ value: e.target.value }))}
         />
       </Popover>
