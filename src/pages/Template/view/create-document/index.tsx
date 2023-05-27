@@ -114,12 +114,12 @@ const ViewCreateDocument: React.FC = () => {
         //   annotationManager.addAnnotation(annot);
         //   annotationManager.redrawAnnotation(annot);
         // });
-        // annotationManager.setAnnotationDisplayAuthorMap((userId) => {
-        //   if (userId === userInfo?.userId!.toString()) {
-        //     return userInfo?.userName!;
-        //   }
-        //   return "System";
-        // });
+        annotationManager.setAnnotationDisplayAuthorMap((userId) => {
+          if (userId === userInfo?.userId!.toString()) {
+            return userInfo?.userName!;
+          }
+          return "System";
+        });
         annotationManager.addEventListener(
           "annotationChanged",
           async (annotations, action) => {
