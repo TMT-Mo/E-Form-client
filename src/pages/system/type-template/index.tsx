@@ -174,7 +174,7 @@ export const TypeTemplateSystem = () => {
                 isOptionEqualToValue={(option, value) =>
                   option.typeName === value.typeName
                 }
-                getOptionLabel={(option) => t(option.typeName)}
+                getOptionLabel={(option) => option.typeName}
                 options={templateTypeList}
                 sx={{
                   ".MuiAutocomplete-clearIndicator": {
@@ -306,7 +306,7 @@ export const TypeTemplateSystem = () => {
                 </IconButton>
               </Stack>
               {templateTypeList?.map((type) => (
-                <TextField key={type.id} value={t(type.typeName)} disabled />
+                <TextField key={type.id} value={type.typeName} disabled />
               ))}
               <DialogActions>
                 <WhiteBtn

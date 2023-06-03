@@ -156,7 +156,7 @@ export const RoleSystem = () => {
                 isOptionEqualToValue={(option, value) =>
                   option.roleName === value.roleName
                 }
-                getOptionLabel={(option) => t(option.roleName)}
+                getOptionLabel={(option) => option.roleName}
                 options={roleList}
                 sx={{
                   ".MuiAutocomplete-clearIndicator": {
