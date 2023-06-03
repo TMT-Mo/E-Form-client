@@ -309,7 +309,7 @@ export const CreateAccount = () => {
                 onChangeSelectedRole(value)
               }
               value={selectedRole ?? null}
-              getOptionLabel={(option) => t(option.roleName)}
+              getOptionLabel={(option) => option.roleName}
               options={roleList}
               loading={isGetRoleLoading}
               sx={{

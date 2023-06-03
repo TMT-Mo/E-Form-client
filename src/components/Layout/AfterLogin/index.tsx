@@ -125,7 +125,7 @@ const DividerStyled = styled(Divider)({
 });
 
 export default function AfterLogin() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { locationIndex } = useSelector((state) => state.location);
