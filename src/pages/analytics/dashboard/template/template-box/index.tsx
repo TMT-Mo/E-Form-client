@@ -43,7 +43,7 @@ export const TemplateBoxNoneFilter = () => {
     (state) => state.statistics
   );
 
-  const labels = [t("Processing"), t("Approved"), t("Rejected")];
+  const labels = [ t("Rejected"),t("Processing"), t("Approved")];
   const datasets: ChartDataset<"doughnut">[] = [
     {
       label: t("Value"),
@@ -52,8 +52,8 @@ export const TemplateBoxNoneFilter = () => {
         statisticsTemplate?.processing || 0,
         statisticsTemplate?.approved || 0,
       ],
-      backgroundColor: [PROCESSING_COLOR, APPROVED_COLOR, REJECTED_COLOR],
-      borderColor: [PROCESSING_COLOR, APPROVED_COLOR, REJECTED_COLOR],
+      backgroundColor: [ REJECTED_COLOR,PROCESSING_COLOR, APPROVED_COLOR],
+      borderColor: [ REJECTED_COLOR,PROCESSING_COLOR, APPROVED_COLOR],
     },
   ];
 
