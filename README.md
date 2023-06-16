@@ -1,5 +1,9 @@
 Description:
-E-Form is a software that manages digital application form designed to help individuals and businesses create, manage, and store application forms electronically. This type of software simplifies the process of creating, tracking, and executing applications, making it easier for businesses to manage their files. Every file will run according to order of a approval process included a group of signers. For instance, an employee wants to have a day off, he will write a file called "Request for leave" by creating a bunch of textboxes, input text like his name, date, ..., on E-Form web page, then he submits the form. Assumed the form has 2 signers A and B, this application will go to A first, he signs by dragging a signature in the right position on the form and send to the next one. Owner of the form can track down this file, see who is approving.
+E-Form is a software that manages digital application form designed to help individuals and businesses create, manage, and store application forms electronically. 
+This type of software simplifies the process of creating, tracking, and executing applications, making it easier for businesses to manage their files. 
+Every file will run according to order of a approval process included a group of signers. For instance, an employee wants to have a day off, he will write a file called "Request for leave" 
+by creating a bunch of textboxes, input text like his name, date, ..., on E-Form web page, then he submits the form. Assumed the form has 2 signers A and B, this application will go to A first, 
+he signs by dragging a signature in the right position on the form and send to the next one. Owner of the form can track down this file, see who is approving.
 
 Features:
 - Allow users to create textbox, input text, attach a file, drag signature on a .doc file on E-Form web page.
