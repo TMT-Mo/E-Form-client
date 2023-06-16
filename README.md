@@ -30,52 +30,51 @@ E-Form-Client
 │   yarn.lock
 │
 └─── src
-│   │   App.tsx
-│   │   declaration.d.ts
-│   │   index.tsx
-│   │   
-│   └─── util
-│   │   api-paths.ts
-│   │   constants.ts
-│   │   http-client.ts
-│   │   helpers.ts
-│   │   mui-data.ts
-│   │   ...
-│   
-└─── components
-│   │   DataTable
-│   │   RequiredPermission
-│   │   ...
-│   
-└─── hooks ( custom hooks)
-│   │   use-auth.ts
-│   │   use-signalR.ts
-│   │   use-selector.ts
-│   │   use-permission.ts
-│   │   use-dispatch.ts
-│   
-└─── i18n
-│   │   locales
-│   │   i18n.ts
-│   
-└─── models ( object/ response/ request types)
-│   │   mui-data.ts
-│   │   template.ts
-│   │   ...
-└─── pages
-│   │   login
-│   │   document
-│   │   ...
-└─── services ( handling requests, return object type)
-│   │   document.ts
-│   │   ...
-└─── signalR
-│   │   signalR.ts
-│   │   signalR-model.ts
-│   │   signalR-constant.ts
-└─── slices
-│   │   document.ts
-│   │   ...
-└─── assets
-│   │   images and svg files
-│   │   ...
+   │    App.tsx
+   │    declaration.d.ts
+   │    index.tsx
+   │    ...
+   └─── util
+   │    api-paths.ts
+   │    constants.ts
+   │    http-client.ts
+   │    helpers.ts
+   │    mui-data.ts
+   │    ...
+   └─── components
+   │    DataTable
+   │    RequiredPermission
+   │    ...
+   └─── hooks ( custom hooks)
+   │    use-auth.ts
+   │    use-signalR.ts
+   │    use-selector.ts
+   │    use-permission.ts
+   │    use-dispatch.ts
+   └─── i18n
+   │    locales
+   │    i18n.ts
+   └─── models ( object/ response/ request types)
+   │    mui-data.ts
+   │    template.ts
+   │    ...
+   └─── pages
+   │    login
+   │    document
+   │    ...
+   └─── services ( handling requests, return object type)
+   │    document.ts
+   │    ...
+   └─── signalR
+   │    signalR.ts
+   │    signalR-model.ts
+   │    signalR-constant.ts
+   └─── slices
+   │    document.ts
+   │    ...
+   └─── assets
+   │    images and svg files
+   │    ...
+
+
+
