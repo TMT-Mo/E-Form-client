@@ -21,6 +21,12 @@ Relevant Libraries/ Tools/ Programming Languages:
 - Frontend: React 18 + Typescript, Material UI, Redux thunk, Tailwind, Firebase
 - Backend: ASP.net 3.1, SQL server, Swagger
 
+How we work with GitHub:
+- Production branch will be deployed on server
+- Each member will have their own branch under Development branch.
+- After finishing some functions, we will merge them into Development
+- Finally, before a release with customer, Development will be pushed to Production branch in order to update deployment.
+
 Folder structure:
 E-Form-Client
 │   README.md
