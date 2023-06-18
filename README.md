@@ -14,6 +14,8 @@ Features:
 - Manage document ( running approval process) - create, approve/ reject document, share document to a department or users
 - View statistics of templates in one/ all department
 - View statistics of documents in one/ all department
+- Support multiple languages: Vietnamese and English
+- Notification management with notifying in real-time signalR.
 
 Relevant Libraries/ Tools/ Programming Languages:
 - Frontend: React 18 + Typescript, Material UI, Redux thunk, Tailwind, Firebase
@@ -34,14 +36,14 @@ E-Form-Client
    │    declaration.d.ts
    │    index.tsx
    │    ...
-   └─── util
+   └─── util ( API, custom request, constant, data library, ...)
    │    api-paths.ts
    │    constants.ts
    │    http-client.ts
    │    helpers.ts
    │    mui-data.ts
    │    ...
-   └─── components
+   └─── components ( mutual components, HOC, Notification, ...)
    │    DataTable
    │    RequiredPermission
    │    ...
@@ -51,7 +53,7 @@ E-Form-Client
    │    use-selector.ts
    │    use-permission.ts
    │    use-dispatch.ts
-   └─── i18n
+   └─── i18n ( handling multiple languages with i18n) 
    │    locales
    │    i18n.ts
    └─── models ( object/ response/ request types)
@@ -65,14 +67,14 @@ E-Form-Client
    └─── services ( handling requests, return object type)
    │    document.ts
    │    ...
-   └─── signalR
+   └─── signalR (handling signalR requests, model, notification content)
    │    signalR.ts
    │    signalR-model.ts
    │    signalR-constant.ts
    └─── slices
    │    document.ts
    │    ...
-   └─── assets
+   └─── assets (images and svgs)
    │    images and svg files
    │    ...
 
